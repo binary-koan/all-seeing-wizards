@@ -12,3 +12,9 @@ tmp/*
 
 # SQLite databases
 db/*.sqlite
+
+# NPM stuff
+node_modules
+
+# Webpack stuff
+bundle.js

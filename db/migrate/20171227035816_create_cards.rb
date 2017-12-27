@@ -10,7 +10,7 @@ ROM::SQL.migration do
 
       # Different effects will use different combinations of these values
       integer :amount
-      integer :rotation
+      varchar :rotation, size: 50
       integer :damage
       integer :knockback
       varchar :duration_type, size: 50

@@ -4,7 +4,7 @@ module AllSeeingWizards
   module Main
     class DeckRepo < AllSeeingWizards::Repository[:decks]
       def all
-        decks.order_by_name
+        decks.combine(cards: :card_ranges).default_ordering
       end
     end
   end

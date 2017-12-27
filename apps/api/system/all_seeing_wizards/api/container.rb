@@ -3,7 +3,7 @@ require "dry/web/container"
 require "dry/system/components"
 
 module AllSeeingWizards
-  module Main
+  module Api
     class Container < Dry::Web::Container
       require root.join("system/all_seeing_wizards/container")
       import core: AllSeeingWizards::Container
@@ -11,8 +11,8 @@ module AllSeeingWizards
       configure do |config|
         config.root = Pathname(__FILE__).join("../../..").realpath.dirname.freeze
         config.logger = AllSeeingWizards::Container[:logger]
-        config.default_namespace = "all_seeing_wizards.main"
-        config.auto_register = %w[lib/all_seeing_wizards/main]
+        config.default_namespace = "all_seeing_wizards.api"
+        config.auto_register = %w[lib/all_seeing_wizards/api]
       end
 
       load_paths! "lib"

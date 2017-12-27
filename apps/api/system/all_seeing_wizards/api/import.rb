@@ -1,7 +1,7 @@
 require_relative "container"
 
 module AllSeeingWizards
-  module Main
+  module Api
     Import = Container.injector
   end
 end

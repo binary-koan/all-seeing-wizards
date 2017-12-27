@@ -1,7 +1,7 @@
-require "all_seeing_wizards/main/import"
+require "all_seeing_wizards/api/import"
 
 module AllSeeingWizards
-  module Main
+  module Api
     class Web
       include Import["deck_repo"]
 

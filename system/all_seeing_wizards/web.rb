@@ -10,7 +10,7 @@ module AllSeeingWizards
     plugin :error_handler
 
     route do |r|
-      r.run AllSeeingWizards::Main::Web.freeze.app
+      r.run AllSeeingWizards::Api::Web.freeze.app
     end
 
     error do |e|

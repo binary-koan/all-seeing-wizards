@@ -2,7 +2,7 @@ require "dry/web/roda/application"
 require_relative "container"
 
 module AllSeeingWizards
-  module Main
+  module Api
     class Web < Dry::Web::Roda::Application
       configure do |config|
         config.container = Container

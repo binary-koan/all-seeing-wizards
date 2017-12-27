@@ -8,9 +8,7 @@ require_relative "all_seeing_wizards/container"
 AllSeeingWizards::Container.finalize!
 
 # Load sub-apps
-app_paths = Pathname(__FILE__).dirname.join("../apps").realpath.join("*")
-Dir[app_paths].each do |f|
-  require "#{f}/system/boot"
-end
+apps_path = Pathname(__FILE__).dirname.join("../apps").realpath
+Dir.glob(apps_path.join("*/system/boot.rb")).each(&method(:require))
 
 require "all_seeing_wizards/web"

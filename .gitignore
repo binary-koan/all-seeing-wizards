@@ -9,3 +9,6 @@
 
 # Temp files
 tmp/*
+
+# SQLite databases
+db/*.sqlite

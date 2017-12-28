@@ -88,6 +88,7 @@ GEM
       thor (~> 0.19)
     faker (1.8.7)
       i18n (>= 0.7)
+    hashids (1.0.4)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -112,10 +113,9 @@ GEM
     public_suffix (3.0.1)
     puma (3.11.0)
     rack (2.0.3)
+    rack-cors (1.0.2)
     rack-test (0.8.2)
       rack (>= 1.0, < 3)
-    rack_csrf (2.6.0)
-      rack (>= 1.1.0)
     rake (12.3.0)
     roda (2.29.0)
       rack
@@ -201,11 +201,12 @@ DEPENDENCIES
   dry-validation (~> 0.11)
   dry-web (~> 0.7)
   dry-web-roda (~> 0.7)
+  hashids
   poltergeist
   pry-byebug
   puma
   rack (>= 2.0)
-  rack_csrf
+  rack-cors
   rake
   rom (~> 4.0)
   rom-factory (~> 0.5)

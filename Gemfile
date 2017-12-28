@@ -7,7 +7,7 @@ gem "dry-system", "~> 0.8"
 gem "dry-web", "~> 0.7"
 gem "dry-web-roda", "~> 0.7"
 gem "puma"
-gem "rack_csrf"
+gem "rack-cors", require: "rack/cors"
 
 gem "rack", ">= 2.0"
 gem "shotgun", ">= 0.9.2"
@@ -24,6 +24,8 @@ gem "dry-struct", "~> 0.3"
 gem "dry-transaction", "~> 0.10"
 gem "dry-types", "~> 0.12"
 gem "dry-validation", "~> 0.11"
+
+gem "hashids"
 
 group :development, :test do
   gem "pry-byebug", platform: :mri

@@ -14,6 +14,7 @@ module AllSeeingWizards
       plugin :error_handler
       plugin :multi_route
       plugin :json, classes: [Array, Hash, Dry::Struct]
+      plugin :json_parser
 
       route do |r|
         r.multi_route

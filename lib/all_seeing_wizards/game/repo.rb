@@ -2,8 +2,8 @@ require "all_seeing_wizards/repository"
 require "entities/game"
 
 module AllSeeingWizards
-  module Api
-    class GameRepo < AllSeeingWizards::Repository[:games]
+  module Game
+    class Repo < AllSeeingWizards::Repository[:games]
       struct_namespace Entities
       commands :create
 

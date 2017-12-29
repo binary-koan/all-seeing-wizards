@@ -3,7 +3,7 @@ require "all_seeing_wizards/api/import"
 module AllSeeingWizards
   module Api
     class Web
-      include Import["deck_repo"]
+      include Import[deck_repo: "core.deck.repo"]
 
       route "decks" do |r|
         r.is do

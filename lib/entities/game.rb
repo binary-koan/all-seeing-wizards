@@ -21,5 +21,10 @@ module Entities
     def hashid
       @hashid ||= self.class.encode_hashid(id)
     end
+
+    def to_hash
+      super.merge(id: hashid)
+    end
+    alias_method :to_h, :to_hash
   end
 end

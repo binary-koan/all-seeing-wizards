@@ -1,4 +1,29 @@
 :name: Standard
+:boards:
+  - |
+      . b . . .
+      . b . r .
+      . b . . w
+      . . . w w
+      . . r w l
+  - |
+      . . . . .
+      . l r . .
+      . b . . .
+      . b b b .
+      b . . . .
+  - |
+      . . b . .
+      l . b . .
+      . . . w w
+      . . . . .
+      . b w b .
+  - |
+      b . . w w
+      . b . . w
+      . . . . r
+      . . . . .
+      . r . l .
 :cards:
   # Movement
   - :name: Move 1

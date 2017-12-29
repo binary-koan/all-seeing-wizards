@@ -4,6 +4,7 @@ module Persistence
       schema(:decks, infer: true) do
         associations do
           has_many :cards
+          has_many :boards
         end
       end
 

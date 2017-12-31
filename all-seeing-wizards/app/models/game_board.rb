@@ -14,5 +14,5 @@ class GameBoard < ApplicationRecord
   belongs_to :game
   belongs_to :board
 
-  validates :rotation, inclusion: { in: ROTATION_MAPPINGS.keys }
+  validates :rotation, inclusion: { in: ROTATION_MAPPINGS.keys.map(&:to_s) }
 end

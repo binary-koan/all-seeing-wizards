@@ -22,8 +22,14 @@ module AllSeeingWizards
         end
 
         r.is String do |hashid|
-          r.get do
-            game_repo.by_hashid(hashid).to_h
+          r.is do
+            r.get do
+              game_repo.by_hashid(hashid).to_h
+            end
+          end
+
+          r.is "join" do
+            api_response(join_game.call(hashid: hashid))
           end
         end
       end

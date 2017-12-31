@@ -7,5 +7,18 @@ module AllSeeingWizards
     def self.inherited(subclass)
       subclass.include Dry::Transaction::Operation
     end
+
+    def call(*args, **kwargs)
+      setup(*args, **kwargs)
+      perform
+    end
+
+    # May be overridden
+
+    def setup(*args, **kwargs)
+    end
+
+    def perform
+    end
   end
 end

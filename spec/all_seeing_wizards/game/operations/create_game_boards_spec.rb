@@ -44,8 +44,8 @@ RSpec.describe AllSeeingWizards::Game::Operations::CreateGameBoards do
 
     let(:expected_game_objects) do
       [
-        { game_id: game.id, board_object_id: 1, x: 0, y: 0 },
-        { game_id: game.id, board_object_id: 2, x: 1, y: 2 }
+        { game_board_id: 1, board_object_id: 1, x: 0, y: 0 },
+        { game_board_id: 1, board_object_id: 2, x: 1, y: 2 }
       ]
     end
 
@@ -55,10 +55,15 @@ RSpec.describe AllSeeingWizards::Game::Operations::CreateGameBoards do
     end
 
     it "links the game to boards and board objects" do
-      expected_game_boards = boards.map { |board| hash_including({ game_id: game.id, board_id: board.id }) }
-      expect(game_board_repo).to receive(:create).with(expected_game_boards)
+      boards.each do |board|
+        expect(game_board_repo).to receive(:create).with(
+          hash_including({ game_id: game.id, board_id: board.id })
+        ).and_return(OpenStruct.new(id: 1))
+      end
 
-      expect(game_object_repo).to receive(:create).with(expected_game_objects)
+      expected_game_objects.each do |expected|
+        expect(game_object_repo).to receive(:create).with(expected)
+      end
 
       expect(result).to be_success
       expect(result.value!).to eq(params: params, game: game, decks: decks, boards: boards)

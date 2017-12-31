@@ -7,6 +7,7 @@ module Persistence
           has_many :decks, through: :game_decks
 
           has_many :game_boards
+          has_many :game_objects, through: :game_boards
         end
       end
     end

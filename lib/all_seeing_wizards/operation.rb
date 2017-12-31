@@ -1,12 +1,10 @@
 # auto_register: false
 
-require "dry/transaction/operation"
+require "dry-monads"
 
 module AllSeeingWizards
   class Operation
-    def self.inherited(subclass)
-      subclass.include Dry::Transaction::Operation
-    end
+    include Dry::Monads::Result::Mixin
 
     def call(*args, **kwargs)
       setup(*args, **kwargs)
@@ -18,7 +16,10 @@ module AllSeeingWizards
     def setup(*args, **kwargs)
     end
 
+    # Must be overridden
+
     def perform
+      raise NotImplementedError
     end
   end
 end

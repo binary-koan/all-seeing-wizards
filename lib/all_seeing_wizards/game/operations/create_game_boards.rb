@@ -27,25 +27,25 @@ module AllSeeingWizards
         def perform
           return Failure(:not_enough_boards) unless enough_boards?
 
-          game_board_attributes = boards.map.with_index do |board, index|
-            {
+          game_boards = boards.map.with_index do |board, index|
+            game_board_repo.create(
               game_id: game.id,
               board_id: board.id,
               rotation: random_rotation,
               index: index
-            }
+            )
           end
-          game_board_repo.create(game_board_attributes)
 
-          game_object_attributes = boards.flat_map(&:board_objects).map do |object|
-            {
-              game_id: game.id,
-              board_object_id: object.id,
-              x: object.x,
-              y: object.y
-            }
+          boards.zip(game_boards).each do |board, game_board|
+            board.board_objects.each do |object|
+              game_object_repo.create(
+                game_board_id: game_board.id,
+                board_object_id: object.id,
+                x: object.x,
+                y: object.y
+              )
+            end
           end
-          game_object_repo.create(game_object_attributes)
 
           Success(params: params, game: game, decks: decks, boards: boards)
         end

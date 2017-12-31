@@ -18,10 +18,12 @@ gem "rom", "~> 4.0"
 gem "rom-sql", "~> 2.1"
 
 # Application dependencies
-gem "dry-matcher", "~> 0.6.0"
+# gem "dry-matcher", "~> 0.6.0"
+gem "dry-matcher", git: "https://github.com/dry-rb/dry-matcher"
 gem "dry-monads", "~> 0.3"
 gem "dry-struct", "~> 0.3"
-gem "dry-transaction", "~> 0.10"
+# gem "dry-transaction", "~> 0.10"
+gem "dry-transaction", git: "https://github.com/dry-rb/dry-transaction"
 gem "dry-types", "~> 0.12"
 gem "dry-validation", "~> 0.11"
 

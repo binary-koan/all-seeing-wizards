@@ -1,3 +1,19 @@
+GIT
+  remote: https://github.com/dry-rb/dry-matcher
+  revision: 25f89bd4ee2c7c6da59d40b23879739cf5c5742c
+  specs:
+    dry-matcher (0.7.0)
+
+GIT
+  remote: https://github.com/dry-rb/dry-transaction
+  revision: 8dbbb464b77ac324bcf28a84442fdf33841b7d7e
+  specs:
+    dry-transaction (0.11.0)
+      dry-container (>= 0.2.8)
+      dry-matcher (>= 0.5.0)
+      dry-monads (>= 0.4.0)
+      wisper (>= 1.6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -35,7 +51,6 @@ GEM
       dry-container (~> 0.2, >= 0.2.6)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
-    dry-matcher (0.6.0)
     dry-monads (0.4.0)
       dry-core (~> 0.3, >= 0.3.3)
       dry-equalizer
@@ -57,11 +72,6 @@ GEM
       dry-equalizer (~> 0.2)
       dry-struct (~> 0.3)
       inflecto (>= 0.0.2)
-    dry-transaction (0.10.2)
-      dry-container (>= 0.2.8)
-      dry-matcher (>= 0.5.0)
-      dry-monads (>= 0.0.1)
-      wisper (>= 1.6.0)
     dry-types (0.12.2)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1)
@@ -192,11 +202,11 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   database_cleaner
-  dry-matcher (~> 0.6.0)
+  dry-matcher!
   dry-monads (~> 0.3)
   dry-struct (~> 0.3)
   dry-system (~> 0.8)
-  dry-transaction (~> 0.10)
+  dry-transaction!
   dry-types (~> 0.12)
   dry-validation (~> 0.11)
   dry-web (~> 0.7)

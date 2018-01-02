@@ -12,6 +12,7 @@ class CreateGame
       game = create_game
       packs = associate_packs(game)
       create_game_boards(game, packs)
+      game.create_host!
 
       game
     end

@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   def create
     game = CreateGame.new(pack_ids: [Pack.first.id]).call
-    render json: game
+    render json: { game: game, host_id: game.host.id }
   end
 end

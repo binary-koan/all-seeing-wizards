@@ -1,10 +1,24 @@
 import m from "mithril"
+import ActionCable from "actioncable"
 
 export default function Home(vnode) {
   function createGame() {
-    m.request({ method: "POST", url: "http://localhost:9393/games", data: { deck_ids: [1] } }).then(response =>
-      console.log(response)
-    ).catch(e => console.log(e))
+    m.request({ method: "POST", url: "http://localhost:3000/games" }).then(response => {
+      window.cable = ActionCable.createConsumer("ws://localhost:3000/cable")
+      cable.subscriptions.create("Game", {
+        connected() {
+          console.log("connected!")
+        },
+
+        disconnected() {
+          console.log("Disconnected!")
+        },
+
+        rejected() {
+          console.log("Rejected!")
+        }
+      })
+    }).catch(e => console.log(e))
   }
 
   function view() {

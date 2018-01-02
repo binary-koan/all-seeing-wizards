@@ -13,11 +13,11 @@ module ApplicationCable
     end
 
     def find_host
-      Host.find_by(id: request.headers["X-Host-Id"])
+      Host.find_by(id: request.params[:host_id])
     end
 
     def find_player
-      Player.find_by(id: request.headers["X-Player-Id"])
+      Player.find_by(id: request.params[:player_id])
     end
   end
 end

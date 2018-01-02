@@ -4,8 +4,8 @@ import ActionCable from "actioncable"
 export default function Home(vnode) {
   function createGame() {
     m.request({ method: "POST", url: "http://localhost:3000/games" }).then(response => {
-      window.cable = ActionCable.createConsumer("ws://localhost:3000/cable")
-      cable.subscriptions.create("Game", {
+      window.cable = ActionCable.createConsumer(`ws://localhost:3000/cable?host_id=${response.host_id}`)
+      cable.subscriptions.create("GameChannel", {
         connected() {
           console.log("connected!")
         },

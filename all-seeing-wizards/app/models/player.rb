@@ -1,4 +1,6 @@
 class Player < ApplicationRecord
+  include Connectable
+
   CHARACTER_WIND_WORKER = :wind_worker
 
   CHARACTER_MAPPINGS = {
@@ -11,9 +13,5 @@ class Player < ApplicationRecord
 
   def character
     CHARACTER_MAPPINGS[character_id]
-  end
-
-  def as_json(*args)
-    super(*args).merge(character: character)
   end
 end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :games, only: :create do
+  resources :games, only: [:create, :show] do
     resources :sessions, only: :create
   end
 

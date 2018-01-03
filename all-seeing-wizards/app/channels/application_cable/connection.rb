@@ -4,6 +4,11 @@ module ApplicationCable
 
     def connect
       self.message_client = find_message_client
+      message_client.update!(connected_at: Time.now)
+    end
+
+    def disconnect
+      message_client.update!(disconnected_at: Time.now)
     end
 
     private

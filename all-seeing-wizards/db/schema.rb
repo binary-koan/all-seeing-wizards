@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171231102559) do
+ActiveRecord::Schema.define(version: 20180103102938) do
 
   create_table "board_objects", force: :cascade do |t|
     t.integer "board_id"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 20171231102559) do
     t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "connected_at"
+    t.datetime "disconnected_at"
   end
 
   create_table "packs", force: :cascade do |t|
@@ -110,6 +112,8 @@ ActiveRecord::Schema.define(version: 20171231102559) do
     t.text "rotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "connected_at"
+    t.datetime "disconnected_at"
   end
 
 end

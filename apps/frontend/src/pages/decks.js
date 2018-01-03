@@ -2,7 +2,7 @@ import m from "mithril"
 
 export default function Decks(vnode) {
   function oninit() {
-    m.request("http://localhost:9393/decks").then(decks => {
+    m.request("http://localhost:3000/decks").then(decks => {
       vnode.state.decks = decks
     })
   }

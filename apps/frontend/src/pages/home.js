@@ -1,30 +1,23 @@
 import m from "mithril"
-import ActionCable from "actioncable"
 
 export default function Home(vnode) {
   function createGame() {
     m.request({ method: "POST", url: "http://localhost:3000/games" }).then(response => {
-      window.cable = ActionCable.createConsumer(`ws://localhost:3000/cable?host_id=${response.host_id}`)
-      cable.subscriptions.create("GameChannel", {
-        connected() {
-          console.log("connected!")
-        },
+      m.route.set(`/games/${response.game.id}/host/${response.host.id}`)
+    }).catch(e => console.log(e))
+  }
 
-        disconnected() {
-          console.log("Disconnected!")
-        },
-
-        rejected() {
-          console.log("Rejected!")
-        }
-      })
+  function joinGame() {
+    const game_id = prompt("Game ID")
+    m.request({ method: "POST", url: `http://localhost:3000/games/${game_id}/sessions` }).then(response => {
+      m.route.set(`/games/${response.player.game_id}/play/${response.player.id}`)
     }).catch(e => console.log(e))
   }
 
   function view() {
     return [
       m("button", { onclick: createGame }, "Create Game"),
-      m("button", "Join Game"),
+      m("button", { onclick: joinGame }, "Join Game"),
       m("a[href=/decks]", { oncreate: m.route.link }, "View Decks")
     ]
   }

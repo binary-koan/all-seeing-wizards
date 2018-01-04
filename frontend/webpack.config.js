@@ -1,4 +1,5 @@
 const path = require("path")
+const webpack = require("webpack")
 
 module.exports = {
   name: "frontend",
@@ -9,5 +10,11 @@ module.exports = {
   },
   devServer: {
     contentBase: path.resolve(__dirname, "dist")
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      BASE_URL: "'http://localhost:3000'",
+      BASE_SOCKET_URL: "'ws://localhost:3000/cable'"
+    })
+  ]
 }

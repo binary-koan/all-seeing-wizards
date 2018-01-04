@@ -1,25 +1,36 @@
 import m from "mithril"
+import request from "../util/request"
 
 export default function Home(vnode) {
   function createGame() {
-    m.request({ method: "POST", url: "http://localhost:3000/games" }).then(response => {
+    request("/games", { method: "POST" }).then(response => {
       m.route.set(`/games/${response.game.id}/host/${response.host.id}`)
-    }).catch(e => console.log(e))
+    }).catch(e => {
+      vnode.state.error = e.message
+    })
   }
 
   function joinGame() {
-    const game_id = prompt("Game ID")
-    m.request({ method: "POST", url: `http://localhost:3000/games/${game_id}/sessions` }).then(response => {
+    const gameId = prompt("Game ID")
+    request(`/games/${gameId}/sessions`, { method: "POST" }).then(response => {
       m.route.set(`/games/${response.player.game_id}/play/${response.player.id}`)
-    }).catch(e => console.log(e))
+    }).catch(e => {
+      vnode.state.error = e.message
+    })
   }
 
   function view() {
-    return [
-      m("button", { onclick: createGame }, "Create Game"),
-      m("button", { onclick: joinGame }, "Join Game"),
-      m("a[href=/decks]", { oncreate: m.route.link }, "View Decks")
-    ]
+    if (vnode.state.error) {
+      return [
+        m("p", "Uh oh, an unexpected error occurred. Reload the page and try again?"),
+        m("p", `Details: ${vnode.state.error}`)
+      ]
+    } else {
+      return [
+        m("button", { onclick: createGame }, "Create Game"),
+        m("button", { onclick: joinGame }, "Join Game")
+      ]
+    }
   }
 
   return { view }

@@ -1,55 +1,50 @@
 import m from "mithril"
-import ActionCable from "actioncable"
+import request from "../util/request"
+import socket from "../util/socket"
 import Game from "../concepts/game"
+import SocketState from "../components/socket_state"
+import WaitingForPlayers from "./game_host/waiting_for_players"
 
 export default function GameHost(vnode) {
   function connectToChannel() {
-    vnode.state.cable = ActionCable.createConsumer(`ws://localhost:3000/cable?host_id=${m.route.param("host_id")}`)
-    vnode.state.cable.subscriptions.create("GameChannel", {
-      connected() {
-        console.log("connected!")
-      },
-
-      disconnected() {
-        console.log("Disconnected!")
-      },
-
-      rejected() {
-        console.log("Rejected!")
-      },
-
-      received(data) {
-        console.log(data)
-        if (data.event === "player_updated") {
-          console.log(data.player)
-          vnode.state.game.upsertPlayer(data.player)
-          m.redraw()
+    vnode.state.socket = socket({
+      params: { host_id: m.route.param("host_id") },
+      channels: ["GameChannel"],
+      on: {
+        player_updated({ player }) {
+          console.log(player)
+          vnode.state.game.upsertPlayer(player)
         }
       }
     })
   }
 
   function oninit() {
-    m.request(`http://localhost:3000/games/${m.route.param("game_id")}`).then(response => {
+    request(`/games/${m.route.param("game_id")}`).then(response => {
       vnode.state.game = new Game(response.game)
       connectToChannel()
     })
   }
 
   function onremove() {
-    if (vnode.state.cable) {
-      vnode.state.cable.disconnect()
+    if (vnode.state.socket) {
+      vnode.state.socket.disconnect()
+    }
+  }
+
+  function gameView() {
+    if (vnode.state.game.started) {
+      return m("p", "Started!")
+    } else {
+      return m(WaitingForPlayers, { socket: vnode.state.socket, game: vnode.state.game })
     }
   }
 
   function view() {
     if (vnode.state.game) {
       return [
-        m("h2", "Waiting for players ..."),
-        m("p", `${vnode.state.game.players.length} joined`),
-        vnode.state.game.players.map(player =>
-          m("p", player.character.name + (player.connected ? " (connected)" : " (disconnected)"))
-        )
+        m(SocketState, { socket: vnode.state.socket }),
+        gameView()
       ]
     } else {
       return m("p", "Loading ...")

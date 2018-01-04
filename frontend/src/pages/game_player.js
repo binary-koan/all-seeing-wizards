@@ -1,25 +1,16 @@
 import m from "mithril"
-import ActionCable from "actioncable"
+import socket from "../util/socket"
+import SocketState from "../components/socket_state"
 
 export default function GamePlayer(vnode) {
   function connectToChannel() {
-    vnode.state.cable = ActionCable.createConsumer(`ws://localhost:3000/cable?player_id=${m.route.param("player_id")}`)
-    vnode.state.cable.subscriptions.create("GameChannel", {
-      connected() {
-        console.log("connected!")
-        this.perform("player_connected", { player_id: m.route.param("player_id") })
-      },
-
-      disconnected() {
-        console.log("Disconnected!")
-      },
-
-      rejected() {
-        console.log("Rejected!")
-      },
-
-      received(data) {
-        console.log(data)
+    vnode.state.socket = socket({
+      params: { player_id: m.route.param("player_id") },
+      channels: ["GameChannel"],
+      on: {
+        connected(subscription) {
+          subscription.perform("player_connected", { player_id: m.route.param("player_id") })
+        }
       }
     })
   }
@@ -29,13 +20,14 @@ export default function GamePlayer(vnode) {
   }
 
   function onremove() {
-    if (vnode.state.cable) {
-      vnode.state.cable.disconnect()
+    if (vnode.state.socket) {
+      vnode.state.socket.disconnect()
     }
   }
 
   function view() {
     return [
+      m(SocketState, { socket: vnode.state.socket }),
       m("p", "Joined game")
     ]
   }

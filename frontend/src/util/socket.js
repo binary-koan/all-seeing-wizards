@@ -11,10 +11,9 @@ function buildQueryString(params) {
   return Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`)
 }
 
-export default function socket({ params, channels, on, disableRedraw }) {
+export default function socket({ params, channel, on, disableRedraw }) {
   let state = LOADING
   const cable = ActionCable.createConsumer(`${BASE_SOCKET_URL}?${buildQueryString(params)}`)
-  const subscriptions = {}
 
   function defineStateGetters(object) {
     STATES.forEach(expectedState => {
@@ -26,9 +25,9 @@ export default function socket({ params, channels, on, disableRedraw }) {
     return object
   }
 
-  function sendEvent({ event, subscription, channel, data, forceRedraw }) {
+  function sendEvent({ event, data, subscription, forceRedraw }) {
     if (on[event]) {
-      const result = on[event](data, { subscription, channel })
+      const result = on[event](data, subscription)
 
       if (!disableRedraw) {
         Promise.resolve(result).then(() => m.redraw())
@@ -38,34 +37,33 @@ export default function socket({ params, channels, on, disableRedraw }) {
     }
   }
 
-  channels.forEach(channel => {
-    let subscription = cable.subscriptions.create(channel, {
-      connected() {
-        state = CONNECTED
-        sendEvent({ event: "connected", data: subscription, subscription, channel, forceRedraw: true })
-      },
+  const subscription = cable.subscriptions.create(channel, {
+    connected() {
+      state = CONNECTED
+      sendEvent({ event: "connected", subscription, forceRedraw: true })
+    },
 
-      disconnected() {
-        state = DISCONNECTED
-        sendEvent({ event: "disconnected", data: subscription, subscription, channel, forceRedraw: true })
-      },
+    disconnected() {
+      state = DISCONNECTED
+      sendEvent({ event: "disconnected", subscription, forceRedraw: true })
+    },
 
-      rejected() {
-        state = REJECTED
-        sendEvent({ event: "rejected", channel, forceRedraw: true })
-      },
+    rejected() {
+      state = REJECTED
+      sendEvent({ event: "rejected", forceRedraw: true })
+    },
 
-      received(data) {
-        if (data && data.event) {
-          sendEvent({ event: data.event, subscription, channel, data })
-        } else {
-          sendEvent({ event: "unknown", subscription, channel, data })
-        }
+    received(data) {
+      if (data && data.event) {
+        sendEvent({ event: data.event, data, subscription })
+      } else {
+        sendEvent({ event: "unknown", data, subscription })
       }
-    })
+    }
   })
 
   return defineStateGetters({
-    disconnect: cable.disconnect.bind(cable)
+    disconnect: cable.disconnect.bind(cable),
+    perform: subscription.perform.bind(subscription)
   })
 }

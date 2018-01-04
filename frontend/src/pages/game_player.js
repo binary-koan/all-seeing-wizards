@@ -6,10 +6,10 @@ export default function GamePlayer(vnode) {
   function connectToChannel() {
     vnode.state.socket = socket({
       params: { player_id: m.route.param("player_id") },
-      channels: ["GameChannel"],
+      channel: "GameChannel",
       on: {
-        connected(subscription) {
-          subscription.perform("player_connected", { player_id: m.route.param("player_id") })
+        connected() {
+          vnode.state.socket.perform("player_connected", { player_id: m.route.param("player_id") })
         }
       }
     })

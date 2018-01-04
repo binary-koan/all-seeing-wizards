@@ -9,7 +9,7 @@ export default function GameHost(vnode) {
   function connectToChannel() {
     vnode.state.socket = socket({
       params: { host_id: m.route.param("host_id") },
-      channels: ["GameChannel"],
+      channel: "GameChannel",
       on: {
         player_updated({ player }) {
           console.log(player)

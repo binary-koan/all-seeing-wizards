@@ -7,8 +7,6 @@ module ApplicationCable
     end
 
     def disconnect
-      p "NOTIFYING DISCONNECTED"
-      NotifyDisconnected.new(message_client).call if message_client.is_a?(Player)
     end
 
     private

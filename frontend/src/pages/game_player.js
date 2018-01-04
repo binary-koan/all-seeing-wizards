@@ -8,9 +8,6 @@ export default function GamePlayer(vnode) {
       params: { player_id: m.route.param("player_id") },
       channel: "GameChannel",
       on: {
-        connected() {
-          vnode.state.socket.perform("player_connected", { player_id: m.route.param("player_id") })
-        }
       }
     })
   }

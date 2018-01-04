@@ -1,12 +1,10 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
+    NotifyConnected.new(message_client).call if message_client.is_a?(Player)
     stream_for message_client.game
   end
 
   def unsubscribed
-  end
-
-  def player_connected(data)
-    NotifyConnected.new(Player.find(data["player_id"])).call
+    NotifyDisconnected.new(message_client).call if message_client.is_a?(Player)
   end
 end

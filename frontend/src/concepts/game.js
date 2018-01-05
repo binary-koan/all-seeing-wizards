@@ -2,14 +2,19 @@ import findIndex from "lodash/findIndex"
 import sortBy from "lodash/sortBy"
 
 export default class Game {
-  constructor({ players, boards, objects }) {
+  constructor({ players, boards, objects, started }) {
     this._players = players
     this._boards = boards
     this._objects = objects
+    this._started = started
   }
 
   get players() {
     return sortBy(this._players, p => p.id)
+  }
+
+  get started() {
+    return this._started
   }
 
   upsertPlayer(player) {
@@ -20,5 +25,9 @@ export default class Game {
     } else {
       this._players.push(player)
     }
+  }
+
+  start() {
+    this._started = true
   }
 }

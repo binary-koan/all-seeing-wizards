@@ -12,8 +12,15 @@ export default function GameHost(vnode) {
       channel: "GameChannel",
       on: {
         player_updated({ player }) {
-          console.log(player)
           vnode.state.game.upsertPlayer(player)
+        },
+
+        game_started() {
+          vnode.state.game.start()
+        },
+
+        cannot_start_game({ error }) {
+          alert(error)
         }
       }
     })

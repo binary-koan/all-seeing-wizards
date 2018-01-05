@@ -7,4 +7,9 @@ class Game < ApplicationRecord
 
   has_one :host
   has_many :players
+
+  def started?
+    started_at.present?
+  end
+  alias_method :started, :started?
 end

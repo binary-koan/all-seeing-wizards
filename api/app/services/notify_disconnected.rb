@@ -6,6 +6,8 @@ class NotifyDisconnected
   end
 
   def call
+    return if player.disconnected?
+
     player.update!(disconnected_at: Time.now)
     GameChannel.broadcast_to(player.game, event: "player_updated", player: player.as_json(methods: [:character, :connected]))
   end

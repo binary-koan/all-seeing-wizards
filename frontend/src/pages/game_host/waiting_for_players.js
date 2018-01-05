@@ -1,12 +1,16 @@
 import m from "mithril"
 
 export default function GameHost(vnode) {
+  function startGame() {
+    vnode.attrs.socket.perform("start_game")
+  }
+
   function canStartGame() {
     return vnode.attrs.game.players.filter(player => player.connected).length >= 2
   }
 
   function startGameButton() {
-    return m("button", { disabled: !canStartGame() }, "Start Game")
+    return m("button", { onclick: startGame, disabled: !canStartGame() }, "Start Game")
   }
 
   function view() {

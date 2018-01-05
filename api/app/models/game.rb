@@ -12,4 +12,8 @@ class Game < ApplicationRecord
     started_at.present?
   end
   alias_method :started, :started?
+
+  def tiles
+    CalculateGameTiles.new(self).call
+  end
 end

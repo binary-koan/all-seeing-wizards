@@ -4,6 +4,7 @@ import socket from "../util/socket"
 import Game from "../concepts/game"
 import SocketState from "../components/socket_state"
 import WaitingForPlayers from "./game_host/waiting_for_players"
+import InProgress from "./game_host/in_progress"
 
 export default function GameHost(vnode) {
   function connectToChannel() {
@@ -41,7 +42,7 @@ export default function GameHost(vnode) {
 
   function gameView() {
     if (vnode.state.game.started) {
-      return m("p", "Started!")
+      return m(InProgress, { socket: vnode.state.socket, game: vnode.state.game })
     } else {
       return m(WaitingForPlayers, { socket: vnode.state.socket, game: vnode.state.game })
     }

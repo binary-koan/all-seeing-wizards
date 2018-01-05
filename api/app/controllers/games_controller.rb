@@ -6,6 +6,6 @@ class GamesController < ApplicationController
 
   def show
     game = Game.find(params[:id])
-    render json: game.as_json(root: true, methods: [:started], include: { players: { methods: [:character, :connected] } })
+    render json: game.as_json(root: true, methods: [:started, :tiles], include: { players: { methods: [:character, :connected] } })
   end
 end

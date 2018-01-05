@@ -2,9 +2,9 @@ import findIndex from "lodash/findIndex"
 import sortBy from "lodash/sortBy"
 
 export default class Game {
-  constructor({ players, boards, objects, started }) {
+  constructor({ players, tiles, objects, started }) {
     this._players = players
-    this._boards = boards
+    this._tiles = tiles
     this._objects = objects
     this._started = started
   }

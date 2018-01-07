@@ -1,6 +1,9 @@
 import m from "mithril"
 
-export default function GameHost(vnode) {
+import MapView from "../../components/map"
+import PlayerView from "../../components/player_view"
+
+export default function WaitingForPlayers(vnode) {
   function startGame() {
     vnode.attrs.socket.perform("start_game")
   }
@@ -15,12 +18,22 @@ export default function GameHost(vnode) {
 
   function view() {
     return [
-      m("h2", "Waiting for players ..."),
-      m("p", `${vnode.attrs.game.players.length} joined`),
-      vnode.attrs.game.players.map(player =>
-        m("p", `${player.id} ${player.character.name} ${player.connected ? " (connected)" : " (disconnected)"}`)
-      ),
-      startGameButton()
+      m("aside", [
+        m(".info-panel", [
+          m(".logo-container", m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" })),
+          m(".game-info", [
+            m("h2", "Waiting for players ..."),
+            m(".actions", [
+              m("p", `${vnode.attrs.game.players.length} joined`),
+              startGameButton()
+            ])
+          ])
+        ]),
+        vnode.attrs.game.players.map(player =>
+          m(PlayerView, { player })
+        )
+      ]),
+      m(MapView, { game: vnode.attrs.game })
     ]
   }
 

@@ -23,10 +23,14 @@ class CalculateGameTiles
   end
 
   def position_for(tile)
+    {
+      x: tile.index % Board::SIZE,
+      y: tile.index / Board::SIZE
+    }
   end
 
   def offset_for(game_board)
-    @offsets_for ||= {}
+    @offset_for ||= {}
     @offset_for[game_board] ||= {
       x: (game_board.index % GameBoard::BOARDS_HORIZONTALLY) * Board::SIZE,
       y: (game_board.index / GameBoard::BOARDS_VERTICALLY) * Board::SIZE

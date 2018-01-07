@@ -1,3 +1,5 @@
+import "./index.css"
+
 import m from "mithril"
 
 import Home from "./pages/home"

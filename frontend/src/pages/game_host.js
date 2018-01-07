@@ -2,7 +2,7 @@ import m from "mithril"
 import request from "../util/request"
 import socket from "../util/socket"
 import Game from "../concepts/game"
-import SocketState from "../components/socket_state"
+import ConnectionState from "../components/connection_state"
 import WaitingForPlayers from "./game_host/waiting_for_players"
 import InProgress from "./game_host/in_progress"
 
@@ -51,7 +51,7 @@ export default function GameHost(vnode) {
   function view() {
     if (vnode.state.game) {
       return [
-        m(SocketState, { socket: vnode.state.socket }),
+        m(ConnectionState, { socket: vnode.state.socket }),
         gameView()
       ]
     } else {

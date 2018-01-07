@@ -1,3 +1,5 @@
+import "./home.css"
+
 import m from "mithril"
 import request from "../util/request"
 
@@ -26,10 +28,11 @@ export default function Home(vnode) {
         m("p", `Details: ${vnode.state.error}`)
       ]
     } else {
-      return [
+      return m(".home-buttons", [
+        m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" }),
         m("button", { onclick: createGame }, "Create Game"),
         m("button", { onclick: joinGame }, "Join Game")
-      ]
+      ])
     }
   }
 

@@ -1,7 +1,6 @@
 class GameChannel < ApplicationCable::Channel
   def self.on(event, &handler)
     define_method(event) do |data|
-      p self
       instance_exec(data, &handler)
       NotifyConnected.new(message_client).call if message_client.is_a?(Player)
     end
@@ -13,6 +12,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
+    puts "UNSUBSCRIBED!"
     NotifyDisconnected.new(message_client).call if message_client.is_a?(Player)
   end
 

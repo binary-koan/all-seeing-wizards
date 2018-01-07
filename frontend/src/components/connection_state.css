@@ -1,0 +1,33 @@
+.connection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0.25rem 0.5rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.connection.is-loading,
+.connection.is-connected {
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.connection.is-loading {
+  background-color: #4838A6;
+  color: #AAA0E8;
+}
+
+.connection.is-connected {
+  background-color: #F2C141;
+  color: #6E5413;
+}
+
+.connection.is-disconnected {
+  right: 0;
+  background-color: #E85632;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}

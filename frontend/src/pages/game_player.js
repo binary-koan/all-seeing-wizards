@@ -1,6 +1,6 @@
 import m from "mithril"
 import socket from "../util/socket"
-import SocketState from "../components/socket_state"
+import ConnectionState from "../components/connection_state"
 
 export default function GamePlayer(vnode) {
   function connectToChannel() {
@@ -24,7 +24,7 @@ export default function GamePlayer(vnode) {
 
   function view() {
     return [
-      m(SocketState, { socket: vnode.state.socket }),
+      m(ConnectionState, { socket: vnode.state.socket }),
       m("p", "Joined game")
     ]
   }

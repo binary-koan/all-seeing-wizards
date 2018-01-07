@@ -1,0 +1,109 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Nunito, sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+main {
+  display: flex;
+}
+
+@media screen and (orientation: landscape) {
+  :root {
+    --map-size: 100vh;
+  }
+
+  main {
+    height: var(--map-size);
+    width: calc(16 / 9 * var(--map-size));
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+}
+
+aside {
+  flex: 1;
+}
+
+p {
+  margin: 0 0 0.5rem 0;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #ddd;
+  border: 2px solid #ccc;
+  border-radius: 0.25rem;
+  font: inherit;
+  color: inherit;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: #ccc;
+}
+
+button:active {
+  background-color: #bbb;
+  border-color: #bbb;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* TODO portrait */
+
+.info-panel {
+  display: flex;
+}
+
+.logo-container {
+  margin: 0.5rem;
+  background-color: #F2C141;
+  border-radius: 0.5rem;
+}
+
+.logo {
+  height: 20vh;
+  margin-top: 1rem;
+}
+
+.game-info {
+  flex: 1;
+  margin: 0.5rem;
+  margin-left: 0;
+  padding: 2rem 1rem;
+  background-color: #eee;
+  border-radius: 0.5rem;
+}
+
+.game-info h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.actions > p {
+  flex: 1;
+}
+
+.map {
+  width: var(--map-size);
+  height: var(--map-size);
+  background-color: grey;
+}
+
+.tile {
+  position: absolute;
+}

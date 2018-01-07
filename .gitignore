@@ -15,3 +15,6 @@ node_modules
 
 # Webpack stuff
 bundle.js
+
+# OS stuff
+.DS_Store

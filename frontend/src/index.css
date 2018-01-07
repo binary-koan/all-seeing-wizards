@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
@@ -99,11 +103,33 @@ button:disabled {
 }
 
 .map {
+  position: relative;
   width: var(--map-size);
   height: var(--map-size);
-  background-color: grey;
+  background-color: lightgrey;
 }
 
 .tile {
   position: absolute;
+  left: calc(var(--map-size) / 10 * var(--x));
+  top: calc(var(--map-size) / 10 * var(--y));
+  width: calc(var(--map-size) / 10);
+  height: calc(var(--map-size) / 10);
+  background-size: cover;
+}
+
+.tile.ground {
+  background-image: url(/tiles/ground.png);
+}
+
+.tile.block {
+  background-image: url(/tiles/block.png);
+}
+
+.tile.lava {
+  background-image: url(/tiles/lava.png);
+}
+
+.tile.water {
+  background-image: url(/tiles/water.png);
 }

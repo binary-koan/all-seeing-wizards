@@ -109,7 +109,8 @@ button:disabled {
   background-color: lightgrey;
 }
 
-.tile {
+.tile,
+.map-player {
   position: absolute;
   left: calc(var(--map-size) / 10 * var(--x));
   top: calc(var(--map-size) / 10 * var(--y));
@@ -132,4 +133,8 @@ button:disabled {
 
 .tile.water {
   background-image: url(/tiles/water.png);
+}
+
+.map-player {
+  background-image: url(/players/player.png);
 }

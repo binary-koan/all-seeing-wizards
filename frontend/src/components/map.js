@@ -1,3 +1,5 @@
+import "./map.css"
+
 import m from "mithril"
 
 export default function Map(vnode) {

@@ -19,6 +19,7 @@ class Card < ApplicationRecord
 
   belongs_to :pack
   has_many :card_ranges
+  has_many :player_cards
 
   enum effect_id: {
     EFFECT_MOVE => 0,

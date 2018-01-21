@@ -2,18 +2,15 @@ import m from "mithril"
 
 import MapView from "../../components/map"
 import PlayerView from "../../components/player_view"
+import WaitingForPlayers from "../../components/info_boxes/waiting_for_players"
 
-export default function WaitingForPlayers(vnode) {
-  function startGame() {
-    vnode.attrs.socket.perform("start_game")
-  }
-
-  function canStartGame() {
-    return vnode.attrs.game.players.filter(player => player.connected).length >= 2
-  }
-
-  function startGameButton() {
-    return m("button", { onclick: startGame, disabled: !canStartGame() }, "Start Game")
+export default function WaitingForPlayersX(vnode) {
+  function infoBox() {
+    if (vnode.attrs.game.started) {
+      return m("p", "Started")
+    } else {
+      return m(WaitingForPlayers, { game: vnode.attrs.game })
+    }
   }
 
   function view() {
@@ -21,13 +18,7 @@ export default function WaitingForPlayers(vnode) {
       m("aside", [
         m(".info-panel", [
           m(".logo-container", m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" })),
-          m(".game-info", [
-            m("h2", "Waiting for players ..."),
-            m(".actions", [
-              m("p", `${vnode.attrs.game.players.length} joined`),
-              startGameButton()
-            ])
-          ])
+          infoBox()
         ]),
         vnode.attrs.game.players.map(player =>
           m(PlayerView, { player })

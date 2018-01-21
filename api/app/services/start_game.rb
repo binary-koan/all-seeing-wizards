@@ -13,7 +13,11 @@ class StartGame
     return cannot_start(:not_enough_players) if not_enough_players?
     return cannot_start(:too_many_players) if too_many_players?
 
-    game.update!(started_at: Time.now)
+    game.transaction do
+      DrawHands.new(game).call
+      game.update!(started_at: Time.now)
+    end
+
     GameChannel.broadcast_to(game, event: "game_started")
   end
 

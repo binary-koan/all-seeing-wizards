@@ -1,13 +1,20 @@
 class Result
   module Mixin
     def self.included(klass)
-      klass.define_method :Success, Result.method(:success)
-      klass.define_method :Failure, Result.method(:failure)
+      puts "Setting success and failure on #{klass}"
 
       # Allows Success and Failure to be used without parentheses
       # Note: Failure shouldn't be, but Success can be
       klass.const_set :Success, Result.success
       klass.const_set :Failure, Result.failure
+    end
+
+    def Success(value)
+      Result.success(value)
+    end
+
+    def Failure(error)
+      Result.failure(error)
     end
   end
 
@@ -17,7 +24,7 @@ class Result
     new(success: true, value: value)
   end
 
-  def self.error(error = nil)
+  def self.failure(error = nil)
     new(success: false, error: error)
   end
 
@@ -31,8 +38,12 @@ class Result
     success
   end
 
-  def failure?
-    !success?
+  def failure?(err = nil)
+    if err
+      !success? && error == err
+    else
+      !success?
+    end
   end
 
   def ==(other)

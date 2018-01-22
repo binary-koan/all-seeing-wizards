@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180121013921) do
+ActiveRecord::Schema.define(version: 20180122045156) do
 
   create_table "board_objects", force: :cascade do |t|
     t.integer "board_id"
@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(version: 20180121013921) do
     t.integer "knockback"
     t.string "duration_type"
     t.integer "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name"
+    t.string "character_type"
+    t.integer "pack_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

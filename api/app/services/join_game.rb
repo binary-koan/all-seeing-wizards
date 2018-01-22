@@ -10,7 +10,7 @@ class JoinGame
     return failure(:too_many_players) unless starting_tile.present?
 
     @player = game.players.create!(
-      character_id: Player::CHARACTER_WIND_WORKER,
+      character: character,
       x: starting_tile.x,
       y: starting_tile.y,
       rotation: Rotatable::ROTATION_NONE
@@ -18,6 +18,10 @@ class JoinGame
   end
 
   private
+
+  def character
+    game.available_characters.sample
+  end
 
   def starting_tile
     @starting_tile ||= (starting_tiles - taken_tiles).sample

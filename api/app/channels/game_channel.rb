@@ -12,7 +12,6 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    puts "UNSUBSCRIBED!"
     NotifyDisconnected.new(message_client).call if message_client.is_a?(Player)
   end
 

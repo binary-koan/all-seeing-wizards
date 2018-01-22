@@ -9,7 +9,7 @@ export default function WaitingForPlayersX(vnode) {
     if (vnode.attrs.game.started) {
       return m("p", "Started")
     } else {
-      return m(WaitingForPlayers, { game: vnode.attrs.game })
+      return m(WaitingForPlayers, { game: vnode.attrs.game, socket: vnode.attrs.socket })
     }
   }
 

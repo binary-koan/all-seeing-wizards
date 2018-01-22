@@ -24,6 +24,17 @@
       . . . . r
       . . . . .
       . r . l .
+:characters:
+  - :name: Wily Wind Worker
+    :character_type: wind_worker
+  - :name: Pure Paladin
+    :character_type: paladin
+  - :name: Despicable Dark Lord
+    :character_type: dark_lord
+  - :name: Arcane Alchemist
+    :character_type: alchemist
+  - :name: Midas Magician
+    :character_type: midas
 :cards:
   # Movement
   - :name: Move 1

@@ -11,6 +11,8 @@ class DrawHands
     ActiveRecord::Base.transaction do
       players.each do |player|
         draw_card_for(player) until player.enough_cards_in_hand?
+
+        GameChannel.broadcast_to(game, event: "hand_updated", player_id: player.id, player_cards: player.player_cards.as_json(include: :card))
       end
     end
   end

@@ -25,6 +25,6 @@ export default class Game {
   }
 
   start() {
-    this._started = true
+    this.started = true
   }
 }

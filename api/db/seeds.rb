@@ -14,6 +14,7 @@ class SeedDatabase
 
     SeedCards.new.call(attributes[:cards], pack: pack)
     SeedBoards.new.call(attributes[:boards], pack: pack)
+    SeedCharacters.new.call(attributes[:characters], pack: pack)
   end
 
   def packs
@@ -132,6 +133,23 @@ class SeedCards
     elsif descriptor
       raise "Invalid duration: #{descriptor}"
     end
+  end
+end
+
+class SeedCharacters
+  def call(characters, pack:)
+    characters.each { |character| load_character(character, pack) }
+  end
+
+  private
+
+  def load_character(character, pack)
+    raise "No rules defined for type #{character[:character_type]}" unless mapping_for?(character[:character_type])
+    pack.characters.create!(character)
+  end
+
+  def mapping_for?(character_type)
+    Character::CHARACTER_TYPE_MAPPINGS.has_key?(character_type)
   end
 end
 

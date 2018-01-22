@@ -91,19 +91,21 @@ class SeedCards
   def load_card(attributes, pack)
     name, tagline = attributes[:name].split(" of ")
 
-    card = pack.cards.create!({
-      name: name,
-      tagline: tagline,
+    attributes[:count].times do
+      card = pack.cards.create!({
+        name: name,
+        tagline: tagline,
 
-      effect_id: attributes[:effect],
+        effect_id: attributes[:effect],
 
-      amount: attributes[:amount],
-      rotation: attributes[:rotation],
-      damage: attributes[:damage],
-      knockback: attributes[:knockback],
-    }.merge(parse_duration(attributes[:duration]) || {}))
+        amount: attributes[:amount],
+        rotation: attributes[:rotation],
+        damage: attributes[:damage],
+        knockback: attributes[:knockback],
+      }.merge(parse_duration(attributes[:duration]) || {}))
 
-    load_range(attributes[:range], card)
+      load_range(attributes[:range], card)
+    end
   end
 
   def load_range(descriptor, card)

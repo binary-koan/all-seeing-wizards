@@ -1,8 +1,14 @@
+import "./game_player.css"
+
 import m from "mithril"
+import times from "lodash/times"
+
 import socket from "../util/socket"
 import request from "../util/request"
 import ConnectionState from "../components/connection_state"
 import Player from "../concepts/player"
+
+const TEMP_PLAYER_HP = 5;
 
 export default function GamePlayer(vnode) {
   function connectToChannel() {
@@ -33,12 +39,40 @@ export default function GamePlayer(vnode) {
     }
   }
 
+  function gameStateView() {
+    if (vnode.state.player.game.started) {
+      return m(".player-game-state", "In Progress - Select actions to take")
+    } else {
+      return m(".player-game-state", "Waiting for players")
+    }
+  }
+
+  function placedCardsView() {
+    return times(TEMP_PLAYER_HP, _ => m(".player-placed-card"))
+  }
+
   function view() {
     if (vnode.state.player) {
       return [
         m(ConnectionState, { socket: vnode.state.socket }),
-        m("p", `Joined game as ${vnode.state.player.character.name}`),
-        m("p", `${vnode.state.player.hand.length} cards in hand`)
+        m(".player-role", [
+          m("p", vnode.state.player.character.name)
+        ]),
+        m(".player-info", [
+          gameStateView(),
+          m("h2", "Chosen"),
+          m(".player-placed-cards", [
+            placedCardsView(),
+            m("button", "✓")
+          ]),
+          m("h2", "In Hand"),
+          m(".player-hand", vnode.state.player.hand.map(playerCard =>
+            m(".player-card", [
+              m(".card-title", playerCard.card.name),
+              playerCard.card.tagline && m(".card-tagline", `of ${playerCard.card.tagline}`)
+            ])
+          ))
+        ])
       ]
     } else {
       m("p", "Loading ...")

@@ -1,8 +1,5 @@
 import m from "mithril"
 
-import MapView from "../../components/map"
-import PlayerView from "../../components/player_view"
-
 export default function WaitingForPlayers(vnode) {
   function startGame() {
     vnode.attrs.socket.perform("start_game")

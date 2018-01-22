@@ -3,8 +3,9 @@ import request from "../util/request"
 import socket from "../util/socket"
 import Game from "../concepts/game"
 import ConnectionState from "../components/connection_state"
-import WaitingForPlayers from "./game_host/waiting_for_players"
-import InProgress from "./game_host/in_progress"
+import WaitingForPlayers from "../components/info_boxes/waiting_for_players"
+import PlayerView from "../components/player_view"
+import MapView from "../components/map_view"
 
 export default function GameHost(vnode) {
   function connectToChannel() {
@@ -40,12 +41,27 @@ export default function GameHost(vnode) {
     }
   }
 
-  function gameView() {
+  function infoBox() {
     if (vnode.state.game.started) {
-      return m(InProgress, { socket: vnode.state.socket, game: vnode.state.game })
+      return m("p", "Started")
     } else {
-      return m(WaitingForPlayers, { socket: vnode.state.socket, game: vnode.state.game })
+      return m(WaitingForPlayers, { game: vnode.state.game, socket: vnode.state.socket })
     }
+  }
+
+  function gameView() {
+    return [
+      m("aside", [
+        m(".info-panel", [
+          m(".logo-container", m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" })),
+          infoBox()
+        ]),
+        vnode.state.game.players.map(player =>
+          m(PlayerView, { player })
+        )
+      ]),
+      m(MapView, { game: vnode.state.game })
+    ]
   }
 
   function view() {

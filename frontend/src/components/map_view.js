@@ -1,4 +1,4 @@
-import "./map.css"
+import "./map_view.css"
 
 import m from "mithril"
 

@@ -6,6 +6,7 @@ import times from "lodash/times"
 import socket from "../util/socket"
 import request from "../util/request"
 import ConnectionState from "../components/connection_state"
+import CardView from "../components/card_view"
 import Player from "../concepts/player"
 
 const TEMP_PLAYER_HP = 5;
@@ -17,9 +18,8 @@ export default function GamePlayer(vnode) {
       channel: "GameChannel",
       on: {
         hand_updated(data) {
-          console.log("hand updated!", data)
           if (data.player_id.toString() === m.route.param("player_id")) {
-            vnode.state.player.updateHand(data)
+            vnode.state.player.updateHand(data.player_cards)
           }
         }
       }
@@ -48,7 +48,15 @@ export default function GamePlayer(vnode) {
   }
 
   function placedCardsView() {
-    return times(TEMP_PLAYER_HP, _ => m(".player-placed-card"))
+    return times(TEMP_PLAYER_HP, index => {
+      const playerCard = vnode.state.player.cardPlacedAt(index)
+
+      if (playerCard) {
+        return m(CardView, { playerCard })
+      } else {
+        return m(".player-placed-card")
+      }
+    })
   }
 
   function view() {
@@ -67,10 +75,11 @@ export default function GamePlayer(vnode) {
           ]),
           m("h2", "In Hand"),
           m(".player-hand", vnode.state.player.hand.map(playerCard =>
-            m(".player-card", [
-              m(".card-title", playerCard.card.name),
-              playerCard.card.tagline && m(".card-tagline", `of ${playerCard.card.tagline}`)
-            ])
+            m(CardView, {
+              playerCard,
+              disabled: playerCard.played_index != null && playerCard.played_index >= 0,
+              onclick: () => vnode.state.player.placeCard(playerCard.id)
+            })
           ))
         ])
       ]

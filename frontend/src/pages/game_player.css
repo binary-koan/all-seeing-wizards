@@ -46,8 +46,9 @@
 }
 
 .player-card {
+  width: 14rem;
   padding: 1rem;
   border: 2px solid #ddd;
   border-radius: 0.5rem;
-  width: 14rem;
+  background-color: #fff;
 }

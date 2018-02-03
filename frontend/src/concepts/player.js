@@ -1,3 +1,6 @@
+import max from "lodash/max"
+import find from "lodash/find"
+
 export default class Player {
   constructor({ player_cards, character, game }) {
     this._playerCards = player_cards
@@ -10,7 +13,18 @@ export default class Player {
     return this._playerCards
   }
 
-  updateHand({ player_cards }) {
-    this._playerCards = player_cards
+  updateHand(playerCards) {
+    this._playerCards = playerCards
+  }
+
+  placeCard(playerCardId) {
+    const currentIndex = max(this.hand.map(c => c.played_index))
+    const match = find(this.hand, c => c.id === playerCardId)
+
+    match.played_index = (currentIndex == null) ? 0 : currentIndex + 1
+  }
+
+  cardPlacedAt(index) {
+    return find(this.hand, c => c.played_index === index)
   }
 }

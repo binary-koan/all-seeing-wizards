@@ -1,4 +1,5 @@
 import "./index.css"
+import "./characters.css"
 
 import m from "mithril"
 

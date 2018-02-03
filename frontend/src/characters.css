@@ -1,0 +1,14 @@
+.despicable-dark-lord {
+  --player-color-dark: var(--dark-color);
+  --player-color-light: var(--light-color);
+}
+
+.midas-magician {
+  --player-color-dark: var(--yellow-dark);
+  --player-color-light: var(--yellow);
+}
+
+.wily-wind-worker {
+  --player-color-dark: var(--blue-dark);
+  --player-color-light: var(--blue);
+}

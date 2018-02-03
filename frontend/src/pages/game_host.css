@@ -21,3 +21,14 @@
 .game-host-actions > *:hover {
   color: var(--dark-color-strong);
 }
+
+.game-host-sidebar .player-view {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border: 2px solid var(--player-color-dark);
+  border-radius: 0.5rem;
+}
+
+.game-host-sidebar .player-view.is-disconnected {
+  border-color: var(--light-color);
+}

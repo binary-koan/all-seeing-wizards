@@ -1,4 +1,9 @@
 :root {
+  --yellow: #E6C176;
+  --yellow-dark: #CDA85D;
+  --blue: #5E9CCF;
+  --blue-dark: #4583B6;
+
   --danger-color: #C9525A;
   --dark-color: #525A67;
   --dark-color-strong: #2D333D;
@@ -15,7 +20,7 @@ body {
   padding: 0;
   font-family: Nunito, sans-serif;
   font-size: 16px;
-  color: #333;
+  color: var(--dark-color-strong);
 }
 
 main {
@@ -40,22 +45,19 @@ p {
 }
 
 button {
-  padding: 0.5rem 1rem;
-  background-color: #ddd;
-  border: 2px solid #ccc;
-  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: none;
   font: inherit;
-  color: inherit;
+  line-height: 1;
+  color: var(--dark-color);
   transition: all 0.2s;
+  cursor: pointer;
 }
 
-button:hover {
-  background-color: #ccc;
-}
-
+button:hover,
 button:active {
-  background-color: #bbb;
-  border-color: #bbb;
+  color: var(--dark-color-strong);
 }
 
 button:disabled {

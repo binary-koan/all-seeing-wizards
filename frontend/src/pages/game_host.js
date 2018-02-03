@@ -70,7 +70,10 @@ export default class GameHost {
         ]),
         this.infoBox(),
         this.game && this.game.players.map(player =>
-          m(PlayerView, { player })
+          m(PlayerView, {
+            player,
+            action: m("button.kick-player", m(Icon, { name: "x" }))
+          })
         )
       ]),
       m(MapView, { game: this.game })

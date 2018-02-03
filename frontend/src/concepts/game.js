@@ -14,6 +14,10 @@ export default class Game {
     return sortBy(this._players, p => p.id)
   }
 
+  get connectedPlayers() {
+    return this.players.filter(player => player.connected)
+  }
+
   upsertPlayer(player) {
     const existingPlayerIndex = findIndex(this._players, p => p.id === player.id)
 

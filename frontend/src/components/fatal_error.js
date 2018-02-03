@@ -1,4 +1,4 @@
-import "./fatal-error.css"
+import "./fatal_error.css"
 
 import m from "mithril"
 import Icon from "./icon"

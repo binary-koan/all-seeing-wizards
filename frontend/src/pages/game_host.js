@@ -1,11 +1,14 @@
+import "./game_host.css"
+
 import m from "mithril"
 import request from "../util/request"
 import socket from "../util/socket"
 import Game from "../concepts/game"
 import ConnectionState from "../components/connection_state"
-import WaitingForPlayers from "../components/info_boxes/waiting_for_players"
 import PlayerView from "../components/player_view"
 import MapView from "../components/map_view"
+import Icon from "../components/icon"
+import StatusPanel from "../components/status_panel";
 
 export default function GameHost(vnode) {
   function connectToChannel() {
@@ -47,18 +50,25 @@ export default function GameHost(vnode) {
     } else if (vnode.state.game.started) {
       return m("p", "Started")
     } else {
-      return m(WaitingForPlayers, { game: vnode.state.game, socket: vnode.state.socket })
+      return m(StatusPanel, {
+        title: "Waiting for players ...",
+        description: `${vnode.state.game.players.length} joined`,
+        action: m("button", {
+          onclick: () => vnode.state.socket.perform("start_game"),
+          disabled: vnode.state.game.connectedPlayers.length < 2
+        }, "Start")
+      })
     }
   }
 
   function view() {
     return [
-      m("aside", [
-        m(".info-panel", [
-          m(ConnectionState, { socket: vnode.state.socket }),
-          m(".logo-container", m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" })),
-          infoBox()
+      m("aside.game-host-sidebar", [
+        m(".game-host-actions", [
+          m("a[href=/]", { oncreate: m.route.link }, m(Icon, { name: "arrow-left" })),
+          m(".game-host-status", m(ConnectionState, { socket: vnode.state.socket }))
         ]),
+        infoBox(),
         vnode.state.game && vnode.state.game.players.map(player =>
           m(PlayerView, { player })
         )

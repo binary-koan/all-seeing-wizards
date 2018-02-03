@@ -1,7 +1,7 @@
 import "./home.css"
 
 import m from "mithril"
-import FatalError from "../components/fatal-error"
+import FatalError from "../components/fatal_error"
 import request from "../util/request"
 
 export default function Home(vnode) {

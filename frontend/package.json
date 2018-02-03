@@ -15,6 +15,7 @@
     "actioncable": "^5.1.4",
     "css-loader": "^0.28.8",
     "extract-text-webpack-plugin": "^3.0.2",
+    "feather-icons": "^4.5.0",
     "glob": "^7.1.2",
     "lodash": "^4.17.4",
     "mithril": "^1.1.6",

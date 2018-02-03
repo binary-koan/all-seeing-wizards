@@ -42,37 +42,29 @@ export default function GameHost(vnode) {
   }
 
   function infoBox() {
-    if (vnode.state.game.started) {
+    if (!vnode.state.game) {
+      return
+    } else if (vnode.state.game.started) {
       return m("p", "Started")
     } else {
       return m(WaitingForPlayers, { game: vnode.state.game, socket: vnode.state.socket })
     }
   }
 
-  function gameView() {
+  function view() {
     return [
       m("aside", [
         m(".info-panel", [
+          m(ConnectionState, { socket: vnode.state.socket }),
           m(".logo-container", m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" })),
           infoBox()
         ]),
-        vnode.state.game.players.map(player =>
+        vnode.state.game && vnode.state.game.players.map(player =>
           m(PlayerView, { player })
         )
       ]),
       m(MapView, { game: vnode.state.game })
     ]
-  }
-
-  function view() {
-    if (vnode.state.game) {
-      return [
-        m(ConnectionState, { socket: vnode.state.socket }),
-        gameView()
-      ]
-    } else {
-      return m("p", "Loading ...")
-    }
   }
 
   return { oninit, onremove, view }

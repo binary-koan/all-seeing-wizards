@@ -1,3 +1,8 @@
+:root {
+  --danger-color: #C9525A;
+  --light-color: #EBEBFF;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -58,6 +63,13 @@ button:active {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+pre {
+  background-color: var(--light-color);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  font-family: Consolas, monospace;
 }
 
 /* TODO portrait */

@@ -10,72 +10,70 @@ import MapView from "../components/map_view"
 import Icon from "../components/icon"
 import StatusPanel from "../components/status_panel";
 
-export default function GameHost(vnode) {
-  function connectToChannel() {
-    vnode.state.socket = socket({
+export default class GameHost {
+  oninit() {
+    request(`/games/${m.route.param("game_id")}`).then(response => {
+      this.game = new Game(response.game)
+      this.connectToChannel()
+    })
+  }
+
+  onremove() {
+    if (this.socket) {
+      this.socket.disconnect()
+    }
+  }
+
+  connectToChannel() {
+    this.socket = socket({
       params: { host_id: m.route.param("host_id") },
       channel: "GameChannel",
       on: {
-        player_updated({ player }) {
-          vnode.state.game.upsertPlayer(player)
+        player_updated: ({ player }) => {
+          this.game.upsertPlayer(player)
         },
 
-        game_started() {
-          vnode.state.game.start()
+        game_started: () => {
+          this.game.start()
         },
 
-        cannot_start_game({ error }) {
+        cannot_start_game: ({ error }) => {
           alert(error)
         }
       }
     })
   }
 
-  function oninit() {
-    request(`/games/${m.route.param("game_id")}`).then(response => {
-      vnode.state.game = new Game(response.game)
-      connectToChannel()
-    })
-  }
-
-  function onremove() {
-    if (vnode.state.socket) {
-      vnode.state.socket.disconnect()
-    }
-  }
-
-  function infoBox() {
-    if (!vnode.state.game) {
+  infoBox() {
+    if (!this.game) {
       return
-    } else if (vnode.state.game.started) {
+    } else if (this.game.started) {
       return m("p", "Started")
     } else {
       return m(StatusPanel, {
         title: "Waiting for players ...",
-        description: `${vnode.state.game.players.length} joined`,
+        description: `${this.game.players.length} joined`,
         action: m("button", {
-          onclick: () => vnode.state.socket.perform("start_game"),
-          disabled: vnode.state.game.connectedPlayers.length < 2
+          onclick: () => this.socket.perform("start_game"),
+          disabled: this.game.connectedPlayers.length < 2
         }, "Start")
       })
     }
   }
 
-  function view() {
+  view() {
     return [
       m("aside.game-host-sidebar", [
         m(".game-host-actions", [
           m("a[href=/]", { oncreate: m.route.link }, m(Icon, { name: "arrow-left" })),
-          m(".game-host-status", m(ConnectionState, { socket: vnode.state.socket }))
+          m(".game-host-status", m(ConnectionState, { socket: this.socket }))
         ]),
-        infoBox(),
-        vnode.state.game && vnode.state.game.players.map(player =>
+        this.infoBox(),
+        this.game && this.game.players.map(player =>
           m(PlayerView, { player })
         )
       ]),
-      m(MapView, { game: vnode.state.game })
+      m(MapView, { game: this.game })
     ]
   }
-
-  return { oninit, onremove, view }
 }

@@ -4,51 +4,49 @@ import m from "mithril"
 import FatalError from "../components/fatal_error"
 import request from "../util/request"
 
-export default function Home(vnode) {
-  function handleError(e) {
+export default class Home {
+  handleError(e) {
     try {
       const details = JSON.parse(e.message)
       const error = details.error || "Unknown Error"
       const trace = (details.traces["Application Trace"] || []).map(line => line.trace).join("\n")
 
-      vnode.state.error = {
+      this.error = {
         message: `${details.status} ${error}`,
         exception: `${details.exception}\n${trace}`
       }
     } catch(_) {
-      vnode.state.error = {
+      this.error = {
         message: e.message
       }
     }
   }
 
-  function createGame() {
+  createGame() {
     request("/games", { method: "POST" }).then(response => {
       m.route.set(`/games/${response.game.id}/host/${response.host.id}`)
-    }).catch(handleError)
+    }).catch(e => this.handleError(e))
   }
 
-  function joinGame() {
+  joinGame() {
     const gameId = prompt("Game ID")
     request(`/games/${gameId}/sessions`, { method: "POST" }).then(response => {
       m.route.set(`/games/${response.player.game_id}/play/${response.player.id}`)
-    }).catch(handleError)
+    }).catch(e => this.handleError(e))
   }
 
-  function view() {
+  view() {
     return [
-      vnode.state.error && m(FatalError, {
+      this.error && m(FatalError, {
         title: "An unexpected error occurred! Try reloading the page",
-        message: vnode.state.error.message,
-        exception: vnode.state.error.exception
+        message: this.error.message,
+        exception: this.error.exception
       }),
       m(".home-buttons", [
         m("img.logo", { alt: "All-Seeing Wizards", src: "logo.svg" }),
-        m("button", { onclick: createGame }, "Create Game"),
-        m("button", { onclick: joinGame }, "Join Game")
+        m("button", { onclick: () => this.createGame() }, "Create Game"),
+        m("button", { onclick: () => this.joinGame() }, "Join Game")
       ])
     ]
   }
-
-  return { view }
 }

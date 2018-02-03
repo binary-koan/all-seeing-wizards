@@ -11,45 +11,45 @@ import Player from "../concepts/player"
 
 const TEMP_PLAYER_HP = 5;
 
-export default function GamePlayer(vnode) {
-  function connectToChannel() {
-    vnode.state.socket = socket({
+export default class GamePlayer {
+  oninit() {
+    request(`/players/${m.route.param("player_id")}`).then(response => {
+      this.player = new Player(response.player)
+      this.connectToChannel()
+    })
+  }
+
+  onremove() {
+    if (this.socket) {
+      this.socket.disconnect()
+    }
+  }
+
+  connectToChannel() {
+    this.socket = socket({
       params: { player_id: m.route.param("player_id") },
       channel: "GameChannel",
       on: {
         hand_updated(data) {
           if (data.player_id.toString() === m.route.param("player_id")) {
-            vnode.state.player.updateHand(data.player_cards)
+            this.player.updateHand(data.player_cards)
           }
         }
       }
     })
   }
 
-  function oninit() {
-    request(`/players/${m.route.param("player_id")}`).then(response => {
-      vnode.state.player = new Player(response.player)
-      connectToChannel()
-    })
-  }
-
-  function onremove() {
-    if (vnode.state.socket) {
-      vnode.state.socket.disconnect()
-    }
-  }
-
-  function gameStateView() {
-    if (vnode.state.player.game.started) {
+  gameStateView() {
+    if (this.player.game.started) {
       return m(".player-game-state", "In Progress - Select actions to take")
     } else {
       return m(".player-game-state", "Waiting for players")
     }
   }
 
-  function placedCardsView() {
+  placedCardsView() {
     return times(TEMP_PLAYER_HP, index => {
-      const playerCard = vnode.state.player.cardPlacedAt(index)
+      const playerCard = this.player.cardPlacedAt(index)
 
       if (playerCard) {
         return m(CardView, { playerCard })
@@ -59,26 +59,26 @@ export default function GamePlayer(vnode) {
     })
   }
 
-  function view() {
-    if (vnode.state.player) {
+  view() {
+    if (this.player) {
       return [
-        m(ConnectionState, { socket: vnode.state.socket }),
+        m(ConnectionState, { socket: this.socket }),
         m(".player-role", [
-          m("p", vnode.state.player.character.name)
+          m("p", this.player.character.name)
         ]),
         m(".player-info", [
-          gameStateView(),
+          this.gameStateView(),
           m("h2", "Chosen"),
           m(".player-placed-cards", [
-            placedCardsView(),
+            this.placedCardsView(),
             m("button", "✓")
           ]),
           m("h2", "In Hand"),
-          m(".player-hand", vnode.state.player.hand.map(playerCard =>
+          m(".player-hand", this.player.hand.map(playerCard =>
             m(CardView, {
               playerCard,
               disabled: playerCard.played_index != null && playerCard.played_index >= 0,
-              onclick: () => vnode.state.player.placeCard(playerCard.id)
+              onclick: () => this.player.placeCard(playerCard.id)
             })
           ))
         ])
@@ -87,6 +87,4 @@ export default function GamePlayer(vnode) {
       m("p", "Loading ...")
     }
   }
-
-  return { oninit, onremove, view }
 }

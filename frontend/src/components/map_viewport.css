@@ -1,4 +1,6 @@
 .map-viewport {
+  --map-size: 80vh;
+
   overflow: hidden;
   background-color: var(--dark-color);
   flex: auto;

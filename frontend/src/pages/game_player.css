@@ -6,6 +6,17 @@
   margin: 0 auto;
 }
 
+.game-player-info {
+  background-color: var(--light-color);
+  min-height: 30vh;
+}
+
+.game-player .placed-cards {
+  margin-top: -1.5rem;
+}
+
+/* OLD */
+
 .player-role {
   min-width: 12rem;
   margin: 0.5rem;

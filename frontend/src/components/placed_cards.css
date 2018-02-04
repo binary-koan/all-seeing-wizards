@@ -1,0 +1,26 @@
+.placed-cards {
+  display: flex;
+  padding: 0.25rem;
+}
+
+.placed-card {
+  flex: 1;
+  position: relative;
+}
+
+.placed-card:after {
+  content: "";
+  float:left;
+  display: block;
+  padding-top: 100%;
+}
+
+.placed-card-content {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--light-color-strong);
+}

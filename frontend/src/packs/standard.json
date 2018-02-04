@@ -1,0 +1,26 @@
+{
+  "cardIcons": {
+    "Move 1": "arrow-up",
+    "Move 2": "arrow-up-circle",
+    "Turn Clockwise & Move": "corner-up-right",
+    "Turn Anticlockwise & Move": "corner-up-left",
+    "Turn Around & Move": "arrow-down",
+    "Hellfire Breath": "sun",
+    "Chaos Storm": "cloud-lightning",
+    "Magical Dart": "send",
+    "Spartan Kick": "log-in",
+    "Homing Missile": "git-branch",
+    "Freezing Touch": "box",
+    "Yellow Snowballs": "cloud-snow",
+    "Force Lightning": "zap",
+    "Spider Minions": "more-vertical",
+    "Piercing Scream": "radio",
+    "Earthquake": "activity",
+    "Magical Shield": "shield",
+    "Dimension": "x-square",
+    "Mirror Shield": "external-link",
+    "Decree": "thumbs-down",
+    "Healing Potion": "plus-square",
+    "Rage Potion": "eye"
+  }
+}

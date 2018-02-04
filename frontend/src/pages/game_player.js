@@ -12,8 +12,7 @@ import Icon from "../components/icon";
 import GameManager from "../concepts/game_manager"
 import MapView from "../components/map_view";
 import MapViewport from "../components/map_viewport";
-
-const TEMP_PLAYER_HP = 5;
+import PlacedCards from "../components/placed_cards";
 
 export default class GamePlayer {
   oninit() {
@@ -35,18 +34,6 @@ export default class GamePlayer {
     return this.game && this.game.player(m.route.param("player_id"))
   }
 
-  placedCardsView() {
-    return times(TEMP_PLAYER_HP, index => {
-      const playerCard = this.player && this.player.cardPlacedAt(index)
-
-      if (playerCard) {
-        return m(CardView, { playerCard })
-      } else {
-        return m(".player-placed-card")
-      }
-    })
-  }
-
   view() {
     return m(".game-player", [
       this.player && m(PlayerView, {
@@ -62,13 +49,8 @@ export default class GamePlayer {
         centerX: this.player.x,
         centerY: this.player.y
       }),
-      m(".player-info", [
-        m("h2", "Chosen"),
-        m(".player-placed-cards", [
-          this.placedCardsView(),
-          m("button", "✓")
-        ]),
-        m("h2", "In Hand"),
+      m(".game-player-info", [
+        m(PlacedCards),
         m(".player-hand", this.player && this.player.hand.map(playerCard =>
           m(CardView, {
             playerCard,

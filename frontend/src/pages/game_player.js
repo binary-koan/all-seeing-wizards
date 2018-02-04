@@ -50,7 +50,9 @@ export default class GamePlayer {
         centerY: this.player.y
       }),
       m(".game-player-info", [
-        m(PlacedCards),
+        this.player && m(PlacedCards, {
+          player: this.player
+        }),
         m(".game-player-hand", this.player && this.player.hand.map(playerCard =>
           m(CardView, {
             playerCard,

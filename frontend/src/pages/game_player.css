@@ -1,5 +1,4 @@
 .game-player {
-  flex: 1;
   display: flex;
   flex-direction: column;
   width: 35rem;
@@ -34,61 +33,4 @@
 .game-player-submit:active {
   background-color: var(--dark-color);
   color: var(--light-color);
-}
-
-/* OLD */
-
-.player-role {
-  min-width: 12rem;
-  margin: 0.5rem;
-  margin-right: 0;
-  padding: 1rem;
-  background-color: #eee;
-  border-radius: 0.5rem;
-  text-align: center;
-}
-
-.player-info {
-  flex: 1;
-  padding: 0.5rem 1rem;
-}
-
-.player-game-state {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background-color: #4838A6;
-  color: white;
-}
-
-.player-placed-cards {
-  display: flex;
-}
-
-.player-placed-card {
-  flex: 1;
-  margin-right: 0.5rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background-color: #eee;
-  height: 10rem;
-}
-
-.submit-placed-cards {
-}
-
-.player-hand {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.player-hand > * {
-  margin: 0.5rem 0.5rem 0 0;
-}
-
-.player-card {
-  width: 14rem;
-  padding: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 0.5rem;
-  background-color: #fff;
 }

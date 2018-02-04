@@ -10,6 +10,7 @@ export default class Player {
     this.y = y
     this.character = character
     this.game = game
+    this.hp = 5
   }
 
   get hand() {
@@ -22,9 +23,23 @@ export default class Player {
 
   placeCard(playerCardId) {
     const currentIndex = max(this.hand.map(c => c.played_index))
-    const match = find(this.hand, c => c.id === playerCardId)
 
-    match.played_index = (currentIndex == null) ? 0 : currentIndex + 1
+    if (currentIndex == null || currentIndex < (this.hp - 1)) {
+      const match = find(this.hand, c => c.id === playerCardId)
+      match.played_index = (currentIndex == null) ? 0 : currentIndex + 1
+    }
+  }
+
+  unplaceCard(playerCardId) {
+    const playerCard = find(this.hand, c => c.id === playerCardId)
+    
+    this.hand.forEach(other => {
+      if (other.played_index != null && other.played_index > playerCard.played_index) {
+        other.played_index -= 1
+      }
+    })
+
+    playerCard.played_index = undefined
   }
 
   cardPlacedAt(index) {

@@ -1,9 +1,11 @@
+import find from "lodash/find"
 import findIndex from "lodash/findIndex"
 import sortBy from "lodash/sortBy"
+import Player from "./player"
 
 export default class Game {
   constructor({ players, tiles, objects, started }) {
-    this._players = players
+    this._players = players.map(player => new Player(player))
 
     this.tiles = tiles
     this.objects = objects
@@ -16,6 +18,10 @@ export default class Game {
 
   get connectedPlayers() {
     return this.players.filter(player => player.connected)
+  }
+
+  player(id) {
+    return find(this.players, player => player.id.toString() === id.toString())
   }
 
   upsertPlayer(player) {

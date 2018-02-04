@@ -7,49 +7,35 @@ import socket from "../util/socket"
 import request from "../util/request"
 import ConnectionState from "../components/connection_state"
 import CardView from "../components/card_view"
-import Player from "../concepts/player"
+import PlayerView from "../components/player_view";
+import Icon from "../components/icon";
+import GameManager from "../concepts/game_manager"
 
 const TEMP_PLAYER_HP = 5;
 
 export default class GamePlayer {
   oninit() {
-    request(`/players/${m.route.param("player_id")}`).then(response => {
-      this.player = new Player(response.player)
-      this.connectToChannel()
+    this.gameManager = new GameManager({
+      gameId: m.route.param("game_id"),
+      socketParams: { player_id: m.route.param("player_id") }
     })
   }
 
   onremove() {
-    if (this.socket) {
-      this.socket.disconnect()
-    }
+    this.gameManager.destroy()
   }
 
-  connectToChannel() {
-    this.socket = socket({
-      params: { player_id: m.route.param("player_id") },
-      channel: "GameChannel",
-      on: {
-        hand_updated(data) {
-          if (data.player_id.toString() === m.route.param("player_id")) {
-            this.player.updateHand(data.player_cards)
-          }
-        }
-      }
-    })
+  get game() {
+    return this.gameManager.game
   }
 
-  gameStateView() {
-    if (this.player.game.started) {
-      return m(".player-game-state", "In Progress - Select actions to take")
-    } else {
-      return m(".player-game-state", "Waiting for players")
-    }
+  get player() {
+    return this.game && this.game.player(m.route.param("player_id"))
   }
 
   placedCardsView() {
     return times(TEMP_PLAYER_HP, index => {
-      const playerCard = this.player.cardPlacedAt(index)
+      const playerCard = this.player && this.player.cardPlacedAt(index)
 
       if (playerCard) {
         return m(CardView, { playerCard })
@@ -60,31 +46,30 @@ export default class GamePlayer {
   }
 
   view() {
-    if (this.player) {
-      return [
-        m(ConnectionState, { socket: this.socket }),
-        m(".player-role", [
-          m("p", this.player.character.name)
+    return m(".game-player", [
+      this.player && m(PlayerView, {
+        player: this.player,
+        connected: true,
+        actions: [
+          m(ConnectionState, { socket: this.gameManager.socket }),
+          m("button.kick-player", m(Icon, { name: "x" }))
+        ]
+      }),
+      m(".player-info", [
+        m("h2", "Chosen"),
+        m(".player-placed-cards", [
+          this.placedCardsView(),
+          m("button", "✓")
         ]),
-        m(".player-info", [
-          this.gameStateView(),
-          m("h2", "Chosen"),
-          m(".player-placed-cards", [
-            this.placedCardsView(),
-            m("button", "✓")
-          ]),
-          m("h2", "In Hand"),
-          m(".player-hand", this.player.hand.map(playerCard =>
-            m(CardView, {
-              playerCard,
-              disabled: playerCard.played_index != null && playerCard.played_index >= 0,
-              onclick: () => this.player.placeCard(playerCard.id)
-            })
-          ))
-        ])
-      ]
-    } else {
-      m("p", "Loading ...")
-    }
+        m("h2", "In Hand"),
+        m(".player-hand", this.player && this.player.hand.map(playerCard =>
+          m(CardView, {
+            playerCard,
+            disabled: playerCard.played_index != null && playerCard.played_index >= 0,
+            onclick: () => this.player.placeCard(playerCard.id)
+          })
+        ))
+      ])
+    ])
   }
 }

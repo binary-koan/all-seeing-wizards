@@ -72,7 +72,8 @@ export default class GameHost {
         this.game && this.game.players.map(player =>
           m(PlayerView, {
             player,
-            action: m("button.kick-player", m(Icon, { name: "x" }))
+            connected: player.connected,
+            actions: m("button.kick-player", m(Icon, { name: "x" }))
           })
         )
       ]),

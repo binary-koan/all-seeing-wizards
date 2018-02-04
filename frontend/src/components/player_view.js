@@ -13,19 +13,19 @@ export default class PlayerView {
     ].filter(Boolean).join(" ")
   }
 
-  view({ attrs: { player, action }}) {
+  view({ attrs: { player, connected, actions }}) {
     return m(".player-view", { class: this.className(player) }, [
       m(Icon, { name: "user", scale: 2 }),
       m(".player-view-details", [
         m("h3", player.character.name),
-        player.connected ?
+        connected ?
           m(PlayerHp, { hp: 5 }) :
           m(".player-view-disconnected", [
             m(Icon, { name: "alert-triangle" }),
             "Disconnected"
           ])
       ]),
-      action
+      actions
     ])
   }
 }

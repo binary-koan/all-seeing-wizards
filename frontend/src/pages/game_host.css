@@ -25,8 +25,8 @@
 .game-host-sidebar .player-view {
   margin-top: 0.5rem;
   padding: 1rem;
-  border: 2px solid var(--player-color-dark);
-  border-radius: 0.5rem;
+  border: 0.2rem solid var(--player-color-dark);
+  border-radius: 0.25rem;
 }
 
 .game-host-sidebar .player-view.is-disconnected {

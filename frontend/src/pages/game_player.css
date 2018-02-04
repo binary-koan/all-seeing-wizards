@@ -1,3 +1,9 @@
+.game-player {
+  flex: 1;
+  max-width: 35rem;
+  margin: 0 auto;
+}
+
 .player-role {
   min-width: 12rem;
   margin: 0.5rem;

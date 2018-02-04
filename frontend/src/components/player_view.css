@@ -1,6 +1,7 @@
 .player-view {
   display: flex;
   align-items: center;
+  min-height: 6rem;
 }
 
 .player-view-details {

@@ -13,7 +13,11 @@
 .card-view-title {
   width: 100%;
   margin-top: 0.5rem;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 700px) {
+  .card-view-title {
+    font-size: 0.75rem;
+  }
 }

@@ -26,6 +26,11 @@
   width: calc(100% - 0.5rem);
   border-radius: 0.25rem;
   background-color: var(--light-color-strong);
+  border: 0.2rem solid var(--light-color-strong);
+}
+
+.placed-card-content.is-disabled {
+  background-color: var(--light-color);
 }
 
 .placed-card-content > * {

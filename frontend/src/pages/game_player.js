@@ -61,7 +61,9 @@ export default class GamePlayer {
           })
         ))
       ]),
-      m("button.game-player-submit", "Lock in")
+      this.player && m("button.game-player-submit", {
+        disabled: this.player.placedCards.length < this.player.hp
+      }, "Lock in")
     ])
   }
 }

@@ -1,5 +1,6 @@
 import max from "lodash/max"
 import find from "lodash/find"
+import sortBy from "lodash/sortBy"
 
 export default class Player {
   constructor({ player_cards, id, x, y, character, game }) {
@@ -21,10 +22,13 @@ export default class Player {
     this._playerCards = playerCards
   }
 
-  placeCard(playerCardId) {
-    const currentIndex = max(this.hand.map(c => c.played_index))
+  get placedCards() {
+    return sortBy(this.hand.filter(playerCard => playerCard.played_index != null), "played_index")
+  }
 
-    if (currentIndex == null || currentIndex < (this.hp - 1)) {
+  placeCard(playerCardId) {
+    if (this.placedCards.length < this.hp) {
+      const currentIndex = max(this.hand.map(c => c.played_index))
       const match = find(this.hand, c => c.id === playerCardId)
       match.played_index = (currentIndex == null) ? 0 : currentIndex + 1
     }
@@ -32,7 +36,7 @@ export default class Player {
 
   unplaceCard(playerCardId) {
     const playerCard = find(this.hand, c => c.id === playerCardId)
-    
+
     this.hand.forEach(other => {
       if (other.played_index != null && other.played_index > playerCard.played_index) {
         other.played_index -= 1

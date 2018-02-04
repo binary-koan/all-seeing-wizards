@@ -13,6 +13,10 @@ export default class GameManager {
     })
   }
 
+  perform(action) {
+    this.socket.perform(action)
+  }
+
   destroy() {
     if (this.socket) {
       this.socket.disconnect()

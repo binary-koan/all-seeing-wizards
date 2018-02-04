@@ -9,10 +9,30 @@
 .game-player-info {
   background-color: var(--light-color);
   min-height: 30vh;
+  padding: 0.25rem;
 }
 
 .game-player .placed-cards {
   margin-top: -1.5rem;
+}
+
+.game-player-hand {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  margin-top: 0.5rem;
+}
+
+.game-player-submit {
+  padding: 1.5rem 0;
+  background-color: var(--dark-color-strong);
+  font-size: 1.25rem;
+  color: var(--light-color);
+}
+
+.game-player-submit:hover,
+.game-player-submit:active {
+  background-color: var(--dark-color);
+  color: var(--light-color);
 }
 
 /* OLD */

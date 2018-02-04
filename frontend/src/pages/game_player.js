@@ -51,14 +51,15 @@ export default class GamePlayer {
       }),
       m(".game-player-info", [
         m(PlacedCards),
-        m(".player-hand", this.player && this.player.hand.map(playerCard =>
+        m(".game-player-hand", this.player && this.player.hand.map(playerCard =>
           m(CardView, {
             playerCard,
             disabled: playerCard.played_index != null && playerCard.played_index >= 0,
             onclick: () => this.player.placeCard(playerCard.id)
           })
         ))
-      ])
+      ]),
+      m("button.game-player-submit", "Lock in")
     ])
   }
 }

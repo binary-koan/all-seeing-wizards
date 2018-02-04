@@ -10,6 +10,8 @@ import CardView from "../components/card_view"
 import PlayerView from "../components/player_view";
 import Icon from "../components/icon";
 import GameManager from "../concepts/game_manager"
+import MapView from "../components/map_view";
+import MapViewport from "../components/map_viewport";
 
 const TEMP_PLAYER_HP = 5;
 
@@ -54,6 +56,11 @@ export default class GamePlayer {
           m(ConnectionState, { socket: this.gameManager.socket }),
           m("button.kick-player", m(Icon, { name: "x" }))
         ]
+      }),
+      this.game && m(MapViewport, {
+        map: m(MapView, { game: this.game }),
+        centerX: this.player.x,
+        centerY: this.player.y
       }),
       m(".player-info", [
         m("h2", "Chosen"),

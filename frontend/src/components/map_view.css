@@ -8,10 +8,10 @@
 .tile,
 .map-player {
   position: absolute;
-  left: calc(var(--map-size) / 10 * var(--x));
-  top: calc(var(--map-size) / 10 * var(--y));
-  width: calc(var(--map-size) / 10);
-  height: calc(var(--map-size) / 10);
+  left: calc(var(--map-size) / var(--map-tiles) * var(--x));
+  top: calc(var(--map-size) / var(--map-tiles) * var(--y));
+  width: calc(var(--map-size) / var(--map-tiles));
+  height: calc(var(--map-size) / var(--map-tiles));
   background-size: cover;
 }
 

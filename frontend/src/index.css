@@ -8,6 +8,8 @@
   --dark-color: #525A67;
   --dark-color-strong: #2D333D;
   --light-color: #EBEBFF;
+
+  --map-tiles: 10;
 }
 
 * {

@@ -1,0 +1,11 @@
+.map-viewport {
+  overflow: hidden;
+  background-color: var(--dark-color);
+  flex: auto;
+}
+
+.map-viewport > * {
+  position: relative;
+  top: calc(var(--map-size) / var(--map-tiles) * (var(--center-y) * -1 - 0.5) + 50%);
+  left: calc(var(--map-size) / var(--map-tiles) * (var(--center-x) * -1 - 0.5) + 50%);
+}

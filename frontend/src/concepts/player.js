@@ -2,10 +2,12 @@ import max from "lodash/max"
 import find from "lodash/find"
 
 export default class Player {
-  constructor({ id, player_cards, character, game }) {
+  constructor({ player_cards, id, x, y, character, game }) {
     this._playerCards = player_cards
 
     this.id = id
+    this.x = x
+    this.y = y
     this.character = character
     this.game = game
   }

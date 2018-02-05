@@ -31,6 +31,10 @@
 
 .game-player-submit:hover,
 .game-player-submit:active {
-  background-color: var(--dark-color);
   color: var(--light-color);
+}
+
+.game-player-submit:not(:disabled):hover,
+.game-player-submit:not(:disabled):active {
+  background-color: var(--dark-color);
 }

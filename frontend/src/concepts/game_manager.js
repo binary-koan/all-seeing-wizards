@@ -13,8 +13,8 @@ export default class GameManager {
     })
   }
 
-  perform(action) {
-    this.socket.perform(action)
+  perform(action, payload) {
+    this.socket.perform(action, payload)
   }
 
   destroy() {

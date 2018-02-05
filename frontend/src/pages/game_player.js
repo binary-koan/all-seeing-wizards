@@ -51,19 +51,20 @@ export default class GamePlayer {
       }),
       m(".game-player-info", [
         this.player && m(PlacedCards, {
-          player: this.player
+          hand: this.player.hand
         }),
-        m(".game-player-hand", this.player && this.player.hand.map(playerCard =>
+        m(".game-player-hand", this.player && this.player.hand.playerCards.map(playerCard =>
           m(CardView, {
             playerCard,
-            disabled: playerCard.played_index != null && playerCard.played_index >= 0,
-            onclick: () => this.player.placeCard(playerCard.id)
+            disabled: this.player.hand.placedCards.includes(playerCard),
+            onclick: () => this.player.hand.placeCard(playerCard.id)
           })
         ))
       ]),
       this.player && m("button.game-player-submit", {
-        disabled: this.player.placedCards.length < this.player.hp
-      }, "Lock in")
+        disabled: !this.player.hand.readyToSubmit,
+        onclick: () => this.gameManager.perform("submit_cards", { player_id: this.player.id, card_ids: this.player.hand.placedCards.map(playerCard => playerCard.id) })
+      }, this.player.hand.submittedCards.length > 0 ? "Locked in" : "Lock in")
     ])
   }
 }

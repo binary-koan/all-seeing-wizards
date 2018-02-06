@@ -6,20 +6,29 @@ class Effect::Attack < Effect::Base
   end
 
   def results
-    compute_results(EffectResult::Attack, tiles: affected_tiles) +
-      target_players.flat_map { |player| compute_results(EffectResult::TakeDamage, player: player, damage: card.damage) }
+    compute_results(EffectResult::Attack, tiles: affected_tiles, caster: player) +
+      target_players.flat_map { |target| compute_results(EffectResult::TakeDamage, caster: player, target: target, damage: card.damage) }
   end
 
   def post_action_results
     return [] unless card.knockback && card.knockback > 0
 
-    target_players.flat_map { |player| compute_results(EffectResult::Knockback, player: player, knockback: card.knockback) }
+    target_players.flat_map { |target| compute_results(EffectResult::Knockback, caster: player, target: target, target_position: knockback_position(target)) }
   end
 
   private
 
   def target_players
     affected_players.select { |p| p != player }
+  end
+
+  def knockback_position(player)
+    player.position.backward(card.knockback).clamp(
+      min_x: 0,
+      min_y: 0,
+      max_x: game.tiles.width,
+      max_y: game.tiles.height
+    )
   end
 
   def area_of_effect

@@ -1,2 +1,2 @@
-class EffectResult::None
+class EffectResult::None < EffectResult::Base
 end

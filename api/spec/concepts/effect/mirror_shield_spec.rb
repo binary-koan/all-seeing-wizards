@@ -5,11 +5,11 @@ RSpec.describe Effect::MirrorShield do
 
   subject(:effect) { Effect::MirrorShield.new(card, player) }
 
-  let(:game) { active_record_double(Game, active_modifiers: game_modifiers) }
+  let(:game) { active_record_double(Game) }
   let(:card) { instance_double(Card, duration_type: duration_type, duration: duration) }
-  let(:player) { instance_double(Player, game: game, active_modifiers: []) }
+  let(:player) { instance_double(Player, game: game, active_modifiers: caster_modifiers) }
 
-  let(:game_modifiers) { [] }
+  let(:caster_modifiers) { [] }
   let(:duration) { 2 }
   let(:duration_type) { "action" }
 
@@ -17,12 +17,12 @@ RSpec.describe Effect::MirrorShield do
     context "in normal circumstances" do
       it "returns the effect" do
         expect(effect.results).to contain_exactly(instance_of(EffectResult::MirrorShield))
-        expect(effect.results.first).to have_attributes(player: player, duration_type: duration_type, duration: duration)
+        expect(effect.results.first).to have_attributes(caster: player, target: player, duration_type: duration_type, duration: duration)
       end
     end
 
     context "when actions are prevented" do
-      let(:game_modifiers) { [Modifier.prevent_actions.new] }
+      let(:caster_modifiers) { [Modifier.prevent_actions.new] }
 
       it "prevents all actions" do
         expect(effect.results).to be_all { |result| result.is_a?(EffectResult::None) }

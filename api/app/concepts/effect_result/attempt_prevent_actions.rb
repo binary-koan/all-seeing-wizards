@@ -1,7 +1,8 @@
-class EffectResult::AttemptPreventActions
-  attr_reader :tiles
+class EffectResult::AttemptPreventActions < EffectResult::Base
+  attr_reader :tiles, :caster
 
-  def initialize(tiles:)
+  def initialize(tiles:, caster:)
     @tiles = tiles
+    @caster = caster
   end
 end

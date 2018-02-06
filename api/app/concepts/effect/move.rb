@@ -9,10 +9,10 @@ class Effect::Move < Effect::Base
   # end
 
   def results
-    compute_results(EffectResult::Move, player: player, target: resulting_space)
+    compute_results(EffectResult::Move, caster: player, target_position: target_position)
   end
 
-  def resulting_space
+  def target_position
     player.position.forward(card.amount).clamp(
       min_x: 0,
       min_y: 0,

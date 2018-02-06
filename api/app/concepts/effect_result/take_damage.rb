@@ -1,8 +1,9 @@
-class EffectResult::TakeDamage
-  attr_reader :player, :damage
+class EffectResult::TakeDamage < EffectResult::Base
+  attr_reader :caster, :target, :damage
 
-  def initialize(player:, damage:)
-    @player = player
+  def initialize(caster:, target:, damage:)
+    @caster = caster
+    @target = target
     @damage = damage
   end
 end

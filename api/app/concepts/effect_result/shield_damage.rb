@@ -1,7 +1,7 @@
-class EffectResult::ShieldDamage
-  attr_reader :player
+class EffectResult::ShieldDamage < EffectResult::Base
+  attr_reader :caster
 
-  def initialize(player:)
-    @player = player
+  def initialize(caster:)
+    @caster = caster
   end
 end

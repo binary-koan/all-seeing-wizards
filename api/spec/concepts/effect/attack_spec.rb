@@ -5,12 +5,12 @@ RSpec.describe Effect::Attack do
 
   subject(:effect) { Effect::Attack.new(card, player) }
 
-  let(:game) { active_record_double(Game, active_modifiers: game_modifiers) }
+  let(:game) { active_record_double(Game, tiles: instance_double(TileBoard, width: 10, height: 10)) }
   let(:card) { instance_double(Card, damage: damage) }
-  let(:player) { instance_double(Player, game: game) }
+  let(:player) { instance_double(Player, game: game, active_modifiers: caster_modifiers) }
 
   let(:area_of_effect) { instance_double(AreaOfEffect, affected_tiles: [instance_double(PositionedTile)], affected_players: []) }
-  let(:game_modifiers) { [] }
+  let(:caster_modifiers) { [] }
   let(:damage) { 2 }
 
   before do
@@ -38,7 +38,7 @@ RSpec.describe Effect::Attack do
 
       it "damages the player" do
         expect(effect.results).to contain_exactly(instance_of(EffectResult::Attack), instance_of(EffectResult::TakeDamage))
-        expect(effect.results.last).to have_attributes(player: affected_player, damage: damage)
+        expect(effect.results.last).to have_attributes(caster: player, target: affected_player, damage: damage)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Effect::Attack do
     end
 
     context "when actions are prevented" do
-      let(:game_modifiers) { [Modifier.prevent_actions.new] }
+      let(:caster_modifiers) { [Modifier.prevent_actions.new] }
 
       it "prevents all actions" do
         expect(effect.results).to be_all { |result| result.is_a?(EffectResult::None) }
@@ -103,7 +103,8 @@ RSpec.describe Effect::Attack do
   describe "#post_action_results" do
     context "with knockback" do
       let(:knockback) { 1 }
-      let(:affected_player) { instance_double(Player, active_modifiers: []) }
+      let(:affected_player) { instance_double(Player, active_modifiers: [], position: position) }
+      let(:position) { Position.new(x: 5, y: 5, facing: :north) }
 
       before do
         expect(card).to receive(:knockback).at_least(:once).and_return(knockback)
@@ -112,11 +113,13 @@ RSpec.describe Effect::Attack do
 
       it "knocks the player back" do
         expect(effect.post_action_results).to contain_exactly(instance_of(EffectResult::Knockback))
-        expect(effect.post_action_results.last).to have_attributes(player: affected_player, knockback: knockback)
+        expect(effect.post_action_results.last).to have_attributes(
+          caster: player, target: affected_player, target_position: affected_player.position.backward(knockback)
+        )
       end
 
       context "when a player is shielded" do
-        let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.shield.new]) }
+        let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.shield.new], position: position) }
 
         it "overrides the knockback on that player" do
           expect(effect.post_action_results).not_to include(instance_of(EffectResult::Knockback))

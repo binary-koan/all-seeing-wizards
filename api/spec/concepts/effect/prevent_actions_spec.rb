@@ -5,12 +5,12 @@ RSpec.describe Effect::PreventActions do
 
   subject(:effect) { Effect::PreventActions.new(card, player) }
 
-  let(:game) { active_record_double(Game, active_modifiers: game_modifiers) }
+  let(:game) { active_record_double(Game) }
   let(:card) { instance_double(Card, duration: duration, duration_type: duration_type) }
-  let(:player) { instance_double(Player, game: game) }
+  let(:player) { instance_double(Player, game: game, active_modifiers: caster_modifiers) }
 
   let(:area_of_effect) { instance_double(AreaOfEffect, affected_tiles: [instance_double(PositionedTile)], affected_players: []) }
-  let(:game_modifiers) { [] }
+  let(:caster_modifiers) { [] }
   let(:duration) { 2 }
   let(:duration_type) { "action" }
 
@@ -39,7 +39,7 @@ RSpec.describe Effect::PreventActions do
 
       it "prevents actions for the player" do
         expect(effect.results).to contain_exactly(instance_of(EffectResult::AttemptPreventActions), instance_of(EffectResult::PreventActions))
-        expect(effect.results.last).to have_attributes(player: affected_player, duration_type: duration_type, duration: duration)
+        expect(effect.results.last).to have_attributes(caster: player, target: affected_player, duration_type: duration_type, duration: duration)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Effect::PreventActions do
     end
 
     context "when actions are already prevented" do
-      let(:game_modifiers) { [Modifier.prevent_actions.new] }
+      let(:caster_modifiers) { [Modifier.prevent_actions.new] }
 
       it "prevents all actions" do
         expect(effect.results).to be_all { |result| result.is_a?(EffectResult::None) }

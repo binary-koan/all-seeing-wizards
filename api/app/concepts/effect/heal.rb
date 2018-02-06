@@ -4,6 +4,6 @@ class Effect::Heal < Effect::Base
   end
 
   def results
-    compute_results(EffectResult::Heal, player: player, amount: card.amount)
+    compute_results(EffectResult::Heal, caster: player, target: player, amount: card.amount)
   end
 end

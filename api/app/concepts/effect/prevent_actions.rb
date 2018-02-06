@@ -6,8 +6,10 @@ class Effect::PreventActions < Effect::Base
   end
 
   def results
-    compute_results(EffectResult::AttemptPreventActions, tiles: affected_tiles) +
-      target_players.flat_map { |player| compute_results(EffectResult::PreventActions, player: player, duration_type: card.duration_type, duration: card.duration) }
+    compute_results(EffectResult::AttemptPreventActions, caster: player, tiles: affected_tiles) +
+      target_players.flat_map do |target|
+        compute_results(EffectResult::PreventActions, caster: player, target: target, duration_type: card.duration_type, duration: card.duration)
+      end
   end
 
   private

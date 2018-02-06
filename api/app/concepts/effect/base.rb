@@ -27,21 +27,14 @@ class Effect::Base
 
   protected
 
-  def compute_results(result_type, player: nil, **attrs)
-    if player.present?
-      original_result = result_type.new(player: player, **attrs)
+  def compute_results(result_type, **attrs)
+    original_result = result_type.new(attrs)
 
-      priority_results(
-        replacement_results(player.active_modifiers, original_result) +
-          replacement_results(game.active_modifiers, original_result)
-      ).presence || [original_result]
-    else
-      original_result = result_type.new(**attrs)
+    replacements = []
+    replacements += caster_replacement_results(attrs[:caster].active_modifiers, original_result) if attrs[:caster]
+    replacements += target_replacement_results(attrs[:target].active_modifiers, original_result) if attrs[:target]
 
-      priority_results(
-        replacement_results(game.active_modifiers, original_result)
-      ).presence || [original_result]
-    end
+    priority_results(replacements.select(&:second)).presence || [original_result]
   end
 
   private
@@ -52,7 +45,11 @@ class Effect::Base
     replacements.reject { |modifier, _| modifier.priority != priority }.map(&:second)
   end
 
-  def replacement_results(modifiers, original_result)
-    modifiers.map { |modifier| [modifier, modifier.replacement_result(original_result)] }
+  def caster_replacement_results(modifiers, original_result)
+    modifiers.map { |modifier| [modifier, modifier.replace_result_as_caster(original_result)] }
+  end
+
+  def target_replacement_results(modifiers, original_result)
+    modifiers.map { |modifier| [modifier, modifier.replace_result_as_target(original_result)] }
   end
 end

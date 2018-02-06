@@ -6,10 +6,14 @@ class CalculateGameTiles
   end
 
   def call
-    game.game_boards.flat_map { |game_board| tiles_from_board(game_board) }
+    GameBoard.new(all_tiles)
   end
 
   private
+
+  def all_tiles
+    game.game_boards.flat_map { |game_board| tiles_from_board(game_board) }
+  end
 
   def tiles_from_board(game_board)
     game_board.board.board_tiles.map { |tile| tile_on_board(tile, game_board) }

@@ -4,6 +4,6 @@ class Effect::IncreaseDamage < Effect::Base
   end
 
   def results
-    compute_result(EffectResult::IncreaseDamage, player: player, amount: card.amount)
+    compute_results(EffectResult::IncreaseDamage, player: player, amount: card.amount)
   end
 end

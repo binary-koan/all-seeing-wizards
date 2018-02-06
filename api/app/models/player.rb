@@ -23,6 +23,6 @@ class Player < ApplicationRecord
   end
 
   def position
-    @position ||= Position.new(x, y, rotation: rotation)
+    @position ||= Position.new(x: x, y: y, rotation: rotation)
   end
 end

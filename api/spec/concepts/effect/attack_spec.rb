@@ -106,7 +106,7 @@ RSpec.describe Effect::Attack do
       let(:affected_player) { instance_double(Player, active_modifiers: []) }
 
       before do
-        expect(card).to receive(:knockback).and_return(knockback)
+        expect(card).to receive(:knockback).at_least(:once).and_return(knockback)
         expect(area_of_effect).to receive(:affected_players).at_least(:once).and_return([affected_player])
       end
 

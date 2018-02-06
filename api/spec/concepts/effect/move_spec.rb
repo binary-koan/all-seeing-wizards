@@ -9,7 +9,7 @@ RSpec.describe Effect::Move do
     active_record_double(
       Game,
       active_modifiers: game_modifiers,
-      tiles: instance_double(GameBoard, width: 10, height: 10)
+      tiles: instance_double(TileBoard, width: 10, height: 10)
     )
   end
 

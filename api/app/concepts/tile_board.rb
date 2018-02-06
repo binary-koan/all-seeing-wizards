@@ -1,4 +1,4 @@
-class GameBoard < Array
+class TileBoard < Array
   def width
     @width ||= map(&:x).max
   end

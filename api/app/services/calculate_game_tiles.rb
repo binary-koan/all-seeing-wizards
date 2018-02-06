@@ -6,7 +6,7 @@ class CalculateGameTiles
   end
 
   def call
-    GameBoard.new(all_tiles)
+    TileBoard.new(all_tiles)
   end
 
   private

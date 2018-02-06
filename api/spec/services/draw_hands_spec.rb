@@ -14,7 +14,7 @@ RSpec.describe DrawHands do
   end
 
   context "with a single player" do
-    let(:player) { instance_double(Player) }
+    let(:player) { instance_double(Player, id: 1, player_cards: []) }
     let(:players) { [player] }
 
     context "when the player doesn't need more cards" do
@@ -56,7 +56,14 @@ RSpec.describe DrawHands do
   end
 
   context "with multiple players" do
-    let(:players) { [instance_double(Player), instance_double(Player), instance_double(Player)] }
+    let(:players) do
+      [
+        instance_double(Player, id: 1, player_cards: []),
+        instance_double(Player, id: 2, player_cards: []),
+        instance_double(Player, id: 3, player_cards: [])
+      ]
+    end
+
     let(:cards) { [3, 2, 1] }
 
     before do

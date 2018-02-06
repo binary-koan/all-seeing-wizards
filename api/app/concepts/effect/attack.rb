@@ -6,14 +6,14 @@ class Effect::Attack < Effect::Base
   end
 
   def results
-    [compute_result(EffectResult::Attack, tiles: affected_tiles)] +
-      target_players.map { |player| compute_result(EffectResult::TakeDamage, player: player, damage: card.damage) }
+    compute_results(EffectResult::Attack, tiles: affected_tiles) +
+      target_players.flat_map { |player| compute_results(EffectResult::TakeDamage, player: player, damage: card.damage) }
   end
 
   def post_action_results
     return [] unless card.knockback && card.knockback > 0
 
-    target_players.map { |player| compute_result(EffectResult::Knockback, player: player, knockback: card.knockback) }
+    target_players.flat_map { |player| compute_results(EffectResult::Knockback, player: player, knockback: card.knockback) }
   end
 
   private

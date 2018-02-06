@@ -5,11 +5,12 @@ RSpec.describe Effect::Attack do
 
   subject(:effect) { Effect::Attack.new(card, player) }
 
-  let(:game) { active_record_double(Game, active_modifiers: []) }
+  let(:game) { active_record_double(Game, active_modifiers: game_modifiers) }
   let(:card) { instance_double(Card, damage: damage) }
   let(:player) { instance_double(Player, game: game) }
-  let(:area_of_effect) { instance_double(AreaOfEffect, affected_tiles: [instance_double(PositionedTile)]) }
 
+  let(:area_of_effect) { instance_double(AreaOfEffect, affected_tiles: [instance_double(PositionedTile)], affected_players: []) }
+  let(:game_modifiers) { [] }
   let(:damage) { 2 }
 
   before do
@@ -65,8 +66,8 @@ RSpec.describe Effect::Attack do
       end
     end
 
-    xcontext "when a player is shielded" do
-      let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.new(modifier_type: "shield")]) }
+    context "when a player is shielded" do
+      let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.shield.new]) }
 
       before do
         expect(area_of_effect).to receive(:affected_players).at_least(:once).and_return([affected_player])
@@ -78,8 +79,23 @@ RSpec.describe Effect::Attack do
       end
     end
 
-    xcontext "when actions are prevented" do
+    context "when actions are prevented" do
+      let(:game_modifiers) { [Modifier.prevent_actions.new] }
+
       it "prevents all actions" do
+        expect(effect.results).to be_all { |result| result.is_a?(EffectResult::None) }
+      end
+
+      context "when a player is shielded" do
+        let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.shield.new]) }
+
+        before do
+          expect(area_of_effect).to receive(:affected_players).at_least(:once).and_return([affected_player])
+        end
+
+        it "still prevents actions" do
+          expect(effect.results).to be_all { |result| result.is_a?(EffectResult::None) }
+        end
       end
     end
   end

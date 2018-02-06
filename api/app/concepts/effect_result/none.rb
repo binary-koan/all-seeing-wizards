@@ -1,0 +1,2 @@
+class EffectResult::None
+end

@@ -27,27 +27,27 @@ class Effect::Base
 
   protected
 
-  def compute_result(result_type, player: nil, **attrs)
+  def compute_results(result_type, player: nil, **attrs)
     if player.present?
       original_result = result_type.new(player: player, **attrs)
 
       priority_results(
         replacement_results(player.active_modifiers, original_result) +
           replacement_results(game.active_modifiers, original_result)
-      ).presence || original_result
+      ).presence || [original_result]
     else
       original_result = result_type.new(**attrs)
 
       priority_results(
         replacement_results(game.active_modifiers, original_result)
-      ).presence || original_result
+      ).presence || [original_result]
     end
   end
 
   private
 
   def priority_results(replacements)
-    priority = replacements.min { |modifier, _| modifier.priority }
+    priority = replacements.map { |modifier, _| modifier.priority }.min
 
     replacements.reject { |modifier, _| modifier.priority != priority }.map(&:second)
   end

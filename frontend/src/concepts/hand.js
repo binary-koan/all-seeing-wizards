@@ -44,6 +44,10 @@ export default class Hand {
     }
   }
 
+  updateCards(playerCards) {
+    this.playerCards = playerCards
+  }
+
   get _canPlaceCard() {
     return this.submittedCards.length === 0 && this.placedCards.length < this.maxPlaced
   }

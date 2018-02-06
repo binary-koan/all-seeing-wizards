@@ -1,20 +1,22 @@
 class PickActions
-  include Result::Mixin
+  attr_reader :game, :player_cards, :ids
 
-  attr_reader :player_cards, :ids
-
-  def initialize(player_cards, picked_ids:)
+  def initialize(game, player_cards, picked_ids:)
+    @game = game
     @player_cards = player_cards
     @ids = picked_ids
   end
 
   def call
-    return Failure(:no_cards) unless ids.present?
-    return Failure(:cards_not_in_hand) unless cards_in_hand?
+    return fail(:no_cards) unless ids.present?
+    return fail(:cards_not_in_hand) unless cards_in_hand?
 
-    ids.each.with_index { |id, index| place_card!(id, index) }
+    game.transaction do
+      ids.each.with_index { |id, index| place_card!(id, index) }
+    end
 
-    Success
+    GameChannel.broadcast_to(game, event: "hand_updated", player_cards: player_cards.as_json(include: [:card]))
+    AdvanceGame.new(game).call
   end
 
   private
@@ -29,5 +31,9 @@ class PickActions
 
   def player_card_ids
     @player_card_ids = player_cards.map(&:id)
+  end
+
+  def fail(reason)
+    GameChannel.broadcast_to(game, event: "submit_cards_failed", error: reason)
   end
 end

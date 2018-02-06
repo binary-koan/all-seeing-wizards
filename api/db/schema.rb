@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180122045156) do
+ActiveRecord::Schema.define(version: 20180205232555) do
 
   create_table "board_objects", force: :cascade do |t|
     t.integer "board_id"
@@ -104,6 +104,16 @@ ActiveRecord::Schema.define(version: 20180122045156) do
     t.datetime "updated_at", null: false
     t.datetime "connected_at"
     t.datetime "disconnected_at"
+  end
+
+  create_table "modifiers", force: :cascade do |t|
+    t.text "modifier_type"
+    t.text "duration_type"
+    t.integer "duration"
+    t.text "attached_to_type"
+    t.integer "attached_to_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "packs", force: :cascade do |t|

@@ -10,6 +10,7 @@ class Game < ApplicationRecord
   has_one :host
   has_many :players
   has_many :player_cards, through: :players
+  has_many :active_modifiers, -> { active }, class_name: "Modifier", as: :attached_to
 
   def started?
     started_at.present?
@@ -17,7 +18,7 @@ class Game < ApplicationRecord
   alias_method :started, :started?
 
   def tiles
-    CalculateGameTiles.new(self).call
+    @tiles ||= CalculateGameTiles.new(self).call
   end
 
   def available_cards

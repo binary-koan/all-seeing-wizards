@@ -1,3 +1,4 @@
+import find from "lodash/find"
 import Game from "./game"
 import socket from "../util/socket"
 import request from "../util/request"
@@ -37,10 +38,11 @@ export default class GameManager {
         },
 
         hand_updated: (data) => {
-          console.log("TODO: hand_updated event")
-          // if (data.player_id.toString() === m.route.param("player_id")) {
-          //   this.player.updateHand(data.player_cards)
-          // }
+          const player = find(this.game.players, player => player.id === data.player_id)
+
+          if (player) {
+            player.hand.updateCards(data.player_cards)
+          }
         },
 
         game_started: () => {

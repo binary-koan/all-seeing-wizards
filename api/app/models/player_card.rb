@@ -5,6 +5,6 @@ class PlayerCard < ApplicationRecord
   scope :played, -> { where.not(played_index: nil) }
 
   def effect
-    @effect ||= CardEffect.new(self).call
+    @effect ||= card.effect_on(player)
   end
 end

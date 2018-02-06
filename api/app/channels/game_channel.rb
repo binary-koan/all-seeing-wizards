@@ -22,7 +22,7 @@ class GameChannel < ApplicationCable::Channel
   def submit_cards(data)
     return unless message_client.is_a?(Player)
 
-    result = PickActions.new(message_client.player_cards, picked_ids: data["card_ids"]).call
+    result = PickActions.new(message_client.game, message_client.player_cards, picked_ids: data["card_ids"]).call
 
     if result.success?
       GameChannel.broadcast_to(message_client.game, event: "hand_updated", player_cards: message_client.player_cards.as_json(include: [:card]))

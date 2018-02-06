@@ -8,13 +8,13 @@ class Card < ApplicationRecord
   EFFECT_INCREASE_DAMAGE = :increase_damage
 
   EFFECT_MAPPINGS = {
-    EFFECT_MOVE => nil,
-    EFFECT_ATTACK => nil,
-    EFFECT_PREVENT_ACTIONS => nil,
-    EFFECT_SHIELD => nil,
-    EFFECT_MIRROR_SHIELD => nil,
-    EFFECT_HEAL => nil,
-    EFFECT_INCREASE_DAMAGE => nil
+    EFFECT_MOVE => Effect::Move,
+    EFFECT_ATTACK => Effect::Attack,
+    EFFECT_PREVENT_ACTIONS => Effect::PreventActions,
+    EFFECT_SHIELD => Effect::Shield,
+    EFFECT_MIRROR_SHIELD => Effect::MirrorShield,
+    EFFECT_HEAL => Effect::Heal,
+    EFFECT_INCREASE_DAMAGE => Effect::IncreaseDamage
   }.with_indifferent_access
 
   belongs_to :pack
@@ -32,7 +32,7 @@ class Card < ApplicationRecord
   }
   validates :name, presence: true
 
-  def effect
-    EFFECT_MAPPINGS[effect_id]
+  def effect_on(player)
+    @effect ||= EFFECT_MAPPINGS[effect_id].new(self, player)
   end
 end

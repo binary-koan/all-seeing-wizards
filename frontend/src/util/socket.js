@@ -39,21 +39,29 @@ export default function socket({ params, channel, on, disableRedraw }) {
 
   const subscription = cable.subscriptions.create(channel, {
     connected() {
+      console.log("Socket connected")
+
       state = CONNECTED
       sendEvent({ event: "connected", subscription, forceRedraw: true })
     },
 
     disconnected() {
+      console.log("Socket disconnected")
+
       state = DISCONNECTED
       sendEvent({ event: "disconnected", subscription, forceRedraw: true })
     },
 
     rejected() {
+      console.log("Socket rejected")
+
       state = REJECTED
       sendEvent({ event: "rejected", forceRedraw: true })
     },
 
     received(data) {
+      console.log("Socket received", data)
+
       if (data && data.event) {
         sendEvent({ event: data.event, data, subscription })
       } else {

@@ -1,39 +1,53 @@
 class PerformActions
   attr_reader :game
 
+  delegate :player_cards, :players, to: :game
+
   def initialize(game)
     @game = game
   end
 
   def call
     game.transaction do
-      action_groups.each do |cards|
-        apply_actions!(reject_conflicting_actions(cards))
+      action_groups.each do |player_cards|
+        apply_results!(player_cards)
+        next_action!
       end
+
+      next_turn!
     end
   end
 
   private
 
   def action_groups
-    game.player_cards.
-      played.
-      group_by { |player_card| player_card.played_index }.
-      sort_by(&:first).
-      map { |_, player_cards| sort_by_effect(player_cards) }
+    player_cards.preload(:card).played.order(:played_index).
+      group_by(&:played_index)
+      map { |_, player_cards| player_cards.sort_by { |pc| pc.effect.sort_order } }
   end
 
-  def sort_by_effect(player_cards)
-    player_cards.sort_by { |player_card| player_card.effect.sort_order }
+  def apply_results!(player_cards)
+    results = player_cards.flat_map { |pc| pc.effect.results } +
+      player_cards.flat_map { |pc| pc.effect.post_action_results }
+
+    results.
+      reject { |result| results.any? { |other| result.conflicts_with?(other) } }.
+      each(&:apply!)
   end
 
-  def reject_conflicting_actions(player_cards)
-    player_cards.select do |player_card|
-      player_cards.none? { |other| player_card != other && player_card.effect.conflicts_with?(other) }
+  def next_action!
+    modifiers.each do |modifier|
+      modifier.next_action!
     end
   end
 
-  def apply_actions!(cards)
-    cards.each { |card| card.effect.perform!(game) }
+  def next_turn!
+    modifiers.each do |modifier|
+      modifier.next_turn!
+    end
+  end
+
+  def modifiers
+    Modifier.active.where(player_id: players.map(&:id))
   end
 end

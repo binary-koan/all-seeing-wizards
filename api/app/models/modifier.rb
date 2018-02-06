@@ -32,6 +32,8 @@ class Modifier < ApplicationRecord
   def shield_replacement_result(result)
     if result.is_a?(EffectResult::TakeDamage)
       EffectResult::ShieldDamage.new(player: result.player)
+    elsif result.is_a?(EffectResult::Knockback)
+      EffectResult::None.new
     end
   end
 

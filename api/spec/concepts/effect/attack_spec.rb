@@ -99,4 +99,30 @@ RSpec.describe Effect::Attack do
       end
     end
   end
+
+  describe "#post_action_results" do
+    context "with knockback" do
+      let(:knockback) { 1 }
+      let(:affected_player) { instance_double(Player, active_modifiers: []) }
+
+      before do
+        expect(card).to receive(:knockback).and_return(knockback)
+        expect(area_of_effect).to receive(:affected_players).at_least(:once).and_return([affected_player])
+      end
+
+      it "knocks the player back" do
+        expect(effect.post_action_results).to contain_exactly(instance_of(EffectResult::Knockback))
+        expect(effect.post_action_results.last).to have_attributes(player: affected_player, knockback: knockback)
+      end
+
+      context "when a player is shielded" do
+        let(:affected_player) { instance_double(Player, active_modifiers: [Modifier.shield.new]) }
+
+        it "overrides the knockback on that player" do
+          expect(effect.post_action_results).not_to include(instance_of(EffectResult::Knockback))
+          expect(effect.post_action_results).to include(instance_of(EffectResult::None))
+        end
+      end
+    end
+  end
 end

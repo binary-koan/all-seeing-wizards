@@ -7,4 +7,8 @@ class EffectResult::Shield < EffectResult::Base
     @duration_type = duration_type
     @duration = duration
   end
+
+  def apply!
+    target.modifiers.shield.create!(duration_type: duration_type, duration: duration)
+  end
 end

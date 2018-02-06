@@ -7,4 +7,8 @@ class EffectResult::PreventActions < EffectResult::Base
     @duration_type = duration_type
     @duration = duration
   end
+
+  def apply!
+    target.modifiers.prevent_actions.create!(duration_type: duration_type, duration: duration)
+  end
 end

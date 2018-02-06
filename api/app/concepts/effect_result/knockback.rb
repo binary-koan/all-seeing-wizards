@@ -10,4 +10,8 @@ class EffectResult::Knockback < EffectResult::Base
   def conflicts_with?(other)
     other.is_a?(EffectResult::Move) && target_position == other.target_position
   end
+
+  def apply!
+    target.update!(position: target_position)
+  end
 end

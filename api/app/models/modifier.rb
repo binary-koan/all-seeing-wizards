@@ -19,6 +19,8 @@ class Modifier < ApplicationRecord
     MODIFIER_INCREASE_DAMAGE => MODIFIER_INCREASE_DAMAGE
   }
 
+  validates_inclusion_of :duration_type, in: %w[action turn]
+
   def priority
     PRIORITY_MAPPING[modifier_type]
   end

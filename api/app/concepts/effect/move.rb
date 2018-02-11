@@ -9,7 +9,7 @@ class Effect::Move < Effect::Base
   # end
 
   def results
-    compute_results(EffectResult::Move, caster: player, target_position: target_position)
+    compute_results(EffectResult::Move, caster: player, target: player, target_position: target_position)
   end
 
   def target_position

@@ -8,6 +8,6 @@ class EffectResult::IncreaseDamage < EffectResult::Base
   end
 
   def apply!
-    target.modifiers.increase_damage.create!(amount: amount, duration_type: "action", duration: 1)
+    target.active_modifiers.increase_damage.create!(amount: amount, duration_type: "action", duration: 1)
   end
 end

@@ -9,12 +9,17 @@ class Position
     end
   end
 
+  NORTH = "north"
+  SOUTH = "south"
+  EAST = "east"
+  WEST = "west"
+
   FORWARD = {
-    north: Vector.new(0, -1),
-    south: Vector.new(0, 1),
-    east: Vector.new(-1, 0),
-    west: Vector.new(1, 0)
-  }.with_indifferent_access
+    NORTH => Vector.new(0, -1),
+    SOUTH => Vector.new(0, 1),
+    EAST => Vector.new(-1, 0),
+    WEST => Vector.new(1, 0)
+  }
 
   attr_reader :x, :y, :facing
 

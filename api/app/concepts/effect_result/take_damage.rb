@@ -8,6 +8,6 @@ class EffectResult::TakeDamage < EffectResult::Base
   end
 
   def apply!
-    target.update!(hp: [target.hp - amount, 0].min)
+    target.update!(hp: [target.hp - damage, 0].max)
   end
 end

@@ -1,8 +1,9 @@
 class EffectResult::Move < EffectResult::Base
-  attr_reader :caster, :target_position
+  attr_reader :caster, :target, :target_position
 
-  def initialize(caster:, target_position:)
+  def initialize(caster:, target:, target_position:)
     @caster = caster
+    @target = target
     @target_position = target_position
   end
 

@@ -11,22 +11,22 @@ RSpec.describe Effect::Move do
 
   let(:caster_modifiers) { [] }
   let(:amount) { 2 }
-  let(:position) { Position.new(x: 5, y: 5, facing: :north) }
+  let(:position) { Position.new(x: 5, y: 5, facing: Position::NORTH) }
 
   describe "#results" do
     context "in normal circumstances" do
       it "returns the effect" do
         expect(effect.results).to contain_exactly(instance_of(EffectResult::Move))
-        expect(effect.results.first).to have_attributes(caster: player, target_position: Position.new(x: 5, y: 3, facing: :north))
+        expect(effect.results.first).to have_attributes(target: player, target_position: Position.new(x: 5, y: 3, facing: Position::NORTH))
       end
     end
 
     context "when the resulting position would be out of the board" do
-      let(:position) { Position.new(x: 5, y: 0, facing: :north) }
+      let(:position) { Position.new(x: 5, y: 0, facing: Position::NORTH) }
 
       it "clamps the position to the board" do
         expect(effect.results).to contain_exactly(instance_of(EffectResult::Move))
-        expect(effect.results.first).to have_attributes(caster: player, target_position: Position.new(x: 5, y: 0, facing: :north))
+        expect(effect.results.first).to have_attributes(target: player, target_position: Position.new(x: 5, y: 0, facing: Position::NORTH))
       end
     end
 

@@ -10,7 +10,7 @@ class Player < ApplicationRecord
   has_many :cards, through: :player_cards
   has_many :active_modifiers, -> { active }, class_name: "Modifier"
 
-  validates :hp, numericality: { less_than_or_equal_to: MAX_HP }
+  validates :hp, presence: true, numericality: { less_than_or_equal_to: MAX_HP }
 
   def enough_cards_in_hand?
     player_cards.size >= HAND_SIZE
@@ -25,6 +25,12 @@ class Player < ApplicationRecord
   end
 
   def position
-    @position ||= Position.new(x: x, y: y, rotation: rotation)
+    Position.new(x: x, y: y, facing: rotation)
+  end
+
+  def position=(new_position)
+    self.x = new_position.x
+    self.y = new_position.y
+    self.rotation = new_position.facing
   end
 end

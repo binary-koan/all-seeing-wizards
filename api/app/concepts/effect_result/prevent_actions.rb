@@ -9,6 +9,6 @@ class EffectResult::PreventActions < EffectResult::Base
   end
 
   def apply!
-    target.modifiers.prevent_actions.create!(duration_type: duration_type, duration: duration)
+    target.active_modifiers.prevent_actions.create!(duration_type: duration_type, duration: duration)
   end
 end

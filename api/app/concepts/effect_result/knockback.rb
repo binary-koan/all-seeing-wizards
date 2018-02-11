@@ -8,7 +8,7 @@ class EffectResult::Knockback < EffectResult::Base
   end
 
   def conflicts_with?(other)
-    other.is_a?(EffectResult::Move) && target_position == other.target_position
+    other.is_a?(EffectResult::Knockback) && target_position == other.target_position
   end
 
   def apply!

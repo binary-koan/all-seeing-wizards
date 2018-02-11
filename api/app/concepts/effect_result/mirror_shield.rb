@@ -9,6 +9,6 @@ class EffectResult::MirrorShield < EffectResult::Base
   end
 
   def apply!
-    target.modifiers.mirror_shield.create!(duration_type: duration_type, duration: duration)
+    target.active_modifiers.mirror_shield.create!(duration_type: duration_type, duration: duration)
   end
 end

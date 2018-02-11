@@ -5,17 +5,20 @@ class Modifier < ApplicationRecord
 
   MODIFIER_PREVENT_ACTIONS = "prevent_actions"
   MODIFIER_SHIELD = "shield"
+  MODIFIER_MIRROR_SHIELD = "mirror_shield"
   MODIFIER_INCREASE_DAMAGE = "increase_damage"
 
   PRIORITY_MAPPING = {
     MODIFIER_PREVENT_ACTIONS => 1,
     MODIFIER_SHIELD => 2,
+    MODIFIER_MIRROR_SHIELD => 2,
     MODIFIER_INCREASE_DAMAGE => 3
   }
 
   enum modifier_type: {
     MODIFIER_PREVENT_ACTIONS => MODIFIER_PREVENT_ACTIONS,
     MODIFIER_SHIELD => MODIFIER_SHIELD,
+    MODIFIER_MIRROR_SHIELD => MODIFIER_MIRROR_SHIELD,
     MODIFIER_INCREASE_DAMAGE => MODIFIER_INCREASE_DAMAGE
   }
 
@@ -35,6 +38,7 @@ class Modifier < ApplicationRecord
   def replace_result_as_target(result)
     case modifier_type
     when MODIFIER_SHIELD then shield_from_attack(result)
+    when MODIFIER_MIRROR_SHIELD then reverse_damage(result)
     end
   end
 
@@ -43,6 +47,16 @@ class Modifier < ApplicationRecord
   def shield_from_attack(result)
     if result.is_a?(EffectResult::TakeDamage) || result.is_a?(EffectResult::PreventActions)
       EffectResult::ShieldDamage.new(caster: result.target)
+    elsif result.is_a?(EffectResult::Knockback)
+      EffectResult::None.new
+    end
+  end
+
+  def reverse_damage(result)
+    if result.is_a?(EffectResult::TakeDamage)
+      EffectResult::TakeDamage.new(caster: result.target, target: result.caster, damage: result.damage)
+    elsif result.is_a?(EffectResult::PreventActions)
+      EffectResult::PreventActions.new(caster: result.target, target: result.caster, duration_type: result.duration_type, duration: result.duration)
     elsif result.is_a?(EffectResult::Knockback)
       EffectResult::None.new
     end

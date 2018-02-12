@@ -1,15 +1,17 @@
 class PickActions
-  attr_reader :game, :player_cards, :ids
+  attr_reader :requested_by, :ids
 
-  def initialize(game, player_cards, picked_ids:)
-    @game = game
-    @player_cards = player_cards
+  delegate :game, :player_cards, to: :requested_by
+
+  def initialize(requested_by:, picked_ids:)
+    @requested_by = requested_by
     @ids = picked_ids
   end
 
   def call
-    return fail(:no_cards) unless ids.present?
-    return fail(:cards_not_in_hand) unless cards_in_hand?
+    return fail("not_a_player") unless requested_by.player?
+    return fail("no_cards") unless ids.present?
+    return fail("cards_not_in_hand") unless cards_in_hand?
 
     game.transaction do
       ids.each.with_index { |id, index| place_card!(id, index) }

@@ -1,13 +1,3 @@
-RSpec::Matchers.define :broadcast_to do |channel, data, options = {}|
-  match do |block|
-    expect(channel).to receive(:broadcast_to).with(options[:to] || anything, data)
-    block.call
-    true
-  end
-
-  supports_block_expectations
-end
-
 RSpec::Matchers.define :be_array_of do |type, options = {}|
   match do |actual|
     actual.each { |item| expect(item).to be_a(type) }

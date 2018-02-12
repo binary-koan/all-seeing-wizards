@@ -28,6 +28,7 @@ gem 'rack-cors'
 group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'action-cable-testing'
 end
 
 group :development do

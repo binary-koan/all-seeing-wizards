@@ -12,6 +12,14 @@ class Player < ApplicationRecord
 
   validates :hp, presence: true, numericality: { less_than_or_equal_to: MAX_HP }
 
+  def host?
+    false
+  end
+
+  def player?
+    true
+  end
+
   def enough_cards_in_hand?
     player_cards.size >= HAND_SIZE
   end

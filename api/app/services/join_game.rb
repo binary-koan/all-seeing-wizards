@@ -1,9 +1,10 @@
 class JoinGame
-  attr_reader :game, :tiles, :player, :error
+  attr_reader :game, :player, :error
 
-  def initialize(game, tiles:)
+  delegate :tiles, to: :game
+
+  def initialize(game)
     @game = game
-    @tiles = tiles
   end
 
   def call

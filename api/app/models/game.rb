@@ -27,4 +27,20 @@ class Game < ApplicationRecord
   def available_characters
     characters.where.not(id: players.pluck(:character_id))
   end
+
+  def full_json
+    as_json(
+      root: true,
+      methods: [:started, :tiles],
+      include: {
+        players: {
+          methods: [:connected],
+          include: {
+            character: {},
+            player_cards: { include: :card }
+          }
+        }
+      }
+    )
+  end
 end

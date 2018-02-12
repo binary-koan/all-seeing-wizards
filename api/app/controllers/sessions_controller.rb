@@ -1,8 +1,7 @@
 class SessionsController < ApplicationController
   def create
     game = Game.find(params[:game_id])
-    tiles = CalculateGameTiles.new(game).call
-    join_game = JoinGame.new(game, tiles: tiles)
+    join_game = JoinGame.new(game)
 
     if join_game.call
       render json: { player: join_game.player }

@@ -1,5 +1,5 @@
 # RSpec
-/spec/examples.txt
+/api/spec/examples.txt
 
 # Logs
 log/*.log
@@ -18,3 +18,6 @@ bundle.js
 
 # OS stuff
 .DS_Store
+
+# Test coverage
+/api/coverage

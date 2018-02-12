@@ -12,11 +12,11 @@ class StartGame
   end
 
   def call
-    return cannot_start(:must_be_host) unless requested_by.host?
-    return cannot_start(:already_started) if game.started?
-    return cannot_start(:not_enough_players) if not_enough_players?
-    return cannot_start(:not_all_players_connected) if not_all_players_connected?
-    return cannot_start(:too_many_players) if too_many_players?
+    return cannot_start("must_be_host") unless requested_by.host?
+    return cannot_start("already_started") if game.started?
+    return cannot_start("not_enough_players") if not_enough_players?
+    return cannot_start("not_all_players_connected") if not_all_players_connected?
+    return cannot_start("too_many_players") if too_many_players?
 
     game.transaction do
       DrawHands.new(game).call
@@ -40,7 +40,7 @@ class StartGame
     players.size > MAX_PLAYERS
   end
 
-  def cannot_start
-    GameChannel.broadcast_to(game, event: "cannot_start_game")
+  def cannot_start(reason)
+    GameChannel.broadcast_to(game, event: "cannot_start_game", error: reason)
   end
 end

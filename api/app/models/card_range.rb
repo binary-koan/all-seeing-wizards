@@ -19,4 +19,8 @@ class CardRange < ApplicationRecord
   def type
     TYPE_MAPPINGS[type_id]
   end
+
+  def affected_tiles(tiles)
+    raise NotImplementedError #TODO
+  end
 end

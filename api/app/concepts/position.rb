@@ -14,6 +14,8 @@ class Position
   EAST = "east"
   WEST = "west"
 
+  DIRECTIONS = [NORTH, SOUTH, EAST, WEST]
+
   FORWARD = {
     NORTH => Vector.new(0, -1),
     SOUTH => Vector.new(0, 1),

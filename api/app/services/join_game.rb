@@ -14,7 +14,7 @@ class JoinGame
       character: character,
       x: starting_tile.x,
       y: starting_tile.y,
-      rotation: Position::NORTH
+      rotation: Rotation::NORTH
     )
     true
   end

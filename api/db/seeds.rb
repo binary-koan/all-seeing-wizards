@@ -77,7 +77,7 @@ class SeedCards
   WHOLE_MAP_RANGE = "whole_map"
   POINT_RANGE = "point"
   AREA_RANGE_MATCHER = /\A(?<size>\d+)x\k<size> area (?<position>in_front|around)\z/
-  LINE_RANGE_MATCHER = /\Aline( (?<position>left|right|behind))?\z/
+  LINE_RANGE_MATCHER = /\Aline( (?<position>in_front|left|right|behind))?\z/
 
   DURATION_MATCHER = /((?<number>\d+) )?(?<type>action|turn)s?/
   DEFAULT_DURATION = 1
@@ -121,9 +121,9 @@ class SeedCards
     elsif descriptor == POINT_RANGE
       { type_id: "point" }
     elsif (match = AREA_RANGE_MATCHER.match(descriptor))
-      { type_id: "area", size: match[:size], position: match[:position] }
+      { type_id: "area", size: match[:size], position: match[:position] || "around" }
     elsif (match = LINE_RANGE_MATCHER.match(descriptor))
-      { type_id: "line", position: match[:position] }
+      { type_id: "line", position: match[:position] || "in_front" }
     else
       raise "Invalid range: #{descriptor}"
     end

@@ -16,6 +16,8 @@ class PerformActions
 
       next_turn!
     end
+
+    all_results
   end
 
   private
@@ -30,9 +32,11 @@ class PerformActions
     results = player_cards.flat_map { |pc| pc.effect.results } +
       player_cards.flat_map { |pc| pc.effect.post_action_results }
 
-    results.
-      reject { |result| results.any? { |other| result.conflicts_with?(other) } }.
-      each(&:apply!)
+    results = results.reject { |result| results.any? { |other| result.conflicts_with?(other) } }
+
+    all_results.concat(results)
+
+    results.each(&:apply!)
   end
 
   def next_action!
@@ -49,5 +53,9 @@ class PerformActions
 
   def modifiers
     Modifier.active.where(player_id: players.map(&:id))
+  end
+
+  def all_results
+    @all_results ||= []
   end
 end

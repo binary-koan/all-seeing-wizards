@@ -3,10 +3,13 @@ class Character < ApplicationRecord
   has_many :players
 
   CHARACTER_TYPE_MAPPINGS = {
+    no_powers: nil,
     wind_worker: nil, #TODO
     paladin: nil,
     dark_lord: nil,
     alchemist: nil,
     midas: nil
   }.with_indifferent_access
+
+  enum character_type: CHARACTER_TYPE_MAPPINGS.keys.map { |key| [key, key] }.to_h
 end

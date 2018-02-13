@@ -23,6 +23,7 @@ class Effect::Attack < Effect::Base
   end
 
   def knockback_position(player)
+    #TODO backward relative to the caster
     player.position.backward(card.knockback).clamp(
       min_x: game.tiles.min_x,
       min_y: game.tiles.min_y,

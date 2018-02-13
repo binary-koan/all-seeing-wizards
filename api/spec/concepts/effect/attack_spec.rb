@@ -104,7 +104,7 @@ RSpec.describe Effect::Attack do
     context "with knockback" do
       let(:knockback) { 1 }
       let(:affected_player) { instance_double(Player, active_modifiers: [], position: position) }
-      let(:position) { Position.new(x: 5, y: 5, facing: Position::NORTH) }
+      let(:position) { Position.new(x: 5, y: 5, facing: Rotation::NORTH) }
 
       before do
         expect(card).to receive(:knockback).at_least(:once).and_return(knockback)

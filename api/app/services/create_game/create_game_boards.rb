@@ -26,7 +26,7 @@ class CreateGame
     end
 
     def random_rotation
-      Position::DIRECTIONS.sample
+      Rotation::DIRECTIONS.sample
     end
 
     def board_count

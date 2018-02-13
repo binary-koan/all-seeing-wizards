@@ -1,8 +1,16 @@
 module PackSpecSupport
+  def create_realistic_pack!
+    pack = create_pack_with_boards!
+    pack.boards.each { |board| setup_plain_board!(board) }
+    4.times { |i| pack.characters.no_powers.create!(name: "Character #{i + 1}") }
+
+    pack
+  end
+
   def create_pack_with_boards!
     pack = Pack.create!(name: "Pack with Boards")
 
-    4.times.map { pack.boards.create! }
+    4.times { pack.boards.create! }
 
     pack
   end
@@ -14,6 +22,6 @@ module PackSpecSupport
   end
 
   def add_character!(pack)
-    pack.characters.create!(name: "Character 1", character_type: Character::CHARACTER_TYPE_MAPPINGS.keys.first)
+    pack.characters.no_powers.create!(name: "Character 1")
   end
 end

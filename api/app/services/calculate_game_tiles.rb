@@ -27,6 +27,7 @@ class CalculateGameTiles
   end
 
   def position_for(tile)
+    #TODO: Doesn't take into account rotation?
     {
       x: tile.index % Board::SIZE,
       y: tile.index / Board::SIZE

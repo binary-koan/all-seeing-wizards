@@ -26,7 +26,7 @@ class CreateGame
     end
 
     def random_rotation
-      GameBoard::ROTATION_MAPPINGS.keys.sample
+      Position::DIRECTIONS.sample
     end
 
     def board_count

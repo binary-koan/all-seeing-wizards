@@ -5,7 +5,7 @@ RSpec.describe Effect::Attack do
 
   subject(:effect) { Effect::Attack.new(card, player) }
 
-  let(:game) { active_record_double(Game, tiles: instance_double(TileBoard, width: 10, height: 10)) }
+  let(:game) { active_record_double(Game, tiles: instance_double(TileBoard, min_x: 0, max_x: 9, min_y: 0, max_y: 9)) }
   let(:card) { instance_double(Card, damage: damage) }
   let(:player) { instance_double(Player, game: game, active_modifiers: caster_modifiers) }
 

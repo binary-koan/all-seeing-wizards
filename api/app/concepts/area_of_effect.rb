@@ -1,10 +1,11 @@
 class AreaOfEffect
-  attr_reader :players, :tiles, :ranges
+  attr_reader :players, :tiles, :ranges, :center
 
-  def initialize(players:, tiles:, ranges:)
+  def initialize(players:, tiles:, ranges:, center:)
     @players = players
     @tiles = tiles
     @ranges = ranges
+    @center = center
   end
 
   def affected_players
@@ -12,7 +13,7 @@ class AreaOfEffect
   end
 
   def affected_tiles
-    @affected_tiles ||= ranges.flat_map { |range| range.affected_tiles(tiles) }
+    @affected_tiles ||= ranges.flat_map { |range| range.affected_tiles(tiles, center: center) }
   end
 
   private

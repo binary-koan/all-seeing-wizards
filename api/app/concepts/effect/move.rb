@@ -9,11 +9,6 @@ class Effect::Move < Effect::Base
 
   def target_position
     #TODO facing direction
-    player.position.forward(card.amount).clamp(
-      min_x: game.tiles.min_x,
-      min_y: game.tiles.min_y,
-      max_x: game.tiles.max_x,
-      max_y: game.tiles.max_y
-    )
+    player.position.forward(card.amount).clamp(game.tiles)
   end
 end

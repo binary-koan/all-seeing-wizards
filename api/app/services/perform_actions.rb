@@ -24,7 +24,7 @@ class PerformActions
 
   def action_groups
     player_cards.preload(:card).played.order(:played_index).
-      group_by(&:played_index)
+      group_by(&:played_index).
       map { |_, player_cards| player_cards.sort_by { |pc| pc.effect.sort_order } }
   end
 
@@ -35,6 +35,10 @@ class PerformActions
     results = results.reject { |result| results.any? { |other| result.conflicts_with?(other) } }
 
     all_results.concat(results)
+
+    p players.map(&:position)
+    p all_results.map(&:class)
+    puts "---"
 
     results.each(&:apply!)
   end

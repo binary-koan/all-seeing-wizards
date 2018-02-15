@@ -30,14 +30,14 @@ RSpec.describe PerformActions do
     let(:players) do
       [
         game.players.create!(
-          character: Character.no_powers.new,
+          character: Character.no_powers.new(pack: pack),
           x: 2,
           y: 2,
           rotation: Rotation::NORTH,
           hp: 3
         ),
         game.players.create!(
-          character: Character.no_powers.new,
+          character: Character.no_powers.new(pack: pack),
           x: 2,
           y: 3,
           rotation: Rotation::NORTH,
@@ -71,7 +71,7 @@ RSpec.describe PerformActions do
     end
 
     #TODO
-    xit "performs the actions" do
+    it "performs the actions" do
       expect(service.call).to eq [
         EffectResult::Move.new(caster: players.first, target: players.first, target_position: Position.new(x: 2, y: 1, facing: Rotation::NORTH)),
         EffectResult::Move.new(caster: players.second, target: players.second, target_position: Position.new(x: 3, y: 3, facing: Rotation::EAST)),

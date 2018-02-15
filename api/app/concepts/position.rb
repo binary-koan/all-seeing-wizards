@@ -26,15 +26,23 @@ class Position
 
   def forward(amount)
     forward_vector = FORWARD[facing] * amount
-    Position.new(x: x + forward_vector.x, y: y + forward_vector.y, facing: facing)
+    offset(forward_vector.x, forward_vector.y)
   end
 
   def backward(amount)
     forward(-amount)
   end
 
-  def clamp(min_x:, min_y:, max_x:, max_y:)
-    Position.new(x: x.clamp(min_x, max_x), y: y.clamp(min_y, max_y), facing: facing)
+  def turn(direction)
+    Position.new(x: x, y: y, facing: Rotation.turn(facing, direction))
+  end
+
+  def offset(x_offset, y_offset)
+    Position.new(x: x + x_offset, y: y + y_offset, facing: facing)
+  end
+
+  def clamp(bounds)
+    Position.new(x: x.clamp(bounds.min_x, bounds.max_x), y: y.clamp(bounds.min_y, bounds.max_y), facing: facing)
   end
 
   def ==(other)

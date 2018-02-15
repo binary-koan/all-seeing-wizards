@@ -24,15 +24,10 @@ class Effect::Attack < Effect::Base
 
   def knockback_position(player)
     #TODO backward relative to the caster
-    player.position.backward(card.knockback).clamp(
-      min_x: game.tiles.min_x,
-      min_y: game.tiles.min_y,
-      max_x: game.tiles.max_x,
-      max_y: game.tiles.max_y
-    )
+    player.position.backward(card.knockback).clamp(game.tiles)
   end
 
   def area_of_effect
-    @area_of_effect ||= AreaOfEffect.new(players: game.players, tiles: game.tiles, ranges: card.card_ranges)
+    @area_of_effect ||= AreaOfEffect.new(players: game.players, tiles: game.tiles, ranges: card.card_ranges, center: player.position)
   end
 end

@@ -17,8 +17,8 @@ RSpec.describe PerformActions do
     # . . . . .
     # . . < . .
     # Action 3: Player 1 attacks front and back, player 2 heals
-    # . . . . .
     # . . ^ . .
+    # . . . . .
     # . . < . .
 
     subject(:service) { PerformActions.new(game) }

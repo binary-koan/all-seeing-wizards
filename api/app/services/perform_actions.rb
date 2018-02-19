@@ -29,17 +29,22 @@ class PerformActions
   end
 
   def apply_results!(player_cards)
-    results = player_cards.flat_map { |pc| pc.effect.results } +
-      player_cards.flat_map { |pc| pc.effect.post_action_results }
+    applied_results = player_cards.
+      map(&:effect).
+      group_by(&:sort_order).
+      sort_by(&:first).
+      flat_map { |_, effects| apply_effects!(effects, :results) + apply_effects!(effects, :post_action_results) }
 
-    results = results.reject { |result| results.any? { |other| result.conflicts_with?(other) } }
+    all_results << applied_results
 
-    all_results.concat(results)
-
-    p players.map(&:position)
-    p all_results.map(&:class)
+    p players.each(&:reload).map(&:position)
+    p all_results.map { |r| r.map(&:class) }
     puts "---"
+  end
 
+  def apply_effects!(effects, results_method)
+    results = effects.each(&:reload).flat_map(&results_method)
+    results = results.reject { |result| results.any? { |other| result.conflicts_with?(other) } }
     results.each(&:apply!)
   end
 

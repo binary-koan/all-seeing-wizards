@@ -16,16 +16,16 @@ class Position
     Rotation::WEST => Vector.new(1, 0)
   }
 
-  attr_reader :x, :y, :facing
+  attr_reader :x, :y, :facing_direction
 
   def initialize(x:, y:, facing:)
     @x = x
     @y = y
-    @facing = facing
+    @facing_direction = facing
   end
 
   def forward(amount)
-    forward_vector = FORWARD[facing] * amount
+    forward_vector = FORWARD[facing_direction] * amount
     offset(forward_vector.x, forward_vector.y)
   end
 
@@ -33,19 +33,23 @@ class Position
     forward(-amount)
   end
 
+  def facing(direction)
+    Position.new(x: x, y: y, facing: direction)
+  end
+
   def turn(direction)
-    Position.new(x: x, y: y, facing: Rotation.turn(facing, direction))
+    Position.new(x: x, y: y, facing: Rotation.turn(facing_direction, direction))
   end
 
   def offset(x_offset, y_offset)
-    Position.new(x: x + x_offset, y: y + y_offset, facing: facing)
+    Position.new(x: x + x_offset, y: y + y_offset, facing: facing_direction)
   end
 
   def clamp(bounds)
-    Position.new(x: x.clamp(bounds.min_x, bounds.max_x), y: y.clamp(bounds.min_y, bounds.max_y), facing: facing)
+    Position.new(x: x.clamp(bounds.min_x, bounds.max_x), y: y.clamp(bounds.min_y, bounds.max_y), facing: facing_direction)
   end
 
   def ==(other)
-    x == other.x && y == other.y && facing == other.facing
+    x == other.x && y == other.y && facing_direction == other.facing_direction
   end
 end

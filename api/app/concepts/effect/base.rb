@@ -25,6 +25,10 @@ class Effect::Base
     []
   end
 
+  def reload
+    player.reload
+  end
+
   protected
 
   def compute_results(result_type, **attrs)

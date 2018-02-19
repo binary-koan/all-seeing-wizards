@@ -39,6 +39,6 @@ class Player < ApplicationRecord
   def position=(new_position)
     self.x = new_position.x
     self.y = new_position.y
-    self.rotation = new_position.facing
+    self.rotation = new_position.facing_direction
   end
 end

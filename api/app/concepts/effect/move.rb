@@ -8,7 +8,8 @@ class Effect::Move < Effect::Base
   end
 
   def target_position
-    #TODO facing direction
-    player.position.forward(card.amount).clamp(game.tiles)
+    p player
+    puts "turning #{player.position.facing_direction} by #{card.rotation} => #{player.position.turn(card.rotation).facing_direction}"
+    player.position.turn(card.rotation).forward(card.amount).clamp(game.tiles)
   end
 end

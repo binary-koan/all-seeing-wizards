@@ -26,7 +26,7 @@ class CardRange < ApplicationRecord
     when TYPE_LINE
       line_from(tiles, center)
     when TYPE_POINT
-      point_in_front(center)
+      point_in_front(tiles, center)
     when TYPE_WHOLE_MAP
       tiles
     end
@@ -36,7 +36,7 @@ class CardRange < ApplicationRecord
 
   def area_around(tiles, center)
     offset = (size / 2).floor
-    top_left = center.offset(offset, offset).clamp(tiles)
+    top_left = center.offset(-offset, -offset).clamp(tiles)
     bottom_right = center.offset(offset, offset).clamp(tiles)
 
     if position == POSITION_IN_FRONT
@@ -44,10 +44,7 @@ class CardRange < ApplicationRecord
       bottom_right = bottom_right.forward(offset + 1)
     end
 
-    tiles.select do |tile|
-      tile.position.x <= top_left.x && tile.position.y <= top_left.y &&
-        tile.position.x <= bottom_right.x && tile.position.y <= bottom_right.y
-    end
+    tiles.select { |tile| tile.x.between?(top_left.x, bottom_right.x) && tile.y.between?(top_left.y, bottom_right.y) }
   end
 
   def line_from(tiles, center)
@@ -65,6 +62,6 @@ class CardRange < ApplicationRecord
 
   def point_in_front(tiles, center)
     point = center.forward(1)
-    tiles.find { |tile| tile.x == point.x && tile.y == point.y }
+    [tiles.find { |tile| tile.x == point.x && tile.y == point.y }].compact
   end
 end

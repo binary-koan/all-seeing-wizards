@@ -1,4 +1,6 @@
 class Card < ApplicationRecord
+  include HasDuration
+
   EFFECT_MOVE = :move
   EFFECT_ATTACK = :attack
   EFFECT_PREVENT_ACTIONS = :prevent_actions

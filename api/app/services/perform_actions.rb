@@ -36,10 +36,6 @@ class PerformActions
       flat_map { |_, effects| apply_effects!(effects, :results) + apply_effects!(effects, :post_action_results) }
 
     all_results << applied_results
-
-    p players.each(&:reload).map(&:position)
-    p all_results.map { |r| r.map(&:class) }
-    puts "---"
   end
 
   def apply_effects!(effects, results_method)

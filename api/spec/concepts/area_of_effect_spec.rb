@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AreaOfEffect do
-  subject(:area_of_effect) { AreaOfEffect.new(players: players, tiles: tiles, ranges: ranges) }
+  subject(:area_of_effect) { AreaOfEffect.new(players: players, tiles: tiles, ranges: ranges, center: center) }
+
+  let(:center) { Position.new(x: 0, y: 0, facing: Rotation::NORTH) }
 
   let(:players) do
     [
@@ -35,7 +37,7 @@ RSpec.describe AreaOfEffect do
 
   describe "#affected_tiles" do
     it "returns all affected tiles" do
-      expect(area_of_effect.affected_tiles).to contain_exactly(*ranges.flat_map { |range| range.affected_tiles(tiles) })
+      expect(area_of_effect.affected_tiles).to contain_exactly(*ranges.flat_map { |range| range.affected_tiles(tiles, center: center) })
     end
   end
 end

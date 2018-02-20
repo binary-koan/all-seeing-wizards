@@ -70,13 +70,19 @@ RSpec.describe PerformActions do
       players.second.player_cards.create!(played_index: 2, card: pack.cards.heal.create!(name: "Heal", amount: 2))
     end
 
-    #TODO
-    it "performs the actions" do
-      expect(service.call).to eq [
-        EffectResult::Move.new(caster: players.first, target: players.first, target_position: Position.new(x: 2, y: 1, facing: Rotation::NORTH)),
-        EffectResult::Move.new(caster: players.second, target: players.second, target_position: Position.new(x: 3, y: 3, facing: Rotation::EAST)),
-        # ...
+    it "performs the actions and returns the results" do
+      expect(service.call).to match [
+        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Move)],
+        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)],
+        [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)]
       ]
+
+      players.each(&:reload)
+
+      expect(players.first.position).to eq Position.new(x: 2, y: 1, facing: Rotation::NORTH)
+      expect(players.first.hp).to eq 3
+      expect(players.second.position).to eq Position.new(x: 2, y: 3, facing: Rotation::WEST)
+      expect(players.second.hp).to eq 1
     end
   end
 end

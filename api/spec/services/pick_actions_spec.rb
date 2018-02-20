@@ -4,8 +4,15 @@ RSpec.describe PickActions do
   include ActiveRecordSpecSupport
 
   let(:game) { active_record_double(Game) }
-  let(:player_cards) { [instance_double(PlayerCard, id: 1), instance_double(PlayerCard, id: 2), instance_double(PlayerCard, id: 3)] }
   let(:player) { instance_double(Player, player?: true, game: game, player_cards: player_cards) }
+
+  let(:player_cards) do
+    [
+      instance_double(PlayerCard, id: 1, as_json: { id: 1 }),
+      instance_double(PlayerCard, id: 2, as_json: { id: 2 }),
+      instance_double(PlayerCard, id: 3, as_json: { id: 3 })
+    ]
+  end
 
   subject(:service) { PickActions.new(requested_by: player, picked_ids: ids) }
 

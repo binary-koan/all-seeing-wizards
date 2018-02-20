@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe PerformActions do
   include PackSpecSupport
 
-  describe "integration example" do
+  describe "attack example" do
     # Base state
     # . . . . .
     # . . ^ . .
@@ -83,6 +83,65 @@ RSpec.describe PerformActions do
       expect(players.first.hp).to eq 3
       expect(players.second.position).to eq Position.new(x: 2, y: 3, facing: Rotation::WEST)
       expect(players.second.hp).to eq 1
+    end
+  end
+
+  describe "actions prevented example" do
+    subject(:service) { PerformActions.new(game) }
+
+    let(:pack) { create_realistic_pack! }
+
+    let(:game) { CreateGame.new(pack_ids: [pack.id]).call }
+
+    let(:players) do
+      [
+        game.players.create!(
+          character: Character.no_powers.new(pack: pack),
+          x: 2,
+          y: 2,
+          rotation: Rotation::NORTH,
+          hp: 3
+        ),
+        game.players.create!(
+          character: Character.no_powers.new(pack: pack),
+          x: 2,
+          y: 3,
+          rotation: Rotation::NORTH,
+          hp: 3
+        )
+      ]
+    end
+
+    before do
+      players.first.player_cards.create!(played_index: 0, card: pack.cards.prevent_actions.create!(
+        name: "Stop Everything",
+        duration_type: Card::DURATION_TURN,
+        duration: 1,
+        card_ranges: [
+          CardRange.whole_map.new
+        ]
+      ))
+      players.first.player_cards.create!(played_index: 1, card: pack.cards.heal.create!(name: "Heal", amount: 2))
+      players.first.player_cards.create!(played_index: 2, card: pack.cards.move.create!(name: "Turn", amount: 1, rotation: Rotation::CLOCKWISE))
+
+      players.second.player_cards.create!(played_index: 0, card: pack.cards.attack.create!(name: "Attack", damage: 2))
+      players.second.player_cards.create!(played_index: 1, card: pack.cards.move.create!(name: "Reverse", amount: 1, rotation: Rotation::REVERSE))
+      players.second.player_cards.create!(played_index: 2, card: pack.cards.heal.create!(name: "Heal", amount: 2))
+    end
+
+    it "stops actions being performed then expires the modifier" do
+      expect(service.call).to match [
+        [an_instance_of(EffectResult::AttemptPreventActions), an_instance_of(EffectResult::PreventActions), an_instance_of(EffectResult::None)],
+        [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None)],
+        [an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::Move)]
+      ]
+
+      players.each(&:reload)
+
+      expect(players.first.hp).to eq 5
+      expect(players.second.hp).to eq 3
+
+      expect(players.first.active_modifiers).to be_empty
     end
   end
 end

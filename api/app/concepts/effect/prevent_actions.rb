@@ -19,6 +19,6 @@ class Effect::PreventActions < Effect::Base
   end
 
   def area_of_effect
-    AreaOfEffect.new(players: game.players, tiles: game.tiles, ranges: card.card_ranges)
+    AreaOfEffect.new(players: game.players, tiles: game.tiles, ranges: card.card_ranges, center: player.position)
   end
 end

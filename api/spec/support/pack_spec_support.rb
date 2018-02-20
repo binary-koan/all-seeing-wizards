@@ -8,11 +8,15 @@ module PackSpecSupport
   end
 
   def create_pack_with_boards!
-    pack = Pack.create!(name: "Pack with Boards")
+    pack = create_empty_pack!
 
     4.times { pack.boards.create! }
 
     pack
+  end
+
+  def create_empty_pack!
+    Pack.create!(name: "Test Pack")
   end
 
   def setup_plain_board!(board)
@@ -23,5 +27,9 @@ module PackSpecSupport
 
   def add_character!(pack)
     pack.characters.no_powers.create!(name: "Character 1")
+  end
+
+  def add_card!(pack)
+    pack.cards.move.create!(name: "Test Move", amount: 1, rotation: Rotation::NONE)
   end
 end

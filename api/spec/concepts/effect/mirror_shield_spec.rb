@@ -11,7 +11,7 @@ RSpec.describe Effect::MirrorShield do
 
   let(:caster_modifiers) { [] }
   let(:duration) { 2 }
-  let(:duration_type) { "action" }
+  let(:duration_type) { HasDuration::DURATION_ACTION }
 
   describe "#results" do
     context "in normal circumstances" do

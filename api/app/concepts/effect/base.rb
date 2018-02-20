@@ -36,7 +36,12 @@ class Effect::Base
 
     replacements = []
     replacements += caster_replacement_results(attrs[:caster].active_modifiers, original_result) if attrs[:caster]
-    replacements += target_replacement_results(attrs[:target].active_modifiers, original_result) if attrs[:target]
+
+    if attrs[:target]
+      replacements += ([original_result] + replacements.map(&:second)).flat_map do |result|
+        target_replacement_results(attrs[:target].active_modifiers, result)
+      end
+    end
 
     priority_results(replacements.select(&:second)).presence || [original_result]
   end

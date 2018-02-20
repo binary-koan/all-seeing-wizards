@@ -12,7 +12,7 @@ RSpec.describe Effect::PreventActions do
   let(:area_of_effect) { instance_double(AreaOfEffect, affected_tiles: [instance_double(PositionedTile)], affected_players: []) }
   let(:caster_modifiers) { [] }
   let(:duration) { 2 }
-  let(:duration_type) { "action" }
+  let(:duration_type) { HasDuration::DURATION_ACTION }
 
   before do
     expect(effect).to receive(:area_of_effect).at_least(:once).and_return(area_of_effect)

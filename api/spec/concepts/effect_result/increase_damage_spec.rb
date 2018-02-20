@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe EffectResult::IncreaseDamage do
-  subject(:effect) { EffectResult::IncreaseDamage.new(caster: nil, target: target, amount: amount) }
+  subject(:effect) do
+    EffectResult::IncreaseDamage.new(caster: nil, target: target, amount: amount, duration_type: HasDuration::DURATION_ACTION, duration: 2)
+  end
 
   let(:target) { Player.create!(game: Game.new, character: Character.new) }
   let(:amount) { 2 }

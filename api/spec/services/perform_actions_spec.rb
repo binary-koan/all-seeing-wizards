@@ -47,10 +47,10 @@ RSpec.describe PerformActions do
     end
 
     before do
-      players.first.player_cards.create!(played_index: 0, card: pack.cards.move.create!(name: "Forward", amount: 1, rotation: Rotation::NONE))
+      players.first.player_cards.create!(played_index: 0, card: pack.cards.increase_damage.create!(name: "Power Up", amount: 1, duration_type: Card::DURATION_ACTION, duration: 2))
       players.first.player_cards.create!(played_index: 1, card: pack.cards.attack.create!(
         name: "Attack",
-        damage: 2,
+        damage: 1,
         card_ranges: [
           CardRange.line.new(position: "in_front"),
           CardRange.line.new(position: "behind")
@@ -72,14 +72,14 @@ RSpec.describe PerformActions do
 
     it "performs the actions and returns the results" do
       expect(service.call).to match [
-        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Move)],
+        [an_instance_of(EffectResult::IncreaseDamage), an_instance_of(EffectResult::Move)],
         [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)],
         [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)]
       ]
 
       players.each(&:reload)
 
-      expect(players.first.position).to eq Position.new(x: 2, y: 1, facing: Rotation::NORTH)
+      expect(players.first.position).to eq Position.new(x: 2, y: 2, facing: Rotation::NORTH)
       expect(players.first.hp).to eq 3
       expect(players.second.position).to eq Position.new(x: 2, y: 3, facing: Rotation::WEST)
       expect(players.second.hp).to eq 1

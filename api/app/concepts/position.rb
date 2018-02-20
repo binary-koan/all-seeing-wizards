@@ -33,10 +33,6 @@ class Position
     forward(-amount)
   end
 
-  def facing(direction)
-    Position.new(x: x, y: y, facing: direction)
-  end
-
   def turn(direction)
     Position.new(x: x, y: y, facing: Rotation.turn(facing_direction, direction))
   end

@@ -4,7 +4,7 @@ RSpec.describe EffectResult::Shield do
   subject(:effect) { EffectResult::Shield.new(caster: nil, target: target, duration_type: duration_type, duration: duration) }
 
   let(:target) { Player.create!(game: Game.new, character: Character.new) }
-  let(:duration_type) { "action" }
+  let(:duration_type) { HasDuration::DURATION_ACTION }
   let(:duration) { 2 }
 
   describe "#apply!" do

@@ -38,6 +38,12 @@ RSpec.describe GameChannel, type: :channel do
       expect(NotifyConnected).to be_called_with(player)
       subscribe
     end
+
+    it "notifies when the player disconnects" do
+      subscribe
+      expect(NotifyDisconnected).to be_called_with(player)
+      perform :unsubscribed
+    end
   end
 
   describe "#start_game" do

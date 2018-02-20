@@ -6,7 +6,7 @@ RSpec.describe Effect::IncreaseDamage do
   subject(:effect) { Effect::IncreaseDamage.new(card, player) }
 
   let(:game) { active_record_double(Game) }
-  let(:card) { instance_double(Card, amount: amount) }
+  let(:card) { instance_double(Card, amount: amount, duration_type: Card::DURATION_ACTION, duration: 2) }
   let(:player) { instance_double(Player, game: game, active_modifiers: caster_modifiers) }
 
   let(:caster_modifiers) { [] }

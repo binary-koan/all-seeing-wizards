@@ -1,9 +1,5 @@
 class Position
   Vector = Struct.new(:x, :y) do
-    def +(other)
-      Vector.new(x + other.x, y + other.y)
-    end
-
     def *(amount)
       Vector.new(x * amount, y * amount)
     end

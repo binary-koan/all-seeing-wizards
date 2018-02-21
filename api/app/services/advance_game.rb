@@ -6,10 +6,15 @@ class AdvanceGame
   end
 
   def call
-    PerformActions.new(game).call if ready_to_perform_actions?
+    perform_actions if ready_to_perform_actions?
   end
 
   private
+
+  def perform_actions
+    results = PerformActions.new(game).call
+    GameChannel.broadcast_to(game, event: "actions_performed", results: results.map(&:default_json))
+  end
 
   def ready_to_perform_actions?
     game.players.all? { |player| player.enough_cards_played? }

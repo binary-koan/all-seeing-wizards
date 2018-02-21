@@ -13,4 +13,30 @@ RSpec.describe EffectResult::Move do
       expect(target.position).to eq(target_position)
     end
   end
+
+  describe "#conflicts_with?" do
+    context "with another move to the same position" do
+      let(:other) { EffectResult::Move.new(caster: nil, target: instance_double(Player), target_position: target_position) }
+
+      it "conflicts" do
+        expect(effect).to be_conflicts_with(other)
+      end
+    end
+
+    context "with itself" do
+      let(:other) { effect }
+
+      it "does not conflict" do
+        expect(effect).not_to be_conflicts_with(other)
+      end
+    end
+
+    context "with a different effect with the same position" do
+      let(:other) { EffectResult::Knockback.new(caster: nil, target: instance_double(Player), target_position: target_position) }
+
+      it "does not conflict" do
+        expect(effect).not_to be_conflicts_with(other)
+      end
+    end
+  end
 end

@@ -59,6 +59,15 @@ RSpec.describe Modifier, type: :model do
         expect(replacement_result).to be_a(EffectResult::None)
       end
     end
+
+    context "a different modifier" do
+      let(:modifier_type) { Modifier::MODIFIER_SHIELD }
+      let(:effect_result) { EffectResult::Base.new }
+
+      it "has no effect" do
+        expect(replacement_result).to eq(effect_result)
+      end
+    end
   end
 
   describe "#replace_result_as_target" do
@@ -90,6 +99,25 @@ RSpec.describe Modifier, type: :model do
         expect(replacement_result).to have_attributes(caster: effect_result.target, target: effect_result.caster)
       end
 
+      context "when the effect is knockback" do
+        let(:effect_result) { EffectResult::Knockback.new(caster: instance_double(Player), target: instance_double(Player), target_position: nil) }
+
+        it "prevents any effect result" do
+          expect(replacement_result).to be_a(EffectResult::None)
+        end
+      end
+
+      context "when the effect prevents actions" do
+        let(:caster) { instance_double(Player) }
+        let(:target) { instance_double(Player) }
+        let(:effect_result) { EffectResult::PreventActions.new(caster: caster, target: target, duration_type: HasDuration::DURATION_ACTION, duration: 1) }
+
+        it "reverses the effect" do
+          expect(replacement_result).to be_a(EffectResult::PreventActions)
+          expect(replacement_result).to have_attributes(caster: target, target: caster)
+        end
+      end
+
       context "when the effect is not an attack" do
         let(:effect_result) { EffectResult::Base.new }
 
@@ -105,6 +133,15 @@ RSpec.describe Modifier, type: :model do
 
       it "prevents any effect result" do
         expect(replacement_result).to be_a(EffectResult::None)
+      end
+    end
+
+    context "a different modifier" do
+      let(:modifier_type) { Modifier::MODIFIER_INCREASE_DAMAGE }
+      let(:effect_result) { EffectResult::Base.new }
+
+      it "has no effect" do
+        expect(replacement_result).to eq(effect_result)
       end
     end
   end

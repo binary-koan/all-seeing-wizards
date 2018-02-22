@@ -12,6 +12,8 @@ export default class GameManager {
     }).catch(e => {
       this.error = formatError(e)
     })
+
+    window.gameManager = this
   }
 
   perform(action, payload) {

@@ -31,7 +31,10 @@ export default class GameHost {
     if (!this.game) {
       return
     } else if (this.game.started) {
-      return m("p", "Started")
+      return m(StatusPanel, {
+        title: "Waiting for actions ...",
+        description: `0/${this.game.players.length} players locked in`
+      })
     } else {
       return m(StatusPanel, {
         title: "Waiting for players ...",

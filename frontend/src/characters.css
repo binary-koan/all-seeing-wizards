@@ -12,3 +12,13 @@
   --player-color-dark: var(--blue-dark);
   --player-color-light: var(--blue);
 }
+
+.pure-paladin {
+  --player-color-dark: var(--orange-dark);
+  --player-color-light: var(--orange);
+}
+
+.arcane-alchemist {
+  --player-color-dark: var(--green-dark);
+  --player-color-light: var(--green);
+}

@@ -46,6 +46,11 @@ export default class GameHost {
 
   view() {
     return [
+      this.gameManager.error && m(FatalError, {
+        title: "An unexpected error occurred! Try reloading the page",
+        message: this.gameManager.error.message,
+        exception: this.gameManager.error.exception
+      }),
       m("aside.game-host-sidebar", [
         m(".game-host-actions", [
           m("a[href=/]", { oncreate: m.route.link }, m(Icon, { name: "arrow-left" })),

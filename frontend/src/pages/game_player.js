@@ -36,6 +36,11 @@ export default class GamePlayer {
 
   view() {
     return m(".game-player", [
+      this.gameManager.error && m(FatalError, {
+        title: "An unexpected error occurred! Try reloading the page",
+        message: this.gameManager.error.message,
+        exception: this.gameManager.error.exception
+      }),
       this.player && m(PlayerView, {
         player: this.player,
         connected: true,

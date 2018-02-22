@@ -33,8 +33,16 @@ export default class GameManager {
       params,
       channel: "GameChannel",
       on: {
+        actions_performed: ({ results }) => {
+          console.log("TODO actions performed", results)
+        },
+
         player_updated: ({ player }) => {
           this.game.upsertPlayer(player)
+        },
+
+        submit_cards_failed: ({ error }) => {
+          this.error = formatError(error)
         },
 
         hand_updated: (data) => {
@@ -50,7 +58,7 @@ export default class GameManager {
         },
 
         cannot_start_game: ({ error }) => {
-          alert(error)
+          this.error = formatError(error)
         }
       }
     })

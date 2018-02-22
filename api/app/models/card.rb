@@ -37,4 +37,19 @@ class Card < ApplicationRecord
   def effect_on(player)
     @effect ||= EFFECT_MAPPINGS[effect_id].new(self, player)
   end
+
+  def default_json
+    {
+      id: id,
+      name: name,
+      tagline: tagline,
+      effect_id: effect_id,
+      amount: amount,
+      rotation: rotation,
+      damage: damage,
+      knockback: knockback,
+      duration_type: duration_type,
+      duration: duration
+    }
+  end
 end

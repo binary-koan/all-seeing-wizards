@@ -12,4 +12,11 @@ class Character < ApplicationRecord
   }.with_indifferent_access
 
   enum character_type: CHARACTER_TYPE_MAPPINGS.keys.map { |key| [key, key] }.to_h
+
+  def default_json
+    {
+      name: name,
+      character_type: character_type
+    }
+  end
 end

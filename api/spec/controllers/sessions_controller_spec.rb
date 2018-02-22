@@ -10,9 +10,9 @@ RSpec.describe SessionsController, type: :controller do
     context "when the game can be joined" do
       let(:join_game) { instance_double(JoinGame, call: true, player: player) }
 
-      it "renders the new player" do
+      it "renders the new player ID" do
         post :create, params: { game_id: game.id }
-        expect(response.body).to eq({ "player" => player }.as_json.to_json)
+        expect(response.body).to eq({ "player" => { "id" => player.id } }.to_json)
       end
     end
 

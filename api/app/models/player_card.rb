@@ -7,4 +7,12 @@ class PlayerCard < ApplicationRecord
   def effect
     @effect ||= card.effect_on(player)
   end
+
+  def full_json
+    {
+      id: id,
+      played_index: played_index,
+      card: card.default_json
+    }
+  end
 end

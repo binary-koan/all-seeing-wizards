@@ -66,4 +66,10 @@ RSpec.describe Player, type: :model do
       end
     end
   end
+
+  describe "#full_json" do
+    it "describes the player as JSON" do
+      expect(player.full_json.keys).to contain_exactly(:id, :connected, :position, :hp, :character, :player_cards)
+    end
+  end
 end

@@ -10,4 +10,11 @@ class Host < ApplicationRecord
   def player?
     false
   end
+
+  def default_json
+    {
+      id: id,
+      connected: connected?
+    }
+  end
 end

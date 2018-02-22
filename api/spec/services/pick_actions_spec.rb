@@ -8,9 +8,9 @@ RSpec.describe PickActions do
 
   let(:player_cards) do
     [
-      instance_double(PlayerCard, id: 1, as_json: { id: 1 }),
-      instance_double(PlayerCard, id: 2, as_json: { id: 2 }),
-      instance_double(PlayerCard, id: 3, as_json: { id: 3 })
+      instance_double(PlayerCard, id: 1, full_json: { id: 1 }),
+      instance_double(PlayerCard, id: 2, full_json: { id: 2 }),
+      instance_double(PlayerCard, id: 3, full_json: { id: 3 })
     ]
   end
 
@@ -54,7 +54,7 @@ RSpec.describe PickActions do
 
       expect(AdvanceGame).to be_called_with(game)
 
-      expect { service.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "hand_updated", player_cards: player_cards.map(&:as_json))
+      expect { service.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "hand_updated", player_cards: player_cards.map(&:full_json))
     end
   end
 end

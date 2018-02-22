@@ -9,7 +9,7 @@ class PositionedTile
     @y = y
   end
 
-  def as_json(options={})
-    tile.as_json(options).merge(x: x, y: y)
+  def default_json
+    tile.default_json.merge(x: x, y: y)
   end
 end

@@ -41,4 +41,20 @@ class Player < ApplicationRecord
     self.y = new_position.y
     self.rotation = new_position.facing_direction
   end
+
+  def default_json
+    {
+      id: id,
+      connected: connected?,
+      position: position.default_json,
+      hp: hp
+    }
+  end
+
+  def full_json
+    default_json.merge(
+      character: character.default_json,
+      player_cards: player_cards.map(&:full_json)
+    )
+  end
 end

@@ -14,7 +14,6 @@ class Game < ApplicationRecord
   def started?
     started_at.present?
   end
-  alias_method :started, :started?
 
   def tiles
     @tiles ||= CalculateGameTiles.new(self).call
@@ -29,18 +28,11 @@ class Game < ApplicationRecord
   end
 
   def full_json
-    as_json(
-      root: true,
-      methods: [:started, :tiles],
-      include: {
-        players: {
-          methods: [:connected],
-          include: {
-            character: {},
-            player_cards: { include: :card }
-          }
-        }
-      }
-    )
+    {
+      started: started?,
+      tiles: tiles.map(&:default_json),
+      host: host.default_json,
+      players: players.map(&:full_json)
+    }
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GamesController, type: :controller do
-  let(:game) { Game.create! }
+  let(:game) { Game.create!(host: Host.new) }
 
   describe "#create" do
     let(:create_game) { instance_double(CreateGame, call: game) }
@@ -11,10 +11,9 @@ RSpec.describe GamesController, type: :controller do
       expect(CreateGame).to receive(:new).and_return(create_game)
     end
 
-    it "renders the new player" do
+    it "renders the game" do
       post :create
-      expect(JSON.parse(response.body)["game"]["id"]).to eq(game.id)
-      expect(JSON.parse(response.body)["host"]).to eq(game.host.as_json)
+      expect(response.body).to eq({ "game" => game.full_json }.to_json)
     end
   end
 
@@ -22,7 +21,7 @@ RSpec.describe GamesController, type: :controller do
     it "renders the game based on its full JSON" do
       get :show, params: { id: game.id }
 
-      expect(response.body).to eq game.full_json.to_json
+      expect(response.body).to eq({ "game" => game.full_json }.to_json)
     end
   end
 end

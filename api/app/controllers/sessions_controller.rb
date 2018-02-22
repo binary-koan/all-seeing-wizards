@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     join_game = JoinGame.new(game)
 
     if join_game.call
-      render json: { player: join_game.player }
+      render json: { player: { id: join_game.player.id } }
     else
       render json: { error: join_game.error }
     end

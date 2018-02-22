@@ -23,7 +23,7 @@ class StartGame
       game.update!(started_at: Time.now)
     end
 
-    GameChannel.broadcast_to(game, event: "game_started")
+    GameChannel.broadcast_game_started(game)
   end
 
   private
@@ -41,6 +41,6 @@ class StartGame
   end
 
   def cannot_start(reason)
-    GameChannel.broadcast_to(game, event: "cannot_start_game", error: reason)
+    GameChannel.broadcast_cannot_start_game(game, error: reason)
   end
 end

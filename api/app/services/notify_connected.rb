@@ -7,6 +7,6 @@ class NotifyConnected
 
   def call
     player.update!(connected_at: Time.now)
-    GameChannel.broadcast_to(player.game, event: "player_updated", player: player.as_json(methods: [:character, :connected]))
+    GameChannel.broadcast_player_updated(player.game, player: player.as_json(methods: [:character, :connected]))
   end
 end

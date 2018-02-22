@@ -13,7 +13,7 @@ class AdvanceGame
 
   def perform_actions
     results = PerformActions.new(game).call
-    GameChannel.broadcast_to(game, event: "actions_performed", results: results.map(&:default_json))
+    GameChannel.broadcast_actions_performed(game, results: results.map(&:default_json))
   end
 
   def ready_to_perform_actions?

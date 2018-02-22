@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe AdvanceGame do
   let(:players) do
     [
-      instance_double(Player, enough_cards_played?: true),
-      instance_double(Player, enough_cards_played?: true)
+      instance_double(Player, id: 1, enough_cards_played?: true, player_cards: []),
+      instance_double(Player, id: 2, enough_cards_played?: true, player_cards: [])
     ]
   end
 

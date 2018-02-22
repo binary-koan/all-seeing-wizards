@@ -9,7 +9,7 @@ RSpec.describe DrawHands do
   before do
     # Have only one available card each call so the order is predictable
     cards.each do |card|
-      expect(game).to receive(:available_cards).and_return([card])
+      expect(game).to receive(:available_cards).exactly(:twice).and_return([card])
     end
   end
 

@@ -54,6 +54,10 @@ class PerformActions
     modifiers.each do |modifier|
       modifier.next_turn!
     end
+
+    #TODO discard instead of destroy (don't reuse until necessary)
+    player_cards.played.each(&:destroy!)
+    DrawHands.new(game.reload).call
   end
 
   def modifiers

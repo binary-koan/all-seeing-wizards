@@ -4,7 +4,7 @@ RSpec.describe PickActions do
   include ActiveRecordSpecSupport
 
   let(:game) { active_record_double(Game) }
-  let(:player) { instance_double(Player, player?: true, game: game, player_cards: player_cards) }
+  let(:player) { instance_double(Player, id: 1, player?: true, game: game, player_cards: player_cards) }
 
   let(:player_cards) do
     [
@@ -54,7 +54,7 @@ RSpec.describe PickActions do
 
       expect(AdvanceGame).to be_called_with(game)
 
-      expect { service.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "hand_updated", player_cards: player_cards.map(&:full_json))
+      expect { service.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "hand_updated", player_id: player.id, player_cards: player_cards.map(&:full_json))
     end
   end
 end

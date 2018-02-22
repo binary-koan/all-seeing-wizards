@@ -10,7 +10,7 @@ class DrawHands
   def call
     ActiveRecord::Base.transaction do
       players.each do |player|
-        draw_card_for(player) until player.enough_cards_in_hand?
+        draw_card_for(player) until player.enough_cards_in_hand? || available_cards.none?
 
         GameChannel.broadcast_hand_updated(game, player_id: player.id, player_cards: player.player_cards.map(&:full_json))
       end

@@ -17,7 +17,7 @@ class PickActions
       ids.each.with_index { |id, index| place_card!(id, index) }
     end
 
-    GameChannel.broadcast_hand_updated(game, player_cards: player_cards.map(&:full_json))
+    GameChannel.broadcast_hand_updated(game, player_id: requested_by.id, player_cards: player_cards.map(&:full_json))
     AdvanceGame.new(game).call
   end
 

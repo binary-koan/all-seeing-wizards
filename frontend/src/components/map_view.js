@@ -13,7 +13,7 @@ export default class MapView {
         m(".tile", { class: tile.type_id, style: `--x: ${tile.x}; --y: ${tile.y}` })
       ),
       game.players.map(player =>
-        m(".map-player", { style: `--x: ${player.x}; --y: ${player.y}` })
+        m(".map-player", { style: `--x: ${player.position.x}; --y: ${player.position.y}` })
       )
     ])
   }

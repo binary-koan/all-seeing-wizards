@@ -4,11 +4,10 @@ import sortBy from "lodash/sortBy"
 import Hand from "./hand";
 
 export default class Player {
-  constructor({ player_cards, id, connected, x, y, character }) {
+  constructor({ player_cards, id, connected, position, character }) {
     this.id = id
     this.connected = connected
-    this.x = x
-    this.y = y
+    this.position = position
     this.character = character
     this.hp = 5
 

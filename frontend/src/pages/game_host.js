@@ -33,7 +33,7 @@ export default class GameHost {
     } else if (this.game.started) {
       return m(StatusPanel, {
         title: "Waiting for actions ...",
-        description: `0/${this.game.players.length} players locked in`
+        description: `${this.game.players.filter(p => p.hand.lockedIn).length}/${this.game.players.length} players locked in`
       })
     } else {
       return m(StatusPanel, {

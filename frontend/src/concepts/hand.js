@@ -10,6 +10,10 @@ export default class Hand {
     this._placedCardIds = []
   }
 
+  get lockedIn() {
+    return this.submittedCards.length >= this.maxPlaced
+  }
+
   get placedCards() {
     if (this.submittedCards.length > 0) {
       return this.submittedCards

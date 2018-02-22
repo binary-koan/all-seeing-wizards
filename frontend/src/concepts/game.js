@@ -26,11 +26,12 @@ export default class Game {
 
   upsertPlayer(player) {
     const existingPlayerIndex = findIndex(this._players, p => p.id === player.id)
+    const newPlayer = new Player(player)
 
     if (existingPlayerIndex >= 0) {
-      this._players.splice(existingPlayerIndex, 1, player)
+      this._players.splice(existingPlayerIndex, 1, newPlayer)
     } else {
-      this._players.push(player)
+      this._players.push(newPlayer)
     }
   }
 

@@ -44,4 +44,8 @@ class Position
   def ==(other)
     x == other.x && y == other.y && facing_direction == other.facing_direction
   end
+
+  def default_json
+    { x: x, y: y, facing: facing_direction }
+  end
 end

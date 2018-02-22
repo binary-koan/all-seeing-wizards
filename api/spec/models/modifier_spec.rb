@@ -43,7 +43,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -53,7 +53,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a prevent actions modifier" do
       let(:modifier_type) { Modifier::MODIFIER_PREVENT_ACTIONS }
-      let(:effect_result) { EffectResult::Base.new }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
       it "prevents any effect result" do
         expect(replacement_result).to be_a(EffectResult::None)
@@ -62,7 +62,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a different modifier" do
       let(:modifier_type) { Modifier::MODIFIER_SHIELD }
-      let(:effect_result) { EffectResult::Base.new }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
       it "has no effect" do
         expect(replacement_result).to eq(effect_result)
@@ -82,7 +82,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -119,7 +119,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -129,7 +129,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a prevent actions modifier" do
       let(:modifier_type) { Modifier::MODIFIER_PREVENT_ACTIONS }
-      let(:effect_result) { EffectResult::Base.new }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
       it "prevents any effect result" do
         expect(replacement_result).to be_a(EffectResult::None)
@@ -138,7 +138,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a different modifier" do
       let(:modifier_type) { Modifier::MODIFIER_INCREASE_DAMAGE }
-      let(:effect_result) { EffectResult::Base.new }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
 
       it "has no effect" do
         expect(replacement_result).to eq(effect_result)

@@ -39,4 +39,10 @@ RSpec.describe EffectResult::Move do
       end
     end
   end
+
+  describe "#default_json" do
+    it "has the right keys" do
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :target_position)
+    end
+  end
 end

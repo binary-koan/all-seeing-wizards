@@ -17,4 +17,10 @@ RSpec.describe EffectResult::Shield do
       expect(target.active_modifiers.first.duration).to eq duration
     end
   end
+
+  describe "#default_json" do
+    it "has the right keys" do
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :duration_type, :duration)
+    end
+  end
 end

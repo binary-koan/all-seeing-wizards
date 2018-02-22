@@ -1,9 +1,9 @@
 class EffectResult::Knockback < EffectResult::Base
-  attr_reader :caster, :target, :target_position
+  attr_reader :target_position
 
   def initialize(caster:, target:, target_position:)
-    @caster = caster
-    @target = target
+    super(caster: caster, target: target)
+
     @target_position = target_position
   end
 
@@ -13,5 +13,9 @@ class EffectResult::Knockback < EffectResult::Base
 
   def apply!
     target.update!(position: target_position)
+  end
+
+  def default_json
+    super.merge(target_position: target_position.default_json)
   end
 end

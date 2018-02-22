@@ -1,7 +1,5 @@
 class EffectResult::ShieldDamage < EffectResult::Base
-  attr_reader :caster
-
   def initialize(caster:)
-    @caster = caster
+    super(caster: caster, target: caster)
   end
 end

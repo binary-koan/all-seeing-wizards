@@ -17,4 +17,10 @@ RSpec.describe EffectResult::IncreaseDamage do
       expect(target.active_modifiers.first.amount).to eq amount
     end
   end
+
+  describe "#default_json" do
+    it "has the right keys" do
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :duration_type, :duration, :amount)
+    end
+  end
 end

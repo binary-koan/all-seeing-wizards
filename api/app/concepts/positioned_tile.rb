@@ -1,6 +1,8 @@
 class PositionedTile
   attr_reader :tile, :x, :y
 
+  delegate :id, to: :tile
+
   def initialize(tile, x:, y:)
     @tile = tile
     @x = x

@@ -4,6 +4,7 @@ RSpec.describe EffectResult::Heal do
   subject(:effect) { EffectResult::Heal.new(caster: nil, target: target, amount: amount) }
 
   let(:target) { Player.new(hp: hp, game: Game.new, character: Character.new) }
+  let(:hp) { Player::MAX_HP }
   let(:amount) { 2 }
 
   describe "#apply!" do
@@ -21,6 +22,12 @@ RSpec.describe EffectResult::Heal do
       it "does not heal the player" do
         expect { effect.apply! }.not_to change { target.hp }
       end
+    end
+  end
+
+  describe "#default_json" do
+    it "has the right keys" do
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :amount)
     end
   end
 end

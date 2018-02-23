@@ -4,6 +4,10 @@
   min-height: 6rem;
 }
 
+.player-view-image {
+  margin-left: -0.5rem;
+}
+
 .player-view-details {
   margin-right: auto;
 }

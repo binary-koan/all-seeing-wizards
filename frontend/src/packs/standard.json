@@ -22,5 +22,32 @@
     "Decree": "thumbs-down",
     "Healing Potion": "plus-square",
     "Rage Potion": "eye"
+  },
+  "characters": {
+    "Despicable Dark Lord": {
+      "image": "/players/despicable-dark-lord.png",
+      "darkColor": "var(--dark-color)",
+      "lightColor": "var(--dark-color)"
+    },
+    "Wily Wind Worker": {
+      "image": "/players/wily-wind-worker.png",
+      "darkColor": "var(--blue-dark)",
+      "lightColor": "var(--blue)"
+    },
+    "Pure Paladin": {
+      "image": "/players/pure-paladin.png",
+      "darkColor": "var(--orange-dark)",
+      "lightColor": "var(--orange)"
+    },
+    "Arcane Alchemist": {
+      "image": "/players/arcane-alchemist.png",
+      "darkColor": "var(--green-dark)",
+      "lightColor": "var(--green)"
+    },
+    "Midas Magician": {
+      "image": "/players/midas-magician.png",
+      "darkColor": "var(--yellow-dark)",
+      "lightColor": "var(--yellow)"
+    }
   }
 }

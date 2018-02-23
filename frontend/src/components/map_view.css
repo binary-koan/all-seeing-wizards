@@ -32,5 +32,5 @@
 }
 
 .map-player {
-  background-image: url(/players/player.png);
+  background-image: var(--image-url);
 }

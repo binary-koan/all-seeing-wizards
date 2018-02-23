@@ -1,6 +1,7 @@
 import "./map_view.css"
 
 import m from "mithril"
+import data from "../packs/standard.json"
 
 export default class MapView {
   view({ attrs: { game }}) {
@@ -13,7 +14,13 @@ export default class MapView {
         m(".tile", { class: tile.type_id, style: `--x: ${tile.x}; --y: ${tile.y}` })
       ),
       game.players.map(player =>
-        m(".map-player", { style: `--x: ${player.position.x}; --y: ${player.position.y}` })
+        m(".map-player", {
+          style: `
+            --x: ${player.position.x};
+            --y: ${player.position.y};
+            --image-url: url(${data.characters[player.character.name].image});
+          `
+        })
       )
     ])
   }

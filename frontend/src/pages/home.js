@@ -8,14 +8,14 @@ import formatError from "../util/format_error";
 export default class Home {
   createGame() {
     request("/games", { method: "POST" }).then(response => {
-      m.route.set(`/games/${response.game.id}/host/${response.host.id}`)
+      m.route.set(`/games/${response.game.id}/host/${response.game.host.id}`)
     }).catch(e => this.error = formatError(e))
   }
 
   joinGame() {
     const gameId = prompt("Game ID")
     request(`/games/${gameId}/sessions`, { method: "POST" }).then(response => {
-      m.route.set(`/games/${response.player.game_id}/play/${response.player.id}`)
+      m.route.set(`/games/${response.game.id}/play/${response.player.id}`)
     }).catch(e => this.error = formatError(e))
   }
 

@@ -27,12 +27,18 @@ class Game < ApplicationRecord
     characters.where.not(id: players.pluck(:character_id))
   end
 
-  def full_json
+  def default_json
     {
-      started: started?,
+      id: id,
+      started: started?
+    }
+  end
+
+  def full_json
+    default_json.merge(
       tiles: tiles.map(&:default_json),
       host: host.default_json,
       players: players.map(&:full_json)
-    }
+    )
   end
 end

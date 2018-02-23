@@ -14,7 +14,7 @@ class AdvanceGame
   def perform_actions
     results = PerformActions.new(game).call
 
-    GameChannel.broadcast_actions_performed(game, results: results.map(&:default_json))
+    GameChannel.broadcast_actions_performed(game, results: results.map { |action_results| action_results.map(&:default_json) })
     game.players.each do |player|
       GameChannel.broadcast_hand_updated(game, player_id: player.id, player_cards: player.player_cards.map(&:full_json))
     end

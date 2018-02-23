@@ -8,8 +8,9 @@ import ConnectionState from "../components/connection_state"
 import PlayerView from "../components/player_view"
 import MapView from "../components/map_view"
 import Icon from "../components/icon"
-import StatusPanel from "../components/status_panel";
-import GameManager from "../concepts/game_manager";
+import StatusPanel from "../components/status_panel"
+import GameManager from "../concepts/game_manager"
+import FatalError from "../components/fatal_error"
 
 export default class GameHost {
   oninit() {

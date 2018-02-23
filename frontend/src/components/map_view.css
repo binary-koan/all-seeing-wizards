@@ -33,4 +33,5 @@
 
 .map-player {
   background-image: var(--image-url);
+  transform: rotate(var(--rotation));
 }

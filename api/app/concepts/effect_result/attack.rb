@@ -8,6 +8,6 @@ class EffectResult::Attack < EffectResult::Base
   end
 
   def default_json
-    super.merge(tile_ids: tiles.map(&:id))
+    super.merge(tiles: tiles.map(&:default_json))
   end
 end

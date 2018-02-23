@@ -7,12 +7,13 @@ import socket from "../util/socket"
 import request from "../util/request"
 import ConnectionState from "../components/connection_state"
 import CardView from "../components/card_view"
-import PlayerView from "../components/player_view";
-import Icon from "../components/icon";
+import PlayerView from "../components/player_view"
+import Icon from "../components/icon"
 import GameManager from "../concepts/game_manager"
-import MapView from "../components/map_view";
-import MapViewport from "../components/map_viewport";
-import PlacedCards from "../components/placed_cards";
+import MapView from "../components/map_view"
+import MapViewport from "../components/map_viewport"
+import PlacedCards from "../components/placed_cards"
+import FatalError from "../components/fatal_error"
 
 export default class GamePlayer {
   oninit() {

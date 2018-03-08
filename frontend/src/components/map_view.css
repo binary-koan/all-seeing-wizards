@@ -31,7 +31,92 @@
   background-image: url(/tiles/water.png);
 }
 
+.tile-attack-effect,
+.tile-prevent-actions-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+.tile-attack-effect {
+  background-color: var(--red);
+}
+
+.tile-prevent-actions-effect {
+  background-color: var(--dark-color);
+}
+
 .map-player {
+  position: relative;
   background-image: var(--image-url);
   transform: rotate(var(--rotation));
+}
+
+.map-player-damage-indicator,
+.map-player-healing-indicator,
+.map-player-increase-damage-indicator,
+.map-player-shield-indicator,
+.map-player-mirror-shield-indicator,
+.map-player-prevent-actions-indicator {
+  position: absolute;
+  opacity: 0;
+  color: white;
+  font-weight: bold;
+}
+
+.map-player-damage-indicator {
+  top: 50%;
+  right: 0;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid white;
+  border-radius: 1rem;
+  background-color: var(--red);
+}
+
+.map-player-increase-damage-indicator {
+  bottom: 0;
+  left: 50%;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid white;
+  border-radius: 1rem;
+  background-color: var(--blue);
+}
+
+.map-player-healing-indicator {
+  top: 50%;
+  left: 0;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid white;
+  border-radius: 1rem;
+  background-color: var(--green);
+}
+
+.map-player-shield-indicator {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 100%;
+}
+
+.map-player-mirror-shield-indicator {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--yellow);
+  border-radius: 100%;
+}
+
+.map-player-prevent-actions-indicator {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--dark-color);
+  border-radius: 100%;
 }

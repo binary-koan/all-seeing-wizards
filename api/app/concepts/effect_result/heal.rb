@@ -1,8 +1,8 @@
 class EffectResult::Heal < EffectResult::Base
   attr_reader :amount
 
-  def initialize(caster:, target:, amount:)
-    super(caster: caster, target: target)
+  def initialize(caster:, target:, amount:, card:)
+    super(caster: caster, target: target, card: card)
 
     @amount = amount
   end

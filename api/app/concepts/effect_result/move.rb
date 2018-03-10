@@ -1,8 +1,8 @@
 class EffectResult::Move < EffectResult::Base
   attr_reader :target_position
 
-  def initialize(caster:, target:, target_position:)
-    super(caster: caster, target: target)
+  def initialize(caster:, target:, target_position:, card:)
+    super(caster: caster, target: target, card: card)
 
     @target_position = target_position
   end

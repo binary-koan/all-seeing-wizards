@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Modifier, type: :model do
-  let(:modifier) { Modifier.new(modifier_type: modifier_type, player: player, amount: amount, duration_type: duration_type, duration: duration) }
+  let(:modifier) { Modifier.new(modifier_type: modifier_type, player: player, amount: amount, duration_type: duration_type, duration: duration, card: Card.new) }
 
   let(:modifier_type) { Modifier::MODIFIER_SHIELD }
   let(:player) { Player.new }
@@ -35,7 +35,7 @@ RSpec.describe Modifier, type: :model do
     context "an increase damage modifier" do
       let(:modifier_type) { Modifier::MODIFIER_INCREASE_DAMAGE }
       let(:amount) { 2 }
-      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1) }
+      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1, card: Card.new) }
 
       it "increases the damage of an attack" do
         expect(replacement_result).to be_a(EffectResult::TakeDamage)
@@ -43,7 +43,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -53,7 +53,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a prevent actions modifier" do
       let(:modifier_type) { Modifier::MODIFIER_PREVENT_ACTIONS }
-      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
       it "prevents any effect result" do
         expect(replacement_result).to be_a(EffectResult::None)
@@ -62,7 +62,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a different modifier" do
       let(:modifier_type) { Modifier::MODIFIER_SHIELD }
-      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
       it "has no effect" do
         expect(replacement_result).to eq(effect_result)
@@ -75,14 +75,14 @@ RSpec.describe Modifier, type: :model do
 
     context "a shield modifier" do
       let(:modifier_type) { Modifier::MODIFIER_SHIELD }
-      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1) }
+      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1, card: Card.new) }
 
       it "removes attack damage" do
         expect(replacement_result).to be_a(EffectResult::ShieldDamage)
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -92,7 +92,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a mirror shield modifier" do
       let(:modifier_type) { Modifier::MODIFIER_MIRROR_SHIELD }
-      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1) }
+      let(:effect_result) { EffectResult::TakeDamage.new(caster: instance_double(Player), target: instance_double(Player), damage: 1, card: Card.new) }
 
       it "replaces attack damage" do
         expect(replacement_result).to be_a(EffectResult::TakeDamage)
@@ -100,7 +100,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is knockback" do
-        let(:effect_result) { EffectResult::Knockback.new(caster: instance_double(Player), target: instance_double(Player), target_position: nil) }
+        let(:effect_result) { EffectResult::Knockback.new(caster: instance_double(Player), target: instance_double(Player), target_position: nil, card: Card.new) }
 
         it "prevents any effect result" do
           expect(replacement_result).to be_a(EffectResult::None)
@@ -110,7 +110,7 @@ RSpec.describe Modifier, type: :model do
       context "when the effect prevents actions" do
         let(:caster) { instance_double(Player) }
         let(:target) { instance_double(Player) }
-        let(:effect_result) { EffectResult::PreventActions.new(caster: caster, target: target, duration_type: HasDuration::DURATION_ACTION, duration: 1) }
+        let(:effect_result) { EffectResult::PreventActions.new(caster: caster, target: target, duration_type: HasDuration::DURATION_ACTION, duration: 1, card: Card.new) }
 
         it "reverses the effect" do
           expect(replacement_result).to be_a(EffectResult::PreventActions)
@@ -119,7 +119,7 @@ RSpec.describe Modifier, type: :model do
       end
 
       context "when the effect is not an attack" do
-        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+        let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
         it "does nothing" do
           expect(replacement_result).to eq(effect_result)
@@ -129,7 +129,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a prevent actions modifier" do
       let(:modifier_type) { Modifier::MODIFIER_PREVENT_ACTIONS }
-      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
       it "prevents any effect result" do
         expect(replacement_result).to be_a(EffectResult::None)
@@ -138,7 +138,7 @@ RSpec.describe Modifier, type: :model do
 
     context "a different modifier" do
       let(:modifier_type) { Modifier::MODIFIER_INCREASE_DAMAGE }
-      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil) }
+      let(:effect_result) { EffectResult::Base.new(target: nil, caster: nil, card: Card.new) }
 
       it "has no effect" do
         expect(replacement_result).to eq(effect_result)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EffectResult::Heal do
-  subject(:effect) { EffectResult::Heal.new(caster: nil, target: target, amount: amount) }
+  subject(:effect) { EffectResult::Heal.new(caster: nil, target: target, amount: amount, card: Card.new) }
 
   let(:target) { Player.new(hp: hp, game: Game.new, character: Character.new) }
   let(:hp) { Player::MAX_HP }
@@ -27,7 +27,7 @@ RSpec.describe EffectResult::Heal do
 
   describe "#default_json" do
     it "has the right keys" do
-      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :amount)
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :amount, :card_name)
     end
   end
 end

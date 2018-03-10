@@ -1,9 +1,10 @@
 class EffectResult::Base
-  attr_reader :target, :caster
+  attr_reader :target, :caster, :card
 
-  def initialize(target:, caster:)
+  def initialize(target:, caster:, card:)
     @target = target
     @caster = caster
+    @card = card
   end
 
   def conflicts_with?(other)
@@ -14,6 +15,6 @@ class EffectResult::Base
   end
 
   def default_json
-    { type: self.class.to_s.demodulize.underscore, target_id: target&.id, caster_id: caster&.id }
+    { type: self.class.to_s.demodulize.underscore, target_id: target&.id, caster_id: caster&.id, card_name: card&.name }
   end
 end

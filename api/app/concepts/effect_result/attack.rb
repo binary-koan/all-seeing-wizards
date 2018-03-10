@@ -1,8 +1,8 @@
 class EffectResult::Attack < EffectResult::Base
   attr_reader :tiles
 
-  def initialize(tiles:, caster:)
-    super(caster: caster, target: nil)
+  def initialize(tiles:, caster:, card:)
+    super(caster: caster, target: nil, card: card)
 
     @tiles = tiles
   end

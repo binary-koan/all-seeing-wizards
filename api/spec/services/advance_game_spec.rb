@@ -25,12 +25,14 @@ RSpec.describe AdvanceGame do
 
   context "when all players have played cards" do
     let(:results) do
-      [instance_double(EffectResult::Move, default_json: { type: "move" }), instance_double(EffectResult::Attack, default_json: { type: "attack" })]
+      [[instance_double(EffectResult::Move, default_json: { type: "move" }), instance_double(EffectResult::Attack, default_json: { type: "attack" })]]
     end
+
+    let(:expected_broadcast_results) { results.map { |action_results| action_results.map(&:default_json) } }
 
     it "performs actions and broadcasts the result" do
       expect(PerformActions).to be_called_with(game).and_return(results)
-      expect { advance_game.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "actions_performed", results: results.map(&:default_json))
+      expect { advance_game.call }.to broadcast_to(game).from_channel(GameChannel).with(event: "actions_performed", results: expected_broadcast_results)
     end
   end
 end

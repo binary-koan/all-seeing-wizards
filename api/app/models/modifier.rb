@@ -2,6 +2,7 @@ class Modifier < ApplicationRecord
   include HasDuration
 
   belongs_to :player
+  belongs_to :card, required: false
 
   scope :active, -> { where("duration > 0") }
 
@@ -63,9 +64,9 @@ class Modifier < ApplicationRecord
 
   def shield_from_attack(result)
     if result.is_a?(EffectResult::TakeDamage) || result.is_a?(EffectResult::PreventActions)
-      EffectResult::ShieldDamage.new(caster: result.target)
+      EffectResult::ShieldDamage.new(caster: result.target, card: card)
     elsif result.is_a?(EffectResult::Knockback)
-      EffectResult::None.new
+      EffectResult::None.new(card: card)
     else
       result
     end
@@ -73,23 +74,23 @@ class Modifier < ApplicationRecord
 
   def reverse_damage(result)
     if result.is_a?(EffectResult::TakeDamage)
-      EffectResult::TakeDamage.new(caster: result.target, target: result.caster, damage: result.damage)
+      EffectResult::TakeDamage.new(caster: result.target, target: result.caster, damage: result.damage, card: result.card)
     elsif result.is_a?(EffectResult::PreventActions)
-      EffectResult::PreventActions.new(caster: result.target, target: result.caster, duration_type: result.duration_type, duration: result.duration)
+      EffectResult::PreventActions.new(caster: result.target, target: result.caster, duration_type: result.duration_type, duration: result.duration, card: result.card)
     elsif result.is_a?(EffectResult::Knockback)
-      EffectResult::None.new
+      EffectResult::None.new(card: card)
     else
       result
     end
   end
 
   def prevent_actions(result)
-    EffectResult::None.new
+    EffectResult::None.new(card: card)
   end
 
   def increase_damage(result)
     if result.is_a?(EffectResult::TakeDamage)
-      EffectResult::TakeDamage.new(caster: result.caster, target: result.target, damage: result.damage + amount)
+      EffectResult::TakeDamage.new(caster: result.caster, target: result.target, damage: result.damage + amount, card: result.card)
     else
       result
     end

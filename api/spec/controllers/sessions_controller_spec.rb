@@ -12,7 +12,7 @@ RSpec.describe SessionsController, type: :controller do
 
       it "renders the new player ID" do
         post :create, params: { game_id: game.id }
-        expect(response.body).to eq({ "player" => { "id" => player.id } }.to_json)
+        expect(JSON.parse(response.body)["player"]["id"]).to eq(player.id)
       end
     end
 

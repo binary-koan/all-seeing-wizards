@@ -32,7 +32,7 @@ class Effect::Base
   protected
 
   def compute_results(result_type, **attrs)
-    original_result = result_type.new(attrs)
+    original_result = result_type.new(attrs.merge(card: card))
 
     replacements = []
     replacements += caster_replacement_results(attrs[:caster].active_modifiers, original_result) if attrs[:caster]

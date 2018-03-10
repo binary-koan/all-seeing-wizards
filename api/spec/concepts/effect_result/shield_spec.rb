@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EffectResult::Shield do
-  subject(:effect) { EffectResult::Shield.new(caster: nil, target: target, duration_type: duration_type, duration: duration) }
+  subject(:effect) { EffectResult::Shield.new(caster: nil, target: target, duration_type: duration_type, duration: duration, card: Card.new) }
 
   let(:target) { Player.create!(game: Game.new, character: Character.new) }
   let(:duration_type) { HasDuration::DURATION_ACTION }
@@ -20,7 +20,7 @@ RSpec.describe EffectResult::Shield do
 
   describe "#default_json" do
     it "has the right keys" do
-      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :duration_type, :duration)
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :duration_type, :duration, :card_name)
     end
   end
 end

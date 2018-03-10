@@ -1,8 +1,8 @@
 class EffectResult::TakeDamage < EffectResult::Base
   attr_reader :damage
 
-  def initialize(caster:, target:, damage:)
-    super(caster: caster, target: target)
+  def initialize(caster:, target:, damage:, card:)
+    super(caster: caster, target: target, card: card)
 
     @damage = damage
   end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EffectResult::Move do
-  subject(:effect) { EffectResult::Move.new(caster: nil, target: target, target_position: target_position) }
+  subject(:effect) { EffectResult::Move.new(caster: nil, target: target, target_position: target_position, card: Card.new) }
 
   let(:target) { Player.create!(game: Game.new, character: Character.new, position: Position.new(x: 5, y: 5, facing: Rotation::NORTH)) }
   let(:target_position) { Position.new(x: 5, y: 1, facing: Rotation::SOUTH) }
@@ -16,7 +16,7 @@ RSpec.describe EffectResult::Move do
 
   describe "#conflicts_with?" do
     context "with another move to the same position" do
-      let(:other) { EffectResult::Move.new(caster: nil, target: instance_double(Player), target_position: target_position) }
+      let(:other) { EffectResult::Move.new(caster: nil, target: instance_double(Player), target_position: target_position, card: Card.new) }
 
       it "conflicts" do
         expect(effect).to be_conflicts_with(other)
@@ -32,7 +32,7 @@ RSpec.describe EffectResult::Move do
     end
 
     context "with a different effect with the same position" do
-      let(:other) { EffectResult::Knockback.new(caster: nil, target: instance_double(Player), target_position: target_position) }
+      let(:other) { EffectResult::Knockback.new(caster: nil, target: instance_double(Player), target_position: target_position, card: Card.new) }
 
       it "does not conflict" do
         expect(effect).not_to be_conflicts_with(other)
@@ -42,7 +42,7 @@ RSpec.describe EffectResult::Move do
 
   describe "#default_json" do
     it "has the right keys" do
-      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :target_position)
+      expect(effect.default_json.keys).to contain_exactly(:caster_id, :target_id, :type, :target_position, :card_name)
     end
   end
 end

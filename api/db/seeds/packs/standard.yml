@@ -160,3 +160,4 @@
     :count: 2
     :effect: increase_damage
     :amount: 1
+    :duration: 2 actions

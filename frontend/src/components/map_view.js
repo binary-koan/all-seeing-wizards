@@ -6,20 +6,6 @@ import rotationFrom from "./map_view/rotation"
 import data from "../packs/standard.json"
 
 export default class MapView {
-  onupdate({ dom, attrs: { actionResults, actionResultsAt } }) {
-    if (actionResults && actionResultsAt > this.lastActionResultsAt) {
-      this.lastActionResultsAt = actionResultsAt
-
-      if (this.animation) {
-        this.animation.then(() => {
-          this.animation = animateEffectResults(dom, actionResults)
-        })
-      } else {
-        this.animation = animateEffectResults(dom, actionResults)
-      }
-    }
-  }
-
   view({ attrs: { game }}) {
     if (!game) {
       return
@@ -42,6 +28,7 @@ export default class MapView {
             --rotation: ${rotationFrom(player.position)};
           `
         }, [
+          m(".map-player-display"),
           m(".map-player-damage-indicator"),
           m(".map-player-healing-indicator"),
           m(".map-player-increase-damage-indicator"),

@@ -3,11 +3,13 @@ import Game from "./game"
 import socket from "../util/socket"
 import request from "../util/request"
 import formatError from "../util/format_error";
+import animateEffectResults from "../components/map_view/animate_effect_results";
 
 export default class GameManager {
   constructor({ gameId, socketParams }) {
-    this._loadGame(gameId).then(game => {
-      this.game = new Game(game)
+    this._gameId = gameId
+
+    this._reloadGame().then(() => {
       this.socket = this._connectToChannel(socketParams)
     }).catch(e => {
       this.error = formatError(e)
@@ -26,6 +28,12 @@ export default class GameManager {
     }
   }
 
+  _reloadGame() {
+    return this._loadGame(this._gameId).then(game => {
+      this.game = new Game(game)
+    })
+  }
+
   _loadGame(gameId) {
     return request(`/games/${gameId}`).then(response => response.game)
   }
@@ -36,7 +44,15 @@ export default class GameManager {
       channel: "GameChannel",
       on: {
         actions_performed: ({ results }) => {
-          console.log("TODO actions performed", results)
+          // :(
+          console.log("actions_performed")
+          console.log(JSON.stringify(results))
+          const mapNode = document.querySelector(".map")
+          animateEffectResults(mapNode, results, this.game).then(() => {
+            this._reloadGame()
+          }).catch(e => {
+            this.error = formatError(e)
+          })
         },
 
         player_updated: ({ player }) => {

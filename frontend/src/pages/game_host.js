@@ -69,7 +69,7 @@ export default class GameHost {
           })
         )
       ]),
-      m(MapView, { game: this.game })
+      m(MapView, { game: this.game, actionResults: this.gameManager.actionResults, actionResultsAt: this.gameManager.actionResultsAt })
     ]
   }
 }

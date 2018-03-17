@@ -50,6 +50,7 @@ export default class Hand {
 
   updateCards(playerCards) {
     this.playerCards = playerCards
+    this._placedCardIds = []
   }
 
   get _canPlaceCard() {

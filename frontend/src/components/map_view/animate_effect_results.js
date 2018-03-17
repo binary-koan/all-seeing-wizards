@@ -128,6 +128,15 @@ export default async function animateEffectResults(mapNode, results, game) {
         ]
       })]
     },
+    shield({ target_id }) {
+      return [anime({
+        targets: mapNode.querySelector(`.map-player[data-id='${target_id}'] > .map-player-shield-indicator`),
+        opacity: [
+          { value: 0.7, duration: 0 },
+          { value: 0, duration: ACTION_ANIMATION_TIME / 4, delay: ACTION_ANIMATION_TIME * 3 / 4 }
+        ]
+      })]
+    },
     shield_damage({ target_id }) {
       return [anime({
         targets: mapNode.querySelector(`.map-player[data-id='${target_id}'] > .map-player-shield-indicator`),

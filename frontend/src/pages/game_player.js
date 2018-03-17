@@ -51,7 +51,7 @@ export default class GamePlayer {
         ]
       }),
       this.game && m(MapViewport, {
-        map: m(MapView, { game: this.game, actionResults: this.gameManager.actionResults, actionResultsAt: this.gameManager.actionResultsAt }),
+        map: m(MapView, { game: this.game, currentPlayer: this.player }),
         centerX: this.player.position.x,
         centerY: this.player.position.y
       }),

@@ -3,6 +3,31 @@ require "rails_helper"
 RSpec.describe PerformActions do
   include PackSpecSupport
 
+  subject(:service) { PerformActions.new(game) }
+
+  let(:game) { CreateGame.new(pack_ids: [pack.id]).call }
+  let(:pack) { create_realistic_pack! }
+
+  let(:players) do
+    [
+      game.players.create!(
+        character: Character.no_powers.new(pack: pack),
+        x: 2,
+        y: 2,
+        rotation: Rotation::NORTH,
+        hp: starting_hp
+      ),
+      game.players.create!(
+        character: Character.no_powers.new(pack: pack),
+        x: 2,
+        y: 3,
+        rotation: Rotation::NORTH,
+        hp: starting_hp
+      )
+    ]
+  end
+  let(:starting_hp) { 3 }
+
   describe "attack example" do
     # Base state
     # . . . . .
@@ -20,31 +45,6 @@ RSpec.describe PerformActions do
     # . . ^ . .
     # . . . . .
     # . . < . .
-
-    subject(:service) { PerformActions.new(game) }
-
-    let(:pack) { create_realistic_pack! }
-
-    let(:game) { CreateGame.new(pack_ids: [pack.id]).call }
-
-    let(:players) do
-      [
-        game.players.create!(
-          character: Character.no_powers.new(pack: pack),
-          x: 2,
-          y: 2,
-          rotation: Rotation::NORTH,
-          hp: 3
-        ),
-        game.players.create!(
-          character: Character.no_powers.new(pack: pack),
-          x: 2,
-          y: 3,
-          rotation: Rotation::NORTH,
-          hp: 3
-        )
-      ]
-    end
 
     before do
       players.first.player_cards.create!(played_index: 0, card: pack.cards.increase_damage.create!(name: "Power Up", amount: 1, duration_type: Card::DURATION_ACTION, duration: 2))
@@ -87,31 +87,6 @@ RSpec.describe PerformActions do
   end
 
   describe "actions prevented example" do
-    subject(:service) { PerformActions.new(game) }
-
-    let(:pack) { create_realistic_pack! }
-
-    let(:game) { CreateGame.new(pack_ids: [pack.id]).call }
-
-    let(:players) do
-      [
-        game.players.create!(
-          character: Character.no_powers.new(pack: pack),
-          x: 2,
-          y: 2,
-          rotation: Rotation::NORTH,
-          hp: 3
-        ),
-        game.players.create!(
-          character: Character.no_powers.new(pack: pack),
-          x: 2,
-          y: 3,
-          rotation: Rotation::NORTH,
-          hp: 3
-        )
-      ]
-    end
-
     before do
       players.first.player_cards.create!(played_index: 0, card: pack.cards.prevent_actions.create!(
         name: "Stop Everything",
@@ -142,6 +117,32 @@ RSpec.describe PerformActions do
       expect(players.second.hp).to eq 3
 
       expect(players.first.active_modifiers).to be_empty
+    end
+  end
+
+  describe "move into attack path example" do
+    before do
+      players.first.player_cards.create!(played_index: 0, card: pack.cards.move.create!(name: "Move", amount: 1))
+      players.first.player_cards.create!(played_index: 1, card: pack.cards.move.create!(name: "Do Nothing", amount: 0))
+
+      players.second.player_cards.create!(played_index: 0, card: pack.cards.move.create!(name: "Move", amount: 1))
+      players.second.player_cards.create!(played_index: 1, card: pack.cards.attack.create!(
+        name: "Attack",
+        damage: 2,
+        card_ranges: [CardRange.point.new]
+      ))
+    end
+
+    it "damages the player at the point of attack" do
+      expect(service.call).to match [
+        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Move)],
+        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)]
+      ]
+
+      players.each(&:reload)
+
+      expect(players.first.hp).to eq(starting_hp - 2)
+      expect(players.second.hp).to eq(starting_hp)
     end
   end
 end

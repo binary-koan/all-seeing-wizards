@@ -1,4 +1,4 @@
-import _anime from "animejs"
+import anime from "animejs"
 import find from "lodash/find"
 import flatten from "lodash/flatten"
 import rotationFrom from "./rotation"
@@ -6,11 +6,6 @@ import rotationFrom from "./rotation"
 import m from "mithril"
 
 const ACTION_ANIMATION_TIME = 1000
-
-function anime(...args) {
-  console.log("anime", ...args)
-  return _anime(...args)
-}
 
 export default async function animateEffectResults(mapNode, results, game) {
   const playerPositions = {}

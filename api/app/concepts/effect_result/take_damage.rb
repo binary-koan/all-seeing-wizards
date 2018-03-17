@@ -9,8 +9,6 @@ class EffectResult::TakeDamage < EffectResult::Base
 
   def apply!
     target.update!(hp: [target.hp - damage, 0].max)
-
-    KnockOutPlayer.new(target).call if target.hp <= 0
   end
 
   def default_json

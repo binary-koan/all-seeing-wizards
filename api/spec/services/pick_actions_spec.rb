@@ -16,6 +16,8 @@ RSpec.describe PickActions do
 
   subject(:service) { PickActions.new(requested_by: player, picked_ids: ids) }
 
+  before { allow(player).to receive(:reload).and_return(player) }
+
   context "when not requested by a player" do
     let(:player) { instance_double(Host, player?: false, game: game) }
     let(:ids) { [] }

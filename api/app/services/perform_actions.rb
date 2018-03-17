@@ -9,8 +9,8 @@ class PerformActions
 
   def call
     game.transaction do
-      action_groups.each do |player_cards|
-        apply_results!(player_cards)
+      Player::MAX_HP.times do |i|
+        apply_results!(action_group(i))
         next_action!
       end
 
@@ -22,10 +22,9 @@ class PerformActions
 
   private
 
-  def action_groups
-    player_cards.preload(:card).played.order(:played_index).
-      group_by(&:played_index).
-      map { |_, player_cards| player_cards.sort_by { |pc| pc.effect.sort_order } }
+  def action_group(i)
+    player_cards.preload(:card).where(played_index: i).
+      sort_by { |pc| pc.effect.sort_order }
   end
 
   def apply_results!(player_cards)
@@ -45,6 +44,10 @@ class PerformActions
   end
 
   def next_action!
+    players.where(hp: 0).each do |player|
+      KnockOutPlayer.new(player).call
+    end
+
     modifiers.each do |modifier|
       modifier.next_action!
     end

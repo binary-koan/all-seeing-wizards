@@ -45,7 +45,7 @@ RSpec.describe CardRange, type: :model do
 
         it "returns a line in that direction" do
           expect(affected_tiles.uniq.size).to eq 2
-          expect(affected_tiles).to be_all { |tile| tile.x.between?(0, 1) && tile.y == 2 }
+          expect(affected_tiles).to be_all { |tile| tile.x.between?(3, 4) && tile.y == 2 }
         end
       end
     end

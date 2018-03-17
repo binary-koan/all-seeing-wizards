@@ -74,7 +74,8 @@ RSpec.describe PerformActions do
       expect(service.call).to match [
         [an_instance_of(EffectResult::IncreaseDamage), an_instance_of(EffectResult::Move)],
         [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)],
-        [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)]
+        [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)],
+        [], []
       ]
 
       players.each(&:reload)
@@ -108,7 +109,8 @@ RSpec.describe PerformActions do
       expect(service.call).to match [
         [an_instance_of(EffectResult::AttemptPreventActions), an_instance_of(EffectResult::PreventActions), an_instance_of(EffectResult::None)],
         [an_instance_of(EffectResult::Heal), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None)],
-        [an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::Move)]
+        [an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::None), an_instance_of(EffectResult::Move)],
+        [], []
       ]
 
       players.each(&:reload)
@@ -136,7 +138,8 @@ RSpec.describe PerformActions do
     it "damages the player at the point of attack" do
       expect(service.call).to match [
         [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Move)],
-        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)]
+        [an_instance_of(EffectResult::Move), an_instance_of(EffectResult::Attack), an_instance_of(EffectResult::TakeDamage)],
+        [], [], []
       ]
 
       players.each(&:reload)

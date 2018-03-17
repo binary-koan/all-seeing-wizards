@@ -4,7 +4,7 @@ class PickActions
   delegate :game, :player_cards, to: :requested_by
 
   def initialize(requested_by:, picked_ids:)
-    @requested_by = requested_by
+    @requested_by = requested_by.reload
     @ids = picked_ids
   end
 

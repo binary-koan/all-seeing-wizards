@@ -4,6 +4,10 @@ import Icon from "./icon"
 
 export default class PlayerHp {
   view({ attrs: { hp } }) {
-    return m(".player-hp", times(5, _ => m(Icon, { name: "heart", fill: "currentColor" })))
+    if (hp > 0) {
+      return m(".player-hp", times(hp, _ => m(Icon, { name: "heart", fill: "currentColor" })))
+    } else {
+      return m(".player-hp-zero", "Knocked out!")
+    }
   }
 }

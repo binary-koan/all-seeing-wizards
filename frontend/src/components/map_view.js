@@ -28,7 +28,8 @@ export default class MapView {
             --y: ${player.position.y};
             --image-url: url(${data.characters[player.character.name].image});
             --rotation: ${rotationFrom(player.position)};
-          `
+          `,
+          class: player.hp <= 0 ? "is-knocked-out" : ""
         }, [
           m(".map-player-display"),
           m(".map-player-damage-indicator"),

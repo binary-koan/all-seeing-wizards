@@ -94,6 +94,10 @@
   transform: rotate(var(--rotation));
 }
 
+.map-player.is-knocked-out .map-player-display {
+  opacity: 0.5;
+}
+
 .map-player-damage-indicator {
   top: 50%;
   right: 0;

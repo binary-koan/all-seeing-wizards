@@ -20,7 +20,7 @@ export default class PlayerView {
       m(".player-view-details", [
         m("h3", player.character.name),
         connected ?
-          m(PlayerHp, { hp: 5 }) :
+          m(PlayerHp, { hp: player.hp }) :
           m(".player-view-disconnected", [
             m(Icon, { name: "alert-triangle" }),
             "Disconnected"

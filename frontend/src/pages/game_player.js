@@ -5,11 +5,12 @@ import times from "lodash/times"
 
 import socket from "../util/socket"
 import request from "../util/request"
+import GameManager from "../concepts/game_manager"
+import PlannedActions from "../concepts/planned_actions"
 import ConnectionState from "../components/connection_state"
 import CardView from "../components/card_view"
 import PlayerView from "../components/player_view"
 import Icon from "../components/icon"
-import GameManager from "../concepts/game_manager"
 import MapView from "../components/map_view"
 import MapViewport from "../components/map_viewport"
 import PlacedCards from "../components/placed_cards"
@@ -36,6 +37,8 @@ export default class GamePlayer {
   }
 
   view() {
+    const plannedActions = new PlannedActions(this.player)
+
     return m(".game-player", [
       this.gameManager.error && m(FatalError, {
         title: "An unexpected error occurred! Try reloading the page",
@@ -51,9 +54,9 @@ export default class GamePlayer {
         ]
       }),
       this.game && m(MapViewport, {
-        map: m(MapView, { game: this.game, currentPlayer: this.player }),
-        centerX: this.player.position.x,
-        centerY: this.player.position.y
+        map: m(MapView, { game: this.game, plannedActions }),
+        centerX: (plannedActions.finalMovePosition || this.player.position).x,
+        centerY: (plannedActions.finalMovePosition || this.player.position).y
       }),
       m(".game-player-info", [
         this.player && m(PlacedCards, {

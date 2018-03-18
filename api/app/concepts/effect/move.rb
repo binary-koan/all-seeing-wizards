@@ -8,6 +8,22 @@ class Effect::Move < Effect::Base
   end
 
   def target_position
-    player.position.turn(card.rotation).forward(card.amount).clamp(game.tiles)
+    @target_position ||= card.amount.times.reduce(starting_position) do |position, _|
+      if can_move_to?(position.forward)
+        position.forward
+      else
+        break position
+      end
+    end
+  end
+
+  private
+
+  def can_move_to?(position)
+    position.clamp(game.tiles) == position && game.players.at(position).nil?
+  end
+
+  def starting_position
+    player.position.turn(card.rotation)
   end
 end

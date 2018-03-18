@@ -20,12 +20,12 @@ class Position
     @facing_direction = facing
   end
 
-  def forward(amount)
+  def forward(amount = 1)
     forward_vector = FORWARD[facing_direction] * amount
     offset(forward_vector.x, forward_vector.y)
   end
 
-  def backward(amount)
+  def backward(amount = 1)
     forward(-amount)
   end
 

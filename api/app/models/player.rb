@@ -12,6 +12,10 @@ class Player < ApplicationRecord
 
   validates :hp, presence: true, numericality: { less_than_or_equal_to: MAX_HP }
 
+  def self.at(position)
+    select { |player| player.x == position.x && player.y == position.y }
+  end
+
   def host?
     false
   end

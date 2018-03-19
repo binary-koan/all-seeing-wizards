@@ -1,0 +1,28 @@
+{
+  "name": "all-seeing-wizards-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jono Mingard <reason.koan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.5",
+    "mongodb": "^3.0.4",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/lodash": "^4.14.105",
+    "@types/mongodb": "^3.0.8",
+    "@types/node": "^9.4.7",
+    "@types/socket.io": "^1.4.32",
+    "nodemon": "^1.17.2",
+    "prettier": "^1.11.1",
+    "ts-node": "^5.0.1"
+  }
+}

@@ -1,81 +1,20 @@
 import { Db, ObjectID } from "mongodb"
+import { find, every, flatten, partition } from "lodash"
+import { CardDoc, CharacterDoc, PlayerDoc, BoardDoc, GameDoc } from "./types"
 import {
-  GameState,
-  DirectionalPoint,
-  Rotation,
-  Duration,
   Card,
-  CardRange,
+  GameState,
   Player,
   Character,
   Deck,
-  BoardObject,
   BoardTile,
   Board
 } from "../../../common/src/game_state/types"
-import { find, every, flatten, partition } from "lodash"
 
 const GAME_STATE_VERSION = 1
 const BOARD_SIZE = 5
 
-interface GameDoc {
-  id: ObjectID
-  playerIds: ObjectID[]
-  packIds: ObjectID[]
-  usedCardIds: ObjectID[]
-  boardLayout: ObjectID[][]
-  boardObjects: BoardObjectDoc[]
-}
-
-interface PlayerDoc {
-  id: ObjectID
-  gameId: ObjectID
-  characterId: ObjectID
-  hp: number
-  position: DirectionalPoint
-  hand: {
-    cardIds: ObjectID[]
-    pickedIndexes: number[]
-  }
-  connectedAt?: Date
-  disconnectedAt?: Date
-}
-
-interface CardDoc {
-  id: ObjectID
-  packId: ObjectID
-  type: string
-
-  amount: number
-  rotation: Rotation
-  damage: number
-  knockback?: number
-  duration: Duration
-  ranges: CardRange[]
-}
-
-interface CharacterDoc {
-  id: ObjectID
-  packId: ObjectID
-  name: string
-  type: string
-}
-
-interface BoardDoc {
-  id: ObjectID
-  packId: ObjectID
-  tiles: string[]
-  objects: BoardObjectDoc[]
-}
-
-interface BoardObjectDoc {
-  id: ObjectID
-  x: number
-  y: number
-  type: string
-}
-
-export default async function loadGameState(db: Db, gameId: ObjectID): Promise<GameState> {
+export default async function loadGameState(gameId: ObjectID, db: Db): Promise<GameState> {
   const { gameDoc, cardDocs, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
 
   const cards = buildCards(cardDocs)
@@ -88,7 +27,8 @@ export default async function loadGameState(db: Db, gameId: ObjectID): Promise<G
     id: gameDoc.id.toHexString(),
     players,
     deck,
-    board
+    board,
+    operationsSinceLastSave: []
   }
 }
 

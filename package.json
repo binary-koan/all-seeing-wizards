@@ -5,5 +5,8 @@
   "prettier": {
     "printWidth": 100,
     "semi": false
+  },
+  "dependencies": {
+    "immutable": "^3.8.2"
   }
 }

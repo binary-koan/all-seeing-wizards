@@ -1,6 +1,6 @@
 export class Duration {
-  type: "action" | "turn"
-  length: number
+  public readonly type: "action" | "turn"
+  public readonly length: number
 
   constructor(type: "action" | "turn", length: number) {
     this.type = type

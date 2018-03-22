@@ -1,4 +1,4 @@
-import { List, fromJS } from "immutable"
+import { fromJS, List } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
 import { Point } from "./positioning"
 
@@ -17,10 +17,10 @@ const board = RecordFactory<IBoard>({
 })
 
 export class Board extends board implements IBoard {
-  tiles: List<BoardTile>
-  objects: List<BoardObject>
-  width: number
-  height: number
+  public readonly tiles: List<BoardTile>
+  public readonly objects: List<BoardObject>
+  public readonly width: number
+  public readonly height: number
 
   constructor(config: IBoard) {
     super(config)
@@ -42,8 +42,8 @@ const boardTile = RecordFactory<IBoardTile>({
 })
 
 export class BoardTile extends boardTile implements IBoardTile {
-  position: Point
-  type: BoardTileType
+  public readonly position: Point
+  public readonly type: BoardTileType
 
   constructor(config: IBoard) {
     super(config)
@@ -69,10 +69,10 @@ const boardObject = RecordFactory<IBoardObject>({
 })
 
 export class BoardObject extends boardObject implements IBoardObject {
-  id: string
-  x: number
-  y: number
-  type: BoardObjectType
+  public readonly id: string
+  public readonly x: number
+  public readonly y: number
+  public readonly type: BoardObjectType
 
   constructor(config: IBoardObject) {
     super(config)

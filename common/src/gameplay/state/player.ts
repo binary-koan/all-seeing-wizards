@@ -1,8 +1,8 @@
-import { List, fromJS } from "immutable"
+import { List } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
-import { DirectionalPoint } from "./positioning"
-import { Duration } from "./duration"
 import { Card } from "./card"
+import { Duration } from "./duration"
+import { DirectionalPoint } from "./positioning"
 
 export const MAX_PLAYER_HP = 5
 
@@ -17,8 +17,8 @@ const hand = RecordFactory<IHand>({
 })
 
 export class Hand extends hand implements IHand {
-  cards: List<Card>
-  pickedIndexes: List<number>
+  public readonly cards: List<Card>
+  public readonly pickedIndexes: List<number>
 
   constructor(config: IHand) {
     super(config)
@@ -44,8 +44,8 @@ const modifier = RecordFactory<IModifier>({
 })
 
 export class Modifier extends modifier implements IModifier {
-  type: ModifierType
-  duration: Duration
+  public readonly type: ModifierType
+  public readonly duration: Duration
 
   constructor(config: IModifier) {
     super(config)
@@ -65,8 +65,8 @@ const character = RecordFactory<ICharacter>({
 })
 
 export class Character extends character implements ICharacter {
-  type: string
-  name: string
+  public readonly type: string
+  public readonly name: string
 
   constructor(config: ICharacter) {
     super(config)
@@ -96,13 +96,13 @@ const player = RecordFactory<IPlayer>({
 })
 
 export class Player extends player implements IPlayer {
-  id: string
-  character: Character
-  hp: number
-  position: DirectionalPoint
-  hand: Hand
-  connected: boolean
-  modifiers: List<Modifier>
+  public readonly id: string
+  public readonly character: Character
+  public readonly hp: number
+  public readonly position: DirectionalPoint
+  public readonly hand: Hand
+  public readonly connected: boolean
+  public readonly modifiers: List<Modifier>
 
   constructor(config: IPlayer) {
     super(config)

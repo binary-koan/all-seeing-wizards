@@ -1,12 +1,13 @@
 import { List, Map } from "immutable"
-import { Card, PreventActionsEffect } from "../state/card"
-import { GameState } from "../state/gameState"
-import { Player } from "../state/player"
-import { affectedTiles, affectedPlayers } from "../state/helpers/range"
-import { BoardTile } from "../state/board"
 import modifiedResults from "./helpers/modifiedResults"
 import { ActionResult } from "./resultTypes"
+
+import { BoardTile } from "../state/board"
+import { Card, PreventActionsEffect } from "../state/card"
 import { Duration } from "../state/duration"
+import { GameState } from "../state/gameState"
+import { affectedPlayers, affectedTiles } from "../state/helpers/range"
+import { Player } from "../state/player"
 
 export function calculatePreventActionsResults(
   playedCards: Map<Player, Card>,

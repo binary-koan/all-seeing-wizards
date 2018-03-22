@@ -1,20 +1,45 @@
-import { List, fromJS } from "immutable"
+import { List } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
 import { Duration } from "./duration"
 import { Rotation } from "./positioning"
 
-export type MovementEffect = { type: "move"; amount: number; rotation: Rotation }
-export type AttackEffect = { type: "attack"; damage: number; ranges: List<CardRange> }
-export type KnockbackEffect = { type: "knockback"; amount: number; ranges: List<CardRange> }
-export type PreventActionsEffect = {
+export interface MovementEffect {
+  type: "move"
+  amount: number
+  rotation: Rotation
+}
+export interface AttackEffect {
+  type: "attack"
+  damage: number
+  ranges: List<CardRange>
+}
+export interface KnockbackEffect {
+  type: "knockback"
+  amount: number
+  ranges: List<CardRange>
+}
+export interface PreventActionsEffect {
   type: "preventActions"
   duration: Duration
   ranges: List<CardRange>
 }
-export type ShieldEffect = { type: "shield"; duration: Duration }
-export type MirrorShieldEffect = { type: "mirrorShield"; duration: Duration }
-export type HealEffect = { type: "heal"; amount: number }
-export type IncreaseDamageEffect = { type: "increaseDamage"; amount: number; duration: Duration }
+export interface ShieldEffect {
+  type: "shield"
+  duration: Duration
+}
+export interface MirrorShieldEffect {
+  type: "mirrorShield"
+  duration: Duration
+}
+export interface HealEffect {
+  type: "heal"
+  amount: number
+}
+export interface IncreaseDamageEffect {
+  type: "increaseDamage"
+  amount: number
+  duration: Duration
+}
 
 export type CardEffect = Readonly<
   | MovementEffect
@@ -26,12 +51,28 @@ export type CardEffect = Readonly<
   | IncreaseDamageEffect
 >
 
-export type AreaRange = { type: "area"; size: number; position: "around" | "inFront" }
-export type LineRange = { type: "line"; rotation: Rotation }
-export type PointRange = { type: "point"; position: "on" | "inFront" }
-export type WholeMapRange = { type: "wholeMap" }
+//
+
+export interface AreaRange {
+  type: "area"
+  size: number
+  position: "around" | "inFront"
+}
+export interface LineRange {
+  type: "line"
+  rotation: Rotation
+}
+export interface PointRange {
+  type: "point"
+  position: "on" | "inFront"
+}
+export interface WholeMapRange {
+  type: "wholeMap"
+}
 
 export type CardRange = Readonly<AreaRange | LineRange | PointRange | WholeMapRange>
+
+//
 
 interface ICard {
   id: string
@@ -48,10 +89,10 @@ const card = RecordFactory<ICard>({
 })
 
 export class Card extends card implements ICard {
-  id: string
-  name: string
-  tagline: string
-  effects: List<CardEffect>
+  public readonly id: string
+  public readonly name: string
+  public readonly tagline: string
+  public readonly effects: List<CardEffect>
 
   constructor(config: ICard) {
     super(config)

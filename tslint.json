@@ -1,0 +1,11 @@
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false,
+    "interface-name": false,
+    "no-bitwise": false,
+    //TODO not working yet, see https://github.com/palantir/tslint/issues/2649
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
+  }
+}

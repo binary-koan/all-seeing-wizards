@@ -1,4 +1,4 @@
-import { List, fromJS } from "immutable"
+import { List } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
 import { Board } from "./board"
 import { Card } from "./card"
@@ -15,8 +15,8 @@ const deck = RecordFactory<IDeck>({
 })
 
 export class Deck extends deck implements IDeck {
-  availableCards: List<Card>
-  discardedCards: List<Card>
+  public readonly availableCards: List<Card>
+  public readonly discardedCards: List<Card>
 
   constructor(config: IDeck) {
     super(config)
@@ -50,12 +50,12 @@ const gameState = RecordFactory<IGameState>({
 })
 
 export class GameState extends gameState implements IGameState {
-  version: number
-  id: string
-  players: List<Player>
-  board: Board
-  deck: Deck
-  operationsSinceLastSave: List<ChangeStateOperation>
+  public readonly version: number
+  public readonly id: string
+  public readonly players: List<Player>
+  public readonly board: Board
+  public readonly deck: Deck
+  public readonly operationsSinceLastSave: List<ChangeStateOperation>
 
   constructor(config: IGameState) {
     super(config)

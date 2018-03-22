@@ -6,23 +6,23 @@ export type Direction = "north" | "south" | "east" | "west"
 export type Rotation = "none" | "clockwise" | "reverse" | "anticlockwise"
 
 export class Point implements ValueObject {
-  x: number
-  y: number
+  public readonly x: number
+  public readonly y: number
 
   constructor({ x, y }: { x: number; y: number }) {
     this.x = x
     this.y = y
   }
 
-  multiply(multiplier: number) {
+  public multiply(multiplier: number) {
     return new Point({ x: this.x * multiplier, y: this.y * multiplier })
   }
 
-  equals(other: any) {
+  public equals(other: any) {
     return other instanceof Point && this.x === other.x && this.y === other.y
   }
 
-  hashCode() {
+  public hashCode() {
     let result = 17
     result = 37 * result + this.x
     result = 37 * result + this.y
@@ -31,9 +31,9 @@ export class Point implements ValueObject {
 }
 
 export class DirectionalPoint implements ValueObject {
-  x: number
-  y: number
-  facing: Direction
+  public readonly x: number
+  public readonly y: number
+  public readonly facing: Direction
 
   constructor({ x, y, facing }: { x: number; y: number; facing: Direction }) {
     this.x = x
@@ -41,16 +41,16 @@ export class DirectionalPoint implements ValueObject {
     this.facing = facing
   }
 
-  forward(amount: number = 1) {
+  public forward(amount: number = 1) {
     const forwardVector = this.forwardDirection.multiply(amount)
     return this.offset(forwardVector.x, forwardVector.y)
   }
 
-  offset(xOffset: number, yOffset: number) {
+  public offset(xOffset: number, yOffset: number) {
     return new DirectionalPoint({ x: this.x + xOffset, y: this.y + yOffset, facing: this.facing })
   }
 
-  clampToSize(width: number, height: number) {
+  public clampToSize(width: number, height: number) {
     const newX = clamp(this.x, 0, width)
     const newY = clamp(this.y, 0, height)
 
@@ -61,11 +61,11 @@ export class DirectionalPoint implements ValueObject {
     }
   }
 
-  equalsWithoutDirection(other: Point) {
+  public equalsWithoutDirection(other: Point) {
     return this.x === other.x && this.y === other.y
   }
 
-  equals(other: any) {
+  public equals(other: any) {
     return (
       other instanceof DirectionalPoint &&
       this.x === other.x &&
@@ -74,7 +74,7 @@ export class DirectionalPoint implements ValueObject {
     )
   }
 
-  hashCode() {
+  public hashCode() {
     let result = 17
     result = 37 * result + this.x
     result = 37 * result + this.y

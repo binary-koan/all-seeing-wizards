@@ -1,4 +1,4 @@
-import { List } from "immutable"
+import { List, Map } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
 import { Board } from "./board"
 import { Card } from "./card"
@@ -21,6 +21,18 @@ export class Deck extends deck implements IDeck {
   constructor(config: IDeck) {
     super(config)
   }
+
+  public withCardsDiscarded(cards: List<Card>) {
+    return this.set("discardedCards", this.discardedCards.concat(cards).toList())
+  }
+
+  public recycleDiscardedCards() {
+    // TODO is this enough of a shuffle?
+    return this.set("availableCards", this.discardedCards.sortBy(Math.random)).set(
+      "discardedCards",
+      List()
+    )
+  }
 }
 
 //
@@ -34,7 +46,7 @@ export type ChangeStateOperation =
 interface IGameState {
   version: number
   id: string
-  players: List<Player>
+  players: Map<string, Player>
   board: Board
   deck: Deck
   operationsSinceLastSave: List<ChangeStateOperation>
@@ -43,7 +55,7 @@ interface IGameState {
 const gameState = RecordFactory<IGameState>({
   version: 0,
   id: "",
-  players: List(),
+  players: Map(),
   board: new Board({ tiles: List(), objects: List(), width: 0, height: 0 }),
   deck: new Deck({ availableCards: List(), discardedCards: List() }),
   operationsSinceLastSave: List()
@@ -52,7 +64,7 @@ const gameState = RecordFactory<IGameState>({
 export class GameState extends gameState implements IGameState {
   public readonly version: number
   public readonly id: string
-  public readonly players: List<Player>
+  public readonly players: Map<string, Player>
   public readonly board: Board
   public readonly deck: Deck
   public readonly operationsSinceLastSave: List<ChangeStateOperation>

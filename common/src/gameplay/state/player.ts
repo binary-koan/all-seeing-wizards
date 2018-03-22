@@ -6,6 +6,8 @@ import { DirectionalPoint } from "./positioning"
 
 export const MAX_PLAYER_HP = 5
 
+const MAX_CARDS_IN_HAND = 7
+
 interface IHand {
   cards: List<Card>
   pickedIndexes: List<number>
@@ -17,11 +19,38 @@ const hand = RecordFactory<IHand>({
 })
 
 export class Hand extends hand implements IHand {
+  public static empty() {
+    return new Hand({ cards: List(), pickedIndexes: List() })
+  }
+
   public readonly cards: List<Card>
   public readonly pickedIndexes: List<number>
 
   constructor(config: IHand) {
     super(config)
+  }
+
+  public get hasEnoughCards() {
+    return this.cards.size >= MAX_CARDS_IN_HAND
+  }
+
+  public addCard(card: Card) {
+    return this.set("cards", this.cards.push(card))
+  }
+
+  public pickedCard(index: number) {
+    return this.cards.get(this.pickedIndexes.get(index))
+  }
+
+  public get pickedCards() {
+    return this.pickedIndexes.map(index => this.cards.get(index)).toList()
+  }
+
+  public removePickedCards() {
+    return this.set(
+      "cards",
+      this.cards.filterNot((card, index) => this.pickedIndexes.contains(index))
+    ).set("pickedIndexes", List())
   }
 }
 
@@ -49,6 +78,20 @@ export class Modifier extends modifier implements IModifier {
 
   constructor(config: IModifier) {
     super(config)
+  }
+
+  public advance(advancementType: "action" | "turn") {
+    if (this.duration.type !== advancementType) {
+      return this
+    }
+
+    const newDuration = this.duration.shorten(1)
+
+    if (newDuration.expired) {
+      return undefined
+    } else {
+      return new Modifier({ type: this.type, duration: newDuration })
+    }
   }
 }
 
@@ -106,5 +149,9 @@ export class Player extends player implements IPlayer {
 
   constructor(config: IPlayer) {
     super(config)
+  }
+
+  public get knockedOut() {
+    return this.hp <= 0
   }
 }

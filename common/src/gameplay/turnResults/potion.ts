@@ -20,6 +20,7 @@ const POTION_RESULTS: { [key: string]: (player: Player, effect: CardEffect) => A
   increaseDamage: (player: Player, effect: IncreaseDamageEffect) => ({
     type: "increaseDamage",
     amount: effect.amount,
+    duration: effect.duration,
     player
   }),
   heal: (player: Player, effect: HealEffect) => ({

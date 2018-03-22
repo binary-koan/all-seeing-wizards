@@ -13,9 +13,9 @@ export function calculatePreventActionsResults(
   playedCards: Map<Player, Card>,
   gameState: GameState
 ): List<ActionResult> {
-  return playedCards.flatMap((card, player) =>
-    resultsOf(effectsFrom(card, player), gameState)
-  ) as List<ActionResult>
+  return playedCards
+    .flatMap((card, player) => resultsOf(effectsFrom(card, player), gameState))
+    .toList()
 }
 
 function effectsFrom(card: Card, player: Player) {

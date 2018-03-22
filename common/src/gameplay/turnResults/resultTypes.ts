@@ -1,9 +1,13 @@
 import { List } from "immutable"
 import { BoardTile } from "../state/board"
+import { Duration } from "../state/duration"
 import { Player } from "../state/player"
 import { DirectionalPoint } from "../state/positioning"
-import { Duration } from "../state/duration"
 
+export type AttackResult = Readonly<{
+  type: "attack"
+  tiles: List<BoardTile>
+}>
 export type AttemptPreventActionsResult = Readonly<{
   type: "attemptPreventActions"
   tiles: List<BoardTile>
@@ -22,6 +26,7 @@ export type HealResult = Readonly<{ type: "heal"; amount: number; player: Player
 export type IncreaseDamageResult = Readonly<{
   type: "increaseDamage"
   amount: number
+  duration: Duration
   player: Player
 }>
 export type KnockbackResult = Readonly<{
@@ -41,9 +46,10 @@ export type PreventActionsResult = Readonly<{
   player: Player
 }>
 export type ShieldDamageResult = Readonly<{ type: "shieldDamage"; player: Player }>
-export type TakeDamageResult = Readonly<{ type: "takeDamage"; amount: number; player: Player }>
+export type TakeDamageResult = Readonly<{ type: "takeDamage"; damage: number; player: Player }>
 
 export type ActionResult =
+  | AttackResult
   | AttemptPreventActionsResult
   | GrantMirrorShieldResult
   | GrantShieldResult

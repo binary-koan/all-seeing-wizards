@@ -7,7 +7,8 @@
 
 import immutable from "immutable"
 import { BoardTile } from "./gameState/board"
-import { Duration, DirectionalPoint } from "./gameState/base"
+import { Duration } from "./gameState/duration"
+import { DirectionalPoint } from "./gameState/positioning"
 import { Player, MAX_PLAYER_HP, buildModifier } from "./gameState/player"
 
 const PREVENT_ACTIONS_SORT_ORDER = 0

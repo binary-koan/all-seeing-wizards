@@ -6,6 +6,7 @@ interface Constructable<T> {
 
 interface StaticallyTypedRecord<T> {
   get<K extends keyof T>(key: K): T[K]
+  getIn(keys: Array<string | number>): any
   set(key: string, value: any): this
   setIn(keys: Array<string | number>, val: any): this
   toJS(): T

@@ -39,6 +39,24 @@ export type MoveResult = Readonly<{
   targetPosition: DirectionalPoint
   player: Player
 }>
+
+export function moveResult(player: Player, targetPosition: DirectionalPoint): MoveResult {
+  return { type: "move", targetPosition, player }
+}
+
+export type MovePreventedResult = Readonly<{
+  type: "movePrevented"
+  attemptedPosition: DirectionalPoint
+  player: Player
+}>
+
+export function movePreventedResult(
+  player: Player,
+  attemptedPosition: DirectionalPoint
+): MovePreventedResult {
+  return { type: "movePrevented", attemptedPosition, player }
+}
+
 export type NoResult = Readonly<{ type: "none" }>
 export type PreventActionsResult = Readonly<{
   type: "preventActions"
@@ -57,6 +75,7 @@ export type ActionResult =
   | IncreaseDamageResult
   | KnockbackResult
   | MoveResult
+  | MovePreventedResult
   | NoResult
   | PreventActionsResult
   | ShieldDamageResult

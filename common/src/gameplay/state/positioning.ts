@@ -46,6 +46,12 @@ export class DirectionalPoint implements ValueObject {
     return this.offset(forwardVector.x, forwardVector.y)
   }
 
+  public turn(rotation: Rotation) {
+    const facing = rotateFacingDirection(this.facing, rotation)
+
+    return new DirectionalPoint({ x: this.x, y: this.y, facing })
+  }
+
   public offset(xOffset: number, yOffset: number) {
     return new DirectionalPoint({ x: this.x + xOffset, y: this.y + yOffset, facing: this.facing })
   }
@@ -61,7 +67,7 @@ export class DirectionalPoint implements ValueObject {
     }
   }
 
-  public equalsWithoutDirection(other: Point) {
+  public equalsWithoutDirection(other: Point | DirectionalPoint) {
     return this.x === other.x && this.y === other.y
   }
 
@@ -94,4 +100,26 @@ export class DirectionalPoint implements ValueObject {
         return new Point({ x: -1, y: 0 })
     }
   }
+}
+
+const NEXT_DIRECTION_CLOCKWISE: { [key: string]: Direction } = {
+  north: "east",
+  east: "south",
+  south: "west",
+  west: "north"
+}
+
+const ROTATION_AMOUNT = {
+  none: 0,
+  clockwise: 1,
+  reverse: 2,
+  anticlockwise: 3
+}
+
+function rotateFacingDirection(direction: Direction, rotation: Rotation) {
+  for (let i = 0; i < ROTATION_AMOUNT[rotation]; i++) {
+    direction = NEXT_DIRECTION_CLOCKWISE[direction]
+  }
+
+  return direction
 }

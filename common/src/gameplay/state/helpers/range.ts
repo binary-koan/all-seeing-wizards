@@ -1,15 +1,17 @@
 import { List, Set } from "immutable"
 import { flatten } from "lodash"
 import { Board, BoardTile } from "../board"
-import { AreaRange, CardRange } from "../card"
+import { AreaRange, CardRange, LineRange, PointRange } from "../card"
 import { GameState } from "../gameState"
 import { Player } from "../player"
 import { DirectionalPoint, Point } from "../positioning"
 
 export function affectedPlayers(tiles: List<BoardTile>, gameState: GameState): List<Player> {
-  return gameState.players.filter(
-    player => tiles.find(tile => player.position.equalsWithoutDirection(tile.position)) != null
-  ) as List<Player>
+  return gameState.players
+    .filter(
+      player => tiles.find(tile => player.position.equalsWithoutDirection(tile.position)) != null
+    )
+    .toList()
 }
 
 export function affectedTiles(
@@ -29,7 +31,9 @@ function affectedTilesForRange(
     case "area":
       return areaTiles(range, from, board)
     case "line":
+      return lineTiles(range, from, board)
     case "point":
+      return pointTiles(range, from, board)
     case "wholeMap":
       return board.tiles
   }
@@ -54,19 +58,29 @@ function areaTiles(range: AreaRange, from: DirectionalPoint, board: Board) {
   ) as List<BoardTile>
 }
 
-function lineTiles(range: AreaRange, from: DirectionalPoint, board: Board) {
-  /*
-  point = center.turn(ROTATION_MAPPINGS[position] || Rotation::NONE).forward(1)
-    affected_tiles = []
+function lineTiles(range: LineRange, from: DirectionalPoint, board: Board) {
+  let point = from.turn(range.rotation).forward(1)
+  const tilesInLine = []
 
-    loop do
-      affected_tiles << point
-      point = point.forward(1)
-      break if point.clamp(tiles) != point
-    end
+  while (point.isWithinSize(board.width, board.height)) {
+    tilesInLine.push(board.tileAt(point))
+    point = point.forward(1)
+  }
 
-    affected_tiles
-    */
+  return List(tilesInLine)
 }
 
-function pointTile(range: AreaRange, from: DirectionalPoint, board: Board) {}
+function pointTiles(range: PointRange, from: DirectionalPoint, board: Board) {
+  switch (range.position) {
+    case "on":
+      return List.of(board.tileAt(from))
+    case "inFront":
+      const position = from.forward(1)
+
+      if (position.isWithinSize(board.width, board.height)) {
+        return List.of(board.tileAt(position))
+      } else {
+        return List() as List<BoardTile>
+      }
+  }
+}

@@ -56,6 +56,10 @@ export class DirectionalPoint implements ValueObject {
     return new DirectionalPoint({ x: this.x + xOffset, y: this.y + yOffset, facing: this.facing })
   }
 
+  public isWithinSize(width: number, height: number) {
+    return this.equals(this.clampToSize(width, height))
+  }
+
   public clampToSize(width: number, height: number) {
     const newX = clamp(this.x, 0, width)
     const newY = clamp(this.y, 0, height)

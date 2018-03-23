@@ -1,6 +1,6 @@
 import { fromJS, List } from "immutable"
 import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
-import { Point } from "./positioning"
+import { DirectionalPoint, Point } from "./positioning"
 
 interface IBoard {
   tiles: List<BoardTile>
@@ -24,6 +24,10 @@ export class Board extends board implements IBoard {
 
   constructor(config: IBoard) {
     super(config)
+  }
+
+  public tileAt(point: Point | DirectionalPoint) {
+    return this.tiles.find(tile => tile.position.x === point.x && tile.position.y === point.y)
   }
 }
 

@@ -5,6 +5,7 @@
     "max-classes-per-file": false,
     "interface-name": false,
     "no-bitwise": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     //TODO not working yet, see https://github.com/palantir/tslint/issues/2649
     "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }

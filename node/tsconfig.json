@@ -1,13 +1,8 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2017",
-    "module": "commonjs",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "outFile": "dist/server.js",
-    "sourceMap": true,
-    "strictNullChecks": true
+    "module": "commonjs"
   },
   "include": ["src/**/*", "../common/src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

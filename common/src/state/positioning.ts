@@ -28,6 +28,10 @@ export class Point implements ValueObject {
     result = 37 * result + this.y
     return result | 0
   }
+
+  public toString() {
+    return `Point { x: ${this.x}, y: ${this.y} }`
+  }
 }
 
 export class DirectionalPoint implements ValueObject {
@@ -90,6 +94,10 @@ export class DirectionalPoint implements ValueObject {
     result = 37 * result + this.y
     result = 37 * result + this.facing.charCodeAt(0)
     return result | 0
+  }
+
+  public toString() {
+    return `DirectionalPoint { x: ${this.x}, y: ${this.y}, facing: ${this.facing} }`
   }
 
   private get forwardDirection() {

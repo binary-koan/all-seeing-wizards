@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  }
+}

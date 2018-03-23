@@ -27,7 +27,7 @@ function proposedResultsOf(effects: List<[MovementEffect, Player]>) {
 }
 
 function movementPath(effect: MovementEffect, player: Player) {
-  return Range(1, effect.amount)
+  return Range(1, effect.amount + 1)
     .map(amount => player.position.turn(effect.rotation).forward(amount))
     .toList()
 }

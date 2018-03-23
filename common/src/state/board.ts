@@ -5,22 +5,19 @@ import { DirectionalPoint, Point } from "./positioning"
 interface IBoard {
   tiles: List<BoardTile>
   objects: List<BoardObject>
-  width: number
-  height: number
 }
 
 const board = RecordFactory<IBoard>({
   tiles: List(),
-  objects: List(),
-  width: 0,
-  height: 0
+  objects: List()
 })
 
 export class Board extends board implements IBoard {
   public readonly tiles: List<BoardTile>
   public readonly objects: List<BoardObject>
-  public readonly width: number
-  public readonly height: number
+
+  private _width: number
+  private _height: number
 
   constructor(config: IBoard) {
     super(config)
@@ -28,6 +25,14 @@ export class Board extends board implements IBoard {
 
   public tileAt(point: Point | DirectionalPoint) {
     return this.tiles.find(tile => tile.position.x === point.x && tile.position.y === point.y)
+  }
+
+  public get width() {
+    return (this._width = this._width || this.tiles.maxBy(tile => tile.position.x).position.x)
+  }
+
+  public get height() {
+    return (this._height = this._height || this.tiles.maxBy(tile => tile.position.y).position.y)
   }
 }
 
@@ -49,7 +54,7 @@ export class BoardTile extends boardTile implements IBoardTile {
   public readonly position: Point
   public readonly type: BoardTileType
 
-  constructor(config: IBoard) {
+  constructor(config: IBoardTile) {
     super(config)
   }
 }

@@ -16,7 +16,7 @@ const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 export default function performActions(baseState: GameState) {
   const { gameState: resultingState, allResults: finalResults } = Range(
     0,
-    MAX_ACTIONS_PER_TURN - 1
+    MAX_ACTIONS_PER_TURN
   ).reduce(
     ({ gameState, allResults }, index) => {
       const { gameState: nextState, results } = perform(gameState, playedCards(index, gameState))

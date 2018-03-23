@@ -28,7 +28,7 @@ function proposedResultsOf(effects: List<[KnockbackEffect, Player]>) {
 
 function movementPath(effect: KnockbackEffect, player: Player) {
   // TODO turn in the correct direction
-  return Range(1, effect.amount)
+  return Range(1, effect.amount + 1)
     .map(amount => player.position.forward(-amount))
     .toList()
 }

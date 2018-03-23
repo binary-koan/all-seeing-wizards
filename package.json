@@ -2,18 +2,31 @@
   "name": "all-seeing-wizards",
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
-  "prettier": {
-    "printWidth": 100,
-    "semi": false
+  "scripts": {
+    "test": "jest"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.105",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.2",
+    "@types/lodash": "^4.14.105",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
     "typescript": "^2.7.2"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(Test|Spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }

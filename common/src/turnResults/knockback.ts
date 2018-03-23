@@ -1,5 +1,6 @@
 import { List, Map, Range } from "immutable"
-import { Card, KnockbackEffect } from "../state/card"
+import { Card } from "../state/card"
+import { KnockbackEffect } from "../state/cardEffect"
 import { GameState } from "../state/gameState"
 import { Player } from "../state/player"
 import { proposedMovement, reconcileMovement } from "./helpers/reconcileMovement"

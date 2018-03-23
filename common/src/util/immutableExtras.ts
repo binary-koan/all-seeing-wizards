@@ -12,6 +12,7 @@ interface StaticallyTypedRecord<T> {
   toJS(): T
 }
 
+// tslint:disable-next-line:variable-name
 export const RecordFactory = <T>(seed: T): Constructable<StaticallyTypedRecord<T>> => {
   return (Record(seed) as any) as Constructable<StaticallyTypedRecord<T>>
 }

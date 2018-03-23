@@ -3,14 +3,9 @@ import { List, Map } from "immutable"
 import modifiedResults from "./helpers/modifiedResults"
 import { ActionResult } from "./resultTypes"
 
-import { BoardTile } from "../state/board"
-import {
-  Card,
-  CardEffect,
-  HealEffect,
-  IncreaseDamageEffect,
-  PreventActionsEffect
-} from "../state/card"
+import { BoardTile } from "../state/boardTile"
+import { Card } from "../state/card"
+import { CardEffect, HealEffect, IncreaseDamageEffect } from "../state/cardEffect"
 import { Duration } from "../state/duration"
 import { GameState } from "../state/gameState"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"

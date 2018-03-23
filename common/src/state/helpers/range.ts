@@ -1,10 +1,11 @@
 import { List, Set } from "immutable"
 import { flatten } from "lodash"
-import { Board, BoardTile } from "../board"
-import { AreaRange, CardRange, LineRange, PointRange } from "../card"
+import { Board } from "../board"
+import { BoardTile } from "../boardTile"
+import { AreaRange, CardRange, LineRange, PointRange } from "../cardRange"
+import { DirectionalPoint } from "../directionalPoint"
 import { GameState } from "../gameState"
 import { Player } from "../player"
-import { DirectionalPoint, Point } from "../positioning"
 
 export function affectedPlayers(tiles: List<BoardTile>, gameState: GameState): List<Player> {
   return gameState.players

@@ -1,7 +1,7 @@
 import { List } from "immutable"
+import { DirectionalPoint } from "../../state/directionalPoint"
 import { GameState } from "../../state/gameState"
 import { Player } from "../../state/player"
-import { DirectionalPoint } from "../../state/positioning"
 import { ActionResult, movePreventedResult, moveResult } from "../resultTypes"
 
 export interface ProposedMovementResult {

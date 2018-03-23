@@ -1,8 +1,8 @@
 import { List } from "immutable"
-import { BoardTile } from "../state/board"
+import { BoardTile } from "../state/boardTile"
+import { DirectionalPoint } from "../state/directionalPoint"
 import { Duration } from "../state/duration"
 import { Player } from "../state/player"
-import { DirectionalPoint } from "../state/positioning"
 
 export type AttackResult = Readonly<{
   type: "attack"

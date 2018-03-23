@@ -1,5 +1,5 @@
 import { List } from "immutable"
-import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
+import { RecordFactory } from "../util/immutableExtras"
 import { Card } from "./card"
 import { Duration } from "./duration"
 import { DirectionalPoint } from "./positioning"

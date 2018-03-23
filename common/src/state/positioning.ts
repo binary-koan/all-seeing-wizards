@@ -1,5 +1,5 @@
 import { clamp } from "lodash"
-import { ValueObject } from "../../immutableExtras"
+import { ValueObject } from "../util/immutableExtras"
 
 export type Direction = "north" | "south" | "east" | "west"
 

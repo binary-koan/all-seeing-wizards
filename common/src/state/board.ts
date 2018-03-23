@@ -1,5 +1,5 @@
 import { fromJS, List } from "immutable"
-import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
+import { RecordFactory } from "../util/immutableExtras"
 import { DirectionalPoint, Point } from "./positioning"
 
 interface IBoard {

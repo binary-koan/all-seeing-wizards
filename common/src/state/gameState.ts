@@ -1,5 +1,5 @@
 import { List, Map } from "immutable"
-import { ImmutableGameObject, RecordFactory } from "../../immutableExtras"
+import { RecordFactory } from "../util/immutableExtras"
 import { Board } from "./board"
 import { Card } from "./card"
 import { Player } from "./player"

@@ -1,20 +1,19 @@
 import { List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import { CardEffect } from "./cardEffect"
+import { Rotation } from "./directionalPoint"
 import { Duration } from "./duration"
-import { Rotation } from "./positioning"
 
 interface ICard {
   id: string
   name: string
-  tagline: string
+  tagline?: string
   effects: List<CardEffect>
 }
 
 const card = RecordFactory<ICard>({
   id: "",
   name: "",
-  tagline: "",
   effects: List()
 })
 

@@ -1,4 +1,4 @@
-import { Rotation } from "./positioning"
+import { Rotation } from "./directionalPoint"
 
 export interface AreaRange {
   type: "area"

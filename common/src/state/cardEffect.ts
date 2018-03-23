@@ -1,7 +1,7 @@
 import { List } from "immutable"
 import { CardRange } from "./cardRange"
+import { Rotation } from "./directionalPoint"
 import { Duration } from "./duration"
-import { Rotation } from "./positioning"
 
 export interface MovementEffect {
   type: "move"

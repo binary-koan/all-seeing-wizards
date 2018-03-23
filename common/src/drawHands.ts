@@ -1,4 +1,5 @@
-import { Deck, GameState } from "./state/gameState"
+import { Deck } from "./state/deck"
+import { GameState } from "./state/gameState"
 import { Player } from "./state/player"
 
 export function drawHands(baseState: GameState): GameState {
@@ -11,22 +12,11 @@ export function drawHands(baseState: GameState): GameState {
 
 function drawHandForPlayer(player: Player, deck: Deck) {
   while (!player.hand.hasEnoughCards) {
-    const { card, deck: newDeck } = drawNextCard(deck)
+    const { card, deck: newDeck } = deck.drawCard()
 
     player = player.set("hand", player.hand.addCard(card))
     deck = newDeck
   }
 
   return { player, deck }
-}
-
-function drawNextCard(deck: Deck) {
-  if (deck.availableCards.size === 0) {
-    deck = deck.recycleDiscardedCards()
-  }
-
-  return {
-    card: deck.availableCards.first(),
-    deck: deck.set("availableCards", deck.availableCards.shift())
-  }
 }

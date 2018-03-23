@@ -1,5 +1,5 @@
 import { RecordFactory } from "../util/immutableExtras"
-import { Point } from "./positioning"
+import { Point } from "./point"
 
 type BoardTileType = "ground" | "block" | "water" | "lava"
 

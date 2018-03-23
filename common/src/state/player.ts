@@ -2,10 +2,10 @@ import { List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import { Card } from "./card"
 import { Character } from "./character"
+import { DirectionalPoint } from "./directionalPoint"
 import { Duration } from "./duration"
 import { Hand } from "./hand"
 import { Modifier } from "./modifier"
-import { DirectionalPoint } from "./positioning"
 
 export const MAX_PLAYER_HP = 5
 
@@ -24,7 +24,7 @@ const player = RecordFactory<IPlayer>({
   character: new Character({ name: "", type: "" }),
   hp: 0,
   position: new DirectionalPoint({ x: 0, y: 0, facing: "north" }),
-  hand: new Hand({ cards: List(), pickedIndexes: List() }),
+  hand: Hand.empty(),
   connected: false,
   modifiers: List()
 })

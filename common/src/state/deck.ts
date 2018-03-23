@@ -7,12 +7,12 @@ interface IDeck {
   discardedCards: List<Card>
 }
 
-const deck = RecordFactory<IDeck>({
+const deckFactory = RecordFactory<IDeck>({
   availableCards: List(),
   discardedCards: List()
 })
 
-export class Deck extends deck implements IDeck {
+export class Deck extends deckFactory implements IDeck {
   public readonly availableCards: List<Card>
   public readonly discardedCards: List<Card>
 
@@ -24,7 +24,16 @@ export class Deck extends deck implements IDeck {
     return this.set("discardedCards", this.discardedCards.concat(cards).toList())
   }
 
-  public recycleDiscardedCards() {
+  public drawCard() {
+    const deck = this.availableCards.size === 0 ? this.recycleDiscardedCards() : this
+
+    return {
+      card: deck.availableCards.first(),
+      deck: deck.set("availableCards", deck.availableCards.shift())
+    }
+  }
+
+  private recycleDiscardedCards() {
     // TODO is this enough of a shuffle?
     return this.set("availableCards", this.discardedCards.sortBy(Math.random)).set(
       "discardedCards",

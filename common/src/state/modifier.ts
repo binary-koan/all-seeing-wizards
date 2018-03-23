@@ -1,7 +1,7 @@
 import { RecordFactory } from "../util/immutableExtras"
 import { Duration } from "./duration"
 
-type ModifierType =
+export type ModifierType =
   | { type: "increaseDamage"; amount: number }
   | "shield"
   | "mirrorShield"
@@ -26,13 +26,11 @@ export class Modifier extends modifier implements IModifier {
   }
 
   public advance(advancementType: "action" | "turn") {
-    if (this.duration.type !== advancementType) {
+    const newDuration = this.duration.shorten(advancementType, 1)
+
+    if (newDuration === this.duration) {
       return this
-    }
-
-    const newDuration = this.duration.shorten(1)
-
-    if (newDuration.expired) {
+    } else if (newDuration.expired) {
       return undefined
     } else {
       return new Modifier({ type: this.type, duration: newDuration })

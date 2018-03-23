@@ -37,8 +37,9 @@ export class DirectionalPoint implements ValueObject {
   }
 
   public clampToSize(width: number, height: number) {
-    const newX = clamp(this.x, 0, width)
-    const newY = clamp(this.y, 0, height)
+    // Minus one because zero-based indexes
+    const newX = clamp(this.x, 0, width - 1)
+    const newY = clamp(this.y, 0, height - 1)
 
     if (newX !== this.x || newY !== this.y) {
       return new DirectionalPoint({ x: newX, y: newY, facing: this.facing })

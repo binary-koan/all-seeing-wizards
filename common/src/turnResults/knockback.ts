@@ -1,35 +1,73 @@
 import { List, Map, Range } from "immutable"
 import { Card } from "../state/card"
 import { KnockbackEffect } from "../state/cardEffect"
+import { Direction, DirectionalPoint } from "../state/directionalPoint"
 import { GameState } from "../state/gameState"
+import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
+import { resolveEffects } from "./helpers/effectsToResults"
+import movementPath from "./helpers/movementPath"
 import { proposedMove, reconcileMovement } from "./helpers/reconcileMovement"
-import { ActionResult } from "./resultTypes"
+import { ActionResult, KnockbackResult } from "./resultTypes"
 
 export function calculateKnockbackResults(
   playedCards: Map<Player, Card>,
   gameState: GameState
 ): List<ActionResult> {
-  const proposedResults = playedCards
-    .flatMap((card, player) => proposedResultsOf(effectsFrom(card, player)))
+  const proposedResults = resolveEffects(playedCards, ["knockback"])
+    .map((player, effect) => effectResults(effect as KnockbackEffect, player, gameState))
+    .toList()
+    .flatten()
     .toList()
 
   return reconcileMovement(proposedResults, gameState)
-}
-
-function effectsFrom(card: Card, player: Player) {
-  return card.effects
-    .filter(effect => effect.type === "move")
-    .map(effect => [effect, player]) as List<[KnockbackEffect, Player]>
-}
-
-function proposedResultsOf(effects: List<[KnockbackEffect, Player]>) {
-  return effects.map(([effect, player]) => proposedMove(player, movementPath(effect, player)))
-}
-
-function movementPath(effect: KnockbackEffect, player: Player) {
-  // TODO turn in the correct direction
-  return Range(1, effect.amount + 1)
-    .map(amount => player.position.forward(-amount))
+    .map(convertMoveResult)
     .toList()
+}
+
+function effectResults(effect: KnockbackEffect, caster: Player, gameState: GameState) {
+  const tiles = affectedTiles(effect.ranges, caster.position, gameState.board)
+  const players = affectedPlayers(tiles, gameState)
+
+  return players.map(player => {
+    const direction = knockbackDirection(caster.position, player.position)
+
+    return proposedMove(
+      player,
+      movementPath({
+        amount: effect.amount,
+        moveInDirection: direction,
+        facingDirection: player.position.facing,
+        player,
+        gameState
+      })
+    )
+  })
+}
+
+function convertMoveResult(result: ActionResult): ActionResult {
+  // TODO stop reconcileMovement from being so tied to movement
+  if (result.type === "move") {
+    return { type: "knockback", targetPosition: result.targetPosition, player: result.player }
+  } else {
+    // TODO knockback prevented result?
+    return result
+  }
+}
+
+function knockbackDirection(from: DirectionalPoint, to: DirectionalPoint): Direction {
+  // TODO super basic, would be nice to do something better
+  if (from.x === to.x) {
+    if (from.y > to.y) {
+      return "north"
+    } else {
+      return "south"
+    }
+  } else if (from.y === to.y) {
+    if (from.x > to.x) {
+      return "west"
+    } else {
+      return "east"
+    }
+  }
 }

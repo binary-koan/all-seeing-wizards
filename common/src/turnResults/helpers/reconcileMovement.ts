@@ -34,7 +34,6 @@ function applyProposedResults(proposedResults: List<ProposedMove>, gameState: Ga
 
 function applyProposedResult(gameState: GameState, proposedResult: ProposedMove) {
   return gameState.updatePlayer(
-    proposedResult.player.id,
     proposedResult.player.updatePosition(proposedResult.movementPath.last())
   )
 }
@@ -63,9 +62,12 @@ function checkAgainstUnmovedPlayers(
   result: ProposedMove,
   unmovedPositions: List<DirectionalPoint>
 ) {
-  const firstBadIndex = result.movementPath.findIndex(
-    position => unmovedPositions.find(pos => pos.equalsWithoutDirection(position)) != null
-  )
+  const firstBadIndex = result.movementPath
+    .filter(position => !position.equalsWithoutDirection(result.player.position))
+    .toList()
+    .findIndex(
+      position => unmovedPositions.find(pos => pos.equalsWithoutDirection(position)) != null
+    )
 
   if (firstBadIndex > -1) {
     return proposedMove(result.player, result.movementPath.slice(0, firstBadIndex).toList())

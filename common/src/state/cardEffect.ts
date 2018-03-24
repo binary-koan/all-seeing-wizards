@@ -44,6 +44,7 @@ export interface IncreaseDamageEffect {
 export type CardEffect = Readonly<
   | MovementEffect
   | AttackEffect
+  | KnockbackEffect
   | PreventActionsEffect
   | ShieldEffect
   | MirrorShieldEffect

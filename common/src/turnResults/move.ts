@@ -3,6 +3,8 @@ import { Card } from "../state/card"
 import { MovementEffect } from "../state/cardEffect"
 import { GameState } from "../state/gameState"
 import { Player } from "../state/player"
+import { resolveEffects } from "./helpers/effectsToResults"
+import movementPath from "./helpers/movementPath"
 import { proposedMove, reconcileMovement } from "./helpers/reconcileMovement"
 import { ActionResult } from "./resultTypes"
 
@@ -10,25 +12,23 @@ export function calculateMoveResults(
   playedCards: Map<Player, Card>,
   gameState: GameState
 ): List<ActionResult> {
-  const proposedResults = playedCards
-    .flatMap((card, player) => proposedResultsOf(effectsFrom(card, player)))
+  const proposedResults = resolveEffects(playedCards, ["move"])
+    .map((player, effect) =>
+      proposedMove(player, pathFor(effect as MovementEffect, player, gameState))
+    )
     .toList()
 
   return reconcileMovement(proposedResults, gameState)
 }
 
-function effectsFrom(card: Card, player: Player) {
-  return card.effects
-    .filter(effect => effect.type === "move")
-    .map(effect => [effect, player]) as List<[MovementEffect, Player]>
-}
+function pathFor(effect: MovementEffect, player: Player, gameState: GameState) {
+  const facingDirection = player.position.turn(effect.rotation).facing
 
-function proposedResultsOf(effects: List<[MovementEffect, Player]>) {
-  return effects.map(([effect, player]) => proposedMove(player, movementPath(effect, player)))
-}
-
-function movementPath(effect: MovementEffect, player: Player) {
-  return Range(1, effect.amount + 1)
-    .map(amount => player.position.turn(effect.rotation).forward(amount))
-    .toList()
+  return movementPath({
+    amount: effect.amount,
+    moveInDirection: facingDirection,
+    facingDirection,
+    player,
+    gameState
+  })
 }

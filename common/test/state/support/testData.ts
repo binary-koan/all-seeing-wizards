@@ -2,16 +2,17 @@ import { List, Map, Range } from "immutable"
 import { Board } from "../../../src/state/board"
 import { BoardObject } from "../../../src/state/boardObject"
 import { BoardTile } from "../../../src/state/boardTile"
-import { Point } from "../../../src/state/point"
 import { Card } from "../../../src/state/card"
+import { CardEffect } from "../../../src/state/cardEffect"
+import { Character } from "../../../src/state/character"
 import { Deck } from "../../../src/state/deck"
 import { Direction, DirectionalPoint } from "../../../src/state/directionalPoint"
 import { Duration } from "../../../src/state/duration"
+import { ChangeStateOperation, GameState } from "../../../src/state/gameState"
 import { Hand } from "../../../src/state/hand"
-import { ModifierType, Modifier } from "../../../src/state/modifier"
-import { Character } from "../../../src/state/character"
+import { Modifier, ModifierType } from "../../../src/state/modifier"
 import { Player } from "../../../src/state/player"
-import { GameState, ChangeStateOperation } from "../../../src/state/gameState"
+import { Point } from "../../../src/state/point"
 
 export function createTestPoint({
   x,
@@ -52,9 +53,19 @@ export function createTestBoard() {
   return new Board({ tiles, objects: List() as List<BoardObject> })
 }
 
-export function createTestCards(count: number) {
+export function createTestCards(
+  count: number,
+  { id, name, effects }: { id?: string; name?: string; effects?: List<CardEffect> } = {}
+) {
   return Range(0, count)
-    .map(index => new Card({ id: "", name: `Card ${index}`, effects: List() }))
+    .map(
+      index =>
+        new Card({
+          id: `${id || "card"}${index}`,
+          name: `${name || "Card"} ${index}`,
+          effects: effects || List()
+        })
+    )
     .toList()
 }
 

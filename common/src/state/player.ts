@@ -59,6 +59,10 @@ export class Player extends player implements IPlayer {
     return this.set("modifiers", this.modifiers.push(modifier))
   }
 
+  public hasModifier(typeName: string) {
+    return this.modifiers.find(modifier => modifier.type.name === typeName) != null
+  }
+
   public advanceModifiers(advancementType: "action" | "turn") {
     return this.set(
       "modifiers",

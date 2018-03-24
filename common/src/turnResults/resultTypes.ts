@@ -63,7 +63,7 @@ export type PreventActionsResult = Readonly<{
   duration: Duration
   player: Player
 }>
-export type ShieldDamageResult = Readonly<{ type: "shieldDamage"; player: Player }>
+export type ShieldFromHarmResult = Readonly<{ type: "shieldFromHarm"; player: Player }>
 export type TakeDamageResult = Readonly<{ type: "takeDamage"; damage: number; player: Player }>
 
 export type ActionResult =
@@ -78,5 +78,5 @@ export type ActionResult =
   | MovePreventedResult
   | NoResult
   | PreventActionsResult
-  | ShieldDamageResult
+  | ShieldFromHarmResult
   | TakeDamageResult

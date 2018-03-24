@@ -1,6 +1,5 @@
 import { List, Map } from "immutable"
 
-import modifiedResults from "./helpers/modifiedResults"
 import { ActionResult } from "./resultTypes"
 
 import { BoardTile } from "../state/boardTile"
@@ -10,7 +9,7 @@ import { Duration } from "../state/duration"
 import { GameState } from "../state/gameState"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
-import { calculateResults, effectsOfType } from "./helpers/effectsToResults"
+import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 
 const POTION_RESULTS: { [key: string]: (player: Player, effect: CardEffect) => ActionResult } = {
   increaseDamage: (player: Player, effect: IncreaseDamageEffect) => ({
@@ -33,7 +32,7 @@ export function calculatePotionResults(
   gameState: GameState
 ): List<ActionResult> {
   return calculateResults(
-    effectsOfType(playedCards, POTION_TYPES) as Map<CardEffect, Player>,
+    resolveEffects(playedCards, POTION_TYPES) as Map<CardEffect, Player>,
     (effect: CardEffect, player: Player) => effectResults(effect, player, gameState)
   )
 }

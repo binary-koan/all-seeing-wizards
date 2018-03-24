@@ -1,5 +1,4 @@
 import { List, Map } from "immutable"
-import modifiedResults from "./helpers/modifiedResults"
 import { ActionResult } from "./resultTypes"
 
 import { BoardTile } from "../state/boardTile"
@@ -9,14 +8,14 @@ import { Duration } from "../state/duration"
 import { GameState } from "../state/gameState"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
-import { calculateResults, effectsOfType } from "./helpers/effectsToResults"
+import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 
 export function calculatePreventActionsResults(
   playedCards: Map<Player, Card>,
   gameState: GameState
 ): List<ActionResult> {
   return calculateResults(
-    effectsOfType(playedCards, ["preventActions"]) as Map<PreventActionsEffect, Player>,
+    resolveEffects(playedCards, ["preventActions"]) as Map<PreventActionsEffect, Player>,
     (effect: PreventActionsEffect, player: Player) => effectResults(effect, player, gameState)
   )
 }

@@ -2,10 +2,10 @@ import { RecordFactory } from "../util/immutableExtras"
 import { Duration } from "./duration"
 
 export type ModifierType =
-  | { type: "increaseDamage"; amount: number }
-  | "shield"
-  | "mirrorShield"
-  | "preventActions"
+  | { name: "increaseDamage"; amount: number }
+  | { name: "shield" }
+  | { name: "mirrorShield" }
+  | { name: "preventActions" }
 
 interface IModifier {
   type: ModifierType
@@ -13,7 +13,7 @@ interface IModifier {
 }
 
 const modifier = RecordFactory<IModifier>({
-  type: "shield",
+  type: { name: "shield" },
   duration: new Duration("action", 0)
 })
 

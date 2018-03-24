@@ -71,7 +71,7 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  shieldDamage(result, state: GameState) {
+  shieldFromHarm(result, state: GameState) {
     return state
   },
 

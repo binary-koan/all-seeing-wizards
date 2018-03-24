@@ -6,7 +6,7 @@ import { Duration } from "../state/duration"
 import { GameState } from "../state/gameState"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
-import { calculateResults, effectsOfType } from "./helpers/effectsToResults"
+import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 import { ActionResult } from "./resultTypes"
 
 export function calculateAttackResults(
@@ -14,7 +14,7 @@ export function calculateAttackResults(
   gameState: GameState
 ): List<ActionResult> {
   return calculateResults(
-    effectsOfType(playedCards, ["attack"]) as Map<AttackEffect, Player>,
+    resolveEffects(playedCards, ["attack"]) as Map<AttackEffect, Player>,
     (effect: AttackEffect, player: Player) => effectResults(effect, player, gameState)
   )
 }

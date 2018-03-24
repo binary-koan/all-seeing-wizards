@@ -1,22 +1,7 @@
 import { List, Range } from "immutable"
 import { Card } from "../../src/state/card"
 import { Hand } from "../../src/state/hand"
-
-function createTestCards(count: number) {
-  return Range(0, count)
-    .map(index => new Card({ id: "", name: `Card ${index}`, effects: List() }))
-    .toList()
-}
-
-function createTestHand({
-  cards,
-  pickedIndexes
-}: {
-  cards?: List<Card>
-  pickedIndexes?: List<number>
-} = {}) {
-  return new Hand({ cards: cards || List(), pickedIndexes: pickedIndexes || List() })
-}
+import { createTestCards, createTestHand } from "./support/testData"
 
 describe("#hasEnoughCards", () => {
   it("is false when there are not enough cards", () => {

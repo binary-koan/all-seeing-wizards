@@ -1,14 +1,5 @@
 import { Point } from "../../src/state/point"
-
-function createTestPoint({
-  x,
-  y
-}: {
-  x?: number
-  y?: number
-} = {}) {
-  return new Point({ x: x != null ? x : 0, y: y != null ? y : 0 })
-}
+import { createTestPoint } from "./support/testData"
 
 describe("#multiply", () => {
   it("multiplies the coordinates", () => {

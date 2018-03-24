@@ -4,20 +4,17 @@ import { GameState } from "../../state/gameState"
 import { Player } from "../../state/player"
 import { ActionResult, movePreventedResult, moveResult } from "../resultTypes"
 
-export interface ProposedMovementResult {
+export interface ProposedMove {
   player: Player
   movementPath: List<DirectionalPoint>
 }
 
-export function proposedMovement(
-  player: Player,
-  movementPath: List<DirectionalPoint>
-): ProposedMovementResult {
+export function proposedMove(player: Player, movementPath: List<DirectionalPoint>): ProposedMove {
   return { player, movementPath }
 }
 
 export function reconcileMovement(
-  proposedResults: List<ProposedMovementResult>,
+  proposedResults: List<ProposedMove>,
   gameState: GameState
 ): List<ActionResult> {
   const resultingState = applyProposedResults(proposedResults, gameState)
@@ -31,77 +28,80 @@ export function reconcileMovement(
   return preventConflictingMovement(gameState, walkedBackResults, walkedBackState)
 }
 
-function applyProposedResults(proposedResults: List<ProposedMovementResult>, gameState: GameState) {
+function applyProposedResults(proposedResults: List<ProposedMove>, gameState: GameState) {
   return proposedResults.reduce(applyProposedResult, gameState)
 }
 
-function applyProposedResult(gameState: GameState, proposedResult: ProposedMovementResult) {
-  return gameState.setIn(
-    ["players", proposedResult.player.id, "position"],
-    proposedResult.movementPath.last()
+function applyProposedResult(gameState: GameState, proposedResult: ProposedMove) {
+  return gameState.updatePlayer(
+    proposedResult.player.id,
+    proposedResult.player.updatePosition(proposedResult.movementPath.last())
   )
 }
 
 function avoidWalkingThroughUnmovedPlayers(
   gameState: GameState,
-  proposedResults: List<ProposedMovementResult>,
+  proposedResults: List<ProposedMove>,
   resultingState: GameState
 ) {
-  const unmovedPlayerPositions = gameState.players
-    .filter(player =>
-      player.position.equalsWithoutDirection(
-        resultingState.getIn(["players", player.id, "position"])
-      )
-    )
-    .map(player => player.position)
+  const unmovedPositions = unmovedPlayerPositions(gameState, resultingState)
 
   return proposedResults.reduce(
     ([newResults, newState], result) => {
-      const firstBadIndex = result.movementPath.findIndex(
-        position =>
-          unmovedPlayerPositions.find(playerPosition =>
-            playerPosition.equalsWithoutDirection(position)
-          ) != null
-      )
+      const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
 
-      if (firstBadIndex > -1) {
-        const newResult = {
-          player: result.player,
-          movementPath: result.movementPath.slice(0, firstBadIndex).toList()
-        }
+      const nextResults = newResults.push(newResult)
+      const nextState = applyProposedResult(newState, newResult)
 
-        return [newResults.push(newResult), applyProposedResult(newState, newResult)] as [
-          List<ProposedMovementResult>,
-          GameState
-        ]
-      } else {
-        return [newResults.push(result), applyProposedResult(newState, result)] as [
-          List<ProposedMovementResult>,
-          GameState
-        ]
-      }
+      return [nextResults, nextState] as [List<ProposedMove>, GameState]
     },
-    [List(), gameState] as [List<ProposedMovementResult>, GameState]
+    [List(), gameState] as [List<ProposedMove>, GameState]
   )
+}
+
+function checkAgainstUnmovedPlayers(
+  result: ProposedMove,
+  unmovedPositions: List<DirectionalPoint>
+) {
+  const firstBadIndex = result.movementPath.findIndex(
+    position => unmovedPositions.find(pos => pos.equalsWithoutDirection(position)) != null
+  )
+
+  if (firstBadIndex > -1) {
+    return proposedMove(result.player, result.movementPath.slice(0, firstBadIndex).toList())
+  } else {
+    return result
+  }
+}
+
+function unmovedPlayerPositions(firstState: GameState, secondState: GameState) {
+  return firstState.players
+    .filter(player =>
+      player.position.equalsWithoutDirection(secondState.player(player.id).position)
+    )
+    .map(player => player.position)
+    .toList()
 }
 
 function preventConflictingMovement(
   gameState: GameState,
-  proposedResults: List<ProposedMovementResult>,
+  proposedResults: List<ProposedMove>,
   resultingState: GameState
 ): List<ActionResult> {
-  return proposedResults
-    .map(({ player, movementPath }) => {
-      const targetPosition = movementPath.last()
-      const conflict = proposedResults.find(otherResult =>
-        targetPosition.equals(otherResult.movementPath.last())
-      )
+  return proposedResults.map(result => checkConflictingResult(result, proposedResults)).toList()
+}
 
-      if (conflict) {
-        return movePreventedResult(player, targetPosition)
-      } else {
-        return moveResult(player, targetPosition)
-      }
-    })
-    .toList()
+function checkConflictingResult(result: ProposedMove, allResults: List<ProposedMove>) {
+  const targetPosition = result.movementPath.last()
+
+  const conflict = allResults.find(other => {
+    const otherTarget = other.movementPath.last()
+    return targetPosition !== otherTarget && targetPosition.equals(otherTarget)
+  })
+
+  if (conflict) {
+    return movePreventedResult(result.player, targetPosition)
+  } else {
+    return moveResult(result.player, targetPosition)
+  }
 }

@@ -10,6 +10,7 @@ import { Duration } from "../state/duration"
 import { GameState } from "../state/gameState"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
+import { calculateResults, effectsOfType } from "./helpers/effectsToResults"
 
 const POTION_RESULTS: { [key: string]: (player: Player, effect: CardEffect) => ActionResult } = {
   increaseDamage: (player: Player, effect: IncreaseDamageEffect) => ({
@@ -31,25 +32,12 @@ export function calculatePotionResults(
   playedCards: Map<Player, Card>,
   gameState: GameState
 ): List<ActionResult> {
-  return playedCards.flatMap((card, player) =>
-    resultsOf(effectsFrom(card, player), gameState)
-  ) as List<ActionResult>
-}
-
-function effectsFrom(card: Card, player: Player) {
-  return card.effects
-    .filter(effect => POTION_TYPES.includes(effect.type))
-    .map(effect => [effect, player]) as List<[CardEffect, Player]>
-}
-
-function resultsOf(effects: List<[CardEffect, Player]>, gameState: GameState) {
-  return effects.flatMap(([effect, player]) => effectResults(effect, player, gameState)) as List<
-    ActionResult
-  >
+  return calculateResults(
+    effectsOfType(playedCards, POTION_TYPES) as Map<CardEffect, Player>,
+    (effect: CardEffect, player: Player) => effectResults(effect, player, gameState)
+  )
 }
 
 function effectResults(effect: CardEffect, player: Player, gameState: GameState) {
-  const basicResult = POTION_RESULTS[effect.type](player, effect)
-
-  return modifiedResults(basicResult, player)
+  return List.of(POTION_RESULTS[effect.type](player, effect))
 }

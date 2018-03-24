@@ -1,8 +1,5 @@
 import { Duration } from "../../src/state/duration"
-
-function createTestDuration({ type, length }: { type?: "action" | "turn"; length?: number } = {}) {
-  return new Duration(type || "action", length != null ? length : 1)
-}
+import { createTestDuration } from "./support/testData"
 
 describe("#shorten", () => {
   it("shortens by the expected amount", () => {

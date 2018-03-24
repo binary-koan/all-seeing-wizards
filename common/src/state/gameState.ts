@@ -40,4 +40,12 @@ export class GameState extends gameState implements IGameState {
   constructor(config: IGameState) {
     super(config)
   }
+
+  public player(id: string) {
+    return this.players.get(id)
+  }
+
+  public updatePlayer(player: Player) {
+    return this.setIn(["players", player.id], player)
+  }
 }

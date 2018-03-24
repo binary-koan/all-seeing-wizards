@@ -5,24 +5,7 @@ import { BoardTile } from "../../src/state/boardTile"
 import { Card } from "../../src/state/card"
 import { Deck } from "../../src/state/deck"
 import { Point } from "../../src/state/point"
-
-function createTestCards(count: number) {
-  return Range(0, count)
-    .map(index => new Card({ id: "", name: `Card ${index}`, effects: List() }))
-    .toList()
-}
-
-function createTestDeck(
-  {
-    availableCards,
-    discardedCards
-  }: {
-    availableCards: List<Card>
-    discardedCards: List<Card>
-  } = { availableCards: List(), discardedCards: List() }
-) {
-  return new Deck({ availableCards, discardedCards })
-}
+import { createTestCards, createTestDeck } from "./support/testData"
 
 describe("#withCardsDiscarded", () => {
   it("adds the cards to the available list", () => {

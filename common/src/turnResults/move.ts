@@ -3,7 +3,7 @@ import { Card } from "../state/card"
 import { MovementEffect } from "../state/cardEffect"
 import { GameState } from "../state/gameState"
 import { Player } from "../state/player"
-import { proposedMovement, reconcileMovement } from "./helpers/reconcileMovement"
+import { proposedMove, reconcileMovement } from "./helpers/reconcileMovement"
 import { ActionResult } from "./resultTypes"
 
 export function calculateMoveResults(
@@ -24,7 +24,7 @@ function effectsFrom(card: Card, player: Player) {
 }
 
 function proposedResultsOf(effects: List<[MovementEffect, Player]>) {
-  return effects.map(([effect, player]) => proposedMovement(player, movementPath(effect, player)))
+  return effects.map(([effect, player]) => proposedMove(player, movementPath(effect, player)))
 }
 
 function movementPath(effect: MovementEffect, player: Player) {

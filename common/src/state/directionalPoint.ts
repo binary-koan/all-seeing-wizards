@@ -1,4 +1,4 @@
-import { clamp } from "lodash"
+import clamp from "../util/clamp"
 import { ValueObject } from "../util/immutableExtras"
 import { Point } from "./point"
 

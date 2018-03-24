@@ -110,13 +110,7 @@ function advancePlayerModifiers(
   player: Player,
   advancementType: "action" | "turn"
 ) {
-  return state.set(
-    "players",
-    state.players.setIn(
-      [player.id, "modifiers"],
-      player.modifiers.map(modifier => modifier.advance(advancementType)).filter(Boolean)
-    )
-  )
+  return state.updatePlayer(player.advanceModifiers(advancementType))
 }
 
 function ensurePlayerKnockedOut(state: GameState, player: Player) {

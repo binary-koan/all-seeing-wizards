@@ -3,16 +3,7 @@ import { Board } from "../../src/state/board"
 import { BoardObject } from "../../src/state/boardObject"
 import { BoardTile } from "../../src/state/boardTile"
 import { Point } from "../../src/state/point"
-
-function createTestBoard() {
-  const tiles = Range(0, 4)
-    .flatMap(x =>
-      Range(0, 3).map(y => new BoardTile({ position: new Point({ x, y }), type: "ground" }))
-    )
-    .toList()
-
-  return new Board({ tiles, objects: List() as List<BoardObject> })
-}
+import { createTestBoard } from "./support/testData"
 
 describe("#tileAt", () => {
   it("returns the tile at the right position", () => {

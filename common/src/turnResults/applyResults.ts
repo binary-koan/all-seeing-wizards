@@ -18,64 +18,66 @@ import {
 const RESULT_APPLICATORS: {
   [key: string]: (result: ActionResult, state: GameState) => GameState
 } = {
-  attack: (result, state: GameState) => state,
+  attack(result, state: GameState) {
+    return state
+  },
 
-  attemptPreventActions: (result, state: GameState) => state,
+  attemptPreventActions(result, state: GameState) {
+    return state
+  },
 
-  grantMirrorShield: (result: GrantMirrorShieldResult, state: GameState) =>
-    addModifier(
-      result.player,
-      new Modifier({ type: "mirrorShield", duration: result.duration }),
-      state
-    ),
-
-  grantShield: (result: GrantShieldResult, state: GameState) =>
-    addModifier(result.player, new Modifier({ type: "shield", duration: result.duration }), state),
-
-  heal: (result: HealResult, state: GameState) =>
-    state.setIn(
-      ["players", result.player.id],
-      result.player.set("hp", Math.min(result.player.hp + result.amount, MAX_PLAYER_HP))
-    ),
-
-  increaseDamage: (result: IncreaseDamageResult, state: GameState) =>
-    addModifier(
-      result.player,
-      new Modifier({
-        type: { type: "increaseDamage", amount: result.amount },
-        duration: result.duration
-      }),
-      state
-    ),
-
-  knockback: (result: KnockbackResult, state: GameState) =>
-    state.setIn(
-      ["players", result.player.id],
-      result.player.set("position", result.targetPosition)
-    ),
-
-  move: (result: MoveResult, state: GameState) =>
-    state.setIn(
-      ["players", result.player.id],
-      result.player.set("position", result.targetPosition)
-    ),
-
-  none: (result, state: GameState) => state,
-
-  preventActions: (result: PreventActionsResult, state: GameState) =>
-    addModifier(
-      result.player,
-      new Modifier({ type: "preventActions", duration: result.duration }),
-      state
-    ),
-
-  shieldDamage: (result, state: GameState) => state,
-
-  takeDamage: (result: TakeDamageResult, state: GameState) =>
-    state.setIn(
-      ["players", result.player.id],
-      result.player.set("hp", Math.max(result.player.hp - result.damage, 0))
+  grantMirrorShield(result: GrantMirrorShieldResult, state: GameState) {
+    return state.updatePlayer(
+      result.player.addModifier(new Modifier({ type: "mirrorShield", duration: result.duration }))
     )
+  },
+
+  grantShield(result: GrantShieldResult, state: GameState) {
+    return state.updatePlayer(
+      result.player.addModifier(new Modifier({ type: "shield", duration: result.duration }))
+    )
+  },
+
+  heal(result: HealResult, state: GameState) {
+    return state.updatePlayer(result.player.updateHp(result.amount))
+  },
+
+  increaseDamage(result: IncreaseDamageResult, state: GameState) {
+    return state.updatePlayer(
+      result.player.addModifier(
+        new Modifier({
+          type: { type: "increaseDamage", amount: result.amount },
+          duration: result.duration
+        })
+      )
+    )
+  },
+
+  knockback(result: KnockbackResult, state: GameState) {
+    return state.updatePlayer(result.player.updatePosition(result.targetPosition))
+  },
+
+  move(result: MoveResult, state: GameState) {
+    return state.updatePlayer(result.player.updatePosition(result.targetPosition))
+  },
+
+  none(result, state: GameState) {
+    return state
+  },
+
+  preventActions(result: PreventActionsResult, state: GameState) {
+    return state.updatePlayer(
+      result.player.addModifier(new Modifier({ type: "preventActions", duration: result.duration }))
+    )
+  },
+
+  shieldDamage(result, state: GameState) {
+    return state
+  },
+
+  takeDamage(result: TakeDamageResult, state: GameState) {
+    return state.updatePlayer(result.player.updateHp(-result.damage))
+  }
 }
 
 export function applyResults(results: List<ActionResult>, baseState: GameState): GameState {
@@ -83,8 +85,4 @@ export function applyResults(results: List<ActionResult>, baseState: GameState):
     (gameState, result) => RESULT_APPLICATORS[result.type](result, gameState),
     baseState
   )
-}
-
-function addModifier(player: Player, modifier: Modifier, state: GameState) {
-  return state.setIn(["players", player.id, "modifiers"], player.modifiers.push(modifier))
 }

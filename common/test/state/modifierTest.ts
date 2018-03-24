@@ -1,15 +1,6 @@
 import { Duration } from "../../src/state/duration"
 import { Modifier, ModifierType } from "../../src/state/modifier"
-
-function createTestModifier({
-  type,
-  duration
-}: {
-  type?: ModifierType
-  duration?: Duration
-} = {}) {
-  return new Modifier({ type: type || "shield", duration: duration || new Duration("action", 1) })
-}
+import { createTestModifier } from "./support/testData"
 
 describe("#advance", () => {
   it("changes the duration", () => {

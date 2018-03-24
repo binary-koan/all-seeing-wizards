@@ -1,4 +1,5 @@
 import { List } from "immutable"
+import clamp from "../util/clamp"
 import { RecordFactory } from "../util/immutableExtras"
 import { Card } from "./card"
 import { Character } from "./character"
@@ -44,5 +45,24 @@ export class Player extends player implements IPlayer {
 
   public get knockedOut() {
     return this.hp <= 0
+  }
+
+  public updateHp(by: number) {
+    return this.set("hp", clamp(this.hp + by, 0, MAX_PLAYER_HP))
+  }
+
+  public updatePosition(position: DirectionalPoint) {
+    return this.set("position", position)
+  }
+
+  public addModifier(modifier: Modifier) {
+    return this.set("modifiers", this.modifiers.push(modifier))
+  }
+
+  public advanceModifiers(advancementType: "action" | "turn") {
+    return this.set(
+      "modifiers",
+      this.modifiers.map(modifier => modifier.advance(advancementType)).filter(Boolean)
+    )
   }
 }

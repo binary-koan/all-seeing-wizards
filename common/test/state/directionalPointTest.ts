@@ -1,17 +1,6 @@
 import { Direction, DirectionalPoint } from "../../src/state/directionalPoint"
 import { Point } from "../../src/state/point"
-
-function createDirectionalPoint({
-  x,
-  y,
-  facing
-}: {
-  x?: number
-  y?: number
-  facing?: Direction
-} = {}) {
-  return new DirectionalPoint({ x: x || 0, y: y || 0, facing: facing || "north" })
-}
+import { createDirectionalPoint } from "./support/testData"
 
 describe("#forward", () => {
   it("goes forward in the correct direction", () => {

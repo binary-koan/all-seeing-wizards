@@ -212,4 +212,23 @@ describe("#calculatePreventActionsResults", () => {
       player: caster1
     })
   })
+
+  it("does not affect the caster", () => {
+    const caster = createTestPlayer()
+
+    const playedCards = (Map() as Map<Player, Card>).set(
+      caster,
+      createPreventActionsCard(List.of({ type: "area", size: 3, position: "around" }) as List<
+        CardRange
+      >)
+    )
+    const gameState = createTestGameState({
+      players: (Map() as Map<string, Player>).set(caster.id, caster)
+    })
+
+    const results = calculatePreventActionsResults(playedCards, gameState)
+
+    expect(results.size).toBe(1)
+    expect(results.first().type).toEqual("attemptPreventActions")
+  })
 })

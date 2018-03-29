@@ -42,13 +42,16 @@ function affectedTilesForRange(
 
 function areaTiles(range: AreaRange, from: DirectionalPoint, board: Board) {
   const offset = Math.floor(range.size / 2)
-  let topLeft = from.offset(-offset, -offset).clampToSize(board.width, board.height)
-  let bottomRight = from.offset(offset, offset).clampToSize(board.width, board.height)
+  let topLeft = from.offset(-offset, -offset)
+  let bottomRight = from.offset(offset, offset)
 
   if (range.position === "inFront") {
     topLeft = topLeft.forward(offset + 1)
     bottomRight = bottomRight.forward(offset + 1)
   }
+
+  topLeft = topLeft.clampToSize(board.width, board.height)
+  bottomRight = bottomRight.clampToSize(board.width, board.height)
 
   return board.tiles.filter(
     tile =>

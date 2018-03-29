@@ -14,7 +14,7 @@ function drawHandForPlayer(player: Player, deck: Deck) {
   while (!player.hand.hasEnoughCards) {
     const { card, deck: newDeck } = deck.drawCard()
 
-    player = player.set("hand", player.hand.addCard(card))
+    player = player.updateHand(player.hand.addCard(card))
     deck = newDeck
   }
 

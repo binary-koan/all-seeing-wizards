@@ -162,7 +162,7 @@ describe("#calculateAttackResults", () => {
     })
   })
 
-  it("adds a modifier to both players when they hit each other simultaneously", () => {
+  it("damages both players when they hit each other simultaneously", () => {
     const caster1 = createTestPlayer({
       id: "caster1",
       position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
@@ -210,6 +210,42 @@ describe("#calculateAttackResults", () => {
       type: "takeDamage",
       damage: 1,
       player: caster1
+    })
+  })
+
+  it("does not attack the caster", () => {
+    const caster = createTestPlayer({
+      id: "caster",
+      position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
+    })
+    const target = createTestPlayer({
+      id: "target",
+      position: createDirectionalPoint({ x: 1, y: 0 })
+    })
+
+    const playedCards = (Map() as Map<Player, Card>).set(
+      caster,
+      createAttackCard(
+        List.of({
+          type: "area",
+          size: 2,
+          position: "around"
+        } as CardRange)
+      )
+    )
+
+    const gameState = createTestGameState({
+      players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
+    })
+
+    const results = calculateAttackResults(playedCards, gameState)
+
+    expect(results.size).toBe(2)
+    expect(results.get(0).type).toEqual("attack")
+    expect(results.get(1)).toEqual({
+      type: "takeDamage",
+      damage: 1,
+      player: target
     })
   })
 })

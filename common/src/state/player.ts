@@ -69,4 +69,8 @@ export class Player extends player implements IPlayer {
       this.modifiers.map(modifier => modifier.advance(advancementType)).filter(Boolean)
     )
   }
+
+  public updateHand(newHand: Hand) {
+    return this.set("hand", newHand)
+  }
 }

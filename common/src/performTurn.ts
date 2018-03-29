@@ -14,17 +14,17 @@ import { ActionResult } from "./turnResults/resultTypes"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 
-export default function performActions(baseState: GameState) {
-  const { gameState: resultingState, allResults: finalResults } = Range(
+export default function performTurn(baseState: GameState) {
+  const { gameState: resultingState, resultsPerAction: finalResults } = Range(
     0,
     MAX_ACTIONS_PER_TURN
   ).reduce(
-    ({ gameState, allResults }, index) => {
+    ({ gameState, resultsPerAction }, index) => {
       const { gameState: nextState, results } = perform(gameState, playedCards(index, gameState))
 
-      return { gameState: nextState, allResults: allResults.push(results) }
+      return { gameState: nextState, resultsPerAction: resultsPerAction.push(results) }
     },
-    { gameState: baseState, allResults: List() }
+    { gameState: baseState, resultsPerAction: List() as List<List<ActionResult>> }
   )
 
   const finalState = [advanceTurn, discardPickedCards, drawHands].reduce(
@@ -32,21 +32,10 @@ export default function performActions(baseState: GameState) {
     resultingState
   )
 
-  return { gameState: finalState, allResults: finalResults }
+  return { gameState: finalState, resultsPerAction: finalResults }
 }
 
-// 1. get all PreventActions results from the current set of cards
-//    assumptions about player positions etc are fine
-// 2. get all Potion results from the current set of cards
-//    again, assumptions are fine
-// 3. get all Move results from the current set of cards
-//    all complicated backtracking can be done here
-// 4. get all Attack results from the current set of cards
-//    movement has now completed so assumptions are fine
-// 5. get all Knockback results from the current set of cards
-//    again, assumptions are fine, and complex conflict shenanigans can be done here
-
-function perform(baseState: GameState, cards: Map<Player, Card>) {
+function perform(baseState: GameState, cards: Map<string, Card>) {
   const { gameState: resultingState, results: finalResults } = [
     calculatePreventActionsResults,
     calculatePotionResults,
@@ -59,15 +48,16 @@ function perform(baseState: GameState, cards: Map<Player, Card>) {
       // For some reason TypeScript breaks if you take this signature off ...
       getResults: (cards: Map<Player, Card>, gameState: GameState) => List<ActionResult>
     ) => {
-      const nextResults = getResults(cards, gameState)
+      const cardsByPlayer = cards.mapKeys(id => gameState.player(id)).toMap()
+      const nextResults = getResults(cardsByPlayer, gameState)
       const nextState = applyResults(nextResults, gameState)
 
       return { results: results.concat(nextResults), gameState: nextState }
     },
-    { gameState: baseState, results: List() }
+    { gameState: baseState, results: List() as List<ActionResult> }
   )
 
-  return { gameState: advanceAction(resultingState), results: finalResults }
+  return { gameState: advanceAction(resultingState), results: finalResults.toList() }
 }
 
 function playedCards(index: number, gameState: GameState) {
@@ -76,12 +66,12 @@ function playedCards(index: number, gameState: GameState) {
       const card = player.hand.pickedCard(index)
 
       if (card) {
-        return cards.set(player, card)
+        return cards.set(player.id, card)
       } else {
         return cards
       }
     },
-    Map() as Map<Player, Card>
+    Map() as Map<string, Card>
   )
 }
 

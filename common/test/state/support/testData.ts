@@ -43,10 +43,12 @@ export function createTestDuration({
   return new Duration(type || "action", length != null ? length : 1)
 }
 
-export function createTestBoard() {
-  const tiles = Range(0, 4)
+export function createTestBoard({ width, height }: { width?: number; height?: number } = {}) {
+  const tiles = Range(0, width || 4)
     .flatMap(x =>
-      Range(0, 3).map(y => new BoardTile({ position: new Point({ x, y }), type: "ground" }))
+      Range(0, height || 3).map(
+        y => new BoardTile({ position: new Point({ x, y }), type: "ground" })
+      )
     )
     .toList()
 
@@ -74,11 +76,14 @@ export function createTestDeck(
     availableCards,
     discardedCards
   }: {
-    availableCards: List<Card>
-    discardedCards: List<Card>
+    availableCards?: List<Card>
+    discardedCards?: List<Card>
   } = { availableCards: List(), discardedCards: List() }
 ) {
-  return new Deck({ availableCards, discardedCards })
+  return new Deck({
+    availableCards: availableCards || List(),
+    discardedCards: discardedCards || List()
+  })
 }
 
 export function createTestHand({
@@ -98,7 +103,10 @@ export function createTestModifier({
   type?: ModifierType
   duration?: Duration
 } = {}) {
-  return new Modifier({ type: type || "shield", duration: duration || new Duration("action", 1) })
+  return new Modifier({
+    type: type || { name: "shield" },
+    duration: duration || new Duration("action", 1)
+  })
 }
 
 export function createTestPlayer({

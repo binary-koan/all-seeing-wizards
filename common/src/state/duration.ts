@@ -31,4 +31,8 @@ export class Duration implements ValueObject {
     result = 37 * result + this.type.charCodeAt(0)
     return result | 0
   }
+
+  public toString() {
+    return `Duration { "type": "${this.type}", "length": ${this.length} }`
+  }
 }

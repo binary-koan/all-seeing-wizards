@@ -23,6 +23,8 @@ export function calculatePreventActionsResults(
 function effectResults(effect: PreventActionsEffect, player: Player, gameState: GameState) {
   const tiles = affectedTiles(effect.ranges, player.position, gameState.board)
   const players = affectedPlayers(tiles, gameState)
+    .filterNot(affectedPlayer => affectedPlayer === player)
+    .toList()
 
   return List.of(attemptPreventActionsResult(tiles)).concat(
     preventPlayerActionsResults(effect.duration, players)

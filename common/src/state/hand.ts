@@ -2,7 +2,7 @@ import { List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import { Card } from "./card"
 
-const MAX_CARDS_IN_HAND = 7
+export const MAX_CARDS_IN_HAND = 7
 
 interface IHand {
   cards: List<Card>
@@ -32,6 +32,10 @@ export class Hand extends hand implements IHand {
 
   public addCard(card: Card) {
     return this.set("cards", this.cards.push(card))
+  }
+
+  public pickCards(indexes: List<number>) {
+    return this.set("pickedIndexes", indexes.filter(index => index >= 0 && index < this.cards.size))
   }
 
   public pickedCard(index: number) {

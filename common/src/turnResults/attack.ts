@@ -22,6 +22,8 @@ export function calculateAttackResults(
 function effectResults(effect: AttackEffect, player: Player, gameState: GameState) {
   const tiles = affectedTiles(effect.ranges, player.position, gameState.board)
   const players = affectedPlayers(tiles, gameState)
+    .filterNot(affectedPlayer => affectedPlayer === player)
+    .toList()
 
   return List.of(attemptAttackResult(tiles)).concat(
     attackPlayersResults(effect.damage, players)

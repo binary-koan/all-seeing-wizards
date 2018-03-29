@@ -11,7 +11,6 @@ import {
   KnockbackResult,
   MoveResult,
   PreventActionsResult,
-  ShieldDamageResult,
   TakeDamageResult
 } from "./resultTypes"
 
@@ -28,13 +27,17 @@ const RESULT_APPLICATORS: {
 
   grantMirrorShield(result: GrantMirrorShieldResult, state: GameState) {
     return state.updatePlayer(
-      result.player.addModifier(new Modifier({ type: "mirrorShield", duration: result.duration }))
+      result.player.addModifier(
+        new Modifier({ type: { name: "mirrorShield" }, duration: result.duration })
+      )
     )
   },
 
   grantShield(result: GrantShieldResult, state: GameState) {
     return state.updatePlayer(
-      result.player.addModifier(new Modifier({ type: "shield", duration: result.duration }))
+      result.player.addModifier(
+        new Modifier({ type: { name: "shield" }, duration: result.duration })
+      )
     )
   },
 
@@ -46,7 +49,7 @@ const RESULT_APPLICATORS: {
     return state.updatePlayer(
       result.player.addModifier(
         new Modifier({
-          type: { type: "increaseDamage", amount: result.amount },
+          type: { name: "increaseDamage", amount: result.amount },
           duration: result.duration
         })
       )
@@ -67,7 +70,9 @@ const RESULT_APPLICATORS: {
 
   preventActions(result: PreventActionsResult, state: GameState) {
     return state.updatePlayer(
-      result.player.addModifier(new Modifier({ type: "preventActions", duration: result.duration }))
+      result.player.addModifier(
+        new Modifier({ type: { name: "preventActions" }, duration: result.duration })
+      )
     )
   },
 

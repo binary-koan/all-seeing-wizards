@@ -49,7 +49,7 @@ function avoidWalkingThroughUnmovedPlayers(
     ([newResults, newState], result) => {
       const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
 
-      const nextResults = newResults.push(newResult)
+      const nextResults = newResult.movementPath.size > 0 ? newResults.push(newResult) : newResults
       const nextState = applyProposedResult(newState, newResult)
 
       return [nextResults, nextState] as [List<ProposedMove>, GameState]
@@ -93,12 +93,12 @@ function preventConflictingMovement(
   return proposedResults.map(result => checkConflictingResult(result, proposedResults)).toList()
 }
 
-function checkConflictingResult(result: ProposedMove, allResults: List<ProposedMove>) {
+function checkConflictingResult(result: ProposedMove, resultsPerAction: List<ProposedMove>) {
   const targetPosition = result.movementPath.last()
 
-  const conflict = allResults.find(other => {
+  const conflict = resultsPerAction.find(other => {
     const otherTarget = other.movementPath.last()
-    return targetPosition !== otherTarget && targetPosition.equals(otherTarget)
+    return targetPosition !== otherTarget && targetPosition.equalsWithoutDirection(otherTarget)
   })
 
   if (conflict) {

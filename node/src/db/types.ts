@@ -1,10 +1,8 @@
 import { ObjectID } from "mongodb"
-import {
-  DirectionalPoint,
-  Rotation,
-  Duration,
-  CardRange
-} from "../../../common/src/game_state/types"
+import { CardEffect } from "../../../common/src/state/cardEffect"
+import { CardRange } from "../../../common/src/state/cardRange"
+import { DirectionalPoint, Rotation } from "../../../common/src/state/directionalPoint"
+import { Duration } from "../../../common/src/state/duration"
 
 export interface GameDiff {
   playerIds: ObjectID[]
@@ -25,6 +23,10 @@ export interface PlayerDiff {
     cardIds: ObjectID[]
     pickedIndexes: number[]
   }
+  modifiers: Array<{
+    type: any
+    duration: { type: "action" | "turn"; length: number }
+  }>
   connectedAt?: Date
   disconnectedAt?: Date
 }
@@ -38,14 +40,9 @@ export interface PlayerDoc extends PlayerDiff {
 export interface CardDoc {
   id: ObjectID
   packId: ObjectID
-  type: string
-
-  amount: number
-  rotation: Rotation
-  damage: number
-  knockback?: number
-  duration: Duration
-  ranges: CardRange[]
+  name: string
+  tagline: string
+  effects: CardEffect[]
 }
 
 export interface CharacterDoc {
@@ -58,7 +55,7 @@ export interface CharacterDoc {
 export interface BoardDoc {
   id: ObjectID
   packId: ObjectID
-  tiles: string[]
+  tiles: Array<"ground" | "block" | "water" | "lava">
   objects: BoardObjectDoc[]
 }
 
@@ -66,5 +63,5 @@ export interface BoardObjectDoc {
   id: ObjectID
   x: number
   y: number
-  type: string
+  type: "rock"
 }

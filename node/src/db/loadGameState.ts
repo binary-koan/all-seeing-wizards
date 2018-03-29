@@ -1,15 +1,19 @@
+import { List, Map } from "immutable"
+import { every, find, flatten, partition } from "lodash"
 import { Db, ObjectID } from "mongodb"
-import { find, every, flatten, partition } from "lodash"
-import { CardDoc, CharacterDoc, PlayerDoc, BoardDoc, GameDoc } from "./types"
-import {
-  Card,
-  GameState,
-  Player,
-  Character,
-  Deck,
-  BoardTile,
-  Board
-} from "../../../common/src/game_state/types"
+import { Board } from "../../../common/src/state/board"
+import { BoardObject } from "../../../common/src/state/boardObject"
+import { BoardTile } from "../../../common/src/state/boardTile"
+import { Card } from "../../../common/src/state/card"
+import { Character } from "../../../common/src/state/character"
+import { Deck } from "../../../common/src/state/deck"
+import { Duration } from "../../../common/src/state/duration"
+import { GameState } from "../../../common/src/state/gameState"
+import { Hand } from "../../../common/src/state/hand"
+import { Modifier } from "../../../common/src/state/modifier"
+import { Player } from "../../../common/src/state/player"
+import { Point } from "../../../common/src/state/point"
+import { BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 const GAME_STATE_VERSION = 1
 const BOARD_SIZE = 5
@@ -22,98 +26,80 @@ export default async function loadGameState(gameId: ObjectID, db: Db): Promise<G
   const deck = buildDeck(cards, players, gameDoc.usedCardIds)
   const board = buildBoard(boardDocs, gameDoc)
 
-  return {
+  return new GameState({
     version: GAME_STATE_VERSION,
     id: gameDoc.id.toHexString(),
     players,
     deck,
-    board,
-    operationsSinceLastSave: []
-  }
+    board
+  })
 }
 
 function buildCards(cardDocs: CardDoc[]) {
-  return cardDocs.reduce(addCard, [] as Card[])
+  return cardDocs.reduce(addCard, List() as List<Card>)
 }
 
-function addCard(cards: Card[], doc: CardDoc) {
-  switch (doc.type) {
-    case "move":
-      cards.push({
-        type: doc.type as "move",
-        amount: doc.amount,
-        rotation: doc.rotation,
-        id: doc.id.toHexString()
-      })
-    case "attack":
-      cards.push({
-        type: doc.type as "attack",
-        damage: doc.damage,
-        knockback: doc.knockback,
-        id: doc.id.toHexString()
-      })
-    case "preventActions":
-      cards.push({
-        type: doc.type as "preventActions",
-        duration: doc.duration,
-        ranges: doc.ranges,
-        id: doc.id.toHexString()
-      })
-    case "shield":
-      cards.push({ type: doc.type as "shield", duration: doc.duration, id: doc.id.toHexString() })
-    case "mirrorShield":
-      cards.push({
-        type: doc.type as "mirrorShield",
-        duration: doc.duration,
-        id: doc.id.toHexString()
-      })
-    case "heal":
-      cards.push({ type: doc.type as "heal", amount: doc.amount, id: doc.id.toHexString() })
-    case "increaseDamage":
-      cards.push({
-        type: doc.type as "increaseDamage",
-        amount: doc.amount,
-        duration: doc.duration,
-        id: doc.id.toHexString()
-      })
-    default:
-      console.warn(`Skipping unknown record type: ${doc.type}`)
-  }
-  return cards
+function addCard(cards: List<Card>, doc: CardDoc) {
+  const card = new Card({
+    id: doc.id.toHexString(),
+    name: doc.name,
+    tagline: doc.tagline,
+    effects: List(doc.effects)
+  })
+
+  return cards.push(card)
 }
 
 function buildCharacters(characterDocs: CharacterDoc[]) {
   return characterDocs.map(doc => ({ name: doc.name, type: doc.type })) as Character[]
 }
 
-function buildPlayers(playerDocs: PlayerDoc[], characterDocs: CharacterDoc[], cards: Card[]) {
+function buildPlayers(
+  playerDocs: PlayerDoc[],
+  characterDocs: CharacterDoc[],
+  cards: List<Card>
+): Map<string, Player> {
   return playerDocs.reduce(
     (players, doc) => addPlayer(players, doc, characterDocs, cards),
-    [] as Player[]
+    Map() as Map<string, Player>
   )
 }
 
 function addPlayer(
-  players: Player[],
+  players: Map<string, Player>,
   doc: PlayerDoc,
   characterDocs: CharacterDoc[],
-  cards: Card[]
+  cards: List<Card>
 ) {
   const characterDoc = find(characterDocs, c => c.id.equals(doc.characterId))
-  const cardsInHand = doc.hand.cardIds.map(id => findById(cards, id.toHexString()))
+  const cardsInHand = doc.hand.cardIds.map(id => cards.find(card => card.id === id.toHexString()))
 
   if (characterDoc && every(cardsInHand)) {
-    players.push({
-      id: doc.id.toHexString(),
-      character: characterDoc,
-      hp: doc.hp,
-      position: doc.position,
-      hand: {
-        cards: cardsInHand as Card[],
-        pickedIndexes: doc.hand.pickedIndexes
-      },
-      connected: isConnected(doc.connectedAt, doc.disconnectedAt)
-    })
+    const id = doc.id.toHexString()
+
+    players.set(
+      id,
+      new Player({
+        id,
+        character: new Character(characterDoc),
+        hp: doc.hp,
+        position: doc.position,
+        hand: new Hand({
+          cards: List(cardsInHand),
+          pickedIndexes: List(doc.hand.pickedIndexes)
+        }),
+        modifiers: List(doc.modifiers)
+          .map(
+            modifier =>
+              ({
+                type: modifier.type,
+                duration: new Duration(modifier.duration.type, modifier.duration.length)
+              } as Modifier)
+          )
+          .toList(),
+        connected: isConnected(doc.connectedAt, doc.disconnectedAt)
+      })
+    )
   }
 
   return players
@@ -134,21 +120,28 @@ function findById<T extends { id: string }>(collection: T[], id: string) {
   return find(collection, item => item.id === id)
 }
 
-function buildDeck(cards: Card[], players: Player[], usedCardIds: ObjectID[]) {
-  const cardsInHands = flatten(players.map(player => player.hand.cards))
-  cards = cards.filter(card => !cardsInHands.includes(card))
+function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds: ObjectID[]) {
+  const cardsInHands = players.flatMap(player => player.hand.cards)
+  cards = cards.filter(card => !cardsInHands.includes(card)).toList()
 
   const usedCardIdStrings = usedCardIds.map(id => id.toHexString())
 
-  const [discardedCards, availableCards] = partition(cards, card =>
-    usedCardIdStrings.includes(card.id)
+  const [discardedCards, availableCards] = cards.reduce(
+    ([discarded, available], card) => {
+      if (usedCardIdStrings.includes(card.id)) {
+        return [discarded.push(card), available]
+      } else {
+        return [discarded, available.push(card)]
+      }
+    },
+    [List() as List<Card>, List() as List<Card>]
   )
 
   return { discardedCards, availableCards } as Deck
 }
 
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
-  const tiles = [] as BoardTile[][]
+  const tiles = List() as List<BoardTile>
 
   gameDoc.boardLayout.forEach((ids, boardX) => {
     ids.forEach((id, boardY) => {
@@ -160,29 +153,33 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
     })
   })
 
-  const objects = gameDoc.boardObjects.map(object => ({
-    id: object.id.toHexString(),
-    x: object.x,
-    y: object.y,
-    type: object.type
-  }))
+  const objects = List(
+    gameDoc.boardObjects.map(
+      object =>
+        new BoardObject({
+          id: object.id.toHexString(),
+          x: object.x,
+          y: object.y,
+          type: object.type
+        })
+    )
+  )
 
-  return { tiles, objects } as Board
+  return new Board({ tiles, objects })
 }
 
-function addTiles(tiles: BoardTile[][], board: BoardDoc, boardX: number, boardY: number) {
-  board.tiles.forEach((type, index) => {
-    const { x, y } = positionOnBoard(index, boardX, boardY)
-    tiles[x] = tiles[x] || []
-    tiles[x][y] = { x, y, type }
+function addTiles(tiles: List<BoardTile>, board: BoardDoc, boardX: number, boardY: number) {
+  const tilesToAdd = board.tiles.map((type, index) => {
+    const position = positionOnBoard(index, boardX, boardY)
+    return new BoardTile({ position, type })
   })
 }
 
 function positionOnBoard(index: number, boardX: number, boardY: number) {
-  return {
+  return new Point({
     x: boardX * BOARD_SIZE + index % BOARD_SIZE,
     y: boardY * BOARD_SIZE + Math.floor(index / BOARD_SIZE)
-  }
+  })
 }
 
 async function loadFromDb(db: Db, gameId: ObjectID) {

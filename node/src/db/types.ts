@@ -4,13 +4,15 @@ import { CardRange } from "../../../common/src/state/cardRange"
 import { DirectionalPoint, Rotation } from "../../../common/src/state/directionalPoint"
 import { Duration } from "../../../common/src/state/duration"
 
+export const BOARD_SIZE = 5
+
 export interface GameDiff {
   playerIds: ObjectID[]
   usedCardIds: ObjectID[]
 }
 
 export interface GameDoc extends GameDiff {
-  id: ObjectID
+  _id?: ObjectID
   packIds: ObjectID[]
   boardLayout: ObjectID[][]
   boardObjects: BoardObjectDoc[]
@@ -32,13 +34,13 @@ export interface PlayerDiff {
 }
 
 export interface PlayerDoc extends PlayerDiff {
-  id: ObjectID
+  _id?: ObjectID
   gameId: ObjectID
   characterId: ObjectID
 }
 
 export interface CardDoc {
-  id: ObjectID
+  _id?: ObjectID
   packId: ObjectID
   name: string
   tagline: string
@@ -46,21 +48,21 @@ export interface CardDoc {
 }
 
 export interface CharacterDoc {
-  id: ObjectID
+  _id?: ObjectID
   packId: ObjectID
   name: string
   type: string
 }
 
 export interface BoardDoc {
-  id: ObjectID
+  _id?: ObjectID
   packId: ObjectID
   tiles: Array<"ground" | "block" | "water" | "lava">
   objects: BoardObjectDoc[]
 }
 
 export interface BoardObjectDoc {
-  id: ObjectID
+  _id?: ObjectID
   x: number
   y: number
   type: "rock"

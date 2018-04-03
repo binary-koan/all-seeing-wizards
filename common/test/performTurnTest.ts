@@ -6,8 +6,8 @@ import {
   CardEffect,
   HealEffect,
   IncreaseDamageEffect,
-  MovementEffect,
-  KnockbackEffect
+  KnockbackEffect,
+  MovementEffect
 } from "../src/state/cardEffect"
 import { CardRange } from "../src/state/cardRange"
 import { Player } from "../src/state/player"

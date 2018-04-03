@@ -1,7 +1,7 @@
 import { RecordFactory } from "../util/immutableExtras"
 import { Point } from "./point"
 
-type BoardTileType = "ground" | "block" | "water" | "lava"
+export type BoardTileType = "ground" | "block" | "water" | "lava"
 
 interface IBoardTile {
   position: Point

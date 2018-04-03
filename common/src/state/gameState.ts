@@ -5,19 +5,12 @@ import { Card } from "./card"
 import { Deck } from "./deck"
 import { Player } from "./player"
 
-export type ChangeStateOperation =
-  | "playersChanged"
-  | "playerConnectionStateChanged"
-  | "playerHandChanged"
-  | "cardDiscarded"
-
 interface IGameState {
   version: number
   id: string
   players: Map<string, Player>
   board: Board
   deck: Deck
-  operationsSinceLastSave: List<ChangeStateOperation>
 }
 
 const gameState = RecordFactory<IGameState>({
@@ -25,8 +18,7 @@ const gameState = RecordFactory<IGameState>({
   id: "",
   players: Map(),
   board: new Board({ tiles: List(), objects: List() }),
-  deck: new Deck({ availableCards: List(), discardedCards: List() }),
-  operationsSinceLastSave: List()
+  deck: new Deck({ availableCards: List(), discardedCards: List() })
 })
 
 export class GameState extends gameState implements IGameState {
@@ -35,7 +27,6 @@ export class GameState extends gameState implements IGameState {
   public readonly players: Map<string, Player>
   public readonly board: Board
   public readonly deck: Deck
-  public readonly operationsSinceLastSave: List<ChangeStateOperation>
 
   constructor(config: IGameState) {
     super(config)

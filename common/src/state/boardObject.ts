@@ -1,6 +1,6 @@
 import { RecordFactory } from "../util/immutableExtras"
 
-type BoardObjectType = "rock"
+export type BoardObjectType = "rock"
 
 interface IBoardObject {
   id: string

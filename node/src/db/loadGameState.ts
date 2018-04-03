@@ -13,10 +13,9 @@ import { Hand } from "../../../common/src/state/hand"
 import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
-import { BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
+import { BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc, BOARD_SIZE } from "./types"
 
 const GAME_STATE_VERSION = 1
-const BOARD_SIZE = 5
 
 export default async function loadGameState(gameId: ObjectID, db: Db): Promise<GameState> {
   const { gameDoc, cardDocs, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
@@ -28,7 +27,7 @@ export default async function loadGameState(gameId: ObjectID, db: Db): Promise<G
 
   return new GameState({
     version: GAME_STATE_VERSION,
-    id: gameDoc.id.toHexString(),
+    id: gameDoc._id.toHexString(),
     players,
     deck,
     board
@@ -41,7 +40,7 @@ function buildCards(cardDocs: CardDoc[]) {
 
 function addCard(cards: List<Card>, doc: CardDoc) {
   const card = new Card({
-    id: doc.id.toHexString(),
+    id: doc._id.toHexString(),
     name: doc.name,
     tagline: doc.tagline,
     effects: List(doc.effects)
@@ -71,11 +70,11 @@ function addPlayer(
   characterDocs: CharacterDoc[],
   cards: List<Card>
 ) {
-  const characterDoc = find(characterDocs, c => c.id.equals(doc.characterId))
+  const characterDoc = find(characterDocs, c => c._id.equals(doc.characterId))
   const cardsInHand = doc.hand.cardIds.map(id => cards.find(card => card.id === id.toHexString()))
 
   if (characterDoc && every(cardsInHand)) {
-    const id = doc.id.toHexString()
+    const id = doc._id.toHexString()
 
     players.set(
       id,
@@ -116,10 +115,6 @@ function isConnected(connectedAt?: Date, disconnectedAt?: Date) {
   return connectedAt > disconnectedAt
 }
 
-function findById<T extends { id: string }>(collection: T[], id: string) {
-  return find(collection, item => item.id === id)
-}
-
 function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds: ObjectID[]) {
   const cardsInHands = players.flatMap(player => player.hand.cards)
   cards = cards.filter(card => !cardsInHands.includes(card)).toList()
@@ -145,7 +140,7 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
 
   gameDoc.boardLayout.forEach((ids, boardX) => {
     ids.forEach((id, boardY) => {
-      const board = find(boardDocs, doc => doc.id.equals(id))
+      const board = find(boardDocs, doc => doc._id.equals(id))
 
       if (board) {
         addTiles(tiles, board, boardX, boardY)
@@ -157,7 +152,7 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
     gameDoc.boardObjects.map(
       object =>
         new BoardObject({
-          id: object.id.toHexString(),
+          id: object._id.toHexString(),
           x: object.x,
           y: object.y,
           type: object.type

@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "name": "base",
+  "boards": [
+    [
+      [".", "b", ".", ".", "."],
+      [".", "b", ".", "r", "."],
+      [".", "b", ".", ".", "w"],
+      [".", ".", ".", "w", "w"],
+      [".", ".", "r", "w", "l"]
+    ],
+    [
+      [".", ".", ".", ".", "."],
+      [".", "l", "r", ".", "."],
+      [".", "b", ".", ".", "."],
+      [".", "b", "b", "b", "."],
+      ["b", ".", ".", ".", "."]
+    ],
+    [
+      [".", ".", "b", ".", "."],
+      ["l", ".", "b", ".", "."],
+      [".", ".", ".", "w", "w"],
+      [".", ".", ".", ".", "."],
+      [".", "b", "w", "b", "."]
+    ],
+    [
+      ["b", ".", ".", "w", "w"],
+      [".", "b", ".", ".", "w"],
+      [".", ".", ".", ".", "r"],
+      [".", ".", ".", ".", "."],
+      [".", "r", ".", "l", "."]
+    ]
+  ],
+  "characters": [
+    {
+      "name": "Wily Wind Worker",
+      "characterType": "wind_worker"
+    },
+    {
+      "name": "Pure Paladin",
+      "characterType": "paladin"
+    },
+    {
+      "name": "Despicable Dark Lord",
+      "characterType": "dark_lord"
+    },
+    {
+      "name": "Arcane Alchemist",
+      "characterType": "alchemist"
+    },
+    {
+      "name": "Midas Magician",
+      "characterType": "midas"
+    }
+  ],
+  "cards": [
+    {
+      "name": "Move 1",
+      "count": 3,
+      "effects": [{ "type": "move", "amount": 1 }]
+    },
+    {
+      "name": "Move 2",
+      "count": 7,
+      "effects": [{ "type": "move", "amount": 2 }]
+    },
+    {
+      "name": "Turn Clockwise & Move",
+      "count": 7,
+      "effects": [{ "type": "move", "amount": 1, "rotation": "clockwise" }]
+    },
+    {
+      "name": "Turn Anticlockwise & Move",
+      "count": 7,
+      "effects": [
+        {
+          "type": "move",
+          "amount": 1,
+          "rotation": "anticlockwise"
+        }
+      ]
+    },
+    {
+      "name": "Turn Around & Move",
+      "count": 7,
+      "effects": [
+        {
+          "type": "move",
+          "amount": 1,
+          "rotation": "reverse"
+        }
+      ]
+    },
+    {
+      "name": "Hellfire Breath of Chillies",
+      "count": 2,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "3x3 area in_front",
+          "damage": 2
+        }
+      ]
+    },
+    {
+      "name": "Chaos Storm of Endless Homework",
+      "count": 1,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "5x5 area around",
+          "damage": 2
+        }
+      ]
+    },
+    {
+      "name": "Magical Dart of Papercuts",
+      "count": 3,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "line",
+          "damage": 2
+        }
+      ]
+    },
+    {
+      "name": "Spartan Kick of Epic Abs",
+      "count": 2,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "point",
+          "damage": 3
+        },
+        { "type": "knockback", "amount": 2 }
+      ]
+    },
+    {
+      "name": "Homing Missile of Bending the Rules",
+      "count": 2,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "9x9 area around",
+          "damage": 1
+        }
+      ]
+    },
+    {
+      "name": "Freezing Touch of Ice Cubes",
+      "count": 2,
+      "effects": [
+        {
+          "type": "prevent_actions",
+          "range": "point",
+          "duration": "2 actions"
+        }
+      ]
+    },
+    {
+      "name": "Yellow Snowballs of Going Too Far",
+      "count": 1,
+      "effects": [
+        {
+          "type": "prevent_actions",
+          "range": "5x5 area around",
+          "duration": "2 actions"
+        }
+      ]
+    },
+    {
+      "name": "Force Lightning of Evil Laughter",
+      "count": 2,
+      "effects": [
+        {
+          "type": "attack",
+          "range": ["line", "line behind"],
+          "damage": 1
+        },
+        { "type": "knockback", "amount": 1 }
+      ]
+    },
+    {
+      "name": "Spider Minions of Terror",
+      "count": 1,
+      "effects": [
+        {
+          "type": "attack",
+          "range": ["line", "line left", "line right", "line behind"],
+          "damage": 1
+        },
+        {
+          "type": "knockback",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Piercing Scream of Unfairness",
+      "count": 2,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "3x3 area around",
+          "damage": 1
+        },
+        { "type": "knockback", "amount": 2 }
+      ]
+    },
+    {
+      "name": "Earthquake of Table Flipping",
+      "count": 1,
+      "effects": [
+        {
+          "type": "attack",
+          "range": "whole_map",
+          "damage": 1
+        }
+      ]
+    },
+    {
+      "name": "Magical Shield of Hiding",
+      "count": 2,
+      "effects": [
+        {
+          "type": "shield",
+          "duration": "action"
+        }
+      ]
+    },
+    {
+      "name": "Dimension of Ultimate Time Out",
+      "count": 1,
+      "effects": [
+        {
+          "type": "shield",
+          "duration": "turn"
+        }
+      ]
+    },
+    {
+      "name": "Mirror Shield of Mutual Blackmail",
+      "count": 1,
+      "effects": [
+        {
+          "type": "mirror_shield",
+          "duration": "action"
+        }
+      ]
+    },
+    {
+      "name": "Decree of Total Grounding",
+      "count": 2,
+      "effects": [
+        {
+          "type": "prevent_actions",
+          "range": "whole_map",
+          "duration": "action"
+        }
+      ]
+    },
+    {
+      "name": "Healing Potion of Snacks",
+      "count": 3,
+      "effects": [
+        {
+          "type": "heal",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Healing Potion of Lunch",
+      "count": 3,
+      "effects": [
+        {
+          "type": "heal",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "name": "Rage Potion of Early Bedtime",
+      "count": 2,
+      "effects": [
+        {
+          "type": "increase_damage",
+          "amount": 1,
+          "duration": "2 actions"
+        }
+      ]
+    }
+  ]
+}

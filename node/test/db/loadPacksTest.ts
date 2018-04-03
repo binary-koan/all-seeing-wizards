@@ -8,15 +8,15 @@ import loadPacks from "../../src/db/loadPacks"
 
 let db: Db
 
-beforeAll(done => {
+beforeAll(done =>
   mongoUnit
     .start()
     .then(url => MongoClient.connect(url))
     .then(client => (db = client.db("test")))
-    .then(done)
-})
+    .then(() => done())
+)
 
-afterAll(done => mongoUnit.stop().then(done))
+afterAll(done => mongoUnit.stop().then(() => done()))
 
 describe("#loadPacks", () => {
   it("loads packs from the default directory", async () => {
@@ -33,15 +33,15 @@ describe("#loadPacks", () => {
 
     await Promise.all(
       names.map(async name => {
-        const packId = ((await db.collection("packs").findOne({ name })) as Pack).name
+        const packName = ((await db.collection("packs").findOne({ name })) as Pack).name
 
-        const boardsCount = await db.collection("boards").count({ packId })
+        const boardsCount = await db.collection("boards").count({ packName })
         expect(boardsCount).toBeGreaterThan(0)
 
-        const charactersCount = await db.collection("characters").count({ packId })
+        const charactersCount = await db.collection("characters").count({ packName })
         expect(charactersCount).toBeGreaterThan(0)
 
-        const cardsCount = await db.collection("cards").count({ packId })
+        const cardsCount = await db.collection("cards").count({ packName })
         expect(cardsCount).toBeGreaterThan(0)
       })
     )

@@ -48,32 +48,30 @@ export default async function loadPacks(fileContents: string[], db: Db) {
     .find({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
     .toArray()) as any) as Pack[]
 
-  const packsToLoad = List(packDefinitions).zipWith(
-    (pack, existing) => (existing ? null : pack),
-    List(existingPacks)
-  )
+  const existingPacksByName = List(existingPacks).toMap().mapKeys((_, pack) => pack.name).toMap()
 
-  return Promise.all(packsToLoad.map(pack => loadPack(pack, db)).toArray())
+  const packsToLoad = packDefinitions.map(pack => existingPacksByName.has(pack.name) ? null : pack).filter(Boolean)
+
+  return Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
 }
 
 async function loadPack(data: PackDbValues, db: Db) {
   const packInsert = await db
     .collection("packs")
-    .insertOne({ version: data.version, id: data.name })
-  const packId = packInsert.insertedId
+    .insertOne({ version: data.version, name: data.name })
 
-  await db.collection("boards").insertMany(data.boards.map(board => buildBoard(board, packId)))
+  await db.collection("boards").insertMany(data.boards.map(board => buildBoard(board, data.name)))
   await db
     .collection("characters")
-    .insertMany(data.characters.map(character => buildCharacter(character, packId)))
+    .insertMany(data.characters.map(character => buildCharacter(character, data.name)))
   await db
     .collection("cards")
-    .insertMany(data.cards.reduce((docs, card) => docs.concat(buildCards(card, packId)), []))
+    .insertMany(data.cards.reduce((docs, card) => docs.concat(buildCards(card, data.name)), []))
 }
 
-function buildBoard(board: BoardConfig, packId: ObjectID): BoardDoc {
+function buildBoard(board: BoardConfig, packName: string): BoardDoc {
   return {
-    packId,
+    packName,
     tiles: List(board)
       .flatMap((row, y) => List(row).map((tile, x) => BOARD_TILE_TYPE_MAPPING[tile]))
       .toArray(),
@@ -92,14 +90,14 @@ function buildBoardObject(type: string, x: number, y: number): BoardObjectDoc {
   return { type: BOARD_OBJECT_TYPE_MAPPING[type], x, y }
 }
 
-function buildCharacter({ name, type }: CharacterConfig, packId: ObjectID): CharacterDoc {
-  return { packId, name, type }
+function buildCharacter({ name, type }: CharacterConfig, packName: string): CharacterDoc {
+  return { packName, name, type }
 }
 
-function buildCards({ name, count, effects }: CardConfig, packId: ObjectID): CardDoc[] {
+function buildCards({ name, count, effects }: CardConfig, packName: string): CardDoc[] {
   const [actualName, tagline] = name.split(" of ")
 
   return Range(0, count)
-    .map(() => ({ packId, name: actualName, tagline, effects }))
+    .map(() => ({ packName, name: actualName, tagline, effects }))
     .toArray()
 }

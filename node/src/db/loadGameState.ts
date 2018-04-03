@@ -13,7 +13,7 @@ import { Hand } from "../../../common/src/state/hand"
 import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
-import { BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc, BOARD_SIZE } from "./types"
+import { BOARD_SIZE, BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 const GAME_STATE_VERSION = 1
 
@@ -179,7 +179,7 @@ function positionOnBoard(index: number, boardX: number, boardY: number) {
 
 async function loadFromDb(db: Db, gameId: ObjectID) {
   const gameDoc = (await db.collection("games").findOne({ id: gameId })) as GameDoc
-  const fromPacks = { packId: { $in: gameDoc.packIds } }
+  const fromPacks = { packName: { $in: gameDoc.packNames } }
 
   return {
     gameDoc,

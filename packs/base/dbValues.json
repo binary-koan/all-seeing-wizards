@@ -34,23 +34,23 @@
   "characters": [
     {
       "name": "Wily Wind Worker",
-      "characterType": "wind_worker"
+      "type": "windWorker"
     },
     {
       "name": "Pure Paladin",
-      "characterType": "paladin"
+      "type": "paladin"
     },
     {
       "name": "Despicable Dark Lord",
-      "characterType": "dark_lord"
+      "type": "darkLord"
     },
     {
       "name": "Arcane Alchemist",
-      "characterType": "alchemist"
+      "type": "alchemist"
     },
     {
       "name": "Midas Magician",
-      "characterType": "midas"
+      "type": "midas"
     }
   ],
   "cards": [

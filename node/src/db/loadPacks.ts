@@ -21,6 +21,8 @@ const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardTileType } = {
   l: "lava"
 }
 
+const DEFAULT_BOARD_TILE_TYPE: BoardTileType = "ground"
+
 const BOARD_OBJECT_TYPE_MAPPING: { [key: string]: BoardObjectType } = {
   r: "rock"
 }
@@ -48,9 +50,14 @@ export default async function loadPacks(fileContents: string[], db: Db) {
     .find({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
     .toArray()) as any) as Pack[]
 
-  const existingPacksByName = List(existingPacks).toMap().mapKeys((_, pack) => pack.name).toMap()
+  const existingPacksByName = List(existingPacks)
+    .toMap()
+    .mapKeys((_, pack) => pack.name)
+    .toMap()
 
-  const packsToLoad = packDefinitions.map(pack => existingPacksByName.has(pack.name) ? null : pack).filter(Boolean)
+  const packsToLoad = packDefinitions
+    .map(pack => (existingPacksByName.has(pack.name) ? null : pack))
+    .filter(Boolean)
 
   return Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
 }
@@ -73,7 +80,9 @@ function buildBoard(board: BoardConfig, packName: string): BoardDoc {
   return {
     packName,
     tiles: List(board)
-      .flatMap((row, y) => List(row).map((tile, x) => BOARD_TILE_TYPE_MAPPING[tile]))
+      .flatMap((row, y) =>
+        List(row).map((tile, x) => BOARD_TILE_TYPE_MAPPING[tile] || DEFAULT_BOARD_TILE_TYPE)
+      )
       .toArray(),
     objects: List(board)
       .flatMap((row, y) => List(row).map((tile, x) => buildBoardObject(tile, x, y)))

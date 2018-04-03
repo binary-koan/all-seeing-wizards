@@ -23,7 +23,7 @@ declare module "mongo-unit" {
   /**
    * It stops mongod process
    */
-  export function stop(): undefined
+  export function stop(): Promise<undefined>
 
   /**
    * Syncronius API returns URL to connect to test db, if test DB is not started it thows an Exception

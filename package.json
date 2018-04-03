@@ -3,7 +3,8 @@
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "cd node && npm install"
   },
   "dependencies": {
     "immutable": "^3.8.2",
@@ -27,6 +28,13 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "/.+Test\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

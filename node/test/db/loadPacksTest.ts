@@ -8,19 +8,21 @@ import loadPacks from "../../src/db/loadPacks"
 
 let db: Db
 
-beforeAll(() => {
-  console.log("running before block")
-  return mongoUnit
+beforeAll(done => {
+  mongoUnit
     .start()
     .then(url => MongoClient.connect(url))
     .then(client => (db = client.db("test")))
+    .then(done)
 })
+
+afterAll(done => mongoUnit.stop().then(done))
 
 describe("#loadPacks", () => {
   it("loads packs from the default directory", async () => {
-    console.log("running test")
-    const names = readdirSync(__dirname + "/../../../packs")
-    const dbValuesPaths = names.map(name => `${name}/dbValues.json`)
+    const baseDir = __dirname + "/../../../packs"
+    const names = readdirSync(baseDir)
+    const dbValuesPaths = names.map(name => `${baseDir}/${name}/dbValues.json`)
 
     const fileContents = dbValuesPaths.map(path => readFileSync(path).toString())
 

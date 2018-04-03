@@ -21,3 +21,6 @@ bundle.js
 
 # Test coverage
 /api/coverage
+
+# Built Node stuff
+/build

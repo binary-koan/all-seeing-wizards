@@ -1,15 +1,23 @@
 import * as express from "express"
 import * as http from "http"
-import * as socketIo from "socket.io"
+import connectToDatabase from "./db/connect"
+import loadPacks from "./db/loadPacks"
+import setupSocket from "./socket/setup"
 
-const app = express()
-const server = new http.Server(app)
-const io = socketIo(http)
+async function run() {
+  const { client, db } = await connectToDatabase({
+    uri: process.env.MONGO_URI || "mongodb://localhost:27017",
+    dbName: "all-seeing-wizards"
+  })
 
-io.on("connection", socket => {
-  console.log("a user connected")
-})
+  const app = express()
+  const server = new http.Server(app)
 
-server.listen(3000, () => {
-  console.log("listening on *:3000")
-})
+  setupSocket(server)
+
+  server.listen(3000, () => {
+    console.log("listening on *:3000")
+  })
+}
+
+run()

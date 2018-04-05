@@ -1,7 +1,7 @@
-import * as express from "express"
 import * as http from "http"
 import connectToDatabase from "./db/connect"
 import loadPacks from "./db/loadPacks"
+import setupServer from "./server/setup"
 import setupSocket from "./socket/setup"
 
 async function run() {
@@ -10,12 +10,13 @@ async function run() {
     dbName: "all-seeing-wizards"
   })
 
-  const app = express()
+  const app = setupServer()
   const server = new http.Server(app)
 
-  setupSocket(server)
+  setupSocket(server, db)
 
   server.listen(3000, () => {
+    // tslint:disable-next-line:no-console
     console.log("listening on *:3000")
   })
 }

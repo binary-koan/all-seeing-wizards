@@ -24,3 +24,7 @@ bundle.js
 
 # Built Node stuff
 /build
+
+# Parcel stuff
+dist
+.cache

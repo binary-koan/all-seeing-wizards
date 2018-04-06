@@ -13,41 +13,28 @@ import { Hand } from "../../../common/src/state/hand"
 import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
+import loadCards from "./loaders/cards"
 import { BOARD_SIZE, BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 export default async function loadGameState(gameId: ObjectID, db: Db): Promise<Game> {
-  const { gameDoc, cardDocs, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
+  const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
 
   if (!gameDoc) {
     return
   }
 
-  const cards = buildCards(cardDocs)
+  const cards = await loadCards(gameDoc.packIds, db)
   const players = buildPlayers(playerDocs, characterDocs, cards)
   const deck = buildDeck(cards, players, gameDoc.usedCardIds)
   const board = buildBoard(boardDocs, gameDoc)
 
   return new Game({
     id: gameDoc._id.toHexString(),
+    started: gameDoc.started,
     players,
     deck,
     board
   })
-}
-
-function buildCards(cardDocs: CardDoc[]) {
-  return cardDocs.reduce(addCard, List() as List<Card>)
-}
-
-function addCard(cards: List<Card>, doc: CardDoc) {
-  const card = new Card({
-    id: doc._id.toHexString(),
-    name: doc.name,
-    tagline: doc.tagline,
-    effects: List(doc.effects)
-  })
-
-  return cards.push(card)
 }
 
 function buildCharacters(characterDocs: CharacterDoc[]) {
@@ -189,10 +176,6 @@ async function loadFromDb(db: Db, gameId: ObjectID) {
 
   return {
     gameDoc,
-    cardDocs: (await db
-      .collection("cards")
-      .find(fromPacks)
-      .toArray()) as CardDoc[],
     boardDocs: (await db
       .collection("boards")
       .find(fromPacks)

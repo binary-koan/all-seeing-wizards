@@ -18,6 +18,7 @@ export default async function saveGameState(game: Game, db: Db) {
 
 function updateGameState(game: Game, db: Db) {
   return db.collection("games").updateOne({ id: game.id }, {
+    started: game.started,
     playerIds: game.players.map(player => ObjectID.createFromHexString(player.id)),
     usedCardIds: game.deck.discardedCards.map(card => ObjectID.createFromHexString(card.id))
   } as GameStateDiff)

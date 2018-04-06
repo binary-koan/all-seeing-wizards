@@ -7,6 +7,7 @@ import { Player } from "./player"
 
 interface IGame {
   id: string
+  started: boolean
   players: Map<string, Player>
   board: Board
   deck: Deck
@@ -14,6 +15,7 @@ interface IGame {
 
 const game = RecordFactory<IGame>({
   id: "",
+  started: false,
   players: Map(),
   board: new Board({ tiles: List(), objects: List() }),
   deck: new Deck({ availableCards: List(), discardedCards: List() })
@@ -21,12 +23,17 @@ const game = RecordFactory<IGame>({
 
 export class Game extends game implements IGame {
   public readonly id: string
+  public readonly started: boolean
   public readonly players: Map<string, Player>
   public readonly board: Board
   public readonly deck: Deck
 
   constructor(config: IGame) {
     super(config)
+  }
+
+  public start() {
+    return this.set("started", true)
   }
 
   public player(id: string) {

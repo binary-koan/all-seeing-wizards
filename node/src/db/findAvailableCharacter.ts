@@ -1,7 +1,7 @@
 import { Db } from "mongodb"
+import { Character } from "../../../common/src/state/character"
 import { Game } from "../../../common/src/state/game"
 import { CharacterDoc, GameDoc } from "./types"
-import { Character } from "../../../common/src/state/character"
 
 export default async function findAvailableCharacter(game: Game, db: Db) {
   const gameDoc = (await db.collection("games").findOne({ id: game.id })) as GameDoc

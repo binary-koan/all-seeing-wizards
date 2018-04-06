@@ -1,50 +1,76 @@
 import { Server } from "http"
-import { Db } from "mongodb"
 import * as socketIo from "socket.io"
 
 import {
-  SOCKET_READY,
+  ACTIONS_PERFORMED,
   GAME_STARTED,
-  UNEXPECTED_ERROR,
+  PLAYER_CONNECTED,
+  PLAYER_DISCONNECTED,
   PLAYER_UPDATED,
-  ACTIONS_PERFORMED
+  SOCKET_READY,
+  UNEXPECTED_ERROR
 } from "../../../common/src/messages/toClient"
 import { START_GAME, SUBMIT_CARDS, SubmitCardsData } from "../../../common/src/messages/toServer"
+import GameManager from "../state/gameManager"
 import authenticator, { socketClient } from "./authenticate"
-import { Client } from "./clientTypes"
+import { Client, PlayerClient } from "./clientTypes"
 
-export default function setup(server: Server, db: Db) {
+export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)
 
-  io.use(authenticator(db)).on("connection", async socket => {
+  io.use(authenticator(manager)).on("connection", async socket => {
     // TODO can this be passed from the authenticator rather than fetched from the db again?
-    const client = await socketClient(socket.request, db)
+    const client = await socketClient(socket.request, manager)
 
-    socket.on(START_GAME, () => {
-      startGame(client)
-        .then(() => toGame(client, io).emit(GAME_STARTED))
-        .catch(e => toGame(client, io).emit(UNEXPECTED_ERROR, e.message))
+    socket.on(START_GAME, async () => {
+      const newState = await manager.start(client.gameId)
+
+      if (newState) {
+        toGame(client, io).emit(GAME_STARTED)
+      } else {
+        toGame(client, io).emit(UNEXPECTED_ERROR, "Couldn't start game")
+      }
     })
 
-    socket.on(SUBMIT_CARDS, (data: SubmitCardsData) => {
-      submitCards(client, data.cardIds)
-        .then(result => {
-          toGame(client, io).emit(PLAYER_UPDATED, result.player)
+    socket.on(SUBMIT_CARDS, async (data: SubmitCardsData) => {
+      if (!client.isPlayer) {
+        return toGame(client, io).emit(UNEXPECTED_ERROR, "Host cannot submit cards")
+      }
 
-          if (result.performedActions) {
-            toGame(client, io).emit(ACTIONS_PERFORMED, result.performedActions)
-          }
-        })
-        .catch(e => toGame(client, io).emit(UNEXPECTED_ERROR, e.message))
+      const result = await manager.submitCards(
+        client.gameId,
+        (client as PlayerClient).playerId,
+        data.indexes
+      )
+
+      if (result.player) {
+        toGame(client, io).emit(PLAYER_UPDATED, result.player)
+
+        if (result.resultsPerAction) {
+          toGame(client, io).emit(ACTIONS_PERFORMED, result.resultsPerAction)
+        }
+      } else {
+        toGame(client, io).emit(UNEXPECTED_ERROR, "Couldn't submit cards")
+      }
     })
 
+    socket.on("disconnect", () => {
+      toGame(client, io).emit(PLAYER_DISCONNECTED)
+    })
+
+    socket.join(gameRoomId(client))
     socket.emit(SOCKET_READY)
-    toGame(client, io).emit()
+
+    toGame(client, io).emit(PLAYER_CONNECTED)
   })
 
   return io
 }
 
 function toGame(client: Client, io: socketIo.Server) {
-  return io.of(`/games/${client.gameId}`)
+  return io.to(gameRoomId(client))
+}
+
+function gameRoomId(client: Client) {
+  return `game:${client.gameId}`
 }

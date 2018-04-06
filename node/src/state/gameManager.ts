@@ -5,6 +5,8 @@ import buildGameFromPacks from "../db/buildGameFromPacks"
 import findAvailableCharacter from "../db/findAvailableCharacter"
 import loadGameState from "../db/loadGameState"
 import saveGameState from "../db/saveGameState"
+import startGame from "../../../common/src/startGame"
+import submitCards from "../../../common/src/submitCards"
 
 export default class GameManager {
   private readonly db: Db
@@ -16,9 +18,7 @@ export default class GameManager {
   }
 
   public async create(packIds: string[]) {
-    const game = buildGameFromPacks(packIds)
-
-    return this.upsert(game)
+    return buildGameFromPacks(packIds, this.db)
   }
 
   public async get(gameId: string) {
@@ -34,13 +34,6 @@ export default class GameManager {
     }
   }
 
-  public async upsert(game: Game) {
-    this.games[game.id] = game
-    await saveGameState(game, this.db)
-
-    return game
-  }
-
   public async addPlayer(gameId: string) {
     const game = await this.get(gameId)
 
@@ -53,5 +46,37 @@ export default class GameManager {
         return result.player
       }
     }
+  }
+
+  public async start(gameId: string) {
+    const game = await this.get(gameId)
+
+    if (game) {
+      const newState = startGame(game)
+
+      if (newState) {
+        return this.upsert(newState)
+      }
+    }
+  }
+
+  public async submitCards(gameId: string, playerId: string, indexes: number[]) {
+    const game = await this.get(gameId)
+
+    if (game) {
+      const result = submitCards(game, playerId, indexes)
+
+      if (result) {
+        this.upsert(result.game)
+        return result
+      }
+    }
+  }
+
+  private async upsert(game: Game) {
+    this.games[game.id] = game
+    await saveGameState(game, this.db)
+
+    return game
   }
 }

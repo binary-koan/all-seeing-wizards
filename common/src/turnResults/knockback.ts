@@ -2,7 +2,7 @@ import { List, Map, Range } from "immutable"
 import { Card } from "../state/card"
 import { KnockbackEffect } from "../state/cardEffect"
 import { Direction, DirectionalPoint } from "../state/directionalPoint"
-import { GameState } from "../state/gameState"
+import { Game } from "../state/game"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
 import { resolveEffects } from "./helpers/effectsToResults"
@@ -12,22 +12,22 @@ import { ActionResult, KnockbackResult } from "./resultTypes"
 
 export function calculateKnockbackResults(
   playedCards: Map<Player, Card>,
-  gameState: GameState
+  game: Game
 ): List<ActionResult> {
   const proposedResults = resolveEffects(playedCards, ["knockback"])
-    .map((player, effect) => effectResults(effect as KnockbackEffect, player, gameState))
+    .map((player, effect) => effectResults(effect as KnockbackEffect, player, game))
     .toList()
     .flatten()
     .toList()
 
-  return reconcileMovement(proposedResults, gameState)
+  return reconcileMovement(proposedResults, game)
     .map(convertMoveResult)
     .toList()
 }
 
-function effectResults(effect: KnockbackEffect, caster: Player, gameState: GameState) {
-  const tiles = affectedTiles(effect.ranges, caster.position, gameState.board)
-  const players = affectedPlayers(tiles, gameState)
+function effectResults(effect: KnockbackEffect, caster: Player, game: Game) {
+  const tiles = affectedTiles(effect.ranges, caster.position, game.board)
+  const players = affectedPlayers(tiles, game)
 
   return players.map(player => {
     const direction = knockbackDirection(caster.position, player.position)
@@ -39,7 +39,7 @@ function effectResults(effect: KnockbackEffect, caster: Player, gameState: GameS
         moveInDirection: direction,
         facingDirection: player.position.facing,
         player,
-        gameState
+        game
       })
     )
   })

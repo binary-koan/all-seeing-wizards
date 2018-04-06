@@ -76,9 +76,9 @@ async function loadPack(data: PackDbValues, db: Db) {
     .insertMany(data.cards.reduce((docs, card) => docs.concat(buildCards(card, data.name)), []))
 }
 
-function buildBoard(board: BoardConfig, packName: string): BoardDoc {
+function buildBoard(board: BoardConfig, packId: string): BoardDoc {
   return {
-    packName,
+    packId,
     tiles: List(board)
       .flatMap((row, y) =>
         List(row).map((tile, x) => BOARD_TILE_TYPE_MAPPING[tile] || DEFAULT_BOARD_TILE_TYPE)
@@ -99,14 +99,14 @@ function buildBoardObject(type: string, x: number, y: number): BoardObjectDoc {
   return { type: BOARD_OBJECT_TYPE_MAPPING[type], x, y }
 }
 
-function buildCharacter({ name, type }: CharacterConfig, packName: string): CharacterDoc {
-  return { packName, name, type }
+function buildCharacter({ name, type }: CharacterConfig, packId: string): CharacterDoc {
+  return { packId, name, type }
 }
 
-function buildCards({ name, count, effects }: CardConfig, packName: string): CardDoc[] {
+function buildCards({ name, count, effects }: CardConfig, packId: string): CardDoc[] {
   const [actualName, tagline] = name.split(" of ")
 
   return Range(0, count)
-    .map(() => ({ packName, name: actualName, tagline, effects }))
+    .map(() => ({ packId, name: actualName, tagline, effects }))
     .toArray()
 }

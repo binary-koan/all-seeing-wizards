@@ -30,11 +30,11 @@ describe("#calculateMoveResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)
     })
 
-    const results = calculateMoveResults(playedCards, gameState)
+    const results = calculateMoveResults(playedCards, game)
 
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
@@ -51,11 +51,11 @@ describe("#calculateMoveResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard(1, "anticlockwise"))
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)
     })
 
-    const results = calculateMoveResults(playedCards, gameState)
+    const results = calculateMoveResults(playedCards, game)
 
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
@@ -73,11 +73,11 @@ describe("#calculateMoveResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)
     })
 
-    const results = calculateMoveResults(playedCards, gameState)
+    const results = calculateMoveResults(playedCards, game)
 
     expect(results.size).toBe(0)
   })

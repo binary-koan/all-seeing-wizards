@@ -13,6 +13,10 @@ const deckFactory = RecordFactory<IDeck>({
 })
 
 export class Deck extends deckFactory implements IDeck {
+  public static empty() {
+    return new Deck({ availableCards: List(), discardedCards: List() })
+  }
+
   public readonly availableCards: List<Card>
   public readonly discardedCards: List<Card>
 

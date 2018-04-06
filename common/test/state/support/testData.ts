@@ -8,7 +8,7 @@ import { Character } from "../../../src/state/character"
 import { Deck } from "../../../src/state/deck"
 import { Direction, DirectionalPoint } from "../../../src/state/directionalPoint"
 import { Duration } from "../../../src/state/duration"
-import { ChangeStateOperation, GameState } from "../../../src/state/gameState"
+import { Game } from "../../../src/state/game"
 import { Hand } from "../../../src/state/hand"
 import { Modifier, ModifierType } from "../../../src/state/modifier"
 import { Player } from "../../../src/state/player"
@@ -138,26 +138,20 @@ export function createTestPlayer({
 }
 
 export function createTestGameState({
-  version,
   id,
   players,
   board,
-  deck,
-  operationsSinceLastSave
+  deck
 }: {
-  version?: number
   id?: string
   players?: Map<string, Player>
   board?: Board
   deck?: Deck
-  operationsSinceLastSave?: List<ChangeStateOperation>
 } = {}) {
-  return new GameState({
-    version: version || 1,
+  return new Game({
     id: id || "",
     players: players || Map(),
     board: board || createTestBoard(),
-    deck: deck || createTestDeck(),
-    operationsSinceLastSave: operationsSinceLastSave || List()
+    deck: deck || createTestDeck()
   })
 }

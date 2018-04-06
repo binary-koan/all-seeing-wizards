@@ -5,35 +5,36 @@ import { Card } from "./card"
 import { Deck } from "./deck"
 import { Player } from "./player"
 
-interface IGameState {
-  version: number
+interface IGame {
   id: string
   players: Map<string, Player>
   board: Board
   deck: Deck
 }
 
-const gameState = RecordFactory<IGameState>({
-  version: 0,
+const game = RecordFactory<IGame>({
   id: "",
   players: Map(),
   board: new Board({ tiles: List(), objects: List() }),
   deck: new Deck({ availableCards: List(), discardedCards: List() })
 })
 
-export class GameState extends gameState implements IGameState {
-  public readonly version: number
+export class Game extends game implements IGame {
   public readonly id: string
   public readonly players: Map<string, Player>
   public readonly board: Board
   public readonly deck: Deck
 
-  constructor(config: IGameState) {
+  constructor(config: IGame) {
     super(config)
   }
 
   public player(id: string) {
     return this.players.get(id)
+  }
+
+  public addPlayer(player: Player) {
+    return this.set("players", this.players.set(player.id, player))
   }
 
   public updatePlayer(player: Player) {

@@ -1,5 +1,5 @@
 import { Db, ObjectID } from "mongodb"
-import { GameState } from "../../../common/src/state/gameState"
+import { Game } from "../../../common/src/state/game"
 import { Player } from "../../../common/src/state/player"
 import { GameDiff, PlayerDiff } from "./types"
 
@@ -8,19 +8,18 @@ interface GameStateDiff {
   players?: PlayerDiff[]
 }
 
-export default function saveGameState(gameState: GameState, db: Db) {
-  const mutations = [
-    updateGameState(gameState, db),
-    ...gameState.players.toArray().map(player => updatePlayer(player, db))
-  ]
+export default async function saveGameState(game: Game, db: Db) {
+  const updateResult = await updateGameState(game, db)
 
-  return Promise.all(mutations)
+  await Promise.all(game.players.toArray().map(player => updatePlayer(player, db)))
+
+  return updateResult.upsertedId._id
 }
 
-function updateGameState(gameState: GameState, db: Db) {
-  return db.collection("games").updateOne({ id: gameState.id }, {
-    playerIds: gameState.players.map(player => ObjectID.createFromHexString(player.id)),
-    usedCardIds: gameState.deck.discardedCards.map(card => ObjectID.createFromHexString(card.id))
+function updateGameState(game: Game, db: Db) {
+  return db.collection("games").updateOne({ id: game.id }, {
+    playerIds: game.players.map(player => ObjectID.createFromHexString(player.id)),
+    usedCardIds: game.deck.discardedCards.map(card => ObjectID.createFromHexString(card.id))
   } as GameStateDiff)
 }
 

@@ -58,11 +58,11 @@ describe("#performTurn", () => {
       } as HealEffect)
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
     })
 
-    const result = performTurn(gameState)
+    const result = performTurn(game)
 
     expect(result.resultsPerAction.size).toBe(5)
     expect(
@@ -72,7 +72,7 @@ describe("#performTurn", () => {
         .toArray()
     ).toEqual(["heal", "attack", "takeDamage"])
 
-    expect(result.gameState.player("target").hp).toEqual(2 + 2 - 3)
+    expect(result.game.player("target").hp).toEqual(2 + 2 - 3)
   })
 
   it("works correctly when actions are prevented on a player", () => {
@@ -111,13 +111,13 @@ describe("#performTurn", () => {
       ) as List<CardEffect>
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>)
         .set(preventer.id, preventer)
         .set(preventee.id, preventee)
     })
 
-    const result = performTurn(gameState)
+    const result = performTurn(game)
 
     expect(
       result.resultsPerAction
@@ -126,7 +126,7 @@ describe("#performTurn", () => {
         .toArray()
     ).toEqual(["attemptPreventActions", "preventActions"])
 
-    expect(result.gameState.player("preventee").modifiers.size).toBe(0)
+    expect(result.game.player("preventee").modifiers.size).toBe(0)
   })
 
   it("works correctly when a player moves into the attack path of another player", () => {
@@ -157,11 +157,11 @@ describe("#performTurn", () => {
       } as MovementEffect)
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
     })
 
-    const result = performTurn(gameState)
+    const result = performTurn(game)
 
     expect(
       result.resultsPerAction
@@ -170,7 +170,7 @@ describe("#performTurn", () => {
         .toArray()
     ).toEqual(["move", "attack", "takeDamage"])
 
-    expect(result.gameState.player("target").hp).toEqual(0)
+    expect(result.game.player("target").hp).toEqual(0)
   })
 
   it("works correctly when knockback is blocked by player movement", () => {
@@ -213,14 +213,14 @@ describe("#performTurn", () => {
       } as MovementEffect)
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>)
         .set(caster.id, caster)
         .set(target.id, target)
         .set(mover.id, mover)
     })
 
-    const result = performTurn(gameState)
+    const result = performTurn(game)
 
     expect(
       result.resultsPerAction
@@ -230,7 +230,7 @@ describe("#performTurn", () => {
     ).toEqual(["move", "move"])
 
     expect(
-      result.gameState
+      result.game
         .player("target")
         .position.equals(createDirectionalPoint({ x: 1, y: 0, facing: "north" }))
     ).toBeTruthy()

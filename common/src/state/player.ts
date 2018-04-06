@@ -23,7 +23,7 @@ interface IPlayer {
 const player = RecordFactory<IPlayer>({
   id: "",
   character: new Character({ name: "", type: "" }),
-  hp: 0,
+  hp: MAX_PLAYER_HP,
   position: new DirectionalPoint({ x: 0, y: 0, facing: "north" }),
   hand: Hand.empty(),
   connected: false,

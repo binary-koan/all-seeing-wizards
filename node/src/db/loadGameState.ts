@@ -8,25 +8,26 @@ import { Card } from "../../../common/src/state/card"
 import { Character } from "../../../common/src/state/character"
 import { Deck } from "../../../common/src/state/deck"
 import { Duration } from "../../../common/src/state/duration"
-import { GameState } from "../../../common/src/state/gameState"
+import { Game } from "../../../common/src/state/game"
 import { Hand } from "../../../common/src/state/hand"
 import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
 import { BOARD_SIZE, BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
-const GAME_STATE_VERSION = 1
-
-export default async function loadGameState(gameId: ObjectID, db: Db): Promise<GameState> {
+export default async function loadGameState(gameId: ObjectID, db: Db): Promise<Game> {
   const { gameDoc, cardDocs, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
+
+  if (!gameDoc) {
+    return
+  }
 
   const cards = buildCards(cardDocs)
   const players = buildPlayers(playerDocs, characterDocs, cards)
   const deck = buildDeck(cards, players, gameDoc.usedCardIds)
   const board = buildBoard(boardDocs, gameDoc)
 
-  return new GameState({
-    version: GAME_STATE_VERSION,
+  return new Game({
     id: gameDoc._id.toHexString(),
     players,
     deck,
@@ -179,7 +180,12 @@ function positionOnBoard(index: number, boardX: number, boardY: number) {
 
 async function loadFromDb(db: Db, gameId: ObjectID) {
   const gameDoc = (await db.collection("games").findOne({ id: gameId })) as GameDoc
-  const fromPacks = { packName: { $in: gameDoc.packNames } }
+
+  if (!gameDoc) {
+    return {}
+  }
+
+  const fromPacks = { packId: { $in: gameDoc.packIds } }
 
   return {
     gameDoc,

@@ -4,11 +4,11 @@ import { Board } from "../board"
 import { BoardTile } from "../boardTile"
 import { AreaRange, CardRange, LineRange, PointRange } from "../cardRange"
 import { DirectionalPoint } from "../directionalPoint"
-import { GameState } from "../gameState"
+import { Game } from "../game"
 import { Player } from "../player"
 
-export function affectedPlayers(tiles: List<BoardTile>, gameState: GameState): List<Player> {
-  return gameState.players
+export function affectedPlayers(tiles: List<BoardTile>, game: Game): List<Player> {
+  return game.players
     .filter(
       player => tiles.find(tile => player.position.equalsWithoutDirection(tile.position)) != null
     )

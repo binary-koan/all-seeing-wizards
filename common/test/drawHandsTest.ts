@@ -24,12 +24,12 @@ describe("#drawHands", () => {
 
     const deck = createTestDeck({ availableCards: createTestCards(5) })
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2),
       deck
     })
 
-    const resultingState = drawHands(gameState)
+    const resultingState = drawHands(game)
 
     expect(resultingState.players.map(player => player.hand.cards.size).toArray()).toEqual([
       MAX_CARDS_IN_HAND,

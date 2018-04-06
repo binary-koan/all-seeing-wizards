@@ -10,7 +10,7 @@ async function run() {
     dbName: "all-seeing-wizards"
   })
 
-  const app = setupServer()
+  const app = setupServer(db)
   const server = new http.Server(app)
 
   setupSocket(server, db)

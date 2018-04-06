@@ -5,24 +5,24 @@ import { BoardTile } from "../state/boardTile"
 import { Card } from "../state/card"
 import { PreventActionsEffect } from "../state/cardEffect"
 import { Duration } from "../state/duration"
-import { GameState } from "../state/gameState"
+import { Game } from "../state/game"
 import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
 import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 
 export function calculatePreventActionsResults(
   playedCards: Map<Player, Card>,
-  gameState: GameState
+  game: Game
 ): List<ActionResult> {
   return calculateResults(
     resolveEffects(playedCards, ["preventActions"]) as Map<PreventActionsEffect, Player>,
-    (effect: PreventActionsEffect, player: Player) => effectResults(effect, player, gameState)
+    (effect: PreventActionsEffect, player: Player) => effectResults(effect, player, game)
   )
 }
 
-function effectResults(effect: PreventActionsEffect, player: Player, gameState: GameState) {
-  const tiles = affectedTiles(effect.ranges, player.position, gameState.board)
-  const players = affectedPlayers(tiles, gameState)
+function effectResults(effect: PreventActionsEffect, player: Player, game: Game) {
+  const tiles = affectedTiles(effect.ranges, player.position, game.board)
+  const players = affectedPlayers(tiles, game)
     .filterNot(affectedPlayer => affectedPlayer === player)
     .toList()
 

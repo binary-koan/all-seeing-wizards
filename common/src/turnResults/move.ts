@@ -1,7 +1,7 @@
 import { List, Map, Range } from "immutable"
 import { Card } from "../state/card"
 import { MovementEffect } from "../state/cardEffect"
-import { GameState } from "../state/gameState"
+import { Game } from "../state/game"
 import { Player } from "../state/player"
 import { resolveEffects } from "./helpers/effectsToResults"
 import movementPath from "./helpers/movementPath"
@@ -10,18 +10,16 @@ import { ActionResult } from "./resultTypes"
 
 export function calculateMoveResults(
   playedCards: Map<Player, Card>,
-  gameState: GameState
+  game: Game
 ): List<ActionResult> {
   const proposedResults = resolveEffects(playedCards, ["move"])
-    .map((player, effect) =>
-      proposedMove(player, pathFor(effect as MovementEffect, player, gameState))
-    )
+    .map((player, effect) => proposedMove(player, pathFor(effect as MovementEffect, player, game)))
     .toList()
 
-  return reconcileMovement(proposedResults, gameState)
+  return reconcileMovement(proposedResults, game)
 }
 
-function pathFor(effect: MovementEffect, player: Player, gameState: GameState) {
+function pathFor(effect: MovementEffect, player: Player, game: Game) {
   const facingDirection = player.position.turn(effect.rotation).facing
 
   return movementPath({
@@ -29,6 +27,6 @@ function pathFor(effect: MovementEffect, player: Player, gameState: GameState) {
     moveInDirection: facingDirection,
     facingDirection,
     player,
-    gameState
+    game
   })
 }

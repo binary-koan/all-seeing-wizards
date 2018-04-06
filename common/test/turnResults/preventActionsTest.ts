@@ -28,11 +28,11 @@ describe("#calculatePreventActionsResults", () => {
     const caster = createTestPlayer()
 
     const playedCards = (Map() as Map<Player, Card>).set(caster, createPreventActionsCard(List()))
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
@@ -47,11 +47,11 @@ describe("#calculatePreventActionsResults", () => {
     })
 
     const playedCards = (Map() as Map<Player, Card>).set(caster, createPreventActionsCard(List()))
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(0)
   })
@@ -76,11 +76,11 @@ describe("#calculatePreventActionsResults", () => {
       )
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(2)
     expect(results.get(0).type).toEqual("attemptPreventActions")
@@ -112,11 +112,11 @@ describe("#calculatePreventActionsResults", () => {
       )
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(2)
     expect(results.get(0).type).toEqual("attemptPreventActions")
@@ -147,11 +147,11 @@ describe("#calculatePreventActionsResults", () => {
       )
     )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(2)
     expect(results.get(0).type).toEqual("attemptPreventActions")
@@ -192,11 +192,11 @@ describe("#calculatePreventActionsResults", () => {
         )
       )
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster1.id, caster1).set(caster2.id, caster2)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(4)
     expect(results.get(0).type).toEqual("attemptPreventActions")
@@ -222,11 +222,11 @@ describe("#calculatePreventActionsResults", () => {
         CardRange
       >)
     )
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
 
-    const results = calculatePreventActionsResults(playedCards, gameState)
+    const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(1)
     expect(results.first().type).toEqual("attemptPreventActions")

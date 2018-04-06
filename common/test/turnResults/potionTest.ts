@@ -40,13 +40,13 @@ describe("#calculatePotionResults", () => {
       .set(healer, createHealCard())
       .set(damageIncreaser, createIncreaseDamageCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>)
         .set(healer.id, healer)
         .set(damageIncreaser.id, damageIncreaser)
     })
 
-    const results = calculatePotionResults(playedCards, gameState)
+    const results = calculatePotionResults(playedCards, game)
 
     expect(results.size).toBe(2)
     expect(results.first()).toEqual({
@@ -75,13 +75,13 @@ describe("#calculatePotionResults", () => {
       .set(healer, createHealCard())
       .set(damageIncreaser, createIncreaseDamageCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>)
         .set(healer.id, healer)
         .set(damageIncreaser.id, damageIncreaser)
     })
 
-    const results = calculatePotionResults(playedCards, gameState)
+    const results = calculatePotionResults(playedCards, game)
 
     expect(results.size).toBe(0)
   })

@@ -1,12 +1,12 @@
 import { Deck } from "./state/deck"
-import { GameState } from "./state/gameState"
+import { Game } from "./state/game"
 import { Player } from "./state/player"
 
-export function drawHands(baseState: GameState): GameState {
-  return baseState.players.reduce((gameState, player) => {
-    const { player: newPlayer, deck } = drawHandForPlayer(player, gameState.deck)
+export function drawHands(baseState: Game): Game {
+  return baseState.players.reduce((game, player) => {
+    const { player: newPlayer, deck } = drawHandForPlayer(player, game.deck)
 
-    return gameState.set("deck", deck).setIn(["players", player.id], newPlayer)
+    return game.set("deck", deck).setIn(["players", player.id], newPlayer)
   }, baseState)
 }
 

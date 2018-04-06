@@ -39,11 +39,11 @@ describe("#calculateKnockbackResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(knocker, createKnockbackCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(knocker.id, knocker).set(knocked.id, knocked)
     })
 
-    const results = calculateKnockbackResults(playedCards, gameState)
+    const results = calculateKnockbackResults(playedCards, game)
 
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
@@ -66,11 +66,11 @@ describe("#calculateKnockbackResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(knocker, createKnockbackCard())
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(knocker.id, knocker).set(knocked.id, knocked)
     })
 
-    const results = calculateKnockbackResults(playedCards, gameState)
+    const results = calculateKnockbackResults(playedCards, game)
 
     expect(results.size).toBe(0)
   })

@@ -19,7 +19,7 @@ describe("#reconcileMovement", () => {
       position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
     })
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
     })
 
@@ -34,7 +34,7 @@ describe("#reconcileMovement", () => {
       )
     )
 
-    const results = reconcileMovement(proposedMoves, gameState)
+    const results = reconcileMovement(proposedMoves, game)
 
     expect(results.size).toBe(2)
     expect(results.get(0)).toEqual({
@@ -60,7 +60,7 @@ describe("#reconcileMovement", () => {
       position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
     })
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
     })
 
@@ -74,7 +74,7 @@ describe("#reconcileMovement", () => {
       )
     )
 
-    const results = reconcileMovement(proposedMoves, gameState)
+    const results = reconcileMovement(proposedMoves, game)
 
     expect(results.size).toBe(0)
   })
@@ -90,7 +90,7 @@ describe("#reconcileMovement", () => {
       position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
     })
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
     })
 
@@ -105,7 +105,7 @@ describe("#reconcileMovement", () => {
       )
     )
 
-    const results = reconcileMovement(proposedMoves, gameState)
+    const results = reconcileMovement(proposedMoves, game)
 
     expect(results.size).toBe(2)
     expect(results.get(0)).toEqual({

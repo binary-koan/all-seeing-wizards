@@ -1,5 +1,5 @@
 import { List } from "immutable"
-import { GameState } from "../state/gameState"
+import { Game } from "../state/game"
 import { Modifier } from "../state/modifier"
 import { MAX_PLAYER_HP, Player } from "../state/player"
 import {
@@ -15,17 +15,17 @@ import {
 } from "./resultTypes"
 
 const RESULT_APPLICATORS: {
-  [key: string]: (result: ActionResult, state: GameState) => GameState
+  [key: string]: (result: ActionResult, state: Game) => Game
 } = {
-  attack(result, state: GameState) {
+  attack(result, state: Game) {
     return state
   },
 
-  attemptPreventActions(result, state: GameState) {
+  attemptPreventActions(result, state: Game) {
     return state
   },
 
-  grantMirrorShield(result: GrantMirrorShieldResult, state: GameState) {
+  grantMirrorShield(result: GrantMirrorShieldResult, state: Game) {
     return state.updatePlayer(
       result.player.addModifier(
         new Modifier({ type: { name: "mirrorShield" }, duration: result.duration })
@@ -33,7 +33,7 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  grantShield(result: GrantShieldResult, state: GameState) {
+  grantShield(result: GrantShieldResult, state: Game) {
     return state.updatePlayer(
       result.player.addModifier(
         new Modifier({ type: { name: "shield" }, duration: result.duration })
@@ -41,11 +41,11 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  heal(result: HealResult, state: GameState) {
+  heal(result: HealResult, state: Game) {
     return state.updatePlayer(result.player.updateHp(result.amount))
   },
 
-  increaseDamage(result: IncreaseDamageResult, state: GameState) {
+  increaseDamage(result: IncreaseDamageResult, state: Game) {
     return state.updatePlayer(
       result.player.addModifier(
         new Modifier({
@@ -56,19 +56,19 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  knockback(result: KnockbackResult, state: GameState) {
+  knockback(result: KnockbackResult, state: Game) {
     return state.updatePlayer(result.player.updatePosition(result.targetPosition))
   },
 
-  move(result: MoveResult, state: GameState) {
+  move(result: MoveResult, state: Game) {
     return state.updatePlayer(result.player.updatePosition(result.targetPosition))
   },
 
-  none(result, state: GameState) {
+  none(result, state: Game) {
     return state
   },
 
-  preventActions(result: PreventActionsResult, state: GameState) {
+  preventActions(result: PreventActionsResult, state: Game) {
     return state.updatePlayer(
       result.player.addModifier(
         new Modifier({ type: { name: "preventActions" }, duration: result.duration })
@@ -76,18 +76,15 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  shieldFromHarm(result, state: GameState) {
+  shieldFromHarm(result, state: Game) {
     return state
   },
 
-  takeDamage(result: TakeDamageResult, state: GameState) {
+  takeDamage(result: TakeDamageResult, state: Game) {
     return state.updatePlayer(result.player.updateHp(-result.damage))
   }
 }
 
-export function applyResults(results: List<ActionResult>, baseState: GameState): GameState {
-  return results.reduce(
-    (gameState, result) => RESULT_APPLICATORS[result.type](result, gameState),
-    baseState
-  )
+export function applyResults(results: List<ActionResult>, baseState: Game): Game {
+  return results.reduce((game, result) => RESULT_APPLICATORS[result.type](result, game), baseState)
 }

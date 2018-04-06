@@ -22,7 +22,7 @@ describe("#affectedPlayers", () => {
       position: createDirectionalPoint({ x: 0, y: 1 })
     })
 
-    const gameState = createTestGameState({
+    const game = createTestGameState({
       players: (Map() as Map<string, Player>)
         .set(onTiles1.id, onTiles1)
         .set(onTiles2.id, onTiles2)
@@ -35,7 +35,7 @@ describe("#affectedPlayers", () => {
         { type: "ground", position: createTestPoint({ x: 2, y: 1 }) },
         { type: "ground", position: createTestPoint({ x: 3, y: 1 }) }
       ]) as List<BoardTile>,
-      gameState
+      game
     ).toArray()
 
     expect(affected.length).toBe(2)

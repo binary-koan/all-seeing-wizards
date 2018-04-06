@@ -1,7 +1,7 @@
 import { List, Map, Range } from "immutable"
 import { drawHands } from "./drawHands"
 import { Card } from "./state/card"
-import { GameState } from "./state/gameState"
+import { Game } from "./state/game"
 import { Hand } from "./state/hand"
 import { MAX_PLAYER_HP, Player } from "./state/player"
 import { applyResults } from "./turnResults/applyResults"
@@ -14,17 +14,17 @@ import { ActionResult } from "./turnResults/resultTypes"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 
-export default function performTurn(baseState: GameState) {
-  const { gameState: resultingState, resultsPerAction: finalResults } = Range(
+export default function performTurn(baseState: Game) {
+  const { game: resultingState, resultsPerAction: finalResults } = Range(
     0,
     MAX_ACTIONS_PER_TURN
   ).reduce(
-    ({ gameState, resultsPerAction }, index) => {
-      const { gameState: nextState, results } = perform(gameState, playedCards(index, gameState))
+    ({ game, resultsPerAction }, index) => {
+      const { game: nextState, results } = perform(game, playedCards(index, game))
 
-      return { gameState: nextState, resultsPerAction: resultsPerAction.push(results) }
+      return { game: nextState, resultsPerAction: resultsPerAction.push(results) }
     },
-    { gameState: baseState, resultsPerAction: List() as List<List<ActionResult>> }
+    { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
   )
 
   const finalState = [advanceTurn, discardPickedCards, drawHands].reduce(
@@ -32,11 +32,11 @@ export default function performTurn(baseState: GameState) {
     resultingState
   )
 
-  return { gameState: finalState, resultsPerAction: finalResults }
+  return { game: finalState, resultsPerAction: finalResults }
 }
 
-function perform(baseState: GameState, cards: Map<string, Card>) {
-  const { gameState: resultingState, results: finalResults } = [
+function perform(baseState: Game, cards: Map<string, Card>) {
+  const { game: resultingState, results: finalResults } = [
     calculatePreventActionsResults,
     calculatePotionResults,
     calculateMoveResults,
@@ -44,24 +44,24 @@ function perform(baseState: GameState, cards: Map<string, Card>) {
     calculateKnockbackResults
   ].reduce(
     (
-      { gameState, results },
+      { game, results },
       // For some reason TypeScript breaks if you take this signature off ...
-      getResults: (cards: Map<Player, Card>, gameState: GameState) => List<ActionResult>
+      getResults: (cards: Map<Player, Card>, game: Game) => List<ActionResult>
     ) => {
-      const cardsByPlayer = cards.mapKeys(id => gameState.player(id)).toMap()
-      const nextResults = getResults(cardsByPlayer, gameState)
-      const nextState = applyResults(nextResults, gameState)
+      const cardsByPlayer = cards.mapKeys(id => game.player(id)).toMap()
+      const nextResults = getResults(cardsByPlayer, game)
+      const nextState = applyResults(nextResults, game)
 
-      return { results: results.concat(nextResults), gameState: nextState }
+      return { results: results.concat(nextResults), game: nextState }
     },
-    { gameState: baseState, results: List() as List<ActionResult> }
+    { game: baseState, results: List() as List<ActionResult> }
   )
 
-  return { gameState: advanceAction(resultingState), results: finalResults.toList() }
+  return { game: advanceAction(resultingState), results: finalResults.toList() }
 }
 
-function playedCards(index: number, gameState: GameState) {
-  return gameState.players.reduce(
+function playedCards(index: number, game: Game) {
+  return game.players.reduce(
     (cards, player) => {
       const card = player.hand.pickedCard(index)
 
@@ -75,46 +75,42 @@ function playedCards(index: number, gameState: GameState) {
   )
 }
 
-function advanceAction(gameState: GameState) {
-  return gameState.players.reduce((state, player) => {
+function advanceAction(game: Game) {
+  return game.players.reduce((state, player) => {
     if (player.knockedOut) {
       return ensurePlayerKnockedOut(state, player)
     } else {
       return advancePlayerModifiers(state, player, "action")
     }
-  }, gameState)
+  }, game)
 }
 
-function advanceTurn(gameState: GameState) {
-  return gameState.players.reduce((state, player) => {
+function advanceTurn(game: Game) {
+  return game.players.reduce((state, player) => {
     if (player.knockedOut) {
       return state
     } else {
       return advancePlayerModifiers(state, player, "turn")
     }
-  }, gameState)
+  }, game)
 }
 
-function advancePlayerModifiers(
-  state: GameState,
-  player: Player,
-  advancementType: "action" | "turn"
-) {
+function advancePlayerModifiers(state: Game, player: Player, advancementType: "action" | "turn") {
   return state.updatePlayer(player.advanceModifiers(advancementType))
 }
 
-function ensurePlayerKnockedOut(state: GameState, player: Player) {
+function ensurePlayerKnockedOut(state: Game, player: Player) {
   return state
     .set("deck", state.deck.withCardsDiscarded(player.hand.cards))
     .set("players", state.players.setIn([player.id, "hand"], Hand.empty()))
 }
 
-function discardPickedCards(gameState: GameState) {
-  return gameState.players.reduce(
+function discardPickedCards(game: Game) {
+  return game.players.reduce(
     (state, player) =>
       state
         .set("deck", state.deck.withCardsDiscarded(player.hand.pickedCards))
         .setIn(["players", player.id, "hand"], player.hand.removePickedCards()),
-    gameState
+    game
   )
 }

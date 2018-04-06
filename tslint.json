@@ -7,6 +7,7 @@
     "no-bitwise": false,
     "no-object-literal-type-assertion": false,
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "no-implicit-dependencies": [true, "dev"],
     //TODO not working yet, see https://github.com/palantir/tslint/issues/2649
     "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }

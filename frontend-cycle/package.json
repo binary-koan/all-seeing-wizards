@@ -10,7 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "@cycle/dom": "^20.2.0",
+    "@cycle/http": "^14.9.0",
     "@cycle/run": "^4.1.0",
+    "@types/socket.io-client": "^1.4.32",
+    "feather-icons": "^4.7.0",
+    "socket.io-client": "^2.1.0",
     "xstream": "^11.2.0"
   },
   "devDependencies": {

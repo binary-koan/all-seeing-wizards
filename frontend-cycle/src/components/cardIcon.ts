@@ -2,7 +2,6 @@ import kebabCase = require("lodash/kebabCase")
 
 import { Card } from "../../../common/src/state/card"
 import data from "../../../packs/base/viewConfig.json"
-import "./card_icon.css"
 import icon from "./icon"
 
 const ICONS = data.cardIcons

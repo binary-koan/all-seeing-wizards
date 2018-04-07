@@ -2,13 +2,13 @@ import { a, aside, button, div, DOMSource, VNode } from "@cycle/dom"
 import { List } from "immutable"
 import xs, { Stream } from "xstream"
 
+import { Action } from "../actions/types"
 import connectionState from "../components/connectionState"
 import fatalError from "../components/fatalError"
 import icon from "../components/icon"
 import mapView from "../components/mapView"
 import playerView from "../components/playerView"
 import statusPanel from "../components/statusPanel"
-import { Action } from "../actions/types"
 import ViewState from "../state/viewState"
 
 export default function GameHost({

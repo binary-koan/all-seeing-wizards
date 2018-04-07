@@ -1,12 +1,12 @@
 import { button, div, DOMSource, VNode } from "@cycle/dom"
 import xs, { Stream } from "xstream"
+import { Action } from "../actions/types"
 import cardView from "../components/cardView"
 import fatalError from "../components/fatalError"
 import mapView from "../components/mapView"
 import mapViewport from "../components/mapViewport"
 import PlacedCards from "../components/placedCards"
 import playerView from "../components/playerView"
-import { Action } from "../actions/types"
 import ViewState from "../state/viewState"
 
 export default function GamePlayer({

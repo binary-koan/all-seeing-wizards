@@ -1,9 +1,7 @@
-import "./player_view.css"
-
 import { div, DOMSource, h3, img } from "@cycle/dom"
 import { Stream } from "xstream"
 import { Player } from "../../../common/src/state/player"
-import data from "../packs/standard.json"
+import data from "../../../packs/base/viewConfig.json"
 import icon from "./icon"
 import { playerHp } from "./playerHp"
 

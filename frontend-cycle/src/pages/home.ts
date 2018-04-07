@@ -1,8 +1,8 @@
 import { button, div, DOMSource, img, VNode } from "@cycle/dom"
 import xs, { Stream } from "xstream"
 
-import fatalError from "../components/fatalError"
 import { Action, createGame, joinGame } from "../actions/types"
+import fatalError from "../components/fatalError"
 import ViewState from "../state/viewState"
 
 export default function Home({

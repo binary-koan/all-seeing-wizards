@@ -1,5 +1,5 @@
 import { svg } from "@cycle/dom"
-import svgSprite from "../../../node_modules/feather-icons/feather-sprite.svg"
+import svgSprite from "./feather-sprite.svg"
 
 type IconAttrs = { name: string; scale?: number } & { [key: string]: any }
 

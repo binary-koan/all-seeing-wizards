@@ -1,11 +1,13 @@
 import { DOMSource, h1, makeDOMDriver } from "@cycle/dom"
 import { HTTPSource, makeHTTPDriver } from "@cycle/http"
 import { run } from "@cycle/run"
-import * as io from "socket.io-client"
-
+import io = require("socket.io-client")
 import xs, { Stream } from "xstream"
+
+import applyAction from "./actions/apply"
 import sendRequests from "./actions/sendRequests"
 import sendSocketEvents from "./actions/sendSocketEvents"
+import { Action } from "./actions/types"
 import GameHost from "./pages/gameHost"
 import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
@@ -21,11 +23,14 @@ function main({
   HTTP: HTTPSource
   socketIO: SocketIOSource
 }) {
-  const viewState$: Stream<ViewState> = xs.create()
+  const actionProxy$: Stream<Action> = xs.create()
+  const viewState$: Stream<ViewState> = actionProxy$.fold(applyAction, new ViewState())
 
   const gameHostSinks = GameHost({ DOM, viewState$ })
   const gamePlayerSinks = GamePlayer({ DOM, viewState$ })
   const homeSinks = Home({ DOM, viewState$ })
+
+  actionProxy$.imitate(xs.merge(gameHostSinks.action$, gamePlayerSinks.action$, homeSinks.action$))
 
   const page$ = viewState$.map(viewState => {
     if (viewState.connectedAs === "host") {
@@ -37,12 +42,10 @@ function main({
     }
   })
 
-  const action$ = page$.map(page => page.action$).flatten()
-
   return {
     DOM: page$.map(page => page.DOM).flatten(),
-    HTTP: sendRequests(action$),
-    socketIO: sendSocketEvents(action$)
+    HTTP: sendRequests(actionProxy$),
+    socketIO: sendSocketEvents(actionProxy$)
   }
 }
 

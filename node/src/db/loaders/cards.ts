@@ -1,9 +1,9 @@
 import { List } from "immutable"
-import { Db } from "mongodb"
+import { Db, ObjectID } from "mongodb"
 import { Card } from "../../../../common/src/state/card"
 import { CardDoc } from "../types"
 
-export default async function loadCards(packIds: string[], db: Db) {
+export default async function loadCards(packIds: ObjectID[], db: Db) {
   const cardDocs = await db
     .collection("cards")
     .find<CardDoc>({ packId: { $in: packIds } })

@@ -4,10 +4,10 @@ import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
 
-export default async function buildGameFromPacks(packIds: string[], db: Db) {
+export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   const packs = await db
     .collection("packs")
-    .find({ _id: { $in: packIds.map(ObjectID.createFromHexString) } })
+    .find({ _id: { $in: packIds } })
     .toArray()
 
   if (packs.length !== packIds.length) {

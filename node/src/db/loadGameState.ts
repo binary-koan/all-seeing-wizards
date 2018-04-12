@@ -120,7 +120,7 @@ function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds:
     [List() as List<Card>, List() as List<Card>]
   )
 
-  return { discardedCards, availableCards } as Deck
+  return new Deck({ discardedCards, availableCards })
 }
 
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {

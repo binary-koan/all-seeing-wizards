@@ -1,10 +1,12 @@
-import { Db } from "mongodb"
+import { Db, ObjectID } from "mongodb"
 import { Character } from "../../../common/src/state/character"
 import { Game } from "../../../common/src/state/game"
 import { CharacterDoc, GameDoc } from "./types"
 
 export default async function findAvailableCharacter(game: Game, db: Db) {
-  const gameDoc = await db.collection("games").findOne<GameDoc>({ _id: game.id })
+  const gameDoc = await db
+    .collection("games")
+    .findOne<GameDoc>({ _id: ObjectID.createFromHexString(game.id) })
 
   if (!gameDoc) {
     return

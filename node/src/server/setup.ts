@@ -1,4 +1,5 @@
 import * as express from "express"
+import { serializeGame } from "../../../common/src/state/serialization/game"
 import GameManager from "../state/gameManager"
 
 export default function setup(manager: GameManager) {
@@ -9,17 +10,18 @@ export default function setup(manager: GameManager) {
     const game = await manager.create(packIds)
 
     if (game) {
-      res.send({ data: { gameId: game.id } })
+      res.send({ data: { game: serializeGame(game) } })
     } else {
       res.send({ error: "Can't create the game. Have you chosen enough packs to do so?" })
     }
   })
 
   app.post("/games/:gameId/join", async (req, res) => {
+    const game = await manager.get(req.params.gameId)
     const player = await manager.addPlayer(req.params.gameId)
 
     if (player) {
-      res.send({ data: { playerId: player.id } })
+      res.send({ data: { game: serializeGame(game), playerId: player.id } })
     } else {
       res.send({ error: "Couldn't join game." })
     }

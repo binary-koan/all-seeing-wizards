@@ -1,5 +1,5 @@
 import { List } from "immutable"
-import { Db } from "mongodb"
+import { Db, ObjectID } from "mongodb"
 import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
@@ -7,7 +7,7 @@ import { BoardDoc, GameDoc } from "./types"
 export default async function buildGameFromPacks(packIds: string[], db: Db) {
   const packs = await db
     .collection("packs")
-    .find({ _id: { $in: packIds } })
+    .find({ _id: { $in: packIds.map(ObjectID.createFromHexString) } })
     .toArray()
 
   if (packs.length !== packIds.length) {
@@ -16,10 +16,10 @@ export default async function buildGameFromPacks(packIds: string[], db: Db) {
 
   const cards = await loadCards(packIds, db)
 
-  const boardDocs = (await db
+  const boardDocs = await db
     .collection("boards")
-    .find({ packId: { $in: packIds } })
-    .toArray()) as BoardDoc[]
+    .find<BoardDoc>({ packId: { $in: packIds } })
+    .toArray()
 
   const layout = boardLayout(boardDocs)
 
@@ -28,7 +28,8 @@ export default async function buildGameFromPacks(packIds: string[], db: Db) {
     boardLayout: layout.map(row => row.map(board => board._id)),
     boardObjects: [], // TODO board objects,
     playerIds: [],
-    usedCardIds: []
+    usedCardIds: [],
+    started: false
   }
 
   const insertResult = await db.collection("games").insertOne(gameDoc)

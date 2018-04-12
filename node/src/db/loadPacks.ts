@@ -45,10 +45,10 @@ export default async function loadPacks(fileContents: string[], db: Db) {
     .map(content => JSON.parse(content) as PackDbValues)
     .sort((first, second) => first.name.localeCompare(second.name))
 
-  const existingPacks = ((await db
+  const existingPacks = await db
     .collection("packs")
-    .find({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
-    .toArray()) as any) as Pack[]
+    .find<Pack>({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
+    .toArray()
 
   const existingPacksByName = List(existingPacks)
     .toMap()
@@ -67,16 +67,20 @@ async function loadPack(data: PackDbValues, db: Db) {
     .collection("packs")
     .insertOne({ version: data.version, name: data.name })
 
-  await db.collection("boards").insertMany(data.boards.map(board => buildBoard(board, data.name)))
+  await db
+    .collection("boards")
+    .insertMany(data.boards.map(board => buildBoard(board, packInsert.insertedId)))
   await db
     .collection("characters")
-    .insertMany(data.characters.map(character => buildCharacter(character, data.name)))
+    .insertMany(data.characters.map(character => buildCharacter(character, packInsert.insertedId)))
   await db
     .collection("cards")
-    .insertMany(data.cards.reduce((docs, card) => docs.concat(buildCards(card, data.name)), []))
+    .insertMany(
+      data.cards.reduce((docs, card) => docs.concat(buildCards(card, packInsert.insertedId)), [])
+    )
 }
 
-function buildBoard(board: BoardConfig, packId: string): BoardDoc {
+function buildBoard(board: BoardConfig, packId: ObjectID): BoardDoc {
   return {
     packId,
     tiles: List(board)
@@ -99,11 +103,11 @@ function buildBoardObject(type: string, x: number, y: number): BoardObjectDoc {
   return { type: BOARD_OBJECT_TYPE_MAPPING[type], x, y }
 }
 
-function buildCharacter({ name, type }: CharacterConfig, packId: string): CharacterDoc {
+function buildCharacter({ name, type }: CharacterConfig, packId: ObjectID): CharacterDoc {
   return { packId, name, type }
 }
 
-function buildCards({ name, count, effects }: CardConfig, packId: string): CardDoc[] {
+function buildCards({ name, count, effects }: CardConfig, packId: ObjectID): CardDoc[] {
   const [actualName, tagline] = name.split(" of ")
 
   return Range(0, count)

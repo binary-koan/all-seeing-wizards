@@ -42,7 +42,7 @@ export interface PlayerDoc extends PlayerDiff {
 
 export interface CardDoc {
   _id?: ObjectID
-  packId: string
+  packId: ObjectID
   name: string
   tagline: string
   effects: CardEffect[]
@@ -50,14 +50,14 @@ export interface CardDoc {
 
 export interface CharacterDoc {
   _id?: ObjectID
-  packId: string
+  packId: ObjectID
   name: string
   type: string
 }
 
 export interface BoardDoc {
   _id?: ObjectID
-  packId: string
+  packId: ObjectID
   tiles: Array<"ground" | "block" | "water" | "lava">
   objects: BoardObjectDoc[]
 }

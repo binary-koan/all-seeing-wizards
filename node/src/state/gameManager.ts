@@ -1,12 +1,12 @@
 import { Db, ObjectID } from "mongodb"
 import joinGame, { JoinResult } from "../../../common/src/joinGame"
+import startGame from "../../../common/src/startGame"
 import { Game } from "../../../common/src/state/game"
+import submitCards from "../../../common/src/submitCards"
 import buildGameFromPacks from "../db/buildGameFromPacks"
 import findAvailableCharacter from "../db/findAvailableCharacter"
 import loadGameState from "../db/loadGameState"
 import saveGameState from "../db/saveGameState"
-import startGame from "../../../common/src/startGame"
-import submitCards from "../../../common/src/submitCards"
 
 export default class GameManager {
   private readonly db: Db
@@ -18,7 +18,9 @@ export default class GameManager {
   }
 
   public async create(packIds: string[]) {
-    return buildGameFromPacks(packIds, this.db)
+    const game = await buildGameFromPacks(packIds, this.db)
+
+    return this.upsert(game)
   }
 
   public async get(gameId: string) {

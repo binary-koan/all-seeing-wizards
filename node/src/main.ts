@@ -1,8 +1,8 @@
 import * as http from "http"
 import connectToDatabase from "./db/connect"
-import loadPacks from "./db/loadPacks"
 import setupServer from "./server/setup"
 import setupSocket from "./socket/setup"
+import GameManager from "./state/gameManager"
 
 async function run() {
   const { client, db } = await connectToDatabase({
@@ -10,10 +10,12 @@ async function run() {
     dbName: "all-seeing-wizards"
   })
 
-  const app = setupServer(db)
+  const gameManager = new GameManager(db)
+
+  const app = setupServer(gameManager)
   const server = new http.Server(app)
 
-  setupSocket(server, db)
+  setupSocket(server, gameManager)
 
   server.listen(3000, () => {
     // tslint:disable-next-line:no-console

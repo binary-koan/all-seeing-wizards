@@ -33,7 +33,7 @@ describe("#loadPacks", () => {
 
     await Promise.all(
       names.map(async name => {
-        const packId = ((await db.collection("packs").findOne({ name })) as Pack).name
+        const packId = (await db.collection("packs").findOne<Pack>({ name })).name
 
         const boardsCount = await db.collection("boards").count({ packId })
         expect(boardsCount).toBeGreaterThan(0)

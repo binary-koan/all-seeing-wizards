@@ -4,16 +4,16 @@ import { Game } from "../../../common/src/state/game"
 import { CharacterDoc, GameDoc } from "./types"
 
 export default async function findAvailableCharacter(game: Game, db: Db) {
-  const gameDoc = (await db.collection("games").findOne({ id: game.id })) as GameDoc
+  const gameDoc = await db.collection("games").findOne<GameDoc>({ _id: game.id })
 
   if (!gameDoc) {
     return
   }
 
-  const characterDocs = (await db
+  const characterDocs = await db
     .collection("characters")
-    .find({ packId: { $in: gameDoc.packIds } })
-    .toArray()) as CharacterDoc[]
+    .find<CharacterDoc>({ packId: { $in: gameDoc.packIds } })
+    .toArray()
 
   const existingCharacterTypes = game.players.map(player => player.character.type)
 

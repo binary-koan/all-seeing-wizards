@@ -166,7 +166,7 @@ function positionOnBoard(index: number, boardX: number, boardY: number) {
 }
 
 async function loadFromDb(db: Db, gameId: ObjectID) {
-  const gameDoc = (await db.collection("games").findOne({ id: gameId })) as GameDoc
+  const gameDoc = await db.collection("games").findOne<GameDoc>({ _id: gameId })
 
   if (!gameDoc) {
     return {}
@@ -176,17 +176,17 @@ async function loadFromDb(db: Db, gameId: ObjectID) {
 
   return {
     gameDoc,
-    boardDocs: (await db
+    boardDocs: await db
       .collection("boards")
-      .find(fromPacks)
-      .toArray()) as BoardDoc[],
-    characterDocs: (await db
+      .find<BoardDoc>(fromPacks)
+      .toArray(),
+    characterDocs: await db
       .collection("characters")
-      .find(fromPacks)
-      .toArray()) as CharacterDoc[],
-    playerDocs: (await db
+      .find<CharacterDoc>(fromPacks)
+      .toArray(),
+    playerDocs: await db
       .collection("players")
-      .find({ gameId })
-      .toArray()) as PlayerDoc[]
+      .find<PlayerDoc>({ gameId })
+      .toArray()
   }
 }

@@ -4,10 +4,10 @@ import { Card } from "../../../../common/src/state/card"
 import { CardDoc } from "../types"
 
 export default async function loadCards(packIds: string[], db: Db) {
-  const cardDocs = (await db
+  const cardDocs = await db
     .collection("cards")
-    .find({ packId: { $in: packIds } })
-    .toArray()) as CardDoc[]
+    .find<CardDoc>({ packId: { $in: packIds } })
+    .toArray()
 
   return buildCards(cardDocs)
 }

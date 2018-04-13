@@ -1,8 +1,12 @@
+import Hashids = require("hashids")
 import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
+
+// TODO find a way to make Hashids import work
+const hashids = new (Hashids as any)("don't get salty", 4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   const packs = await db
@@ -14,6 +18,8 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
     throw new Error("Mismatched packs")
   }
 
+  const code = hashids.encode(await db.collection("games").count({}))
+
   const cards = await loadCards(packIds, db)
 
   const boardDocs = await db
@@ -24,6 +30,7 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   const layout = boardLayout(boardDocs)
 
   const gameDoc: GameDoc = {
+    code,
     packIds,
     boardLayout: layout.map(row => row.map(board => board._id)),
     boardObjects: [], // TODO board objects,
@@ -32,9 +39,9 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
     started: false
   }
 
-  const insertResult = await db.collection("games").insertOne(gameDoc)
+  await db.collection("games").insertOne(gameDoc)
 
-  return loadGameState(insertResult.insertedId, db)
+  return loadGameState(code, db)
 }
 
 function boardLayout(boardDocs: BoardDoc[]) {

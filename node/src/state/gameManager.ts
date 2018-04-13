@@ -10,7 +10,7 @@ import saveGameState from "../db/saveGameState"
 
 export default class GameManager {
   private readonly db: Db
-  private readonly games: { [id: string]: Game }
+  private readonly games: { [code: string]: Game }
 
   constructor(db: Db) {
     this.db = db
@@ -23,21 +23,21 @@ export default class GameManager {
     return this.upsert(game)
   }
 
-  public async get(gameId: string) {
-    if (this.games[gameId]) {
-      return this.games[gameId]
-    } else if (gameId) {
-      const game = await loadGameState(ObjectID.createFromHexString(gameId), this.db)
+  public async get(code: string) {
+    if (this.games[code]) {
+      return this.games[code]
+    } else if (code) {
+      const game = await loadGameState(code, this.db)
 
       if (game) {
-        this.games[gameId] = game
+        this.games[code] = game
         return game
       }
     }
   }
 
-  public async addPlayer(gameId: string) {
-    const game = await this.get(gameId)
+  public async addPlayer(code: string) {
+    const game = await this.get(code)
 
     if (game) {
       const character = await findAvailableCharacter(game, this.db)
@@ -50,8 +50,8 @@ export default class GameManager {
     }
   }
 
-  public async start(gameId: string) {
-    const game = await this.get(gameId)
+  public async start(code: string) {
+    const game = await this.get(code)
 
     if (game) {
       const newState = startGame(game)
@@ -62,8 +62,8 @@ export default class GameManager {
     }
   }
 
-  public async submitCards(gameId: string, playerId: string, indexes: number[]) {
-    const game = await this.get(gameId)
+  public async submitCards(code: string, playerId: string, indexes: number[]) {
+    const game = await this.get(code)
 
     if (game) {
       const result = submitCards(game, playerId, indexes)
@@ -76,7 +76,7 @@ export default class GameManager {
   }
 
   private async upsert(game: Game) {
-    this.games[game.id] = game
+    this.games[game.code] = game
     await saveGameState(game, this.db)
 
     return game

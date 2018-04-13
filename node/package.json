@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.3",
+    "hashids": "^1.1.4",
     "lodash": "^4.17.5",
     "mongodb": "~2.2.31",
     "socket.io": "^2.0.4",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
+    "@types/hashids": "^1.0.30",
     "@types/lodash": "^4.14.105",
     "@types/mongodb": "^3.0.8",
     "@types/node": "^9.4.7",

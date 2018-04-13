@@ -25,8 +25,8 @@ export default function Home({
         }),
       div(".home-buttons", [
         img(".logo", { alt: "All-Seeing Wizards", src: logoImage }),
-        button({ "data-action": "createGame" }, "Create Game"),
-        button({ "data-action": "joinGame" }, "Join Game")
+        button({ attrs: { "data-action": "createGame" } }, "Create Game"),
+        button({ attrs: { "data-action": "joinGame" } }, "Join Game")
       ])
     ])
   }

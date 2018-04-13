@@ -7,7 +7,8 @@ import io = require("socket.io-client")
 import xs, { Stream } from "xstream"
 
 import applyStateChange from "./actions/applyStateChange"
-import sendRequests from "./actions/sendRequests"
+import fromHttpResponses from "./actions/fromHttpResponses"
+import sendHttpRequests from "./actions/sendHttpRequests"
 import sendSocketEvents from "./actions/sendSocketEvents"
 import { Action } from "./actions/types"
 import GameHost from "./pages/gameHost"
@@ -32,7 +33,14 @@ function main({
   const gamePlayerSinks = GamePlayer({ DOM, viewState$ })
   const homeSinks = Home({ DOM, viewState$ })
 
-  actionProxy$.imitate(xs.merge(gameHostSinks.action$, gamePlayerSinks.action$, homeSinks.action$))
+  actionProxy$.imitate(
+    xs.merge(
+      fromHttpResponses(HTTP),
+      gameHostSinks.action$,
+      gamePlayerSinks.action$,
+      homeSinks.action$
+    )
+  )
 
   const page$ = viewState$.map(viewState => {
     if (viewState.connectedAs.type === "host") {
@@ -46,7 +54,7 @@ function main({
 
   return {
     DOM: page$.map(page => page.DOM).flatten(),
-    HTTP: sendRequests(actionProxy$),
+    HTTP: sendHttpRequests(actionProxy$),
     socketIO: sendSocketEvents(actionProxy$)
   }
 }

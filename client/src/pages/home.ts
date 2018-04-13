@@ -1,4 +1,5 @@
 import "./home.css"
+import logoImage from "./logo.svg"
 
 import { button, div, DOMSource, img, VNode } from "@cycle/dom"
 import xs, { Stream } from "xstream"
@@ -23,7 +24,7 @@ export default function Home({
           exception: this.error.exception
         }),
       div(".home-buttons", [
-        img(".logo", { alt: "All-Seeing Wizards", src: "logo.svg" }),
+        img(".logo", { alt: "All-Seeing Wizards", src: logoImage }),
         button({ "data-action": "createGame" }, "Create Game"),
         button({ "data-action": "joinGame" }, "Join Game")
       ])

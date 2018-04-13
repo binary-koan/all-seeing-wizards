@@ -16,8 +16,8 @@ import { Point } from "../../../common/src/state/point"
 import loadCards from "./loaders/cards"
 import { BOARD_SIZE, BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
-export default async function loadGameState(gameId: ObjectID, db: Db): Promise<Game> {
-  const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, gameId)
+export default async function loadGameState(code: string, db: Db): Promise<Game> {
+  const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, code)
 
   if (!gameDoc) {
     return
@@ -30,6 +30,7 @@ export default async function loadGameState(gameId: ObjectID, db: Db): Promise<G
 
   return new Game({
     id: gameDoc._id.toHexString(),
+    code: gameDoc.code,
     started: gameDoc.started,
     players,
     deck,
@@ -165,8 +166,8 @@ function positionOnBoard(index: number, boardX: number, boardY: number) {
   })
 }
 
-async function loadFromDb(db: Db, gameId: ObjectID) {
-  const gameDoc = await db.collection("games").findOne<GameDoc>({ _id: gameId })
+async function loadFromDb(db: Db, code: string) {
+  const gameDoc = await db.collection("games").findOne<GameDoc>({ code })
 
   if (!gameDoc) {
     return {}
@@ -186,7 +187,7 @@ async function loadFromDb(db: Db, gameId: ObjectID) {
       .toArray(),
     playerDocs: await db
       .collection("players")
-      .find<PlayerDoc>({ gameId })
+      .find<PlayerDoc>({ gameId: gameDoc._id })
       .toArray()
   }
 }

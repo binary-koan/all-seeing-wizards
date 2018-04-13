@@ -13,6 +13,7 @@ export interface GameDiff {
 
 export interface GameDoc extends GameDiff {
   _id?: ObjectID
+  code: string
   started: boolean
   packIds: ObjectID[]
   boardLayout: ObjectID[][]

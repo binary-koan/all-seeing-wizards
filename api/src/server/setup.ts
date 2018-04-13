@@ -1,12 +1,15 @@
 import * as express from "express"
+import * as morgan from "morgan"
 import { serializeGame } from "../../../common/src/state/serialization/game"
 import GameManager from "../state/gameManager"
 
 export default function setup(manager: GameManager) {
   const app = express()
 
+  app.use(morgan("tiny"))
+
   app.post("/games", async (req, res) => {
-    const packIds = JSON.parse(req.params.packIds) || []
+    const packIds = JSON.parse(req.query.packIds) || []
     const game = await manager.create(packIds)
 
     if (game) {

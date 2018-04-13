@@ -1,3 +1,5 @@
+import "./connectionState.css"
+
 import { span } from "@cycle/dom"
 import { Stream } from "xstream"
 import ViewState from "../state/viewState"

@@ -1,3 +1,5 @@
+import "./main.css"
+
 import { DOMSource, h1, makeDOMDriver } from "@cycle/dom"
 import { HTTPSource, makeHTTPDriver } from "@cycle/http"
 import { run } from "@cycle/run"

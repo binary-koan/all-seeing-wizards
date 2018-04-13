@@ -1,3 +1,5 @@
+import "./cardView.css"
+
 import { button, div } from "@cycle/dom"
 import { Card } from "../../../common/src/state/card"
 import cardIcon from "./cardIcon"

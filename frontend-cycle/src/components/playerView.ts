@@ -1,3 +1,5 @@
+import "./playerView.css"
+
 import { div, DOMSource, h3, img } from "@cycle/dom"
 import { Stream } from "xstream"
 import { Player } from "../../../common/src/state/player"

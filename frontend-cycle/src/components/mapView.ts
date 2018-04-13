@@ -1,3 +1,5 @@
+import "./mapView.css"
+
 import { div } from "@cycle/dom"
 import { Game } from "../../../common/src/state/game"
 

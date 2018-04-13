@@ -1,3 +1,5 @@
+import "./fatalError.css"
+
 import { div, h1, p, pre } from "@cycle/dom"
 import icon from "./icon"
 

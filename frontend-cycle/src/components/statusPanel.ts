@@ -1,3 +1,5 @@
+import "./statusPanel.css"
+
 import { div, h2, p, VNode } from "@cycle/dom"
 
 export default function statusPanel({

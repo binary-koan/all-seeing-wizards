@@ -1,0 +1,13 @@
+.home-buttons {
+  margin: 0 auto;
+}
+
+.home-buttons button {
+  display: block;
+  width: 10rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-buttons .logo {
+  width: 10rem;
+}

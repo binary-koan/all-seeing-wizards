@@ -1,0 +1,27 @@
+.card-icon.is-move {
+  color: var(--dark-color);
+}
+
+.card-icon.is-attack {
+  color: var(--red-dark);
+}
+
+.card-icon.is-prevent-actions {
+  color: var(--teal-dark);
+}
+
+.card-icon.is-shield {
+  color: var(--blue-dark);
+}
+
+.card-icon.is-mirror-shield {
+  color: var(--yellow-dark);
+}
+
+.card-icon.is-heal {
+  color: var(--green-dark);
+}
+
+.card-icon.is-increase-damage {
+  color: var(--orange-dark);
+}

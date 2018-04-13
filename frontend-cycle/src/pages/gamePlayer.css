@@ -1,0 +1,40 @@
+.game-player {
+  display: flex;
+  flex-direction: column;
+  width: 35rem;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0 auto;
+}
+
+.game-player-info {
+  background-color: var(--light-color);
+  padding: 0.25rem;
+}
+
+.game-player .placed-cards {
+  margin-top: -1.5rem;
+}
+
+.game-player-hand {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  margin-top: 0.5rem;
+}
+
+.game-player-submit {
+  padding: 1.5rem 0;
+  background-color: var(--dark-color-strong);
+  font-size: 1.25rem;
+  color: var(--light-color);
+}
+
+.game-player-submit:hover,
+.game-player-submit:active {
+  color: var(--light-color);
+}
+
+.game-player-submit:not(:disabled):hover,
+.game-player-submit:not(:disabled):active {
+  background-color: var(--dark-color);
+}

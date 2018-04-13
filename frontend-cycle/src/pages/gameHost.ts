@@ -1,3 +1,5 @@
+import "./gameHost.css"
+
 import { a, aside, button, div, DOMSource, VNode } from "@cycle/dom"
 import { List } from "immutable"
 import xs, { Stream } from "xstream"

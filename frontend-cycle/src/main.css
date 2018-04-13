@@ -1,0 +1,86 @@
+:root {
+  --red: #E26B73;
+  --red-dark: #C9525A;
+  --green: #6AC38A;
+  --green-dark: #51AA71;
+  --yellow: #E6C176;
+  --yellow-dark: #CDA85D;
+  --blue: #5E9CCF;
+  --blue-dark: #4583B6;
+  --orange: #DB7B42;
+  --orange-dark: #C64E06;
+  --teal: #56BAC7;
+  --teal-dark: #389DAA;
+
+  --danger-color: var(--red-dark);
+  --dark-color: #525A67;
+  --dark-color-strong: #2D333D;
+  --light-color: #EBEBFF;
+  --light-color-strong: #D2D2E6;
+
+  --map-tiles: 10;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Nunito, sans-serif;
+  font-size: 16px;
+  color: var(--dark-color-strong);
+}
+
+main {
+  display: flex;
+}
+
+@media screen and (orientation: landscape) {
+  :root {
+    --map-size: 100vh;
+  }
+
+  main {
+    height: var(--map-size);
+    width: calc(16 / 9 * var(--map-size));
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+}
+
+p {
+  margin: 0 0 0.5rem 0;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: transparent;
+  border: none;
+  font: inherit;
+  line-height: 1;
+  color: var(--dark-color);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+button:hover,
+button:active {
+  color: var(--dark-color-strong);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+pre {
+  background-color: var(--light-color);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  font-family: Consolas, monospace;
+}
+
+/* TODO portrait */

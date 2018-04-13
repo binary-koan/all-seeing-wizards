@@ -1,3 +1,5 @@
+import "./home.css"
+
 import { button, div, DOMSource, img, VNode } from "@cycle/dom"
 import xs, { Stream } from "xstream"
 

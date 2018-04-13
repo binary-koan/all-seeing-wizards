@@ -1,3 +1,5 @@
+import "./cardIcon.css"
+
 import kebabCase = require("lodash/kebabCase")
 
 import { Card } from "../../../common/src/state/card"

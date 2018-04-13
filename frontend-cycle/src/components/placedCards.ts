@@ -1,3 +1,5 @@
+import "./placedCards.css"
+
 import { div, DOMSource, VNode } from "@cycle/dom"
 import times = require("lodash/times")
 

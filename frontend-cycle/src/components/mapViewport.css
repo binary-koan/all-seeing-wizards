@@ -1,0 +1,25 @@
+.map-viewport {
+  --map-size: 80vh;
+
+  position: relative;
+  overflow: hidden;
+  background-color: var(--dark-color);
+  flex: auto;
+}
+
+.map-viewport:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1rem;
+  bottom: 0;
+  right: -1rem;
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.75);
+}
+
+.map-viewport > * {
+  position: relative;
+  top: calc(var(--map-size) / var(--map-tiles) * (var(--center-y) * -1 - 0.5) + 50%);
+  left: calc(var(--map-size) / var(--map-tiles) * (var(--center-x) * -1 - 0.5) + 50%);
+  transition: all 0.2s;
+}

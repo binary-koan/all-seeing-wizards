@@ -1,3 +1,5 @@
+import "./gamePlayer.css"
+
 import { button, div, DOMSource, VNode } from "@cycle/dom"
 import xs, { Stream } from "xstream"
 import { Action } from "../actions/types"

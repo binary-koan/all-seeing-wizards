@@ -1,3 +1,5 @@
+import "./mapViewport.css"
+
 import { div, VNode } from "@cycle/dom"
 
 export default function mapViewport({

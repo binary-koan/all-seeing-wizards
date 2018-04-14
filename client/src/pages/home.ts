@@ -7,6 +7,7 @@ import xs, { Stream } from "xstream"
 import { Action, createGame, joinGame } from "../actions/types"
 import fatalError from "../components/fatalError"
 import ViewState from "../state/viewState"
+import { logStream } from "../util/debug"
 
 export default function Home({
   DOM,

@@ -1,6 +1,6 @@
+import { List } from "immutable"
 import { Game } from "../../../common/src/state/game"
 import { RecordFactory } from "../../../common/src/util/immutableExtras"
-import { List } from "immutable"
 
 type Connection =
   | { type: "none" }

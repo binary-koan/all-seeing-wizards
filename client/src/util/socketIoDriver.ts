@@ -3,7 +3,7 @@ import { adapt } from "@cycle/run/lib/adapt"
 import xs, { Stream } from "xstream"
 
 export interface SocketIOSource {
-  get: (eventName: string) => any
+  get: <T>(eventName: string) => Stream<T>
   dispose: () => any
 }
 
@@ -11,7 +11,10 @@ export function makeSocketIODriver(socket: SocketIOClient.Socket) {
   function get(eventName: string) {
     const socketStream$ = xs.create({
       start(listener) {
-        this.eventListener = (arg: any) => listener.next(arg)
+        this.eventListener = (arg: any) => {
+          console.log(`received ${eventName}`, arg)
+          listener.next(arg)
+        }
 
         socket.on(eventName, this.eventListener)
       },
@@ -24,6 +27,7 @@ export function makeSocketIODriver(socket: SocketIOClient.Socket) {
   }
 
   function publish(messageType: string, message: any) {
+    console.log(`publishing ${messageType}`, message)
     socket.emit(messageType, message)
   }
 

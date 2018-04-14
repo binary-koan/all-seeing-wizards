@@ -1,4 +1,15 @@
-export const SOCKET_READY = "ready"
+export const GAME_CREATED = "gameCreated"
+
+export interface GameCreatedData {
+  game: any
+}
+
+export const GAME_JOINED = "gameJoined"
+
+export interface GameJoinedData {
+  game: any
+  playerId: string
+}
 
 export const UNEXPECTED_ERROR = "unexpectedError"
 

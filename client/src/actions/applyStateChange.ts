@@ -1,12 +1,28 @@
+import { List } from "immutable"
 import ViewState from "../state/viewState"
 import { Action } from "./types"
 
 export default function applyStateChange(state: ViewState, action: Action) {
+  console.log("changing state due to action", action)
+
   switch (action.type) {
+    case "fatalError":
+      return state.set("error", { message: action.message, exception: action.exception })
+
     case "createGame":
       return state
+
+    case "gameCreated":
+      return state.set("game", action.game).set("connectedAs", { type: "host" })
+
     case "joinGame":
       return state
+
+    case "gameJoined":
+      return state
+        .set("game", action.game)
+        .set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })
+
     case "unplaceCard":
       return applyUnplaceCard(state, action.index)
   }

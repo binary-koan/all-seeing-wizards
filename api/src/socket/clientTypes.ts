@@ -1,8 +1,8 @@
 export abstract class Client {
-  public readonly gameId: string
+  public readonly gameCode: string
 
-  constructor(gameId: string) {
-    this.gameId = gameId
+  constructor(gameCode: string) {
+    this.gameCode = gameCode
   }
 
   abstract get isHost(): boolean
@@ -12,8 +12,8 @@ export abstract class Client {
 export class PlayerClient extends Client {
   public readonly playerId: string
 
-  constructor(gameId: string, playerId: string) {
-    super(gameId)
+  constructor(gameCode: string, playerId: string) {
+    super(gameCode)
     this.playerId = playerId
   }
 

@@ -8,15 +8,17 @@ export default function icon({ name, scale, ...attrs }: IconAttrs) {
 
   return svg(
     {
-      width: size,
-      height: size,
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": size / 24 * 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      ...attrs
+      attrs: {
+        width: size,
+        height: size,
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": size / 24 * 2,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        ...attrs
+      }
     },
-    [svg.use({ href: svgSprite })]
+    [svg.use({ attrs: { href: svgSprite + "#" + name } })]
   )
 }

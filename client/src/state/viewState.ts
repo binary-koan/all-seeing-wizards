@@ -11,14 +11,14 @@ interface IViewState {
   game?: Game
   connectedAs: Connection
   error?: { message: string; exception?: string }
-  socketState: "notConnected" | "connecting" | "connected" | "disconnected"
+  socketState: "connecting" | "connected" | "disconnected"
 }
 
 const viewState = RecordFactory<IViewState>({
   game: undefined,
   connectedAs: { type: "none" },
   error: undefined,
-  socketState: "notConnected"
+  socketState: "connecting"
 })
 
 export default class ViewState extends viewState implements IViewState {

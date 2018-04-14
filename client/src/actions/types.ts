@@ -6,6 +6,14 @@ export interface FatalErrorAction {
   exception?: string
 }
 
+export interface SocketConnectedAction {
+  type: "socketConnected"
+}
+
+export interface SocketDisconnectedAction {
+  type: "socketDisconnected"
+}
+
 export interface CreateGameAction {
   type: "createGame"
 }
@@ -32,6 +40,8 @@ export interface UnplaceCardAction {
 }
 
 export type Action =
+  | SocketConnectedAction
+  | SocketDisconnectedAction
   | FatalErrorAction
   | CreateGameAction
   | JoinGameAction
@@ -41,6 +51,14 @@ export type Action =
 
 export function fatalError(message: string, exception?: string): FatalErrorAction {
   return { type: "fatalError", message, exception }
+}
+
+export function socketConnected(): SocketConnectedAction {
+  return { type: "socketConnected" }
+}
+
+export function socketDisconnected(): SocketDisconnectedAction {
+  return { type: "socketDisconnected" }
 }
 
 export function createGame(): CreateGameAction {

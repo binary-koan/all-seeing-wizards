@@ -19,6 +19,7 @@ export function serializeGame(game: Game): any {
 export function deserializeGame(data: any) {
   return new Game({
     id: data.id,
+    code: data.code,
     started: data.started,
     players: (Map(data.players) as Map<string, any>)
       .map(

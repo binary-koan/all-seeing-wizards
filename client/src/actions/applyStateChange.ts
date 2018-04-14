@@ -9,6 +9,12 @@ export default function applyStateChange(state: ViewState, action: Action) {
     case "fatalError":
       return state.set("error", { message: action.message, exception: action.exception })
 
+    case "socketConnected":
+      return state.set("socketState", "connected")
+
+    case "socketDisconnected":
+      return state.set("socketState", "disconnected")
+
     case "createGame":
       return state
 

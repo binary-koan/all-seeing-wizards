@@ -125,14 +125,14 @@ function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds:
 }
 
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
-  const tiles = List() as List<BoardTile>
+  let tiles = List() as List<BoardTile>
 
   gameDoc.boardLayout.forEach((ids, boardX) => {
     ids.forEach((id, boardY) => {
       const board = find(boardDocs, doc => doc._id.equals(id))
 
       if (board) {
-        addTiles(tiles, board, boardX, boardY)
+        tiles = tiles.concat(addTiles(board, boardX, boardY)).toList()
       }
     })
   })
@@ -152,8 +152,8 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
   return new Board({ tiles, objects })
 }
 
-function addTiles(tiles: List<BoardTile>, board: BoardDoc, boardX: number, boardY: number) {
-  const tilesToAdd = board.tiles.map((type, index) => {
+function addTiles(board: BoardDoc, boardX: number, boardY: number) {
+  return board.tiles.map((type, index) => {
     const position = positionOnBoard(index, boardX, boardY)
     return new BoardTile({ position, type })
   })

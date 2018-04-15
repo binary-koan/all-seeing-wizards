@@ -4,7 +4,7 @@ import kebabCase = require("lodash/kebabCase")
 import * as Snabbdom from "snabbdom-pragma"
 
 import { Card } from "../../../common/src/state/card"
-import data from "../../../packs/base/viewConfig.json"
+import data from "../../../packs/base/viewConfig"
 import Icon from "./icon"
 
 const ICONS = data.cardIcons

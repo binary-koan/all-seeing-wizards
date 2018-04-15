@@ -4,7 +4,7 @@ import { DOMSource } from "@cycle/dom"
 import * as Snabbdom from "snabbdom-pragma"
 import { Stream } from "xstream"
 import { Player } from "../../../common/src/state/player"
-import data from "../../../packs/base/viewConfig.json"
+import data from "../../../packs/base/viewConfig"
 import Icon from "./icon"
 import PlayerHp from "./playerHp"
 

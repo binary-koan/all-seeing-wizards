@@ -58,7 +58,7 @@ export default function GameHost({
 
   function playerViews({ game }: ViewState) {
     if (game && game.players.size > 0) {
-      return game.players.map(player => <PlayerView player={player} />)
+      return game.players.map(player => <PlayerView player={player} />).toArray()
     } else {
       return ""
     }

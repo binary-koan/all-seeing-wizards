@@ -3,7 +3,7 @@ import "./mapView.css"
 import * as Snabbdom from "snabbdom-pragma"
 import { Game } from "../../../common/src/state/game"
 
-import data from "../../../packs/base/viewConfig.json"
+import data from "../../../packs/base/viewConfig"
 import rotationFrom from "./mapView/rotation"
 
 export default function MapView({ game }: { game: Game }) {
@@ -26,26 +26,28 @@ export default function MapView({ game }: { game: Game }) {
           </div>
         ))
         .toArray()}
-      {game.players.map(player => (
-        <div
-          className="map-player"
-          class={{ "is-knocked-out": player.hp <= 0 }}
-          style={{
-            "--x": player.position.x.toString(),
-            "--y": player.position.y.toString(),
-            "--image-url": `url(${data.characters[player.character.name].image})`,
-            "--rotation": rotationFrom(player.position)
-          }}
-        >
-          <div className="map-player-display" />
-          <div className="map-player-damage-indicator" />
-          <div className="map-player-healing-indicator" />
-          <div className="map-player-increase-damage-indicator" />
-          <div className="map-player-shield-indicator" />
-          <div className="map-player-mirror-shield-indicator" />
-          <div className="map-player-prevent-actions-indicator" />
-        </div>
-      ))}
+      {game.players
+        .map(player => (
+          <div
+            className="map-player"
+            class={{ "is-knocked-out": player.hp <= 0 }}
+            style={{
+              "--x": player.position.x.toString(),
+              "--y": player.position.y.toString(),
+              "--image-url": `url(${data.characters[player.character.name].image})`,
+              "--rotation": rotationFrom(player.position)
+            }}
+          >
+            <div className="map-player-display" />
+            <div className="map-player-damage-indicator" />
+            <div className="map-player-healing-indicator" />
+            <div className="map-player-increase-damage-indicator" />
+            <div className="map-player-shield-indicator" />
+            <div className="map-player-mirror-shield-indicator" />
+            <div className="map-player-prevent-actions-indicator" />
+          </div>
+        ))
+        .toArray()}
       )
     </div>
   )

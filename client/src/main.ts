@@ -17,6 +17,7 @@ import Home from "./pages/home"
 import ViewState from "./state/viewState"
 import { logStream } from "./util/debug"
 import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
+import fromArrayAsync from "./util/fromArrayAsync"
 
 function main({
   DOM,
@@ -42,7 +43,8 @@ function main({
 
   actionProxy$.imitate(
     xs.merge(
-      xs.fromArray(initialActions()),
+      // https://github.com/cyclejs/cyclejs/issues/512
+      fromArrayAsync(initialActions()),
       fromSocketEvents(socketIO),
       gameHostSinks.action$,
       gamePlayerSinks.action$,

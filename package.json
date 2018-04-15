@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "postinstall": "cd node && npm install"
+    "postinstall": "cd api && npm install && cd ../client && npm install"
   },
   "dependencies": {
     "immutable": "^3.8.2",

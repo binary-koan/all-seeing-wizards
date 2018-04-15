@@ -36,7 +36,13 @@ export default function setup(server: Server, manager: GameManager) {
     socket.on(
       CREATE_GAME,
       withoutGameClient(socket, async (data: CreateGameData) => {
-        const game = await manager.create(data.packIds)
+        const game = await manager.create(
+          data.packIds ||
+            (await manager.db
+              .collection("packs")
+              .find({})
+              .toArray()).map(doc => doc._id.toHexString())
+        )
 
         socket.request.gameClient = new HostClient(game.code)
         socket.join(gameRoomId(socket.request.gameClient))

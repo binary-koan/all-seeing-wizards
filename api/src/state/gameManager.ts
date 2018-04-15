@@ -9,7 +9,7 @@ import loadGameState from "../db/loadGameState"
 import saveGameState from "../db/saveGameState"
 
 export default class GameManager {
-  private readonly db: Db
+  public readonly db: Db
   private readonly games: { [code: string]: Game }
 
   constructor(db: Db) {

@@ -20,7 +20,7 @@ export default function actionToSocketEvents(
     case CREATE_GAME:
       return {
         messageType: CREATE_GAME,
-        message: { packIds: ["5acf3eff07130d03dab5dcd2"] }
+        message: { packIds: null }
       }
     case REHOST_GAME:
       return { messageType: REHOST_GAME, message: { gameCode: action.code } }

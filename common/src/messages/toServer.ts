@@ -4,10 +4,23 @@ export interface CreateGameData {
   packIds: string[]
 }
 
+export const REHOST_GAME = "rehostGame"
+
+export interface RehostGameData {
+  gameCode: string
+}
+
 export const JOIN_GAME = "joinGame"
 
 export interface JoinGameData {
   gameCode: string
+}
+
+export const REJOIN_GAME = "rejoinGame"
+
+export interface RejoinGameData {
+  gameCode: string
+  playerId: string
 }
 
 export const START_GAME = "startGame"

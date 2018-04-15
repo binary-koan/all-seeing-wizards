@@ -1,23 +1,40 @@
 import "./main.css"
 
 import { DOMSource, h1, makeDOMDriver } from "@cycle/dom"
+import { makeHistoryDriver } from "@cycle/history"
 import { run } from "@cycle/run"
 import io = require("socket.io-client")
 import xs, { Stream } from "xstream"
 
+import actionToSocketEvents from "./actions/actionToSocketEvents"
 import applyStateChange from "./actions/applyStateChange"
 import fromSocketEvents from "./actions/fromSocketEvents"
-import sendSocketEvents from "./actions/sendSocketEvents"
+import initialActions from "./actions/initialActions"
 import { Action } from "./actions/types"
 import GameHost from "./pages/gameHost"
 import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
 import ViewState from "./state/viewState"
+import { logStream } from "./util/debug"
 import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 
-function main({ DOM, socketIO }: { DOM: DOMSource; socketIO: SocketIOSource }) {
+function main({
+  DOM,
+  socketIO,
+  history
+}: {
+  DOM: DOMSource
+  socketIO: SocketIOSource
+  history: any
+}) {
   const actionProxy$: Stream<Action> = xs.create()
-  const viewState$: Stream<ViewState> = actionProxy$.fold(applyStateChange, new ViewState())
+
+  const socketEvent$ = logStream("socket event for action", actionProxy$).map(actionToSocketEvents)
+
+  const viewState$: Stream<ViewState> = logStream("state change for action", actionProxy$).fold(
+    applyStateChange,
+    new ViewState()
+  )
 
   const gameHostSinks = GameHost({ DOM, viewState$ })
   const gamePlayerSinks = GamePlayer({ DOM, viewState$ })
@@ -25,6 +42,7 @@ function main({ DOM, socketIO }: { DOM: DOMSource; socketIO: SocketIOSource }) {
 
   actionProxy$.imitate(
     xs.merge(
+      xs.fromArray(initialActions()),
       fromSocketEvents(socketIO),
       gameHostSinks.action$,
       gamePlayerSinks.action$,
@@ -44,7 +62,8 @@ function main({ DOM, socketIO }: { DOM: DOMSource; socketIO: SocketIOSource }) {
 
   return {
     DOM: page$.map(page => page.DOM).flatten(),
-    socketIO: sendSocketEvents(actionProxy$)
+    socketIO: socketEvent$,
+    history: page$.map(page => page.path$).flatten()
   }
 }
 
@@ -52,5 +71,6 @@ const socket = io("http://localhost:3000")
 
 run(main, {
   DOM: makeDOMDriver("#app"),
-  socketIO: makeSocketIODriver(socket)
+  socketIO: makeSocketIODriver(socket),
+  history: makeHistoryDriver()
 })

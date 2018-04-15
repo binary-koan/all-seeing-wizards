@@ -13,6 +13,7 @@ import MapView from "../components/mapView"
 import PlayerView from "../components/playerView"
 import StatusPanel from "../components/statusPanel"
 import ViewState from "../state/viewState"
+import { gamePath, rootPath } from "../util/paths"
 
 export default function GameHost({
   DOM,
@@ -20,7 +21,7 @@ export default function GameHost({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action> } {
+}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
   function errorView({ error }: ViewState) {
     if (error) {
       return (
@@ -86,6 +87,9 @@ export default function GameHost({
 
   return {
     DOM: viewState$.map(view),
-    action$: xs.create()
+    action$: xs.create(),
+    path$: viewState$.map(
+      viewState => (viewState.game ? gamePath(viewState.game.code) : rootPath())
+    )
   }
 }

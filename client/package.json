@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@cycle/dom": "^20.2.0",
+    "@cycle/history": "^6.10.0",
     "@cycle/http": "^14.9.0",
     "@cycle/run": "^4.1.0",
     "@types/socket.io-client": "^1.4.32",

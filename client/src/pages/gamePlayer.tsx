@@ -13,6 +13,7 @@ import MapViewport from "../components/mapViewport"
 import PlacedCards from "../components/placedCards"
 import PlayerView from "../components/playerView"
 import ViewState from "../state/viewState"
+import { playerPath, rootPath } from "../util/paths"
 
 export default function GamePlayer({
   DOM,
@@ -20,7 +21,7 @@ export default function GamePlayer({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action> } {
+}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
   const placedCardsComponent = PlacedCards({
     DOM,
     player$: viewState$.map(viewState => viewState.player)
@@ -104,6 +105,10 @@ export default function GamePlayer({
     DOM: xs
       .combine(viewState$, placedCardsComponent.DOM)
       .map(([viewState, placedCards]) => view(viewState, placedCards)),
-    action$: placedCardsComponent.action$
+    action$: placedCardsComponent.action$,
+    path$: viewState$.map(
+      viewState =>
+        viewState.game ? playerPath(viewState.game.code, viewState.playerId) : rootPath()
+    )
   }
 }

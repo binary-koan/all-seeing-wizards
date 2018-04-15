@@ -23,9 +23,20 @@ export interface GameCreatedAction {
   game: Game
 }
 
+export interface RehostGameAction {
+  type: "rehostGame"
+  code: string
+}
+
 export interface JoinGameAction {
   type: "joinGame"
   code: string
+}
+
+export interface RejoinGameAction {
+  type: "rejoinGame"
+  code: string
+  playerId: string
 }
 
 export interface GameJoinedAction {
@@ -44,7 +55,9 @@ export type Action =
   | SocketDisconnectedAction
   | FatalErrorAction
   | CreateGameAction
+  | RehostGameAction
   | JoinGameAction
+  | RejoinGameAction
   | UnplaceCardAction
   | GameCreatedAction
   | GameJoinedAction
@@ -65,12 +78,20 @@ export function createGame(): CreateGameAction {
   return { type: "createGame" }
 }
 
+export function rehostGame(code: string): RehostGameAction {
+  return { type: "rehostGame", code }
+}
+
 export function gameCreated(game: Game): GameCreatedAction {
   return { type: "gameCreated", game }
 }
 
 export function joinGame(code: string): JoinGameAction {
   return { type: "joinGame", code }
+}
+
+export function rejoinGame(code: string, playerId: string): RejoinGameAction {
+  return { type: "rejoinGame", code, playerId }
 }
 
 export function gameJoined(game: Game, playerId: string): GameJoinedAction {

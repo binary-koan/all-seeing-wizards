@@ -28,6 +28,10 @@ export default class ViewState extends viewState implements IViewState {
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "connected" | "disconnected"
 
+  constructor(config?: Partial<IViewState>) {
+    super(config)
+  }
+
   public get player() {
     return this.game.player(this.playerId)
   }

@@ -9,6 +9,7 @@ import { Action, createGame, joinGame } from "../actions/types"
 import FatalError from "../components/fatalError"
 import ViewState from "../state/viewState"
 import { logStream } from "../util/debug"
+import { rootPath } from "../util/paths"
 
 export default function Home({
   DOM,
@@ -16,7 +17,7 @@ export default function Home({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action> } {
+}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
   function view(viewState: ViewState) {
     function errorView({ error }: ViewState) {
       if (error) {
@@ -54,6 +55,7 @@ export default function Home({
 
   return {
     DOM: viewState$.map(view),
-    action$: xs.merge(createGame$, joinGame$)
+    action$: xs.merge(createGame$, joinGame$),
+    path$: viewState$.mapTo(rootPath())
   }
 }

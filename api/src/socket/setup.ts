@@ -16,6 +16,10 @@ import {
   CreateGameData,
   JOIN_GAME,
   JoinGameData,
+  REHOST_GAME,
+  RehostGameData,
+  REJOIN_GAME,
+  RejoinGameData,
   START_GAME,
   SUBMIT_CARDS,
   SubmitCardsData
@@ -34,10 +38,22 @@ export default function setup(server: Server, manager: GameManager) {
       withoutGameClient(socket, async (data: CreateGameData) => {
         const game = await manager.create(data.packIds)
 
+        socket.request.gameClient = new HostClient(game.code)
+        socket.join(gameRoomId(socket.request.gameClient))
+
         io.to(socket.id).emit(GAME_CREATED, { game: serializeGame(game) })
+      })
+    )
+
+    socket.on(
+      REHOST_GAME,
+      withoutGameClient(socket, async (data: RehostGameData) => {
+        const game = await manager.get(data.gameCode)
 
         socket.request.gameClient = new HostClient(game.code)
         socket.join(gameRoomId(socket.request.gameClient))
+
+        io.to(socket.id).emit(GAME_CREATED, { game: serializeGame(game) })
       })
     )
 
@@ -46,6 +62,20 @@ export default function setup(server: Server, manager: GameManager) {
       withoutGameClient(socket, async (data: JoinGameData) => {
         const game = await manager.get(data.gameCode)
         const player = await manager.addPlayer(data.gameCode)
+
+        socket.request.gameClient = new PlayerClient(game.code, player.id)
+        socket.join(gameRoomId(socket.request.gameClient))
+
+        io.to(socket.id).emit(GAME_JOINED, { game: serializeGame(game), playerId: player.id })
+        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED)
+      })
+    )
+
+    socket.on(
+      REJOIN_GAME,
+      withoutGameClient(socket, async (data: RejoinGameData) => {
+        const game = await manager.get(data.gameCode)
+        const player = game.player(data.playerId)
 
         socket.request.gameClient = new PlayerClient(game.code, player.id)
         socket.join(gameRoomId(socket.request.gameClient))

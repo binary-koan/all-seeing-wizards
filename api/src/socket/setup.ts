@@ -26,7 +26,6 @@ import {
 } from "../../../common/src/messages/toServer"
 import { serializeGame } from "../../../common/src/state/serialization/game"
 import GameManager from "../state/gameManager"
-import authenticator, { socketClient } from "./authenticate"
 import { Client, HostClient, PlayerClient } from "./clientTypes"
 
 export default function setup(server: Server, manager: GameManager) {

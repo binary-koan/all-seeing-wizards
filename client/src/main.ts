@@ -16,8 +16,8 @@ import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
 import ViewState from "./state/viewState"
 import { logStream } from "./util/debug"
-import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 import fromArrayAsync from "./util/fromArrayAsync"
+import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 
 function main({
   DOM,

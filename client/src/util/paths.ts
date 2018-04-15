@@ -1,5 +1,5 @@
 export function rootPath() {
-  return ""
+  return "/"
 }
 
 export function matchRootPath(path: string) {
@@ -7,7 +7,7 @@ export function matchRootPath(path: string) {
 }
 
 export function gamePath(gameCode: string) {
-  return `games/${gameCode}`
+  return `/games/${gameCode}`
 }
 
 export function matchGamePath(path: string) {
@@ -15,7 +15,7 @@ export function matchGamePath(path: string) {
 }
 
 export function playerPath(gameCode: string, playerId: string) {
-  return `games/${gameCode}/play/${playerId}`
+  return `/games/${gameCode}/play/${playerId}`
 }
 
 export function matchPlayerPath(path: string) {

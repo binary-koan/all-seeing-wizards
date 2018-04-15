@@ -38,20 +38,19 @@ function updatePlayer(player: Player, db: Db) {
   return db.collection("players").updateOne(
     { _id: ObjectID.createFromHexString(player.id) },
     {
-      $set: {
-        hp: player.hp,
-        position: player.position,
-        hand: {
-          cardIds: player.hand.cards.map(card => ObjectID.createFromHexString(card.id)).toArray(),
-          pickedIndexes: player.hand.pickedIndexes.toArray()
-        },
-        modifiers: player.modifiers
-          .map(modifier => ({
-            type: modifier.type,
-            duration: { type: modifier.duration.type, length: modifier.duration.length }
-          }))
-          .toArray()
-      } as PlayerDiff
-    }
+      hp: player.hp,
+      position: player.position,
+      hand: {
+        cardIds: player.hand.cards.map(card => ObjectID.createFromHexString(card.id)).toArray(),
+        pickedIndexes: player.hand.pickedIndexes.toArray()
+      },
+      modifiers: player.modifiers
+        .map(modifier => ({
+          type: modifier.type,
+          duration: { type: modifier.duration.type, length: modifier.duration.length }
+        }))
+        .toArray()
+    } as PlayerDiff,
+    { upsert: true }
   )
 }

@@ -50,7 +50,7 @@ export default function GamePlayer({
   }
 
   function mapViewport({ game }: ViewState, player: Player) {
-    if (game) {
+    if (game && player) {
       return (
         <MapViewport
           map={<MapView game={game} />}
@@ -88,7 +88,7 @@ export default function GamePlayer({
 
   function view(viewState: ViewState, placedCards: VNode) {
     const game = viewState.game
-    const player = game && game.player(viewState.playerId)
+    const player = viewState.player
 
     return (
       <main className="game-player">
@@ -108,7 +108,9 @@ export default function GamePlayer({
     action$: placedCardsComponent.action$,
     path$: viewState$.map(
       viewState =>
-        viewState.game ? playerPath(viewState.game.code, viewState.playerId) : rootPath()
+        (window.viewState = viewState) && viewState.game && viewState.player
+          ? playerPath(viewState.game.code, viewState.player.id)
+          : rootPath()
     )
   }
 }

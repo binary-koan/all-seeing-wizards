@@ -37,11 +37,17 @@ export default function PlacedCards({
     .map(e => unplaceCard(parseInt((e.currentTarget as Element).getAttribute("data-index"), 10)))
 
   return {
-    DOM: player$.map(player => (
-      <div className="placed-cards">
-        {times(MAX_PLAYER_HP, i => <div className="placed-card">{placedCard(player, i)}</div>)}
-      </div>
-    )),
+    DOM: player$.map(player => {
+      if (player) {
+        return (
+          <div className="placed-cards">
+            {times(MAX_PLAYER_HP, i => <div className="placed-card">{placedCard(player, i)}</div>)}
+          </div>
+        )
+      } else {
+        return <div />
+      }
+    }),
     action$
   }
 }

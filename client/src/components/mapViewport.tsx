@@ -14,7 +14,7 @@ export default function MapViewport({
 }) {
   return (
     <div
-      className=".map-viewport"
+      className="map-viewport"
       style={{ "--center-x": centerX.toString(), "--center-y": centerY.toString() }}
     >
       {map}

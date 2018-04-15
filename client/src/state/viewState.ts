@@ -23,7 +23,6 @@ const viewState = RecordFactory<IViewState>({
 
 export default class ViewState extends viewState implements IViewState {
   public readonly game?: Game
-  public readonly playerId?: string
   public readonly error?: { message: string; exception?: string }
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "connected" | "disconnected"
@@ -33,6 +32,6 @@ export default class ViewState extends viewState implements IViewState {
   }
 
   public get player() {
-    return this.game.player(this.playerId)
+    return this.game && this.connectedAs.type === "player" && this.game.player(this.connectedAs.id)
   }
 }

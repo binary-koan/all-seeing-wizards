@@ -22,7 +22,7 @@ interface IPlayer {
 
 const player = RecordFactory<IPlayer>({
   id: "",
-  character: new Character({ name: "", type: "" }),
+  character: new Character({ id: "", name: "", type: "" }),
   hp: MAX_PLAYER_HP,
   position: new DirectionalPoint({ x: 0, y: 0, facing: "north" }),
   hand: Hand.empty(),
@@ -72,5 +72,13 @@ export class Player extends player implements IPlayer {
 
   public updateHand(newHand: Hand) {
     return this.set("hand", newHand)
+  }
+
+  public connect() {
+    return this.set("connected", true)
+  }
+
+  public disconnect() {
+    return this.set("connected", false)
   }
 }

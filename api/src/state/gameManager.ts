@@ -50,6 +50,30 @@ export default class GameManager {
     }
   }
 
+  public async connectPlayer(code: string, playerId: string) {
+    const game = await this.get(code)
+
+    if (game) {
+      const newPlayer = game.player(playerId).connect()
+      const newGame = game.updatePlayer(newPlayer)
+
+      await this.upsert(newGame)
+      return newPlayer
+    }
+  }
+
+  public async disconnectPlayer(code: string, playerId: string) {
+    const game = await this.get(code)
+
+    if (game) {
+      const newPlayer = game.player(playerId).disconnect()
+      const newGame = game.updatePlayer(newPlayer)
+
+      await this.upsert(newGame)
+      return newPlayer
+    }
+  }
+
   public async start(code: string) {
     const game = await this.get(code)
 

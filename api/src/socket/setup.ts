@@ -72,7 +72,10 @@ export default function setup(server: Server, manager: GameManager) {
         socket.join(gameRoomId(socket.request.gameClient))
 
         io.to(socket.id).emit(GAME_JOINED, { game: serializeGame(game), playerId: player.id })
-        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED)
+        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED, {
+          game: serializeGame(await manager.get(game.code)),
+          playerId: player.id
+        })
       })
     )
 
@@ -80,13 +83,16 @@ export default function setup(server: Server, manager: GameManager) {
       REJOIN_GAME,
       withoutGameClient(socket, async (data: RejoinGameData) => {
         const game = await manager.get(data.gameCode)
-        const player = game.player(data.playerId)
+        const player = await manager.connectPlayer(data.gameCode, data.playerId)
 
         socket.request.gameClient = new PlayerClient(game.code, player.id)
         socket.join(gameRoomId(socket.request.gameClient))
 
-        io.to(socket.id).emit(GAME_JOINED, { game: serializeGame(game), playerId: player.id })
-        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED)
+        io.to(socket.id).emit(GAME_JOINED, {
+          game: serializeGame(await manager.get(game.code)),
+          playerId: player.id
+        })
+        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED, { playerId: player.id })
       })
     )
 
@@ -128,8 +134,13 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
       if (socket.request.gameClient && socket.request.gameClient.isPlayer) {
+        await manager.disconnectPlayer(
+          socket.request.gameClient.gameCode,
+          socket.request.gameClient.playerId
+        )
+
         toGame(socket.request.gameClient, io).emit(PLAYER_DISCONNECTED, {
           id: socket.request.gameClient.playerId
         })

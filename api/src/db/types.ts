@@ -7,6 +7,7 @@ import { Duration } from "../../../common/src/state/duration"
 export const BOARD_SIZE = 5
 
 export interface GameDiff {
+  started: boolean
   playerIds: ObjectID[]
   usedCardIds: ObjectID[]
 }
@@ -14,13 +15,15 @@ export interface GameDiff {
 export interface GameDoc extends GameDiff {
   _id?: ObjectID
   code: string
-  started: boolean
   packIds: ObjectID[]
   boardLayout: ObjectID[][]
   boardObjects: BoardObjectDoc[]
+  playerIds: ObjectID[]
 }
 
-export interface PlayerDiff {
+export interface PlayerDoc {
+  _id?: ObjectID
+  characterId: ObjectID
   hp: number
   position: DirectionalPoint
   hand: {
@@ -31,14 +34,7 @@ export interface PlayerDiff {
     type: any
     duration: { type: "action" | "turn"; length: number }
   }>
-  connectedAt?: Date
-  disconnectedAt?: Date
-}
-
-export interface PlayerDoc extends PlayerDiff {
-  _id?: ObjectID
-  gameId: ObjectID
-  characterId: ObjectID
+  connected: boolean
 }
 
 export interface CardDoc {

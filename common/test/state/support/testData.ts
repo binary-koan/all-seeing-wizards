@@ -128,7 +128,7 @@ export function createTestPlayer({
 } = {}) {
   return new Player({
     id: id || "",
-    character: character || new Character({ name: "", type: "" }),
+    character: character || new Character({ id: "", name: "", type: "" }),
     hp: hp != null ? hp : 3,
     position: position || new DirectionalPoint({ x: 0, y: 0, facing: "north" }),
     hand: hand || Hand.empty(),

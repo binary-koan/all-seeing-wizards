@@ -26,7 +26,7 @@ export default function joinGame(game: Game, id: string, as: Character): JoinRes
     hp: MAX_PLAYER_HP,
     position: startingPosition,
     hand: Hand.empty(),
-    connected: false,
+    connected: true,
     modifiers: List()
   })
 

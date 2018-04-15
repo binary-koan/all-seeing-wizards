@@ -24,6 +24,8 @@ export default async function findAvailableCharacter(game: Game, db: Db) {
   )
 
   if (possibleCharacters.length > 0) {
-    return new Character(possibleCharacters[Math.round(Math.random() * possibleCharacters.length)])
+    const doc = possibleCharacters[Math.round(Math.random() * possibleCharacters.length)]
+
+    return new Character({ id: doc._id.toHexString(), name: doc.name, type: doc.type })
   }
 }

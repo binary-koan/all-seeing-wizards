@@ -65,11 +65,15 @@ function addPlayer(
   if (characterDoc && every(cardsInHand)) {
     const id = doc._id.toHexString()
 
-    players.set(
+    players = players.set(
       id,
       new Player({
         id,
-        character: new Character(characterDoc),
+        character: new Character({
+          id: characterDoc._id.toHexString(),
+          name: characterDoc.name,
+          type: characterDoc.type
+        }),
         hp: doc.hp,
         position: doc.position,
         hand: new Hand({
@@ -85,23 +89,12 @@ function addPlayer(
               } as Modifier)
           )
           .toList(),
-        connected: isConnected(doc.connectedAt, doc.disconnectedAt)
+        connected: doc.connected
       })
     )
   }
 
   return players
-}
-
-function isConnected(connectedAt?: Date, disconnectedAt?: Date) {
-  if (!connectedAt) {
-    return false
-  }
-  if (!disconnectedAt) {
-    return true
-  }
-
-  return connectedAt > disconnectedAt
 }
 
 function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds: ObjectID[]) {
@@ -187,7 +180,7 @@ async function loadFromDb(db: Db, code: string) {
       .toArray(),
     playerDocs: await db
       .collection("players")
-      .find<PlayerDoc>({ gameId: gameDoc._id })
+      .find<PlayerDoc>({ _id: { $in: gameDoc.playerIds } })
       .toArray()
   }
 }

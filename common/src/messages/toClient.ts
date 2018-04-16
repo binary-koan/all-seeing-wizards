@@ -13,12 +13,32 @@ export interface GameJoinedData {
 
 export const UNEXPECTED_ERROR = "unexpectedError"
 
-export const GAME_STARTED = "gameStarted"
+export interface UnexpectedErrorData {
+  message: string
+  exception?: string
+}
 
 export const ACTIONS_PERFORMED = "actionsPerformed"
 
-export const PLAYER_UPDATED = "playerUpdated"
+export interface ActionsPerformedData {
+  game: any
+  results: any[]
+}
+
+export const GAME_UPDATED = "gameUpdated"
+
+export interface GameUpdatedData {
+  game: any
+}
 
 export const PLAYER_CONNECTED = "playerConnected"
 
+export interface PlayerConnectedData {
+  playerId: string
+}
+
 export const PLAYER_DISCONNECTED = "playerDisconnected"
+
+export interface PlayerDisconnectedData {
+  playerId: string
+}

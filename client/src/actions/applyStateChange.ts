@@ -27,8 +27,26 @@ export default function applyStateChange(state: ViewState, action: Action) {
         .set("game", action.game)
         .set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })
 
+    case "gameUpdated":
+      return state.set("game", action.game)
+
+    case "actionsPerformed":
+      return state.set("game", action.resultingGame) // TODO display actions
+
     case "unplaceCard":
       return applyUnplaceCard(state, action.index)
+
+    case "playerConnected":
+      return state.set(
+        "game",
+        state.game.updatePlayer(state.game.player(action.playerId).connect())
+      )
+
+    case "playerDisconnected":
+      return state.set(
+        "game",
+        state.game.updatePlayer(state.game.player(action.playerId).disconnect())
+      )
 
     default:
       return state

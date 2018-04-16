@@ -34,7 +34,5 @@ export default function actionToSocketEvents(
         messageType: REJOIN_GAME,
         message: { gameCode: action.code, playerId: action.playerId }
       }
-    default:
-      return { messageType: "noop", message: null }
   }
 }

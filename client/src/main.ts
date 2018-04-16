@@ -6,10 +6,10 @@ import { run } from "@cycle/run"
 import io = require("socket.io-client")
 import xs, { Stream } from "xstream"
 
-import actionToSocketEvents from "./actions/actionToSocketEvents"
+import actionToSocketEvent from "./actions/actionToSocketEvent"
 import applyStateChange from "./actions/applyStateChange"
-import fromSocketEvents from "./actions/fromSocketEvents"
 import initialActions from "./actions/initialActions"
+import socketEventsToActions from "./actions/socketEventsToActions"
 import { Action } from "./actions/types"
 import GameHost from "./pages/gameHost"
 import GamePlayer from "./pages/gamePlayer"
@@ -30,7 +30,9 @@ function main({
 }) {
   const actionProxy$: Stream<Action> = xs.create()
 
-  const socketEvent$ = logStream("socket event for action", actionProxy$).map(actionToSocketEvents)
+  const socketEvent$ = logStream("socket event for action", actionProxy$)
+    .map(actionToSocketEvent)
+    .filter(Boolean)
 
   const viewState$: Stream<ViewState> = logStream("state change for action", actionProxy$).fold(
     applyStateChange,
@@ -45,7 +47,7 @@ function main({
     xs.merge(
       // https://github.com/cyclejs/cyclejs/issues/512
       fromArrayAsync(initialActions()),
-      fromSocketEvents(socketIO),
+      socketEventsToActions(socketIO),
       gameHostSinks.action$,
       gamePlayerSinks.action$,
       homeSinks.action$

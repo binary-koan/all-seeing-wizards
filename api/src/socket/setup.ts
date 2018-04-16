@@ -3,13 +3,19 @@ import * as socketIo from "socket.io"
 
 import {
   ACTIONS_PERFORMED,
+  ActionsPerformedData,
   GAME_CREATED,
   GAME_JOINED,
-  GAME_STARTED,
+  GAME_UPDATED,
+  GameCreatedData,
+  GameJoinedData,
+  GameUpdatedData,
   PLAYER_CONNECTED,
   PLAYER_DISCONNECTED,
-  PLAYER_UPDATED,
-  UNEXPECTED_ERROR
+  PlayerConnectedData,
+  PlayerDisconnectedData,
+  UNEXPECTED_ERROR,
+  UnexpectedErrorData
 } from "../../../common/src/messages/toClient"
 import {
   CREATE_GAME,
@@ -46,7 +52,7 @@ export default function setup(server: Server, manager: GameManager) {
         socket.request.gameClient = new HostClient(game.code)
         socket.join(gameRoomId(socket.request.gameClient))
 
-        io.to(socket.id).emit(GAME_CREATED, { game: serializeGame(game) })
+        emitToSocket<GameCreatedData>(socket, GAME_CREATED, { game: serializeGame(game) })
       })
     )
 
@@ -58,7 +64,7 @@ export default function setup(server: Server, manager: GameManager) {
         socket.request.gameClient = new HostClient(game.code)
         socket.join(gameRoomId(socket.request.gameClient))
 
-        io.to(socket.id).emit(GAME_CREATED, { game: serializeGame(game) })
+        emitToSocket<GameCreatedData>(socket, GAME_CREATED, { game: serializeGame(game) })
       })
     )
 
@@ -71,10 +77,12 @@ export default function setup(server: Server, manager: GameManager) {
         socket.request.gameClient = new PlayerClient(game.code, player.id)
         socket.join(gameRoomId(socket.request.gameClient))
 
-        io.to(socket.id).emit(GAME_JOINED, { game: serializeGame(game), playerId: player.id })
-        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED, {
-          game: serializeGame(await manager.get(game.code)),
+        emitToSocket<GameJoinedData>(socket, GAME_JOINED, {
+          game: serializeGame(game),
           playerId: player.id
+        })
+        emitToGame<GameUpdatedData>(socket.request.gameClient, io, GAME_UPDATED, {
+          game: serializeGame(await manager.get(game.code))
         })
       })
     )
@@ -88,11 +96,13 @@ export default function setup(server: Server, manager: GameManager) {
         socket.request.gameClient = new PlayerClient(game.code, player.id)
         socket.join(gameRoomId(socket.request.gameClient))
 
-        io.to(socket.id).emit(GAME_JOINED, {
+        emitToSocket<GameJoinedData>(socket, GAME_JOINED, {
           game: serializeGame(await manager.get(game.code)),
           playerId: player.id
         })
-        toGame(socket.request.gameClient, io).emit(PLAYER_CONNECTED, { playerId: player.id })
+        emitToGame<PlayerConnectedData>(socket.request.gameClient, io, PLAYER_CONNECTED, {
+          playerId: player.id
+        })
       })
     )
 
@@ -102,9 +112,11 @@ export default function setup(server: Server, manager: GameManager) {
         const newState = await manager.start(client.gameCode)
 
         if (newState) {
-          toGame(client, io).emit(GAME_STARTED)
+          emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, { game: newState })
         } else {
-          toGame(client, io).emit(UNEXPECTED_ERROR, "Couldn't start game")
+          emitToGame<UnexpectedErrorData>(client, io, UNEXPECTED_ERROR, {
+            message: "Couldn't start game"
+          })
         }
       })
     )
@@ -113,7 +125,9 @@ export default function setup(server: Server, manager: GameManager) {
       SUBMIT_CARDS,
       withGameClient(socket, async (client, data: SubmitCardsData) => {
         if (!client.isPlayer) {
-          return toGame(client, io).emit(UNEXPECTED_ERROR, "Host cannot submit cards")
+          return emitToGame<UnexpectedErrorData>(client, io, UNEXPECTED_ERROR, {
+            message: "Host cannot submit cards"
+          })
         }
 
         const result = await manager.submitCards(
@@ -122,14 +136,19 @@ export default function setup(server: Server, manager: GameManager) {
           data.indexes
         )
 
-        if (result.player) {
-          toGame(client, io).emit(PLAYER_UPDATED, result.player)
+        if (result.game) {
+          emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, { game: result.game })
 
           if (result.resultsPerAction) {
-            toGame(client, io).emit(ACTIONS_PERFORMED, result.resultsPerAction)
+            emitToGame<ActionsPerformedData>(client, io, ACTIONS_PERFORMED, {
+              game: result.game,
+              results: result.resultsPerAction.toJS() // TODO serialize properly
+            })
           }
         } else {
-          toGame(client, io).emit(UNEXPECTED_ERROR, "Couldn't submit cards")
+          emitToGame<UnexpectedErrorData>(client, io, UNEXPECTED_ERROR, {
+            message: "Couldn't submit cards"
+          })
         }
       })
     )
@@ -141,8 +160,8 @@ export default function setup(server: Server, manager: GameManager) {
           socket.request.gameClient.playerId
         )
 
-        toGame(socket.request.gameClient, io).emit(PLAYER_DISCONNECTED, {
-          id: socket.request.gameClient.playerId
+        emitToGame<PlayerDisconnectedData>(socket.request.gameClient, io, PLAYER_DISCONNECTED, {
+          playerId: socket.request.gameClient.playerId
         })
       }
     })
@@ -172,8 +191,12 @@ function withoutGameClient(socket: socketIo.Socket, handler: (data: any) => any)
   }
 }
 
-function toGame(client: Client, io: socketIo.Server) {
-  return io.to(gameRoomId(client))
+function emitToSocket<T>(socket: socketIo.Socket, event: string, data: T) {
+  return socket.server.to(socket.id).emit(event, data)
+}
+
+function emitToGame<T>(client: Client, io: socketIo.Server, event: string, data: T) {
+  return io.to(gameRoomId(client)).emit(event, data)
 }
 
 function gameRoomId(client: Client) {

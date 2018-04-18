@@ -77,12 +77,14 @@ export default function setup(server: Server, manager: GameManager) {
         socket.request.gameClient = new PlayerClient(game.code, player.id)
         socket.join(gameRoomId(socket.request.gameClient))
 
+        const serializedNewState = serializeGame(await manager.get(game.code))
+
         emitToSocket<GameJoinedData>(socket, GAME_JOINED, {
-          game: serializeGame(game),
+          game: serializedNewState,
           playerId: player.id
         })
         emitToGame<GameUpdatedData>(socket.request.gameClient, io, GAME_UPDATED, {
-          game: serializeGame(await manager.get(game.code))
+          game: serializedNewState
         })
       })
     )

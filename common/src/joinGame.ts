@@ -50,6 +50,6 @@ function pickStartingPosition(game: Game) {
   }
 
   if (possiblePositions.length > 0) {
-    return possiblePositions[Math.round(Math.random() * possiblePositions.length)]
+    return possiblePositions[Math.floor(Math.random() * possiblePositions.length)]
   }
 }

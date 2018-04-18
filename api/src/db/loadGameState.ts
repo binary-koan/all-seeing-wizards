@@ -7,6 +7,7 @@ import { BoardTile } from "../../../common/src/state/boardTile"
 import { Card } from "../../../common/src/state/card"
 import { Character } from "../../../common/src/state/character"
 import { Deck } from "../../../common/src/state/deck"
+import { DirectionalPoint } from "../../../common/src/state/directionalPoint"
 import { Duration } from "../../../common/src/state/duration"
 import { Game } from "../../../common/src/state/game"
 import { Hand } from "../../../common/src/state/hand"
@@ -75,7 +76,7 @@ function addPlayer(
           type: characterDoc.type
         }),
         hp: doc.hp,
-        position: doc.position,
+        position: new DirectionalPoint(doc.position),
         hand: new Hand({
           cards: List(cardsInHand),
           pickedIndexes: List(doc.hand.pickedIndexes)

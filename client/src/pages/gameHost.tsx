@@ -5,7 +5,7 @@ import { List } from "immutable"
 import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
-import { Action } from "../actions/types"
+import { Action, startGame } from "../actions/types"
 import ConnectionState from "../components/connectionState"
 import FatalError from "../components/fatalError"
 import Icon from "../components/icon"
@@ -47,7 +47,10 @@ export default function GameHost({
           title="Waiting for players ..."
           description={`${game.players.size} joined`}
           action={
-            <button disabled={game.players.filter(player => player.connected).size < 2}>
+            <button
+              data-action="startGame"
+              disabled={game.players.filter(player => player.connected).size < 2}
+            >
               Start
             </button>
           }
@@ -85,9 +88,13 @@ export default function GameHost({
     )
   }
 
+  const startGame$ = DOM.select("button[data-action='startGame']")
+    .events("click")
+    .map(_ => startGame())
+
   return {
     DOM: viewState$.map(view),
-    action$: xs.create(),
+    action$: startGame$,
     path$: viewState$.map(
       viewState => (viewState.game ? gamePath(viewState.game.code) : rootPath())
     )

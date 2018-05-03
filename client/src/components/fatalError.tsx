@@ -15,8 +15,8 @@ export default function FatalError({
   return (
     <div className="fatal-error">
       <Icon name="alert-triangle" scale={3} />
-      <h1>title</h1>
-      <p>message</p>
+      <h1>{title}</h1>
+      <p>{message}</p>
       {exception ? <pre>exception</pre> : ""}
     </div>
   )

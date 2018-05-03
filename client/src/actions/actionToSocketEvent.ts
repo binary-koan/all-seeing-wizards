@@ -3,7 +3,8 @@ import {
   CREATE_GAME,
   JOIN_GAME,
   REHOST_GAME,
-  REJOIN_GAME
+  REJOIN_GAME,
+  START_GAME
 } from "../../../common/src/messages/toServer"
 import {
   Action,
@@ -34,5 +35,7 @@ export default function actionToSocketEvents(
         messageType: REJOIN_GAME,
         message: { gameCode: action.code, playerId: action.playerId }
       }
+    case START_GAME:
+      return { messageType: START_GAME, message: null }
   }
 }

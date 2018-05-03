@@ -73,6 +73,14 @@ export function rejoinGame(code: string, playerId: string): RejoinGameAction {
   return { type: "rejoinGame", code, playerId }
 }
 
+export interface StartGameAction {
+  type: "startGame"
+}
+
+export function startGame(): StartGameAction {
+  return { type: "startGame" }
+}
+
 export interface GameJoinedAction {
   type: "gameJoined"
   game: Game
@@ -140,6 +148,7 @@ export type Action =
   | RehostGameAction
   | JoinGameAction
   | RejoinGameAction
+  | StartGameAction
   | UnplaceCardAction
   | GameCreatedAction
   | GameJoinedAction

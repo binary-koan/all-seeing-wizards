@@ -38,8 +38,8 @@ export default function Home({
         {errorView(viewState)}
         <div className="home-buttons">
           <img className="logo" alt="All-Seeing Wizards" src={logoImage} />
-          <button data-action="createGame">Create Game</button>
-          <button data-action="joinGame">Join Game</button>
+          <button className="home-buttons-create" data-action="createGame">Create Game</button>
+          <button className="home-buttons-join" data-action="joinGame">Join Game</button>
         </div>
       </main>
     )

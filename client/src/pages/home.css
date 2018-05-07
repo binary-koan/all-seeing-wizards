@@ -4,10 +4,29 @@
 
 .home-buttons button {
   display: block;
-  width: 10rem;
+  width: 12rem;
   margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  color: var(--light-color);
+}
+
+.home-buttons-create {
+  background-color: var(--blue-dark);
+}
+
+.home-buttons-create:hover {
+  background-color: var(--blue);
+}
+
+.home-buttons-join {
+  background-color: var(--green-dark);
+}
+
+.home-buttons-join:hover {
+  background-color: var(--green);
 }
 
 .home-buttons .logo {
-  width: 10rem;
+  width: 12rem;
 }

@@ -4,6 +4,8 @@ import { DOMSource, VNode } from "@cycle/dom"
 import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
+import { List } from "immutable"
+import { Card } from "../../../common/src/state/card"
 import { Player } from "../../../common/src/state/player"
 import { Action } from "../actions/types"
 import CardView from "../components/cardView"
@@ -23,10 +25,7 @@ export default function GamePlayer({
   viewState$: Stream<ViewState>
 }): { DOM: Stream<VNode>; path$: Stream<string> } {
   // TODO doesn't need to be a complete component now
-  const placedCardsComponent = PlacedCards({
-    DOM,
-    player$: viewState$.map(viewState => viewState.player)
-  })
+  const placedCardsComponent = PlacedCards({ DOM, viewState$ })
 
   function errorView({ error }: ViewState) {
     if (error) {
@@ -64,15 +63,15 @@ export default function GamePlayer({
     }
   }
 
-  function playerCards(player: Player, placedCards: VNode) {
+  function playerCards(player: Player, placedCards: List<Card>, placedCardsView: VNode) {
     if (player && player.hp > 0) {
       return (
         <div className="game-player-info">
-          {placedCards}
+          {placedCardsView}
           <div className="game-player-hand">
             {player.hand.cards
-              .map(card => (
-                <CardView card={card} disabled={player.hand.pickedCards.includes(card)} />
+              .map((card, index) => (
+                <CardView card={card} index={index} disabled={placedCards.includes(card)} />
               ))
               .toArray()}
           </div>
@@ -98,7 +97,7 @@ export default function GamePlayer({
         {errorView(viewState)}
         {playerView(player)}
         {mapViewport(viewState, player)}
-        {playerCards(player, placedCards)}
+        {playerCards(player, viewState.placedCards, placedCards)}
         {lockInButton(player)}
       </main>
     )

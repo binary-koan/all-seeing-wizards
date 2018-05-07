@@ -1,24 +1,27 @@
 import "./placedCards.css"
 
 import { DOMSource, VNode } from "@cycle/dom"
+import { List } from "immutable"
 import times = require("lodash/times")
 import * as Snabbdom from "snabbdom-pragma"
 import Stream from "xstream"
 
+import { Card } from "../../../common/src/state/card"
 import { MAX_PLAYER_HP, Player } from "../../../common/src/state/player"
 import { Action, unplaceCard } from "../actions/types"
+import ViewState from "../state/viewState"
 import ActionButton from "./actionButton"
 import CardIcon from "./cardIcon"
 
 export default function PlacedCards({
   DOM,
-  player$
+  viewState$
 }: {
   DOM: DOMSource
-  player$: Stream<Player>
+  viewState$: Stream<ViewState>
 }): { DOM: Stream<VNode> } {
-  function placedCard(player: Player, i: number) {
-    const card = player.hand.pickedCard(i)
+  function placedCard(player: Player, placedCards: List<Card>, i: number) {
+    const card = placedCards.get(i)
 
     if (card) {
       return (
@@ -34,11 +37,15 @@ export default function PlacedCards({
   }
 
   return {
-    DOM: player$.map(player => {
-      if (player) {
+    DOM: viewState$.map(viewState => {
+      if (viewState.player) {
         return (
           <div className="placed-cards">
-            {times(MAX_PLAYER_HP, i => <div className="placed-card">{placedCard(player, i)}</div>)}
+            {times(MAX_PLAYER_HP, i => (
+              <div className="placed-card">
+                {placedCard(viewState.player, viewState.placedCards, i)}
+              </div>
+            ))}
           </div>
         )
       } else {

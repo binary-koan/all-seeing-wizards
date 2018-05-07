@@ -1,4 +1,5 @@
 import { List } from "immutable"
+import { MAX_PLAYER_HP } from "../../../common/src/state/player"
 import ViewState from "../state/viewState"
 import { Action, socketConnected } from "./types"
 
@@ -33,6 +34,9 @@ export default function applyStateChange(state: ViewState, action: Action) {
     case "actionsPerformed":
       return state.set("game", action.resultingGame) // TODO display actions
 
+    case "placeCard":
+      return applyPlaceCard(state, action.index)
+
     case "unplaceCard":
       return applyUnplaceCard(state, action.index)
 
@@ -53,9 +57,20 @@ export default function applyStateChange(state: ViewState, action: Action) {
   }
 }
 
+function applyPlaceCard(state: ViewState, index: number) {
+  if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size >= MAX_PLAYER_HP) {
+    return state
+  }
+
+  return state.set("connectedAs", {
+    ...state.connectedAs,
+    placedCards: state.connectedAs.placedCards.push(index)
+  })
+}
+
 function applyUnplaceCard(state: ViewState, index: number) {
   if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size <= index) {
-    return
+    return state
   }
 
   return state.set("connectedAs", {

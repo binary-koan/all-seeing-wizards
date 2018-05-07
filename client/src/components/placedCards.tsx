@@ -7,6 +7,7 @@ import Stream from "xstream"
 
 import { MAX_PLAYER_HP, Player } from "../../../common/src/state/player"
 import { Action, unplaceCard } from "../actions/types"
+import ActionButton from "./actionButton"
 import CardIcon from "./cardIcon"
 
 export default function PlacedCards({
@@ -15,15 +16,15 @@ export default function PlacedCards({
 }: {
   DOM: DOMSource
   player$: Stream<Player>
-}): { DOM: Stream<VNode>; action$: Stream<Action> } {
+}): { DOM: Stream<VNode> } {
   function placedCard(player: Player, i: number) {
     const card = player.hand.pickedCard(i)
 
     if (card) {
       return (
-        <button className="placed-card-content" data-index={i}>
+        <ActionButton action={unplaceCard(i)} className="placed-card-content">
           <CardIcon card={card} scale={2} />
-        </button>
+        </ActionButton>
       )
     } else if (i < player.hp) {
       return <div className="placed-card-content" />
@@ -31,10 +32,6 @@ export default function PlacedCards({
       return <div className="placed-card-content is-disabled" />
     }
   }
-
-  const action$ = DOM.select("button.placed-card-content")
-    .events("click")
-    .map(e => unplaceCard(parseInt((e.currentTarget as Element).getAttribute("data-index"), 10)))
 
   return {
     DOM: player$.map(player => {
@@ -47,7 +44,6 @@ export default function PlacedCards({
       } else {
         return <div />
       }
-    }),
-    action$
+    })
   }
 }

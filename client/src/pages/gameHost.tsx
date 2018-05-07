@@ -6,6 +6,7 @@ import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
 import { Action, startGame } from "../actions/types"
+import ActionButton from "../components/actionButton"
 import ConnectionState from "../components/connectionState"
 import FatalError from "../components/fatalError"
 import Icon from "../components/icon"
@@ -21,7 +22,7 @@ export default function GameHost({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
+}): { DOM: Stream<VNode>; path$: Stream<string> } {
   function errorView({ error }: ViewState) {
     if (error) {
       return (
@@ -47,12 +48,12 @@ export default function GameHost({
           title="Waiting for players ..."
           description={`${game.players.size} joined`}
           action={
-            <button
-              data-action="startGame"
+            <ActionButton
+              action={startGame()}
               disabled={game.players.filter(player => player.connected).size < 2}
             >
               Start
-            </button>
+            </ActionButton>
           }
         />
       )
@@ -88,13 +89,8 @@ export default function GameHost({
     )
   }
 
-  const startGame$ = DOM.select("button[data-action='startGame']")
-    .events("click")
-    .map(_ => startGame())
-
   return {
     DOM: viewState$.map(view),
-    action$: startGame$,
     path$: viewState$.map(
       viewState => (viewState.game ? gamePath(viewState.game.code) : rootPath())
     )

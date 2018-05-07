@@ -28,7 +28,8 @@ export default function actionToSocketEvents(
     case JOIN_GAME:
       return {
         messageType: JOIN_GAME,
-        message: { gameCode: action.code }
+        // TODO don't prompt
+        message: { gameCode: prompt("Game Code") }
       }
     case REJOIN_GAME:
       return {

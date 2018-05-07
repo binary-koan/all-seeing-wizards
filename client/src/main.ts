@@ -15,6 +15,7 @@ import GameHost from "./pages/gameHost"
 import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
 import ViewState from "./state/viewState"
+import { logStream } from "./util/debug"
 import fromArrayAsync from "./util/fromArrayAsync"
 import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 
@@ -29,27 +30,26 @@ function main({
 }) {
   const actionProxy$: Stream<Action> = xs.create()
 
-  const socketEvent$ = actionProxy$
-    .map(actionToSocketEvent)
-    .filter(Boolean)
-
-  const viewState$: Stream<ViewState> = actionProxy$.fold(
-    applyStateChange,
-    new ViewState()
-  )
+  const socketEvent$ = actionProxy$.map(actionToSocketEvent).filter(Boolean)
+  const viewState$: Stream<ViewState> = actionProxy$.fold(applyStateChange, new ViewState())
 
   const gameHostSinks = GameHost({ DOM, viewState$ })
   const gamePlayerSinks = GamePlayer({ DOM, viewState$ })
   const homeSinks = Home({ DOM, viewState$ })
+
+  const viewAction$ = logStream(
+    "click action",
+    DOM.select("[data-action]")
+      .events("click")
+      .map(e => JSON.parse((e.target as Element).getAttribute("data-action")))
+  )
 
   actionProxy$.imitate(
     xs.merge(
       // https://github.com/cyclejs/cyclejs/issues/512
       fromArrayAsync(initialActions()),
       socketEventsToActions(socketIO),
-      gameHostSinks.action$,
-      gamePlayerSinks.action$,
-      homeSinks.action$
+      viewAction$
     )
   )
 

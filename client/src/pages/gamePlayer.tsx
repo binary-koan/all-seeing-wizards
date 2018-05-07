@@ -21,7 +21,8 @@ export default function GamePlayer({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
+}): { DOM: Stream<VNode>; path$: Stream<string> } {
+  // TODO doesn't need to be a complete component now
   const placedCardsComponent = PlacedCards({
     DOM,
     player$: viewState$.map(viewState => viewState.player)
@@ -65,14 +66,15 @@ export default function GamePlayer({
 
   function playerCards(player: Player, placedCards: VNode) {
     if (player && player.hp > 0) {
-      console.log(player.hand.toString())
       return (
         <div className="game-player-info">
           {placedCards}
           <div className="game-player-hand">
-            {player.hand.cards.map(card => (
-              <CardView card={card} disabled={player.hand.pickedCards.includes(card)} />
-            )).toArray()}
+            {player.hand.cards
+              .map(card => (
+                <CardView card={card} disabled={player.hand.pickedCards.includes(card)} />
+              ))
+              .toArray()}
           </div>
         </div>
       )
@@ -106,7 +108,6 @@ export default function GamePlayer({
     DOM: xs
       .combine(viewState$, placedCardsComponent.DOM)
       .map(([viewState, placedCards]) => view(viewState, placedCards)),
-    action$: placedCardsComponent.action$,
     path$: viewState$.map(
       viewState =>
         viewState.game && viewState.player

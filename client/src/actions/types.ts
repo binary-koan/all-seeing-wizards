@@ -56,11 +56,10 @@ export function rehostGame(code: string): RehostGameAction {
 
 export interface JoinGameAction {
   type: "joinGame"
-  code: string
 }
 
-export function joinGame(code: string): JoinGameAction {
-  return { type: "joinGame", code }
+export function joinGame(): JoinGameAction {
+  return { type: "joinGame" }
 }
 
 export interface RejoinGameAction {

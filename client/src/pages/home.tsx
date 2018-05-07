@@ -6,6 +6,7 @@ import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
 import { Action, createGame, joinGame } from "../actions/types"
+import ActionButton from "../components/actionButton"
 import FatalError from "../components/fatalError"
 import ViewState from "../state/viewState"
 import { logStream } from "../util/debug"
@@ -17,7 +18,7 @@ export default function Home({
 }: {
   DOM: DOMSource
   viewState$: Stream<ViewState>
-}): { DOM: Stream<VNode>; action$: Stream<Action>; path$: Stream<string> } {
+}): { DOM: Stream<VNode>; path$: Stream<string> } {
   function view(viewState: ViewState) {
     function errorView({ error }: ViewState) {
       if (error) {
@@ -38,24 +39,19 @@ export default function Home({
         {errorView(viewState)}
         <div className="home-buttons">
           <img className="logo" alt="All-Seeing Wizards" src={logoImage} />
-          <button className="home-buttons-create" data-action="createGame">Create Game</button>
-          <button className="home-buttons-join" data-action="joinGame">Join Game</button>
+          <ActionButton action={createGame()} className="home-buttons-create">
+            Create Game
+          </ActionButton>
+          <ActionButton action={joinGame()} className="home-buttons-join">
+            Join Game
+          </ActionButton>
         </div>
       </main>
     )
   }
 
-  const createGame$ = DOM.select("[data-action='createGame']")
-    .events("click")
-    .map(_ => createGame())
-
-  const joinGame$ = DOM.select("[data-action='joinGame']")
-    .events("click")
-    .map(_ => joinGame(prompt("Game ID")))
-
   return {
     DOM: viewState$.map(view),
-    action$: xs.merge(createGame$, joinGame$),
     path$: viewState$.mapTo(rootPath())
   }
 }

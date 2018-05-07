@@ -113,6 +113,15 @@ export function actionsPerformed(
   return { type: "actionsPerformed", resultingGame, results }
 }
 
+export interface PlaceCardAction {
+  type: "placeCard"
+  index: number
+}
+
+export function placeCard(index: number): PlaceCardAction {
+  return { type: "placeCard", index }
+}
+
 export interface UnplaceCardAction {
   type: "unplaceCard"
   index: number
@@ -149,6 +158,7 @@ export type Action =
   | JoinGameAction
   | RejoinGameAction
   | StartGameAction
+  | PlaceCardAction
   | UnplaceCardAction
   | GameCreatedAction
   | GameJoinedAction

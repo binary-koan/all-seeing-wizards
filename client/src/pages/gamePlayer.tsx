@@ -65,13 +65,14 @@ export default function GamePlayer({
 
   function playerCards(player: Player, placedCards: VNode) {
     if (player && player.hp > 0) {
+      console.log(player.hand.toString())
       return (
         <div className="game-player-info">
           {placedCards}
           <div className="game-player-hand">
             {player.hand.cards.map(card => (
               <CardView card={card} disabled={player.hand.pickedCards.includes(card)} />
-            ))}
+            )).toArray()}
           </div>
         </div>
       )
@@ -108,7 +109,7 @@ export default function GamePlayer({
     action$: placedCardsComponent.action$,
     path$: viewState$.map(
       viewState =>
-        (window.viewState = viewState) && viewState.game && viewState.player
+        viewState.game && viewState.player
           ? playerPath(viewState.game.code, viewState.player.id)
           : rootPath()
     )

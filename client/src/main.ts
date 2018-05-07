@@ -15,7 +15,6 @@ import GameHost from "./pages/gameHost"
 import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
 import ViewState from "./state/viewState"
-import { logStream } from "./util/debug"
 import fromArrayAsync from "./util/fromArrayAsync"
 import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 
@@ -30,11 +29,11 @@ function main({
 }) {
   const actionProxy$: Stream<Action> = xs.create()
 
-  const socketEvent$ = logStream("socket event for action", actionProxy$)
+  const socketEvent$ = actionProxy$
     .map(actionToSocketEvent)
     .filter(Boolean)
 
-  const viewState$: Stream<ViewState> = logStream("state change for action", actionProxy$).fold(
+  const viewState$: Stream<ViewState> = actionProxy$.fold(
     applyStateChange,
     new ViewState()
   )

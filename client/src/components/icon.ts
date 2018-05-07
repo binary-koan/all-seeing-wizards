@@ -13,7 +13,7 @@ export default function icon({ name, scale, ...attrs }: IconAttrs) {
         height: size,
         fill: "none",
         stroke: "currentColor",
-        "stroke-width": size / 24 * 2,
+        "stroke-width": 2,
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
         ...attrs

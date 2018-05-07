@@ -10,7 +10,7 @@ export default function cardView({ card, ...attrs }: CardViewAttrs) {
   return (
     <button className="card-view" {...attrs}>
       <CardIcon card={card} />
-      <div className="card-view-title">card.name</div>
+      <div className="card-view-title">{card.name}</div>
     </button>
   )
 }

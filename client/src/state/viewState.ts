@@ -36,10 +36,16 @@ export default class ViewState extends viewState implements IViewState {
   }
 
   public get placedCards() {
+    if (this.placedCardIndexes) {
+      return this.placedCardIndexes.map(index => this.player.hand.cards.get(index)).toList()
+    }
+  }
+
+  public get placedCardIndexes() {
     if (this.player && this.player.hand.pickedCards.size > 0) {
-      return this.player.hand.pickedCards.toList()
+      return this.player.hand.pickedIndexes
     } else if (this.connectedAs.type === "player") {
-      return this.connectedAs.placedCards.map(index => this.player.hand.cards.get(index)).toList()
+      return this.connectedAs.placedCards
     }
   }
 }

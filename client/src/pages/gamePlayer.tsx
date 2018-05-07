@@ -7,7 +7,8 @@ import xs, { Stream } from "xstream"
 import { List } from "immutable"
 import { Card } from "../../../common/src/state/card"
 import { Player } from "../../../common/src/state/player"
-import { Action } from "../actions/types"
+import { Action, submitCards } from "../actions/types"
+import ActionButton from "../components/actionButton"
 import CardView from "../components/cardView"
 import FatalError from "../components/fatalError"
 import MapView from "../components/mapView"
@@ -82,9 +83,24 @@ export default function GamePlayer({
     }
   }
 
-  function lockInButton(player: Player) {
+  function lockInButton(player: Player, viewState: ViewState) {
     if (player && player.hp > 0) {
-      return <button className="game-player-submit">Lock In</button>
+      if (player.hand.hasPickedCards) {
+        return (
+          <button className="game-player-submit" disabled>
+            Locked In
+          </button>
+        )
+      } else {
+        return (
+          <ActionButton
+            action={submitCards(viewState.placedCardIndexes.toArray())}
+            className="game-player-submit"
+          >
+            Lock In
+          </ActionButton>
+        )
+      }
     }
   }
 
@@ -98,7 +114,7 @@ export default function GamePlayer({
         {playerView(player)}
         {mapViewport(viewState, player)}
         {playerCards(player, viewState.placedCards, placedCards)}
-        {lockInButton(player)}
+        {lockInButton(player, viewState)}
       </main>
     )
   }

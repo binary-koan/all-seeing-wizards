@@ -130,6 +130,15 @@ export function unplaceCard(index: number): UnplaceCardAction {
   return { type: "unplaceCard", index }
 }
 
+export interface SubmitCardsAction {
+  type: "submitCards"
+  indexes: number[]
+}
+
+export function submitCards(indexes: number[]): SubmitCardsAction {
+  return { type: "submitCards", indexes }
+}
+
 export interface PlayerConnectedAction {
   type: "playerConnected"
   playerId: string
@@ -159,6 +168,7 @@ export type Action =
   | StartGameAction
   | PlaceCardAction
   | UnplaceCardAction
+  | SubmitCardsAction
   | GameCreatedAction
   | GameJoinedAction
   | GameUpdatedAction

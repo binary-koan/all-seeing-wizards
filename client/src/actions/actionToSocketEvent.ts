@@ -4,7 +4,8 @@ import {
   JOIN_GAME,
   REHOST_GAME,
   REJOIN_GAME,
-  START_GAME
+  START_GAME,
+  SUBMIT_CARDS
 } from "../../../common/src/messages/toServer"
 import {
   Action,
@@ -38,5 +39,7 @@ export default function actionToSocketEvents(
       }
     case START_GAME:
       return { messageType: START_GAME, message: null }
+    case SUBMIT_CARDS:
+      return { messageType: SUBMIT_CARDS, message: { indexes: action.indexes } }
   }
 }

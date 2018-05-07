@@ -41,7 +41,14 @@ export default function GameHost({
     if (!game) {
       return
     } else if (game.started) {
-      return <StatusPanel title="Waiting for actions ..." description="" />
+      const playersLockedIn = game.players.count(player => player.hand.hasPickedCards)
+
+      return (
+        <StatusPanel
+          title="Waiting for actions ..."
+          description={`${playersLockedIn}/${game.players.size} players locked in`}
+        />
+      )
     } else {
       return (
         <StatusPanel

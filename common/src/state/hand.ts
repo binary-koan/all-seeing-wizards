@@ -46,6 +46,10 @@ export class Hand extends hand implements IHand {
     return this.pickedIndexes.map(index => this.cards.get(index)).toList()
   }
 
+  public get hasPickedCards() {
+    return this.pickedIndexes.size > 0
+  }
+
   public removePickedCards() {
     return this.set(
       "cards",

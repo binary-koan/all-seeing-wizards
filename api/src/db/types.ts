@@ -10,6 +10,7 @@ export interface GameDiff {
   started: boolean
   playerIds: ObjectID[]
   usedCardIds: ObjectID[]
+  availableCardIds: ObjectID[]
 }
 
 export interface GameDoc extends GameDiff {

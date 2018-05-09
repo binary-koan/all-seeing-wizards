@@ -1,5 +1,6 @@
 import { List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
+import shuffle from "../util/shuffle"
 import { Card } from "./card"
 
 interface IDeck {
@@ -38,10 +39,6 @@ export class Deck extends deckFactory implements IDeck {
   }
 
   private recycleDiscardedCards() {
-    // TODO is this enough of a shuffle?
-    return this.set("availableCards", this.discardedCards.sortBy(Math.random)).set(
-      "discardedCards",
-      List()
-    )
+    return this.set("availableCards", shuffle(this.discardedCards)).set("discardedCards", List())
   }
 }

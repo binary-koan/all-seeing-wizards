@@ -20,6 +20,9 @@ function updateGameState(game: Game, db: Db) {
     playerIds: game.players.map(player => ObjectID.createFromHexString(player.id)).toArray(),
     usedCardIds: game.deck.discardedCards
       .map(card => ObjectID.createFromHexString(card.id))
+      .toArray(),
+    availableCardIds: game.deck.availableCards
+      .map(card => ObjectID.createFromHexString(card.id))
       .toArray()
   }
 

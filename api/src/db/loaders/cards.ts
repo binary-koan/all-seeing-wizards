@@ -1,4 +1,4 @@
-import { List } from "immutable"
+import { List, Map } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { Card } from "../../../../common/src/state/card"
 import { CardDoc } from "../types"
@@ -13,10 +13,10 @@ export default async function loadCards(packIds: ObjectID[], db: Db) {
 }
 
 function buildCards(cardDocs: CardDoc[]) {
-  return cardDocs.reduce(addCard, List() as List<Card>)
+  return cardDocs.reduce(addCard, Map() as Map<string, Card>)
 }
 
-function addCard(cards: List<Card>, doc: CardDoc) {
+function addCard(cards: Map<string, Card>, doc: CardDoc) {
   const card = new Card({
     id: doc._id.toHexString(),
     name: doc.name,
@@ -24,5 +24,5 @@ function addCard(cards: List<Card>, doc: CardDoc) {
     effects: List(doc.effects)
   })
 
-  return cards.push(card)
+  return cards.set(card.id, card)
 }

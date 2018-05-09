@@ -1,6 +1,7 @@
 import Hashids = require("hashids")
 import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
+import shuffle from "../../../common/src/util/shuffle"
 import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
@@ -36,6 +37,12 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
     boardObjects: [], // TODO board objects,
     playerIds: [],
     usedCardIds: [],
+    availableCardIds: shuffle(
+      cards
+        .valueSeq()
+        .map(card => ObjectID.createFromHexString(card.id))
+        .toList()
+    ).toArray(),
     started: false
   }
 

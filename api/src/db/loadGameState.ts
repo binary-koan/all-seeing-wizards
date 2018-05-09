@@ -26,7 +26,7 @@ export default async function loadGameState(code: string, db: Db): Promise<Game>
 
   const cards = await loadCards(gameDoc.packIds, db)
   const players = buildPlayers(playerDocs, characterDocs, cards)
-  const deck = buildDeck(cards, players, gameDoc.usedCardIds)
+  const deck = buildDeck(cards, players, gameDoc)
   const board = buildBoard(boardDocs, gameDoc)
 
   return new Game({
@@ -46,7 +46,7 @@ function buildCharacters(characterDocs: CharacterDoc[]) {
 function buildPlayers(
   playerDocs: PlayerDoc[],
   characterDocs: CharacterDoc[],
-  cards: List<Card>
+  cards: Map<string, Card>
 ): Map<string, Player> {
   return playerDocs.reduce(
     (players, doc) => addPlayer(players, doc, characterDocs, cards),
@@ -58,10 +58,10 @@ function addPlayer(
   players: Map<string, Player>,
   doc: PlayerDoc,
   characterDocs: CharacterDoc[],
-  cards: List<Card>
+  cards: Map<string, Card>
 ) {
   const characterDoc = find(characterDocs, c => c._id.equals(doc.characterId))
-  const cardsInHand = doc.hand.cardIds.map(id => cards.find(card => card.id === id.toHexString()))
+  const cardsInHand = doc.hand.cardIds.map(id => cards.get(id.toHexString()))
 
   if (characterDoc && every(cardsInHand)) {
     const id = doc._id.toHexString()
@@ -98,24 +98,16 @@ function addPlayer(
   return players
 }
 
-function buildDeck(cards: List<Card>, players: Map<string, Player>, usedCardIds: ObjectID[]) {
+function buildDeck(cards: Map<string, Card>, players: Map<string, Player>, gameDoc: GameDoc) {
   const cardsInHands = players.flatMap(player => player.hand.cards)
-  cards = cards.filter(card => !cardsInHands.includes(card)).toList()
 
-  const usedCardIdStrings = usedCardIds.map(id => id.toHexString())
+  const usedCardIdStrings = gameDoc.usedCardIds.map(id => id.toHexString())
+  const availableCardIdStrings = gameDoc.availableCardIds.map(id => id.toHexString())
 
-  const [discardedCards, availableCards] = cards.reduce(
-    ([discarded, available], card) => {
-      if (usedCardIdStrings.includes(card.id)) {
-        return [discarded.push(card), available]
-      } else {
-        return [discarded, available.push(card)]
-      }
-    },
-    [List() as List<Card>, List() as List<Card>]
-  )
-
-  return new Deck({ discardedCards, availableCards })
+  return new Deck({
+    discardedCards: List(usedCardIdStrings.map(id => cards.get(id))),
+    availableCards: List(availableCardIdStrings.map(id => cards.get(id)))
+  })
 }
 
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {

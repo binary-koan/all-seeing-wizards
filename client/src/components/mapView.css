@@ -159,5 +159,6 @@
   background-image: var(--image-url);
   background-size: cover;
   transform: rotate(var(--rotation));
-  opacity: 0;
+  opacity: 0.6;
+  filter: grayscale(80%);
 }

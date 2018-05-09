@@ -91,7 +91,7 @@ export default function GameHost({
           {infoBox(viewState)}
           {playerViews(viewState)}
         </aside>
-        <MapView game={viewState.game} />
+        <MapView viewState={viewState} />
       </main>
     )
   }

@@ -1,14 +1,50 @@
 import "./mapView.css"
 
+import { List } from "immutable"
 import * as Snabbdom from "snabbdom-pragma"
 import { Game } from "../../../common/src/state/game"
-
-import data from "../../../packs/base/viewConfig"
+import { ActionResult } from "../../../common/src/turnResults/resultTypes"
+import ViewState from "../state/viewState"
+import PlacedCardResults from "./mapView/placedCardResults"
 import rotationFrom from "./mapView/rotation"
 
-export default function MapView({ game }: { game: Game }) {
+import data from "../../../packs/base/viewConfig"
+
+export default function MapView({ viewState }: { viewState: ViewState }) {
+  const game = viewState.game
+  const placedCardResults = viewState.placedCardResults
+  const plannedResults = placedCardResults && placedCardResults.resultsPerAction.flatten(1).toList()
+
   if (!game) {
     return
+  }
+
+  function plannedActionEffects() {
+    if (plannedResults) {
+      return <PlacedCardResults results={plannedResults} />
+    } else {
+      return ""
+    }
+  }
+
+  function plannedPlayerPosition() {
+    if (plannedResults && plannedResults.findLast(result => result.targetPosition)) {
+      const newPlayer = placedCardResults.game.player(viewState.player.id)
+
+      return (
+        <div
+          className="map-shadow-player"
+          style={{
+            "--x": newPlayer.position.x.toString(),
+            "--y": newPlayer.position.y.toString(),
+            "--image-url": `url(${data.characters[newPlayer.character.name].image})`,
+            "--rotation": rotationFrom(newPlayer.position)
+          }}
+        />
+      )
+    } else {
+      return ""
+    }
   }
 
   return (
@@ -48,18 +84,8 @@ export default function MapView({ game }: { game: Game }) {
           </div>
         ))
         .toArray()}
-      )
+      {plannedActionEffects()}
+      {plannedPlayerPosition()}
     </div>
   )
-
-  // plannedActions &&
-  // plannedActions.finalMovePosition &&
-  // m(".map-shadow-player", {
-  //   style: `
-  //   --x: ${plannedActions.finalMovePosition.x};
-  //   --y: ${plannedActions.finalMovePosition.y};
-  //   --image-url: url(${data.characters[plannedActions.player.character.name].image});
-  //   --rotation: ${rotationFrom(plannedActions.finalMovePosition)};
-  // `
-  // })
 }

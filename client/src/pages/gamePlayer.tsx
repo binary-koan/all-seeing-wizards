@@ -50,11 +50,11 @@ export default function GamePlayer({
     }
   }
 
-  function mapViewport({ game }: ViewState, player: Player) {
-    if (game && player) {
+  function mapViewport(viewState: ViewState, player: Player) {
+    if (viewState.game && player) {
       return (
         <MapViewport
-          map={<MapView game={game} />}
+          map={<MapView viewState={viewState} />}
           centerX={player.position.x}
           centerY={player.position.y}
         />

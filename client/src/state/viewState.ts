@@ -1,6 +1,7 @@
 import { List } from "immutable"
 import { Game } from "../../../common/src/state/game"
 import { RecordFactory } from "../../../common/src/util/immutableExtras"
+import performTurn from "../../../common/src/performTurn"
 
 type Connection =
   | { type: "none" }
@@ -47,5 +48,19 @@ export default class ViewState extends viewState implements IViewState {
     } else if (this.connectedAs.type === "player") {
       return this.connectedAs.placedCards
     }
+  }
+
+  public get placedCardResults() {
+    const placedCards = this.placedCards
+
+    if (!placedCards) {
+      return
+    }
+
+    const gameWithPlacedCards = this.game.updatePlayer(
+      this.player.updateHand(this.player.hand.pickCards(this.placedCardIndexes))
+    )
+
+    return performTurn(gameWithPlacedCards)
   }
 }

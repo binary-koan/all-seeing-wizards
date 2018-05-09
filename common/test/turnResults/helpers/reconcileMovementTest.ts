@@ -40,12 +40,15 @@ describe("#reconcileMovement", () => {
     expect(results.get(0)).toEqual({
       type: "move",
       player: player1,
-      targetPosition: createDirectionalPoint({ x: 1, y: 0, facing: "north" })
+      movementPath: List.of(createDirectionalPoint({ x: 1, y: 0, facing: "north" }))
     })
     expect(results.get(1)).toEqual({
       type: "move",
       player: player2,
-      targetPosition: createDirectionalPoint({ x: 2, y: 0, facing: "east" })
+      movementPath: List.of(
+        createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
+        createDirectionalPoint({ x: 2, y: 0, facing: "east" })
+      )
     })
   })
 

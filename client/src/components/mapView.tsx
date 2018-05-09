@@ -28,7 +28,7 @@ export default function MapView({ viewState }: { viewState: ViewState }) {
   }
 
   function plannedPlayerPosition() {
-    if (plannedResults && plannedResults.findLast(result => result.targetPosition)) {
+    if (plannedResults && plannedResults.findLast(result => result.movementPath)) {
       const newPlayer = placedCardResults.game.player(viewState.player.id)
 
       return (

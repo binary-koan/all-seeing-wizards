@@ -48,7 +48,10 @@ describe("#calculateKnockbackResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "knockback",
-      targetPosition: createDirectionalPoint({ x: 0, y: 2, facing: "north" }),
+      movementPath: List.of(
+        knocked.position,
+        createDirectionalPoint({ x: 0, y: 2, facing: "north" })
+      ),
       player: knocked
     })
   })

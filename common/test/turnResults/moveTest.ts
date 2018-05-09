@@ -39,7 +39,7 @@ describe("#calculateMoveResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "move",
-      targetPosition: { x: 1, y: 0, facing: "north" },
+      movementPath: List.of(player.position, { x: 1, y: 0, facing: "north" }),
       player
     })
   })
@@ -60,7 +60,7 @@ describe("#calculateMoveResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "move",
-      targetPosition: { x: 0, y: 0, facing: "west" },
+      movementPath: List.of({ x: 0, y: 0, facing: "west" }),
       player
     })
   })

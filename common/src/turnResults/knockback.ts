@@ -48,7 +48,7 @@ function effectResults(effect: KnockbackEffect, caster: Player, game: Game) {
 function convertMoveResult(result: ActionResult): ActionResult {
   // TODO stop reconcileMovement from being so tied to movement
   if (result.type === "move") {
-    return { type: "knockback", targetPosition: result.targetPosition, player: result.player }
+    return { type: "knockback", movementPath: result.movementPath, player: result.player }
   } else {
     // TODO knockback prevented result?
     return result

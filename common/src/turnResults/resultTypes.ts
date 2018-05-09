@@ -31,17 +31,17 @@ export type IncreaseDamageResult = Readonly<{
 }>
 export type KnockbackResult = Readonly<{
   type: "knockback"
-  targetPosition: DirectionalPoint
+  movementPath: List<DirectionalPoint>
   player: Player
 }>
 export type MoveResult = Readonly<{
   type: "move"
-  targetPosition: DirectionalPoint
+  movementPath: List<DirectionalPoint>
   player: Player
 }>
 
-export function moveResult(player: Player, targetPosition: DirectionalPoint): MoveResult {
-  return { type: "move", targetPosition, player }
+export function moveResult(player: Player, movementPath: List<DirectionalPoint>): MoveResult {
+  return { type: "move", movementPath, player }
 }
 
 export type MovePreventedResult = Readonly<{

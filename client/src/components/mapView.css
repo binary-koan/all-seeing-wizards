@@ -161,4 +161,5 @@
   transform: rotate(var(--rotation));
   opacity: 0.6;
   filter: grayscale(80%);
+  transition: all 0.2s;
 }

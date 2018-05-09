@@ -21,7 +21,7 @@ afterAll(done => mongoUnit.stop().then(() => done()))
 describe("#loadPacks", () => {
   it("loads packs from the default directory", async () => {
     const baseDir = __dirname + "/../../../packs"
-    const names = readdirSync(baseDir)
+    const names = readdirSync(baseDir).filter(name => /^\w+$/.test(name))
     const dbValuesPaths = names.map(name => `${baseDir}/${name}/dbValues.json`)
 
     const fileContents = dbValuesPaths.map(path => readFileSync(path).toString())

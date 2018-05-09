@@ -57,11 +57,11 @@ const RESULT_APPLICATORS: {
   },
 
   knockback(result: KnockbackResult, state: Game) {
-    return state.updatePlayer(result.player.updatePosition(result.targetPosition))
+    return state.updatePlayer(result.player.updatePosition(result.movementPath.last()))
   },
 
   move(result: MoveResult, state: Game) {
-    return state.updatePlayer(result.player.updatePosition(result.targetPosition))
+    return state.updatePlayer(result.player.updatePosition(result.movementPath.last()))
   },
 
   none(result, state: Game) {

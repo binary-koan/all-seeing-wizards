@@ -5,14 +5,12 @@
   background-color: lightgrey;
 }
 
-.tile,
-.map-player,
-.map-shadow-player {
+.map-item {
   position: absolute;
   left: calc(var(--map-size) / var(--map-tiles) * var(--x));
   top: calc(var(--map-size) / var(--map-tiles) * var(--y));
-  width: calc(var(--map-size) / var(--map-tiles));
-  height: calc(var(--map-size) / var(--map-tiles));
+  width: calc(var(--map-size) / var(--map-tiles) * var(--width, 1));
+  height: calc(var(--map-size) / var(--map-tiles) * var(--height, 1));
   background-size: cover;
 }
 
@@ -159,7 +157,6 @@
   background-image: var(--image-url);
   background-size: cover;
   transform: rotate(var(--rotation));
-  opacity: 0.6;
-  filter: grayscale(80%);
+  filter: grayscale(80%) contrast(60%) brightness(120%);
   transition: all 0.2s;
 }

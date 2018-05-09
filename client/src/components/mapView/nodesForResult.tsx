@@ -1,4 +1,7 @@
+import "./nodesForResult.css"
+
 import { VNode } from "@cycle/dom"
+import * as Snabbdom from "snabbdom-pragma"
 import {
   ActionResult,
   AttackResult,
@@ -49,7 +52,17 @@ const DEFAULT_NODE_BUILDERS: {
   },
 
   move(result: MoveResult) {
-    return []
+    return result.movementPath
+      .map(point => (
+        <div
+          className="map-item move-result"
+          style={{
+            "--x": point.x.toString(),
+            "--y": point.y.toString()
+          }}
+        />
+      ))
+      .toArray()
   },
 
   none(result: NoResult) {

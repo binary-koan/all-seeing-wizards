@@ -1,0 +1,6 @@
+.move-result {
+  background-color: #fff;
+  border-radius: 100%;
+  opacity: 0.4;
+  transform: scale(0.2);
+}

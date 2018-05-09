@@ -2,7 +2,9 @@ import "./mapView.css"
 
 import { List } from "immutable"
 import * as Snabbdom from "snabbdom-pragma"
+import { PerformTurnResults } from "../../../common/src/performTurn"
 import { Game } from "../../../common/src/state/game"
+import { Player } from "../../../common/src/state/player"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
 import ViewState from "../state/viewState"
 import PlacedCardResults from "./mapView/placedCardResults"
@@ -10,9 +12,15 @@ import rotationFrom from "./mapView/rotation"
 
 import data from "../../../packs/base/viewConfig"
 
-export default function MapView({ viewState }: { viewState: ViewState }) {
-  const game = viewState.game
-  const placedCardResults = viewState.placedCardResults
+export default function MapView({
+  game,
+  player,
+  placedCardResults
+}: {
+  game: Game
+  player: Player
+  placedCardResults: PerformTurnResults
+}) {
   const plannedResults = placedCardResults && placedCardResults.resultsPerAction.flatten(1).toList()
 
   if (!game) {
@@ -29,11 +37,11 @@ export default function MapView({ viewState }: { viewState: ViewState }) {
 
   function plannedPlayerPosition() {
     if (plannedResults && plannedResults.findLast(result => result.movementPath)) {
-      const newPlayer = placedCardResults.game.player(viewState.player.id)
+      const newPlayer = placedCardResults.game.player(player.id)
 
       return (
         <div
-          className="map-shadow-player"
+          className="map-item map-shadow-player"
           style={{
             "--x": newPlayer.position.x.toString(),
             "--y": newPlayer.position.y.toString(),
@@ -52,20 +60,16 @@ export default function MapView({ viewState }: { viewState: ViewState }) {
       {game.board.tiles
         .map(tile => (
           <div
-            className={"tile " + tile.type}
+            className={"map-item tile " + tile.type}
             style={{ "--x": tile.position.x.toString(), "--y": tile.position.y.toString() }}
-          >
-            <div className="tile-shadow-attack-effect" />
-            <div className="tile-shadow-move-effect" />
-            <div className="tile-attack-effect" />
-            <div className="tile-prevent-actions-effect" />
-          </div>
+          />
         ))
         .toArray()}
+      {plannedActionEffects()}
       {game.players
         .map(player => (
           <div
-            className="map-player"
+            className="map-item map-player"
             class={{ "is-knocked-out": player.hp <= 0 }}
             style={{
               "--x": player.position.x.toString(),
@@ -75,16 +79,9 @@ export default function MapView({ viewState }: { viewState: ViewState }) {
             }}
           >
             <div className="map-player-display" />
-            <div className="map-player-damage-indicator" />
-            <div className="map-player-healing-indicator" />
-            <div className="map-player-increase-damage-indicator" />
-            <div className="map-player-shield-indicator" />
-            <div className="map-player-mirror-shield-indicator" />
-            <div className="map-player-prevent-actions-indicator" />
           </div>
         ))
         .toArray()}
-      {plannedActionEffects()}
       {plannedPlayerPosition()}
     </div>
   )

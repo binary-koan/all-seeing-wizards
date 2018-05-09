@@ -14,7 +14,12 @@ import { ActionResult } from "./turnResults/resultTypes"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 
-export default function performTurn(baseState: Game) {
+export interface PerformTurnResults {
+  game: Game
+  resultsPerAction: List<List<ActionResult>>
+}
+
+export default function performTurn(baseState: Game): PerformTurnResults {
   const { game: resultingState, resultsPerAction: finalResults } = Range(
     0,
     MAX_ACTIONS_PER_TURN

@@ -6,7 +6,7 @@ import xs, { Stream } from "xstream"
 
 import { List } from "immutable"
 import { Card } from "../../../common/src/state/card"
-import { Player } from "../../../common/src/state/player"
+import { MAX_PLAYER_HP, Player } from "../../../common/src/state/player"
 import { Action, submitCards } from "../actions/types"
 import ActionButton from "../components/actionButton"
 import CardView from "../components/cardView"
@@ -93,7 +93,13 @@ export default function GamePlayer({
       if (player.hand.hasPickedCards) {
         return (
           <button className="game-player-submit" disabled>
-            Locked In
+            Wait for other players
+          </button>
+        )
+      } else if (viewState.placedCards && viewState.placedCards.size < MAX_PLAYER_HP) {
+        return (
+          <button className="game-player-submit" disabled>
+            Pick {MAX_PLAYER_HP} cards
           </button>
         )
       } else {
@@ -101,8 +107,9 @@ export default function GamePlayer({
           <ActionButton
             action={submitCards(viewState.placedCardIndexes.toArray())}
             className="game-player-submit"
+            disabled={false}
           >
-            Lock In
+            Lock in your actions
           </ActionButton>
         )
       }

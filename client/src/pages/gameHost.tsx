@@ -95,6 +95,7 @@ export default function GameHost({
           game={viewState.game}
           player={viewState.player}
           placedCardResults={viewState.placedCardResults}
+          showingResults={viewState.showingResults}
         />
       </main>
     )

@@ -69,8 +69,8 @@ function showPerformedActions(data: ActionsPerformedData) {
       .reduce(
         (events, results) =>
           events.concat([
-            { event: showResults(results), duration: 900 },
             { event: { type: "applyResults", results }, duration: 0 },
+            { event: showResults(results), duration: 900 },
             { event: showResults(List()), duration: 100 }
           ]),
         [{ event: turnResultsReceived(), duration: 0 }] as Array<{
@@ -78,7 +78,10 @@ function showPerformedActions(data: ActionsPerformedData) {
           duration: number
         }>
       )
-      .concat([{ event: gameUpdated(resultingGame), duration: 0 }])
+      .concat([
+        { event: showResults(undefined), duration: 0 },
+        { event: gameUpdated(resultingGame), duration: 0 }
+      ])
   )
 }
 

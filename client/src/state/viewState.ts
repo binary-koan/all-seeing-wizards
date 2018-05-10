@@ -1,6 +1,7 @@
 import { List } from "immutable"
-import performTurn from "../../../common/src/performTurn"
+import performTurn, { PerformTurnResults } from "../../../common/src/performTurn"
 import { Game } from "../../../common/src/state/game"
+import { ActionResult } from "../../../common/src/turnResults/resultTypes"
 import { RecordFactory } from "../../../common/src/util/immutableExtras"
 
 type Connection =
@@ -13,13 +14,15 @@ interface IViewState {
   connectedAs: Connection
   error?: { message: string; exception?: string }
   socketState: "connecting" | "connected" | "disconnected"
+  showingResults?: List<ActionResult>
 }
 
 const viewState = RecordFactory<IViewState>({
   game: undefined,
   connectedAs: { type: "none" },
   error: undefined,
-  socketState: "connecting"
+  socketState: "connecting",
+  showingResults: undefined
 })
 
 export default class ViewState extends viewState implements IViewState {
@@ -27,6 +30,7 @@ export default class ViewState extends viewState implements IViewState {
   public readonly error?: { message: string; exception?: string }
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "connected" | "disconnected"
+  public readonly showingResults?: List<ActionResult>
 
   constructor(config?: Partial<IViewState>) {
     super(config)
@@ -50,11 +54,12 @@ export default class ViewState extends viewState implements IViewState {
     }
   }
 
-  public get placedCardResults() {
+  public get placedCardResults(): PerformTurnResults {
     const placedCards = this.placedCards
 
-    if (!placedCards) {
-      return
+    // We don't want to show planned results when real ones are being displayed
+    if (!placedCards || this.showingResults) {
+      return { game: this.game, resultsPerAction: List() }
     }
 
     let gameWithPlacedCards = this.game.updatePlayer(

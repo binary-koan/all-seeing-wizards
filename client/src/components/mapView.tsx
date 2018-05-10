@@ -11,20 +11,31 @@ import PlacedCardResults from "./mapView/placedCardResults"
 import annoyingRotationHack from "./mapView/rotation"
 
 import data from "../../../packs/base/viewConfig"
+import ActualResults from "./mapView/actualResults"
 
 export default function MapView({
   game,
   player,
-  placedCardResults
+  placedCardResults,
+  showingResults
 }: {
   game: Game
   player: Player
   placedCardResults: PerformTurnResults
+  showingResults?: List<ActionResult>
 }) {
   const plannedResults = placedCardResults && placedCardResults.resultsPerAction.flatten(1).toList()
 
   if (!game) {
     return
+  }
+
+  function realActionEffects() {
+    if (showingResults) {
+      return <ActualResults results={showingResults} />
+    } else {
+      return ""
+    }
   }
 
   function plannedActionEffects() {
@@ -69,6 +80,7 @@ export default function MapView({
         ))
         .toArray()}
       {plannedActionEffects()}
+      {realActionEffects()}
       {game.players
         .map(otherPlayer => {
           const id = `map-player-${otherPlayer.id}`

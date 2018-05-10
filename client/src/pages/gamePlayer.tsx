@@ -58,7 +58,12 @@ export default function GamePlayer({
       return (
         <MapViewport
           map={
-            <MapView game={viewState.game} player={player} placedCardResults={placedCardResults} />
+            <MapView
+              game={viewState.game}
+              player={player}
+              placedCardResults={placedCardResults}
+              showingResults={viewState.showingResults}
+            />
           }
           centerX={newPlayer.position.x}
           centerY={newPlayer.position.y}

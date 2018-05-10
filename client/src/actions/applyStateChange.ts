@@ -40,8 +40,7 @@ export default function applyStateChange(state: ViewState, action: Action) {
       return applyTurnResultsReceived(state)
 
     case "showResults":
-      console.log("TODO show results")
-      return state
+      return state.set("showingResults", action.results)
 
     case "applyResults":
       return state.set("game", applyResults(action.results, state.game))

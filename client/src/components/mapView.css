@@ -81,6 +81,10 @@
   font-weight: bold;
 }
 
+.map-player {
+  transition: all 0.2s;
+}
+
 .map-player-display {
   position: absolute;
   top: 0;

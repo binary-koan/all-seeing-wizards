@@ -6,6 +6,7 @@ import { Card } from "../card"
 import { Character } from "../character"
 import { Deck } from "../deck"
 import { DirectionalPoint } from "../directionalPoint"
+import { Duration } from "../duration"
 import { Game } from "../game"
 import { Hand } from "../hand"
 import { Modifier } from "../modifier"
@@ -71,5 +72,15 @@ function deserializeCard(cardData: any) {
     name: cardData.name,
     tagline: cardData.tagline,
     effects: List(cardData.effects)
+      .map(deserializeEffect)
+      .toList()
   })
+}
+
+function deserializeEffect(effectData: any) {
+  if (effectData.duration) {
+    effectData.duration = new Duration(effectData.duration.type, effectData.duration.length)
+  }
+
+  return effectData
 }

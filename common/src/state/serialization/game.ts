@@ -12,6 +12,8 @@ import { Hand } from "../hand"
 import { Modifier } from "../modifier"
 import { Player } from "../player"
 import { Point } from "../point"
+import { deserializeCard } from "./card"
+import { deserializePlayer } from "./player"
 
 export function serializeGame(game: Game): any {
   return game.toJS()
@@ -22,28 +24,7 @@ export function deserializeGame(data: any) {
     id: data.id,
     code: data.code,
     started: data.started,
-    players: (Map(data.players) as Map<string, any>)
-      .map(
-        playerData =>
-          new Player({
-            id: playerData.id,
-            character: new Character(playerData.character),
-            hp: playerData.hp,
-            position: new DirectionalPoint(playerData.position),
-            lastPosition: playerData.lastPosition && new DirectionalPoint(playerData.lastPosition),
-            hand: new Hand({
-              cards: List(playerData.hand.cards)
-                .map(deserializeCard)
-                .toList(),
-              pickedIndexes: List(playerData.hand.pickedIndexes as number[]).toList()
-            }),
-            connected: playerData.connected,
-            modifiers: List(playerData.modifiers)
-              .map((modifierData: any) => new Modifier(modifierData))
-              .toList()
-          })
-      )
-      .toMap(),
+    players: (Map(data.players) as Map<string, any>).map(deserializePlayer).toMap(),
     board: new Board({
       tiles: List(data.board.tiles)
         .map(
@@ -64,23 +45,4 @@ export function deserializeGame(data: any) {
         .toList()
     })
   })
-}
-
-function deserializeCard(cardData: any) {
-  return new Card({
-    id: cardData.id,
-    name: cardData.name,
-    tagline: cardData.tagline,
-    effects: List(cardData.effects)
-      .map(deserializeEffect)
-      .toList()
-  })
-}
-
-function deserializeEffect(effectData: any) {
-  if (effectData.duration) {
-    effectData.duration = new Duration(effectData.duration.type, effectData.duration.length)
-  }
-
-  return effectData
 }

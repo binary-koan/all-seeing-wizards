@@ -35,6 +35,7 @@ import GameManager from "../state/gameManager"
 import { Client, HostClient, PlayerClient } from "./clientTypes"
 
 import packDefinitions from "../../../packs/dbValues"
+import { serializeResults } from "../../../common/src/state/serialization/results"
 
 export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)
@@ -116,7 +117,7 @@ export default function setup(server: Server, manager: GameManager) {
         const newState = await manager.start(client.gameCode)
 
         if (newState) {
-          emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, { game: newState })
+          emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, { game: serializeGame(newState) })
         } else {
           emitToGame<UnexpectedErrorData>(client, io, UNEXPECTED_ERROR, {
             message: "Couldn't start game"
@@ -141,12 +142,14 @@ export default function setup(server: Server, manager: GameManager) {
         )
 
         if (result.game) {
-          emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, { game: result.game })
-
           if (result.resultsPerAction) {
             emitToGame<ActionsPerformedData>(client, io, ACTIONS_PERFORMED, {
-              game: result.game,
-              results: result.resultsPerAction.toJS() // TODO serialize properly
+              game: serializeGame(result.game),
+              results: result.resultsPerAction.map(serializeResults).toArray()
+            })
+          } else {
+            emitToGame<GameUpdatedData>(client, io, GAME_UPDATED, {
+              game: serializeGame(result.game)
             })
           }
         } else {

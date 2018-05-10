@@ -17,46 +17,76 @@ import {
   UnexpectedErrorData
 } from "../../../common/src/messages/toClient"
 import { deserializeGame } from "../../../common/src/state/serialization/game"
+import { deserializeResults } from "../../../common/src/state/serialization/results"
+import { applyResults } from "../../../common/src/turnResults/applyResults"
 import { SocketIOSource } from "../util/socketIoDriver"
+import timedEvents from "../util/timedEvents"
 import {
   Action,
-  actionsPerformed,
   fatalError,
   gameCreated,
   gameJoined,
   gameUpdated,
   playerConnected,
   playerDisconnected,
+  showResults,
   socketConnected,
-  socketDisconnected
+  socketDisconnected,
+  turnResultsReceived
 } from "./types"
 
 export default function socketEventsToActions(source: SocketIOSource) {
   return mergeEvents(source, {
-    connect: () => socketConnected(),
+    connect: () => xs.of(socketConnected()),
 
-    disconnect: () => socketDisconnected(),
+    disconnect: () => xs.of(socketDisconnected()),
 
-    [GAME_CREATED]: (data: GameCreatedData) => gameCreated(deserializeGame(data.game)),
+    [GAME_CREATED]: (data: GameCreatedData) => xs.of(gameCreated(deserializeGame(data.game))),
 
-    [GAME_JOINED]: (data: GameJoinedData) => gameJoined(deserializeGame(data.game), data.playerId),
+    [GAME_JOINED]: (data: GameJoinedData) =>
+      xs.of(gameJoined(deserializeGame(data.game), data.playerId)),
 
-    [UNEXPECTED_ERROR]: (data: UnexpectedErrorData) => fatalError(data.message, data.exception),
+    [UNEXPECTED_ERROR]: (data: UnexpectedErrorData) =>
+      xs.of(fatalError(data.message, data.exception)),
 
-    [GAME_UPDATED]: (data: GameUpdatedData) => gameUpdated(deserializeGame(data.game)),
+    [GAME_UPDATED]: (data: GameUpdatedData) => xs.of(gameUpdated(deserializeGame(data.game))),
 
-    [ACTIONS_PERFORMED]: (data: ActionsPerformedData) =>
-      // TODO deserialize results
-      actionsPerformed(deserializeGame(data.game), List()),
+    [ACTIONS_PERFORMED]: (data: ActionsPerformedData) => showPerformedActions(data),
 
-    [PLAYER_CONNECTED]: (data: PlayerConnectedData) => playerConnected(data.playerId),
+    [PLAYER_CONNECTED]: (data: PlayerConnectedData) => xs.of(playerConnected(data.playerId)),
 
-    [PLAYER_DISCONNECTED]: (data: PlayerDisconnectedData) => playerDisconnected(data.playerId)
+    [PLAYER_DISCONNECTED]: (data: PlayerDisconnectedData) =>
+      xs.of(playerDisconnected(data.playerId))
   })
 }
 
-function mergeEvents(source: SocketIOSource, events: { [event: string]: (data: any) => Action }) {
+function showPerformedActions(data: ActionsPerformedData) {
+  const resultingGame = deserializeGame(data.game)
+  const resultsByAction = data.results.map(deserializeResults)
+
+  return timedEvents(
+    resultsByAction
+      .reduce(
+        (events, results) =>
+          events.concat([
+            { event: showResults(results), duration: 900 },
+            { event: { type: "applyResults", results }, duration: 0 },
+            { event: showResults(List()), duration: 100 }
+          ]),
+        [{ event: turnResultsReceived(), duration: 0 }] as Array<{
+          event: Action
+          duration: number
+        }>
+      )
+      .concat([{ event: gameUpdated(resultingGame), duration: 0 }])
+  )
+}
+
+function mergeEvents(
+  source: SocketIOSource,
+  events: { [event: string]: (data: any) => xs<Action> }
+) {
   const streams = Object.keys(events).map(event => source.get(event).map(events[event]))
 
-  return xs.merge(...streams)
+  return xs.merge(...streams).flatten()
 }

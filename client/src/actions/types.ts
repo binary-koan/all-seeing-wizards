@@ -99,17 +99,30 @@ export function gameUpdated(game: Game): GameUpdatedAction {
   return { type: "gameUpdated", game }
 }
 
-export interface ActionsPerformedAction {
-  type: "actionsPerformed"
-  resultingGame: Game
+export interface TurnResultsReceivedAction {
+  type: "turnResultsReceived"
+}
+
+export function turnResultsReceived(): TurnResultsReceivedAction {
+  return { type: "turnResultsReceived" }
+}
+
+export interface ShowResultsAction {
+  type: "showResults"
   results: List<ActionResult>
 }
 
-export function actionsPerformed(
-  resultingGame: Game,
+export function showResults(results: List<ActionResult>): ShowResultsAction {
+  return { type: "showResults", results }
+}
+
+export interface ApplyResultsAction {
+  type: "applyResults"
   results: List<ActionResult>
-): ActionsPerformedAction {
-  return { type: "actionsPerformed", resultingGame, results }
+}
+
+export function applyResults(results: List<ActionResult>): ApplyResultsAction {
+  return { type: "applyResults", results }
 }
 
 export interface PlaceCardAction {
@@ -172,6 +185,8 @@ export type Action =
   | GameCreatedAction
   | GameJoinedAction
   | GameUpdatedAction
-  | ActionsPerformedAction
+  | TurnResultsReceivedAction
+  | ShowResultsAction
+  | ApplyResultsAction
   | PlayerConnectedAction
   | PlayerDisconnectedAction

@@ -1,6 +1,7 @@
 import { List } from "immutable"
 import { Game } from "../../../common/src/state/game"
 import { MAX_PLAYER_HP } from "../../../common/src/state/player"
+import { applyResults } from "../../../common/src/turnResults/applyResults"
 import ViewState from "../state/viewState"
 import { Action, socketConnected } from "./types"
 
@@ -35,9 +36,15 @@ export default function applyStateChange(state: ViewState, action: Action) {
     case "gameUpdated":
       return state.set("game", action.game)
 
-    case "actionsPerformed":
-      // TODO display actions
-      return applyActionsPerformed(state, action.resultingGame)
+    case "turnResultsReceived":
+      return applyTurnResultsReceived(state)
+
+    case "showResults":
+      console.log("TODO show results")
+      return state
+
+    case "applyResults":
+      return state.set("game", applyResults(action.results, state.game))
 
     case "placeCard":
       return applyPlaceCard(state, action.index)
@@ -62,7 +69,7 @@ export default function applyStateChange(state: ViewState, action: Action) {
   }
 }
 
-function applyActionsPerformed(state: ViewState, resultingGame: Game) {
+function applyTurnResultsReceived(state: ViewState) {
   if (state.connectedAs.type === "player") {
     state = state.set("connectedAs", {
       ...state.connectedAs,
@@ -70,7 +77,7 @@ function applyActionsPerformed(state: ViewState, resultingGame: Game) {
     })
   }
 
-  return state.set("game", resultingGame)
+  return state
 }
 
 function applyPlaceCard(state: ViewState, index: number) {

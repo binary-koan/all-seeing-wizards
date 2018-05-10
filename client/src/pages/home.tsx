@@ -5,7 +5,7 @@ import { DOMSource, VNode } from "@cycle/dom"
 import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
-import { Action, createGame, joinGame, rejoinGame, rehostGame } from "../actions/types"
+import { Action, createGame, joinGame, rehostGame, rejoinGame } from "../actions/types"
 import ActionButton from "../components/actionButton"
 import FatalError from "../components/fatalError"
 import ViewState from "../state/viewState"

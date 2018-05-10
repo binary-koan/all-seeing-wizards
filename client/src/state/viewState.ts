@@ -1,7 +1,7 @@
 import { List } from "immutable"
+import performTurn from "../../../common/src/performTurn"
 import { Game } from "../../../common/src/state/game"
 import { RecordFactory } from "../../../common/src/util/immutableExtras"
-import performTurn from "../../../common/src/performTurn"
 
 type Connection =
   | { type: "none" }

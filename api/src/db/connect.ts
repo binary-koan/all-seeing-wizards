@@ -6,12 +6,7 @@ export default async function connect({ uri, dbName }: { uri: string; dbName: st
   const client = await MongoClient.connect(uri)
   const db = client.db(dbName)
 
-  const packsDir = __dirname + "/../../../packs"
-  const fileContents = readdirSync(packsDir)
-    .filter(name => /^\w+$/.test(name))
-    .map(name => readFileSync(`${packsDir}/${name}/dbValues.json`).toString())
-
-  await loadPacks(fileContents, db)
+  await loadPacks(db)
 
   return { client, db }
 }

@@ -1,6 +1,7 @@
 import { List, Map } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { Card } from "../../../../common/src/state/card"
+import { Duration } from "../../../../common/src/state/duration"
 import { CardDoc } from "../types"
 
 export default async function loadCards(packIds: ObjectID[], db: Db) {
@@ -25,4 +26,12 @@ function addCard(cards: Map<string, Card>, doc: CardDoc) {
   })
 
   return cards.set(card.id, card)
+}
+
+// TODO improve
+function buildEffect(effect: any) {
+  if (effect.duration) {
+    effect.duration = new Duration(effect.duration.type, effect.duration.length)
+  }
+  return effect
 }

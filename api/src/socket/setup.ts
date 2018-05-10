@@ -34,6 +34,8 @@ import { serializeGame } from "../../../common/src/state/serialization/game"
 import GameManager from "../state/gameManager"
 import { Client, HostClient, PlayerClient } from "./clientTypes"
 
+import packDefinitions from "../../../packs/dbValues"
+
 export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)
 
@@ -45,7 +47,7 @@ export default function setup(server: Server, manager: GameManager) {
           data.packIds ||
             (await manager.db
               .collection("packs")
-              .find({})
+              .find<any>({ name: packDefinitions[0].name, version: packDefinitions[0].version })
               .toArray()).map(doc => doc._id.toHexString())
         )
 

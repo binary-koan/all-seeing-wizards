@@ -6,6 +6,8 @@ import { Db, MongoClient } from "mongodb"
 import { Pack } from "../../../common/src/state/pack"
 import loadPacks from "../../src/db/loadPacks"
 
+import defaultPackDefinitions from "../../../packs/dbValues"
+
 let db: Db
 
 beforeAll(done =>
@@ -20,13 +22,9 @@ afterAll(done => mongoUnit.stop().then(() => done()))
 
 describe("#loadPacks", () => {
   it("loads packs from the default directory", async () => {
-    const baseDir = __dirname + "/../../../packs"
-    const names = readdirSync(baseDir).filter(name => /^\w+$/.test(name))
-    const dbValuesPaths = names.map(name => `${baseDir}/${name}/dbValues.json`)
+    const names = defaultPackDefinitions.map(definition => definition.name)
 
-    const fileContents = dbValuesPaths.map(path => readFileSync(path).toString())
-
-    await loadPacks(fileContents, db)
+    await loadPacks(db)
 
     const packsCount = await db.collection("packs").count({ name: { $in: names } })
     await expect(packsCount).toBe(names.length)

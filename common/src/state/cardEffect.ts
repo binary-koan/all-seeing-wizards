@@ -11,17 +11,17 @@ export interface MovementEffect {
 export interface AttackEffect {
   type: "attack"
   damage: number
-  ranges: List<CardRange>
+  ranges: CardRange[]
 }
 export interface KnockbackEffect {
   type: "knockback"
   amount: number
-  ranges: List<CardRange>
+  ranges: CardRange[]
 }
 export interface PreventActionsEffect {
   type: "preventActions"
   duration: Duration
-  ranges: List<CardRange>
+  ranges: CardRange[]
 }
 export interface ShieldEffect {
   type: "shield"

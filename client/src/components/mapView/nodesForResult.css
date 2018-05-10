@@ -4,3 +4,7 @@
   opacity: 0.4;
   transform: scale(0.2);
 }
+
+.attack-result {
+  background-color: #f00;
+}

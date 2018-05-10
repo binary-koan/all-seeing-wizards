@@ -3,16 +3,12 @@ import { Db, ObjectID } from "mongodb"
 import { BoardObjectType } from "../../../common/src/state/boardObject"
 import { BoardTileType } from "../../../common/src/state/boardTile"
 import { CardEffect } from "../../../common/src/state/cardEffect"
+import { Duration } from "../../../common/src/state/duration"
 import { Pack } from "../../../common/src/state/pack"
+import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../../packs/dbTypes"
 import { BoardDoc, BoardObjectDoc, CardDoc, CharacterDoc } from "./types"
 
-interface PackDbValues {
-  version: number
-  name: string
-  boards: BoardConfig[]
-  characters: CharacterConfig[]
-  cards: CardConfig[]
-}
+import packDefinitions from "../../../packs/dbValues"
 
 const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardTileType } = {
   ".": "ground",
@@ -27,24 +23,7 @@ const BOARD_OBJECT_TYPE_MAPPING: { [key: string]: BoardObjectType } = {
   r: "rock"
 }
 
-type BoardConfig = string[][]
-
-interface CharacterConfig {
-  name: string
-  type: string
-}
-
-interface CardConfig {
-  name: string
-  count: number
-  effects: CardEffect[]
-}
-
-export default async function loadPacks(fileContents: string[], db: Db) {
-  const packDefinitions = fileContents
-    .map(content => JSON.parse(content) as PackDbValues)
-    .sort((first, second) => first.name.localeCompare(second.name))
-
+export default async function loadPacks(db: Db) {
   const existingPacks = await db
     .collection("packs")
     .find<Pack>({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
@@ -62,7 +41,7 @@ export default async function loadPacks(fileContents: string[], db: Db) {
   return Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
 }
 
-async function loadPack(data: PackDbValues, db: Db) {
+async function loadPack(data: DbValues, db: Db) {
   const packInsert = await db
     .collection("packs")
     .insertOne({ version: data.version, name: data.name })

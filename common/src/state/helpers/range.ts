@@ -16,11 +16,14 @@ export function affectedPlayers(tiles: List<BoardTile>, game: Game): List<Player
 }
 
 export function affectedTiles(
-  ranges: List<CardRange>,
+  ranges: CardRange[],
   from: DirectionalPoint,
   board: Board
 ): List<BoardTile> {
-  return ranges.flatMap(range => affectedTilesForRange(range, from, board)) as List<BoardTile>
+  return ranges.reduce(
+    (list, range) => list.concat(affectedTilesForRange(range, from, board)).toList(),
+    List() as List<BoardTile>
+  )
 }
 
 function affectedTilesForRange(

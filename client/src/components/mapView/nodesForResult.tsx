@@ -24,7 +24,17 @@ const DEFAULT_NODE_BUILDERS: {
   [key: string]: (result: ActionResult) => VNode[]
 } = {
   attack(result: AttackResult) {
-    return []
+    return result.tiles
+      .map(tile => (
+        <div
+          className="map-item attack-result"
+          style={{
+            "--x": tile.position.x.toString(),
+            "--y": tile.position.y.toString()
+          }}
+        />
+      ))
+      .toArray()
   },
 
   attemptPreventActions(result: AttemptPreventActionsResult) {

@@ -28,6 +28,8 @@ export function calculateKnockbackResults(
 function effectResults(effect: KnockbackEffect, caster: Player, game: Game) {
   const tiles = affectedTiles(effect.ranges, caster.position, game.board)
   const players = affectedPlayers(tiles, game)
+    .filterNot(affectedPlayer => affectedPlayer === caster)
+    .toList()
 
   return players.map(player => {
     const direction = knockbackDirection(caster.position, player.position)

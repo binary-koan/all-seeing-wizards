@@ -15,6 +15,7 @@ interface IPlayer {
   character: Character
   hp: number
   position: DirectionalPoint
+  lastPosition?: DirectionalPoint
   hand: Hand
   connected: boolean
   modifiers: List<Modifier>
@@ -25,6 +26,7 @@ const player = RecordFactory<IPlayer>({
   character: new Character({ id: "", name: "", type: "" }),
   hp: MAX_PLAYER_HP,
   position: new DirectionalPoint({ x: 0, y: 0, facing: "north" }),
+  lastPosition: undefined,
   hand: Hand.empty(),
   connected: false,
   modifiers: List()
@@ -35,6 +37,7 @@ export class Player extends player implements IPlayer {
   public readonly character: Character
   public readonly hp: number
   public readonly position: DirectionalPoint
+  public readonly lastPosition?: DirectionalPoint
   public readonly hand: Hand
   public readonly connected: boolean
   public readonly modifiers: List<Modifier>
@@ -52,7 +55,7 @@ export class Player extends player implements IPlayer {
   }
 
   public updatePosition(position: DirectionalPoint) {
-    return this.set("position", position)
+    return this.set("lastPosition", this.position).set("position", position)
   }
 
   public addModifier(modifier: Modifier) {

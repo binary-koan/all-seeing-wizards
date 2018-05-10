@@ -8,7 +8,7 @@ import { Player } from "../../../common/src/state/player"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
 import ViewState from "../state/viewState"
 import PlacedCardResults from "./mapView/placedCardResults"
-import rotationFrom from "./mapView/rotation"
+import annoyingRotationHack from "./mapView/rotation"
 
 import data from "../../../packs/base/viewConfig"
 
@@ -38,15 +38,18 @@ export default function MapView({
   function plannedPlayerPosition() {
     if (plannedResults && plannedResults.findLast(result => result.movementPath)) {
       const newPlayer = placedCardResults.game.player(player.id)
+      const id = `map-shadow-player-${player.id}`
+      const rotation = annoyingRotationHack(`#${id}`, newPlayer.position.facing)
 
       return (
         <div
+          id={id}
           className="map-item map-shadow-player"
           style={{
             "--x": newPlayer.position.x.toString(),
             "--y": newPlayer.position.y.toString(),
             "--image-url": `url(${data.characters[newPlayer.character.name].image})`,
-            "--rotation": rotationFrom(newPlayer.position)
+            "--rotation": `${rotation}deg`
           }}
         />
       )
@@ -67,20 +70,26 @@ export default function MapView({
         .toArray()}
       {plannedActionEffects()}
       {game.players
-        .map(player => (
-          <div
-            className="map-item map-player"
-            class={{ "is-knocked-out": player.hp <= 0 }}
-            style={{
-              "--x": player.position.x.toString(),
-              "--y": player.position.y.toString(),
-              "--image-url": `url(${data.characters[player.character.name].image})`,
-              "--rotation": rotationFrom(player.position)
-            }}
-          >
-            <div className="map-player-display" />
-          </div>
-        ))
+        .map(otherPlayer => {
+          const id = `map-player-${otherPlayer.id}`
+          const rotation = annoyingRotationHack(`#${id}`, otherPlayer.position.facing)
+
+          return (
+            <div
+              id={id}
+              className="map-item map-player"
+              class={{ "is-knocked-out": otherPlayer.hp <= 0 }}
+              style={{
+                "--x": otherPlayer.position.x.toString(),
+                "--y": otherPlayer.position.y.toString(),
+                "--image-url": `url(${data.characters[otherPlayer.character.name].image})`,
+                "--rotation": `${rotation}deg`
+              }}
+            >
+              <div className="map-player-display" />
+            </div>
+          )
+        })
         .toArray()}
       {plannedPlayerPosition()}
     </div>

@@ -105,10 +105,22 @@ const ROTATION_AMOUNT = {
   anticlockwise: 3
 }
 
-function rotateFacingDirection(direction: Direction, rotation: Rotation) {
+export function rotateFacingDirection(direction: Direction, rotation: Rotation): Direction {
   for (let i = 0; i < ROTATION_AMOUNT[rotation]; i++) {
     direction = NEXT_DIRECTION_CLOCKWISE[direction]
   }
 
   return direction
+}
+
+export function rotationBetween(first: Direction, second: Direction): Rotation {
+  if (first === second) {
+    return "none"
+  } else if (NEXT_DIRECTION_CLOCKWISE[first] === second) {
+    return "clockwise"
+  } else if (NEXT_DIRECTION_CLOCKWISE[NEXT_DIRECTION_CLOCKWISE[first]] === second) {
+    return "reverse"
+  } else {
+    return "anticlockwise"
+  }
 }

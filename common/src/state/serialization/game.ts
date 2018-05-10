@@ -29,6 +29,7 @@ export function deserializeGame(data: any) {
             character: new Character(playerData.character),
             hp: playerData.hp,
             position: new DirectionalPoint(playerData.position),
+            lastPosition: playerData.lastPosition && new DirectionalPoint(playerData.lastPosition),
             hand: new Hand({
               cards: List(playerData.hand.cards)
                 .map(deserializeCard)

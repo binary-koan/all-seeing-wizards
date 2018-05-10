@@ -30,8 +30,6 @@ export class Modifier extends modifier implements IModifier {
 
     if (newDuration === this.duration) {
       return this
-    } else if (newDuration.expired) {
-      return undefined
     } else {
       return new Modifier({ type: this.type, duration: newDuration })
     }

@@ -23,6 +23,8 @@ function addCard(cards: Map<string, Card>, doc: CardDoc) {
     name: doc.name,
     tagline: doc.tagline,
     effects: List(doc.effects)
+      .map(buildEffect)
+      .toList()
   })
 
   return cards.set(card.id, card)

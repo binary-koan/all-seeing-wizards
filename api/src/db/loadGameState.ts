@@ -84,10 +84,10 @@ function addPlayer(
         modifiers: List(doc.modifiers)
           .map(
             modifier =>
-              ({
+              new Modifier({
                 type: modifier.type,
                 duration: new Duration(modifier.duration.type, modifier.duration.length)
-              } as Modifier)
+              })
           )
           .toList(),
         connected: doc.connected

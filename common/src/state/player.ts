@@ -69,7 +69,9 @@ export class Player extends player implements IPlayer {
   public advanceModifiers(advancementType: "action" | "turn") {
     return this.set(
       "modifiers",
-      this.modifiers.map(modifier => modifier.advance(advancementType)).filter(Boolean)
+      this.modifiers
+        .map(modifier => modifier.advance(advancementType))
+        .filter(modifier => !modifier.duration.expired)
     )
   }
 

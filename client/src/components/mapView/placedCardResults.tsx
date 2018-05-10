@@ -1,3 +1,5 @@
+import "./placedCardResults.css"
+
 import { VNode } from "@cycle/dom"
 import { List } from "immutable"
 import * as Snabbdom from "snabbdom-pragma"

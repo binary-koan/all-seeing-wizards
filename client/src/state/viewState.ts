@@ -57,9 +57,18 @@ export default class ViewState extends viewState implements IViewState {
       return
     }
 
-    const gameWithPlacedCards = this.game.updatePlayer(
+    let gameWithPlacedCards = this.game.updatePlayer(
       this.player.updateHand(this.player.hand.pickCards(this.placedCardIndexes))
     )
+
+    this.game.players
+      .filterNot(player => player.id === this.player.id)
+      .forEach(
+        player =>
+          (gameWithPlacedCards = gameWithPlacedCards.updatePlayer(
+            player.updateHand(player.hand.removePickedCards())
+          ))
+      )
 
     return performTurn(gameWithPlacedCards)
   }

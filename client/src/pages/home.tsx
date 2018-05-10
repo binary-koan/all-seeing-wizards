@@ -5,7 +5,7 @@ import { DOMSource, VNode } from "@cycle/dom"
 import * as Snabbdom from "snabbdom-pragma"
 import xs, { Stream } from "xstream"
 
-import { Action, createGame, joinGame } from "../actions/types"
+import { Action, createGame, joinGame, rejoinGame, rehostGame } from "../actions/types"
 import ActionButton from "../components/actionButton"
 import FatalError from "../components/fatalError"
 import ViewState from "../state/viewState"
@@ -34,6 +34,31 @@ export default function Home({
       }
     }
 
+    function rejoinGameButton() {
+      // TODO use streams for sessionStorage
+      const lastGameCode = sessionStorage.getItem("all-seeing-wizards.lastGameCode")
+      const lastPlayerId = sessionStorage.getItem("all-seeing-wizards.lastPlayerId")
+
+      if (lastPlayerId) {
+        return (
+          <ActionButton
+            action={rejoinGame(lastGameCode, lastPlayerId)}
+            className="home-buttons-rejoin"
+          >
+            Keep playing game {lastGameCode}
+          </ActionButton>
+        )
+      } else if (lastGameCode) {
+        return (
+          <ActionButton action={rehostGame(lastGameCode)} className="home-buttons-rejoin">
+            Keep hosting game {lastGameCode}
+          </ActionButton>
+        )
+      } else {
+        return ""
+      }
+    }
+
     return (
       <main>
         {errorView(viewState)}
@@ -45,6 +70,7 @@ export default function Home({
           <ActionButton action={joinGame()} className="home-buttons-join">
             Join Game
           </ActionButton>
+          {rejoinGameButton()}
         </div>
       </main>
     )

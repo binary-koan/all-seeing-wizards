@@ -22,9 +22,12 @@ export default function applyStateChange(state: ViewState, action: Action) {
       return state.set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })
 
     case "gameCreated":
+      sessionStorage.setItem("all-seeing-wizards.lastGameCode", action.game.code)
       return state.set("game", action.game).set("connectedAs", { type: "host" })
 
     case "gameJoined":
+      sessionStorage.setItem("all-seeing-wizards.lastGameCode", action.game.code)
+      sessionStorage.setItem("all-seeing-wizards.lastPlayerId", action.playerId)
       return state
         .set("game", action.game)
         .set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })

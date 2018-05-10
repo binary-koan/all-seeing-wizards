@@ -27,6 +27,16 @@
   background-color: var(--green);
 }
 
+.home-buttons-rejoin {
+  margin-top: 1.5rem;
+  background-color: var(--yellow-dark);
+  font-weight: bold;
+}
+
+.home-buttons-rejoin:hover {
+  background-color: var(--yellow);
+}
+
 .home-buttons .logo {
   width: 12rem;
 }

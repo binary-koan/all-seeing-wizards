@@ -41,7 +41,8 @@ export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)
 
   io.on("connection", async socket => {
-    socket.on(
+    respondTo(
+      socket,
       CREATE_GAME,
       withoutGameClient(socket, async (data: CreateGameData) => {
         const game = await manager.create(
@@ -59,7 +60,8 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on(
+    respondTo(
+      socket,
       REHOST_GAME,
       withoutGameClient(socket, async (data: RehostGameData) => {
         const game = await manager.get(data.gameCode)
@@ -71,7 +73,8 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on(
+    respondTo(
+      socket,
       JOIN_GAME,
       withoutGameClient(socket, async (data: JoinGameData) => {
         const game = await manager.get(data.gameCode)
@@ -92,7 +95,8 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on(
+    respondTo(
+      socket,
       REJOIN_GAME,
       withoutGameClient(socket, async (data: RejoinGameData) => {
         const game = await manager.get(data.gameCode)
@@ -111,7 +115,8 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on(
+    respondTo(
+      socket,
       START_GAME,
       withGameClient(socket, async client => {
         const newState = await manager.start(client.gameCode)
@@ -126,7 +131,8 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on(
+    respondTo(
+      socket,
       SUBMIT_CARDS,
       withGameClient(socket, async (client, data: SubmitCardsData) => {
         if (!client.isPlayer) {
@@ -160,7 +166,7 @@ export default function setup(server: Server, manager: GameManager) {
       })
     )
 
-    socket.on("disconnect", async () => {
+    respondTo(socket, "disconnect", async () => {
       if (socket.request.gameClient && socket.request.gameClient.isPlayer) {
         await manager.disconnectPlayer(
           socket.request.gameClient.gameCode,
@@ -175,6 +181,19 @@ export default function setup(server: Server, manager: GameManager) {
   })
 
   return io
+}
+
+function respondTo(socket: socketIo.Socket, event: string, handler: (data: any) => any) {
+  return socket.on(event, async data => {
+    try {
+      console.log(`Received ${event} with ${JSON.stringify(data)}`)
+      await Promise.resolve(handler(data))
+    } catch (e) {
+      emitToSocket<UnexpectedErrorData>(socket, UNEXPECTED_ERROR, {
+        message: e.message || "unknown error"
+      })
+    }
+  })
 }
 
 function withGameClient(socket: socketIo.Socket, handler: (client: Client, data: any) => any) {

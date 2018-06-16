@@ -72,6 +72,23 @@ export default function Home({
           </ActionButton>
           {rejoinGameButton()}
         </div>
+        <canvas
+          width="300"
+          height="300"
+          pixi={{
+            root: (
+              <container key="root">
+                <text
+                  key="text"
+                  text="Hello!"
+                  x={100}
+                  y={100}
+                  textStyle={{ fontFamily: "Arial", fontSize: 24, fill: 0xffffff }}
+                />
+              </container>
+            )
+          }}
+        />
       </main>
     )
   }

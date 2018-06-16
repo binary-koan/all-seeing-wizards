@@ -1,6 +1,6 @@
 import "./main.css"
 
-import { DOMSource, h1, makeDOMDriver } from "@cycle/dom"
+import { DOMSource } from "@cycle/dom"
 import { makeHistoryDriver } from "@cycle/history"
 import { run } from "@cycle/run"
 import io = require("socket.io-client")
@@ -16,6 +16,7 @@ import GamePlayer from "./pages/gamePlayer"
 import Home from "./pages/home"
 import ViewState from "./state/viewState"
 import { logStream } from "./util/debug"
+import customDOMDriver from "./util/domDriver"
 import fromArrayAsync from "./util/fromArrayAsync"
 import { makeSocketIODriver, SocketIOSource } from "./util/socketIoDriver"
 
@@ -74,7 +75,7 @@ function main({
 const socket = io("http://localhost:3000")
 
 run(main, {
-  DOM: makeDOMDriver("#app"),
+  DOM: customDOMDriver("#app"),
   socketIO: makeSocketIODriver(socket),
   history: makeHistoryDriver()
 })

@@ -41,6 +41,23 @@ export default function Home({
           <button data-action="createGame">Create Game</button>
           <button data-action="joinGame">Join Game</button>
         </div>
+        <canvas
+          width="300"
+          height="300"
+          pixi={{
+            root: (
+              <container key="root">
+                <text
+                  key="text"
+                  text="Hello!"
+                  x={100}
+                  y={100}
+                  textStyle={{ fontFamily: "Arial", fontSize: 24, fill: 0xffffff }}
+                />
+              </container>
+            )
+          }}
+        />
       </main>
     )
   }

@@ -8,6 +8,8 @@ const MobileCharacters = styled.img`
   width: 25rem;
   max-width: 80%;
   margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
 
   @media screen and (min-width: 1000px) {
     display: none;
@@ -25,10 +27,10 @@ const DesktopCharacters = styled.img`
 `
 
 const CharactersImage: React.SFC = _props => (
-  <div>
+  <>
     <MobileCharacters src={mobileImage} />
     <DesktopCharacters src={desktopImage} />
-  </div>
+  </>
 )
 
 export default CharactersImage

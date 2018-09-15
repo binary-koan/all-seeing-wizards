@@ -17,6 +17,17 @@ const store = createStore(applyStateChange)
 injectGlobal`
   ${normalize()}
 
+  * {
+    box-sizing: border-box;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    text-align: inherit;
+  }
+
   html,
   body {
     height: 100%;

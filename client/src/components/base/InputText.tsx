@@ -24,19 +24,20 @@ const Input = styled.input`
   }
 
   &::placeholder {
-    color: $color-muted;
+    color: rgba(255, 255, 255, 0.25);
   }
 `
 
 interface InputTextProps {
   label: string
   placeholder?: string
+  autoFocus?: boolean
 }
 
 const InputText: React.SFC<InputTextProps> = props => (
   <div>
     <Label>{props.label}</Label>
-    <Input type="text" placeholder={props.placeholder} />
+    <Input type="text" autoFocus={props.autoFocus} placeholder={props.placeholder} />
   </div>
 )
 

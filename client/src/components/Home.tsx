@@ -61,7 +61,7 @@ export default class extends React.Component<{}, { showingForm: "host" | "join" 
   }
 
   private joinForm() {
-    if (this.state.showingForm === "join") {
+    if (IS_MOBILE || this.state.showingForm === "join") {
       return <JoinForm />
     }
   }

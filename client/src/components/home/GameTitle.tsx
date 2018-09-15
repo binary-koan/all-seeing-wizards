@@ -3,7 +3,7 @@ import React from "react"
 import styled from "../util/styled"
 
 const TitleWrapper = styled.h1`
-  margin: 0;
+  margin: 0 0 2rem 0;
   text-align: center;
   font-size: ${_props => between("60px", "100px", "320px", "600px")};
   font-family: "Luckiest Guy", sans-serif;

@@ -12,11 +12,15 @@ const OptionAction = styled(ActionButton)`
   margin-right: 0.75rem;
 `
 
-export default function() {
-  return (
-    <OptionsWrapper>
-      <OptionAction type="primary">Host Game</OptionAction>
-      <OptionAction type="secondary">Join Game</OptionAction>
-    </OptionsWrapper>
-  )
-}
+const JoinHostOptions: React.SFC<{ onHost?: () => void; onJoin?: () => void }> = props => (
+  <OptionsWrapper>
+    <OptionAction type="primary" onClick={props.onHost}>
+      Host Game
+    </OptionAction>
+    <OptionAction type="secondary" onClick={props.onJoin}>
+      Join Game
+    </OptionAction>
+  </OptionsWrapper>
+)
+
+export default JoinHostOptions

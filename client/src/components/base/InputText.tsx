@@ -32,12 +32,20 @@ interface InputTextProps {
   label: string
   placeholder?: string
   autoFocus?: boolean
+  value?: string
+  onChange?: (value: string) => void
 }
 
 const InputText: React.SFC<InputTextProps> = props => (
   <div>
     <Label>{props.label}</Label>
-    <Input type="text" autoFocus={props.autoFocus} placeholder={props.placeholder} />
+    <Input
+      type="text"
+      autoFocus={props.autoFocus}
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={e => props.onChange && props.onChange((e.target as HTMLInputElement).value)}
+    />
   </div>
 )
 

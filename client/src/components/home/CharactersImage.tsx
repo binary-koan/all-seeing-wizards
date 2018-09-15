@@ -1,4 +1,4 @@
-import React = require("react")
+import React from "react"
 import styled from "../util/styled"
 
 import desktopImage from "../../../assets/home/characters-desktop.png"

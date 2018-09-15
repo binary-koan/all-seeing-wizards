@@ -2,6 +2,15 @@ import { List } from "immutable"
 import { Game } from "../../../common/src/state/game"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
 
+export interface SetGameCodeAction {
+  type: "setGameCode"
+  code: string
+}
+
+export function setGameCode(code: string): SetGameCodeAction {
+  return { type: "setGameCode", code }
+}
+
 export interface FatalErrorAction {
   type: "fatalError"
   message: string
@@ -174,6 +183,7 @@ export type Action =
   | SocketConnectedAction
   | SocketDisconnectedAction
   | FatalErrorAction
+  | SetGameCodeAction
   | CreateGameAction
   | RehostGameAction
   | JoinGameAction

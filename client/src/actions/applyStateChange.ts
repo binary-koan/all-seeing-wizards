@@ -1,14 +1,16 @@
 import { List } from "immutable"
-import { Game } from "../../../common/src/state/game"
 import { MAX_PLAYER_HP } from "../../../common/src/state/player"
 import { applyResults } from "../../../common/src/turnResults/applyResults"
 import ViewState from "../state/viewState"
-import { Action, socketConnected } from "./types"
+import { Action } from "./types"
 
-export default function applyStateChange(state: ViewState, action: Action) {
+export default function applyStateChange(state: ViewState = new ViewState(), action: Action) {
   switch (action.type) {
     case "fatalError":
       return state.set("error", { message: action.message, exception: action.exception })
+
+    case "setGameCode":
+      return state.set("gameCode", action.code.toUpperCase())
 
     case "socketConnected":
       return state.set("socketState", "connected")

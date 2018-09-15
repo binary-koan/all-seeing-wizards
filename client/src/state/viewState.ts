@@ -11,14 +11,16 @@ type Connection =
 
 interface IViewState {
   game?: Game
+  gameCode: string
   connectedAs: Connection
   error?: { message: string; exception?: string }
-  socketState: "connecting" | "connected" | "disconnected"
+  socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
   showingResults?: List<ActionResult>
 }
 
 const viewState = RecordFactory<IViewState>({
   game: undefined,
+  gameCode: "",
   connectedAs: { type: "none" },
   error: undefined,
   socketState: "connecting",
@@ -27,9 +29,10 @@ const viewState = RecordFactory<IViewState>({
 
 export default class ViewState extends viewState implements IViewState {
   public readonly game?: Game
+  public readonly gameCode: string
   public readonly error?: { message: string; exception?: string }
   public readonly connectedAs: Connection
-  public readonly socketState: "connecting" | "connected" | "disconnected"
+  public readonly socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
   public readonly showingResults?: List<ActionResult>
 
   constructor(config?: Partial<IViewState>) {

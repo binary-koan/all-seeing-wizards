@@ -30,7 +30,7 @@ import {
   socketConnected,
   socketDisconnected,
   turnResultsReceived
-} from "../actions/types"
+} from "./actions"
 
 type Subscriber = (action: Action) => void
 

@@ -7,7 +7,7 @@ import {
   START_GAME,
   SUBMIT_CARDS
 } from "../../../common/src/messages/toServer"
-import { Action } from "../actions/types"
+import { Action } from "./actions"
 import ViewState from "./viewState"
 
 interface SocketEvent {

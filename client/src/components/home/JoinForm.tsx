@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
-import { Action, joinGame, setGameCode } from "../../actions/types"
+import { Action, joinGame, setGameCode } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import InputText from "../base/InputText"

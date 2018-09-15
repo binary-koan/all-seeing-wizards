@@ -2,9 +2,9 @@ import { List } from "immutable"
 import { MAX_PLAYER_HP } from "../../../common/src/state/player"
 import { applyResults } from "../../../common/src/turnResults/applyResults"
 import ViewState from "../state/viewState"
-import { Action } from "./types"
+import { Action } from "./actions"
 
-export default function applyStateChange(state: ViewState = new ViewState(), action: Action) {
+export default function reducer(state: ViewState = new ViewState(), action: Action) {
   switch (action.type) {
     case "fatalError":
       return state.set("error", { message: action.message, exception: action.exception })

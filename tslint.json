@@ -6,7 +6,7 @@
     "interface-name": false,
     "no-bitwise": false,
     "no-object-literal-type-assertion": false,
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "variable-name": false,
     // Common and specific dependencies at different levels are currently used interchangeably
     "no-implicit-dependencies": false,
     "no-submodule-imports": false,

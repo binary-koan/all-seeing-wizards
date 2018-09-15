@@ -7,8 +7,10 @@
     "postinstall": "cd api && npm install && cd ../client && npm install"
   },
   "dependencies": {
+    "@types/socket.io-client": "^1.4.32",
     "immutable": "^3.8.2",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "@types/jest": "^22.2.2",

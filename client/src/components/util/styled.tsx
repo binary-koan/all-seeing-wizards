@@ -12,12 +12,14 @@ export interface AppTheme {
   colorDark: string
   colorMuted: string
   colorPrimary: string
+  colorDanger: string
 }
 
 export const theme = {
   colorDark: "#20263d",
   colorMuted: "#8b8e9a",
-  colorPrimary: "#eca858"
+  colorPrimary: "#eca858",
+  colorDanger: "#f44236"
 }
 
 export default styled

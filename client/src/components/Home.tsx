@@ -5,6 +5,7 @@ import HomeLayout from "./home/HomeLayout"
 import HostForm from "./home/HostForm"
 import JoinForm from "./home/JoinForm"
 import JoinHostOptions from "./home/JoinHostOptions"
+import RejoinMessage from "./home/RejoinMessage"
 
 const IS_MOBILE = Math.min(window.innerWidth, window.innerHeight) < 600
 
@@ -19,15 +20,13 @@ export default class extends React.Component<{}, { showingForm: "host" | "join" 
 
   public render() {
     return (
-      <div>
-        <HomeLayout>
-          {this.gameTitle()}
-          {this.backButton()}
-          {this.joinHostOptions()}
-          {this.hostForm()}
-          {this.joinForm()}
-        </HomeLayout>
-      </div>
+      <HomeLayout banner={<RejoinMessage />}>
+        {this.gameTitle()}
+        {this.backButton()}
+        {this.joinHostOptions()}
+        {this.hostForm()}
+        {this.joinForm()}
+      </HomeLayout>
     )
   }
 

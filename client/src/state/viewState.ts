@@ -6,7 +6,7 @@ import { RecordFactory } from "../../../common/src/util/immutableExtras"
 
 type Connection =
   | { type: "none" }
-  | { type: "host" }
+  | { type: "host"; id: string }
   | { type: "player"; id: string; placedCards: List<number> }
 
 interface IViewState {

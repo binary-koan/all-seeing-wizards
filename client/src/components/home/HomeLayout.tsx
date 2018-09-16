@@ -2,11 +2,17 @@ import React from "react"
 import styled from "../util/styled"
 import CharactersImage from "./CharactersImage"
 
+const BannerLayout = styled.main`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
 const LayoutWrapper = styled.div`
+  flex: 1;
   display: flex;
   flex-flow: column-reverse;
   align-items: center;
-  height: 100%;
   color: white;
   font-size: 1.25rem;
 
@@ -27,11 +33,18 @@ const LayoutContent = styled.div`
   }
 `
 
-const HomeLayout: React.SFC = props => (
-  <LayoutWrapper>
-    <CharactersImage />
-    <LayoutContent>{props.children}</LayoutContent>
-  </LayoutWrapper>
+interface HomeLayoutProps {
+  banner: JSX.Element
+}
+
+const HomeLayout: React.SFC<HomeLayoutProps> = props => (
+  <BannerLayout>
+    {props.banner}
+    <LayoutWrapper>
+      <CharactersImage />
+      <LayoutContent>{props.children}</LayoutContent>
+    </LayoutWrapper>
+  </BannerLayout>
 )
 
 export default HomeLayout

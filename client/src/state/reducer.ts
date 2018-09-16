@@ -18,8 +18,14 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
     case "socketDisconnected":
       return state.set("socketState", "disconnected")
 
+    case "createGame":
+      return state.set("socketState", "awaitingResponse")
+
     case "rehostGame":
       return state.set("connectedAs", { type: "host" })
+
+    case "joinGame":
+      return state.set("socketState", "awaitingResponse")
 
     case "rejoinGame":
       return state.set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })

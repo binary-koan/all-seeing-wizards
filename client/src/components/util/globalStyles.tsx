@@ -22,4 +22,8 @@ injectGlobal`
     font-family: "Signika Negative", sans-serif;
     background-color: #20263d;
   }
+
+  body > div {
+    height: 100%;
+  }
 `

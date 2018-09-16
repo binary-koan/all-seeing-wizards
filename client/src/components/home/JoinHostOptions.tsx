@@ -1,4 +1,4 @@
-import React = require("react")
+import React from "react"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
 

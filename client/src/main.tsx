@@ -3,19 +3,23 @@ import { render } from "react-dom"
 import { Provider as StoreProvider } from "react-redux"
 import App from "./components/App"
 import FatalError from "./components/FatalError"
-import { theme, ThemeProvider } from "./components/util/styled"
+import styled, { theme, ThemeProvider } from "./components/util/styled"
 
 import store from "./state"
 
 import "./components/util/globalStyles"
 
+const Wrapper = styled.div`
+  height: 100%;
+`
+
 render(
   <StoreProvider store={store}>
     <ThemeProvider theme={theme}>
-      <main>
+      <Wrapper>
         <FatalError />
         <App />
-      </main>
+      </Wrapper>
     </ThemeProvider>
   </StoreProvider>,
   document.getElementById("app")

@@ -56,7 +56,13 @@ const FatalError: React.SFC<StateProps> = props => {
 }
 
 function mapStateToProps(state: ViewState): StateProps {
-  return state.error || {}
+  if (state.error) {
+    return state.error
+  } else if (state.socketState === "disconnected") {
+    return { message: "Disconnected from the server. Try reloading the page." }
+  } else {
+    return {}
+  }
 }
 
 export default connect(mapStateToProps)(FatalError)

@@ -8,16 +8,15 @@ import Player from "./Player"
 
 interface AppProps {
   gameCode?: string
-  hostId?: string
   playerId?: string
   isLoading: boolean
 }
 
 const App: React.SFC<AppProps> = props => {
-  if (props.gameCode && props.hostId) {
-    return <Host />
-  } else if (props.gameCode && props.playerId) {
+  if (props.gameCode && props.playerId) {
     return <Player />
+  } else if (props.gameCode) {
+    return <Host />
   } else if (props.isLoading) {
     return <Loading />
   } else {
@@ -27,8 +26,7 @@ const App: React.SFC<AppProps> = props => {
 
 function mapStateToProps(state: ViewState): AppProps {
   return {
-    gameCode: state.gameCode,
-    hostId: state.connectedAs.type === "host" && state.connectedAs.id,
+    gameCode: state.game && state.game.code,
     playerId: state.connectedAs.type === "player" && state.connectedAs.id,
     isLoading: state.socketState === "awaitingResponse"
   }

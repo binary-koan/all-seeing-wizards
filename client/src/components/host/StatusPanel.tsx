@@ -19,14 +19,14 @@ const StatusPanelWrapper = styled.div`
 `
 
 const StatusPanelTitle = styled.h2`
-  margin: 0 1rem 0.25rem 0;
+  margin: 0 2rem 0.25rem 0;
   font-size: 1.5rem;
   font-weight: bold;
   white-space: nowrap;
 `
 
 const StatusPanelDescription = styled.p`
-  margin: 0 1rem 0.5rem 0;
+  margin: 0 2rem 0 0;
 `
 
 interface StateProps {
@@ -58,8 +58,8 @@ const StatusPanel: React.SFC<StateProps> = props => {
 function mapStateToProps({ game }: ViewState): StateProps {
   if (game && !game.started) {
     return {
-      title: `Join game ${game.code}`,
-      description: `${game.players.size} joined`,
+      title: `Waiting for players ...`,
+      description: `Game code: ${game.code}`,
       actionText: "Start",
       actionEnabled: game.players.size >= 2
     }

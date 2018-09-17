@@ -1,13 +1,19 @@
 import React from "react"
-import MapView from "./game/MapView"
+import FullMapView from "./game/FullMapView"
 import StatusPanel from "./host/StatusPanel"
+import styled from "./util/styled"
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100%;
+`
 
 const Host: React.SFC = _props => {
   return (
-    <div>
+    <Wrapper>
       <StatusPanel />
-      <MapView />
-    </div>
+      <FullMapView />
+    </Wrapper>
   )
 }
 

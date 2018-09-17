@@ -7,7 +7,6 @@ export default styled<{ type: ButtonType }, "button">("button")`
   display: block;
   width: 100%;
   padding: 1rem 2rem;
-  margin-bottom: 0.5rem;
   border: none;
   border-radius: 0.375rem;
   background-color: ${props =>

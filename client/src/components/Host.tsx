@@ -1,6 +1,6 @@
 import React from "react"
-import FullMapView from "./game/FullMapView"
 import StatusPanel from "./host/StatusPanel"
+import FullMapView from "./map/FullMapView"
 import styled from "./util/styled"
 
 const Wrapper = styled.div`

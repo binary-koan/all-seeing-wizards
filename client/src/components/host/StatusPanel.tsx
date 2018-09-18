@@ -16,6 +16,7 @@ const StatusPanelWrapper = styled.div`
   border-radius: 0.25rem;
   background-color: ${props => props.theme.colorDark}
   color: white;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.25);
 `
 
 const StatusPanelTitle = styled.h2`

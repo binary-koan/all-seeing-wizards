@@ -21,6 +21,7 @@ injectGlobal`
     height: 100%;
     font-family: "Signika Negative", sans-serif;
     background-color: #20263d;
+    color: white;
   }
 
   body > div {

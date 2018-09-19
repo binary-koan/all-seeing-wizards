@@ -31,7 +31,7 @@ const JoinForm: React.SFC<StateProps & DispatchProps> = props => (
       onChange={code => props.setGameCode(code)}
     />
 
-    <ActionButton type="primary" disabled={props.isLoading} onClick={() => props.joinGame}>
+    <ActionButton type="primary" disabled={props.isLoading} onClick={() => props.joinGame()}>
       Join Now
     </ActionButton>
   </JoinFormWrapper>

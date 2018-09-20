@@ -11,7 +11,7 @@ const RejoinLink = styled.a`
   background-color: ${props => props.theme.colorPrimary};
   text-align: center;
   text-decoration: none;
-  color: ${props => props.theme.colorDark};
+  color: ${props => props.theme.colorDarkest};
 `
 
 interface DispatchProps {

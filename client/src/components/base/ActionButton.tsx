@@ -15,7 +15,7 @@ export default styled<{ type: ButtonType }, "button">("button")`
   font-size: 1.25rem;
   font-weight: 600;
   text-decoration: none;
-  color: ${props => props.theme.colorDark};
+  color: ${props => props.theme.colorDarkest};
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
 

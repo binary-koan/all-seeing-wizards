@@ -1,3 +1,4 @@
+import { lighten } from "polished"
 import * as styledComponents from "styled-components"
 
 const {
@@ -9,6 +10,7 @@ const {
 } = styledComponents as styledComponents.ThemedStyledComponentsModule<AppTheme>
 
 export interface AppTheme {
+  colorDarkest: string
   colorDark: string
   colorMuted: string
   colorPrimary: string
@@ -16,7 +18,8 @@ export interface AppTheme {
 }
 
 export const theme = {
-  colorDark: "#20263d",
+  colorDarkest: "#20263d",
+  colorDark: lighten(0.1, "#20263d"),
   colorMuted: "#8b8e9a",
   colorPrimary: "#eca858",
   colorDanger: "#f44236"

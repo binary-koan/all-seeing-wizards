@@ -14,7 +14,7 @@ const StatusPanelWrapper = styled.div`
   align-items: center;
   padding: 1rem;
   border-radius: 0.25rem;
-  background-color: ${props => props.theme.colorDark}
+  background-color: ${props => props.theme.colorDarkest}
   color: white;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.25);
 `

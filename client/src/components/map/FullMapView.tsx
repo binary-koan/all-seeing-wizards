@@ -16,7 +16,6 @@ interface StateProps {
 
 const FullMapView: React.SFC<StateProps> = props => (
   <FullHeightMapView
-    padding={1}
     sizeBasedOn="height"
     centerOn={{ x: props.boardWidth / 2, y: props.boardHeight / 2 }}
   />

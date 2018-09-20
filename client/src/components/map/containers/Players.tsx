@@ -19,7 +19,7 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
     {props.players.map(player => (
       <Sprite
         image={player.image}
-        {...props.mapViewScale.tilePosition(player)}
+        {...props.mapViewScale.mapPosition(player)}
         {...props.mapViewScale.tileSize}
       />
     ))}

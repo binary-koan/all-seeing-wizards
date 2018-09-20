@@ -19,7 +19,7 @@ const TileOverlay: React.SFC<StateProps & MapViewScaleProps> = props => {
   const sprites = props.positions.map(position => (
     <Sprite
       image={props.image}
-      {...props.mapViewScale.tilePosition(position)}
+      {...props.mapViewScale.mapPosition(position)}
       {...props.mapViewScale.tileSize}
     />
   ))

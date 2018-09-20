@@ -1,47 +1,57 @@
 import React from "react"
 
 interface MapViewScale {
-  realPadding: number
-  realWidth: number
-  realHeight: number
+  viewportWidth: number
+  viewportHeight: number
+  mapPadding: number
+  mapWidth: number
+  mapHeight: number
   tileSize: { width: number; height: number }
-  tilePosition: ({ x, y }: { x: number; y: number }) => { x: number; y: number }
-  areaSize: (
+  mapPosition: ({ x, y }: { x: number; y: number }) => { x: number; y: number }
+  mapSize: (
     { width, height }?: { width: number; height: number }
   ) => { width: number; height: number }
 }
 
 const MapViewScaleContext = React.createContext<MapViewScale>(
   buildMapViewScale({
-    realPadding: 0,
-    realWidth: 0,
-    realHeight: 0,
+    viewportWidth: 0,
+    viewportHeight: 0,
+    mapPadding: 0,
+    mapWidth: 0,
+    mapHeight: 0,
     tileSize: 0
   })
 )
 
 export function buildMapViewScale({
-  realPadding,
-  realWidth,
-  realHeight,
+  viewportWidth,
+  viewportHeight,
+  mapPadding,
+  mapWidth,
+  mapHeight,
   tileSize
 }: {
-  realPadding: number
-  realWidth: number
-  realHeight: number
+  viewportWidth: number
+  viewportHeight: number
+  mapPadding: number
+  mapWidth: number
+  mapHeight: number
   tileSize: number
 }): MapViewScale {
   return {
-    realPadding,
-    realWidth,
-    realHeight,
+    viewportWidth,
+    viewportHeight,
+    mapPadding,
+    mapWidth,
+    mapHeight,
     tileSize: { width: tileSize, height: tileSize },
-    tilePosition({ x, y }) {
-      return { x: realPadding + x * tileSize, y: realPadding + y * tileSize }
+    mapPosition({ x, y }) {
+      return { x: mapPadding + x * tileSize, y: mapPadding + y * tileSize }
     },
-    areaSize(size) {
+    mapSize(size) {
       if (!size) {
-        return { width: realWidth - realPadding * 2, height: realHeight - realPadding * 2 }
+        return { width: mapWidth - mapPadding * 2, height: mapHeight - mapPadding * 2 }
       }
 
       return { width: size.width * tileSize, height: size.height * tileSize }

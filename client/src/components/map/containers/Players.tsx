@@ -8,6 +8,7 @@ import data from "../../../../../packs/base/viewConfig"
 
 interface StateProps {
   players: Array<{
+    id: string
     x: number
     y: number
     image: string
@@ -18,6 +19,7 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
   <Container>
     {props.players.map(player => (
       <Sprite
+        key={player.id}
         image={player.image}
         {...props.mapViewScale.mapPosition(player)}
         {...props.mapViewScale.tileSize}
@@ -29,6 +31,7 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
 function mapStateToProps(state: ViewState): StateProps {
   return {
     players: state.game.players.toArray().map(player => ({
+      id: player.id,
       x: player.position.x,
       y: player.position.y,
       image: data.characters[player.character.name].image

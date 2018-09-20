@@ -17,8 +17,8 @@ interface HandCardsProps {
 
 const HandCards: React.SFC<HandCardsProps> = props => (
   <Wrapper>
-    {props.cards.map((card, index) => (
-      <HandCard key={index} card={card} />
+    {props.cards.map(card => (
+      <HandCard key={card.id} card={card} />
     ))}
   </Wrapper>
 )

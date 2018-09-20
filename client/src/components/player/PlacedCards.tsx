@@ -40,8 +40,8 @@ interface CardChooserProps {
 
 const CardChooser: React.SFC<CardChooserProps> = props => (
   <Wrapper>
-    {props.cards.map((card, index) => (
-      <PlacedCardWrapper key={index}>
+    {props.cards.map(card => (
+      <PlacedCardWrapper key={card.id}>
         <PlacedCard card={card} />
       </PlacedCardWrapper>
     ))}

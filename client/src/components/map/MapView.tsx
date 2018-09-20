@@ -53,12 +53,8 @@ const MapView: React.SFC<MapViewProps> = props => {
   const size =
     props.sizeBasedOn === "height" ? canvasSizeBasedOnHeight(props) : canvasSizeBasedOnWidth(props)
 
-  // HTML attributes can happily be passed down, but the type definitions don't currently allow this
-  // https://github.com/inlet/react-pixi/issues/47
-  const FixedStage = Stage as any
-
   return (
-    <FixedStage
+    <Stage
       className={props.className}
       width={size.realWidth}
       height={size.realHeight}
@@ -71,7 +67,7 @@ const MapView: React.SFC<MapViewProps> = props => {
         <Players />
         <PlannedPlayerPositions />
       </ScaleContextProvider>
-    </FixedStage>
+    </Stage>
   )
 }
 

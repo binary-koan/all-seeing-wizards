@@ -20,6 +20,7 @@ interface StateProps {
 interface MapViewProps extends StateProps {
   className?: string
   sizeBasedOn: "width" | "height"
+  maxSize?: number
   viewportSize?: { width: number; height: number }
   centerOn: { x: number; y: number }
 }
@@ -28,14 +29,25 @@ function pad(size: number) {
   return size + PADDING * 2
 }
 
+function baseSize(dimension: "width" | "height", maxSize?: number) {
+  const scale = window.devicePixelRatio || 1
+
+  let size = screen[dimension] * scale
+
+  if (maxSize) {
+    size = Math.min(size, maxSize * scale)
+  }
+
+  return size
+}
+
 function canvasSizeBasedOnWidth(props: MapViewProps) {
   const viewportSize = props.viewportSize || {
     width: pad(props.tilesWide),
     height: pad(props.tilesHigh)
   }
 
-  const baseWidth = screen.width * (window.devicePixelRatio || 1)
-  const tileSize = Math.ceil(baseWidth / viewportSize.width)
+  const tileSize = Math.ceil(baseSize("width", props.maxSize) / viewportSize.width)
 
   return {
     mapPadding: tileSize * PADDING,
@@ -53,8 +65,7 @@ function canvasSizeBasedOnHeight(props: MapViewProps) {
     height: pad(props.tilesHigh)
   }
 
-  const baseHeight = screen.height * (window.devicePixelRatio || 1)
-  const tileSize = Math.ceil(baseHeight / viewportSize.height)
+  const tileSize = Math.ceil(baseSize("height", props.maxSize) / viewportSize.height)
 
   return {
     mapPadding: tileSize * PADDING,

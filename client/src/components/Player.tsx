@@ -1,7 +1,10 @@
 import React from "react"
+import PlayerMapView from "./map/PlayerMapView"
 import CardChooser from "./player/CardChooser"
 import PlayerHeader from "./player/PlayerHeader"
 import styled from "./util/styled"
+
+const CONTAINER_WIDTH = 600
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,6 +17,7 @@ const Wrapper = styled.div`
 const Player: React.SFC = _props => (
   <Wrapper>
     <PlayerHeader />
+    <PlayerMapView maxWidth={CONTAINER_WIDTH} />
     <CardChooser />
   </Wrapper>
 )

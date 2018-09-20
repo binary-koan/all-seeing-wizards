@@ -6,17 +6,21 @@ interface CameraProps {
   centerOn: { x: number; y: number }
 }
 
-const Camera: React.SFC<CameraProps & MapViewScaleProps> = props => (
-  <Container
-    width={props.mapViewScale.mapWidth}
-    height={props.mapViewScale.mapHeight}
-    position={{
-      x: props.mapViewScale.viewportWidth / 2 - props.mapViewScale.mapWidth / 2,
-      y: props.mapViewScale.viewportHeight / 2 - props.mapViewScale.mapHeight / 2
-    }}
-  >
-    {props.children}
-  </Container>
-)
+const Camera: React.SFC<CameraProps & MapViewScaleProps> = props => {
+  const actualCenterOn = props.mapViewScale.mapPosition(props.centerOn)
+
+  return (
+    <Container
+      width={props.mapViewScale.mapWidth}
+      height={props.mapViewScale.mapHeight}
+      position={{
+        x: props.mapViewScale.viewportWidth / 2 - actualCenterOn.x,
+        y: props.mapViewScale.viewportHeight / 2 - actualCenterOn.y
+      }}
+    >
+      {props.children}
+    </Container>
+  )
+}
 
 export default withMapViewScale(Camera)

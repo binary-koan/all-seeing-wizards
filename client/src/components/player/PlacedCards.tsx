@@ -8,6 +8,8 @@ import styled from "../util/styled"
 import { Card } from "../../../../common/src/state/card"
 import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
 
+import data from "../../../../packs/base/viewConfig"
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -44,12 +46,16 @@ const PlacedCard = styled<PlacedCardProps, "button">("button")`
   justify-content: center;
   border: none;
   border-radius: 0.25rem;
-  background-color: ${props => props.theme.colorDarkest};
   font-size: 2.5rem;
   color: rgba(255, 255, 255, 0.2);
 
+  background-color: ${props => (props.card ? "white" : props.theme.colorDarkest)};
   pointer-events: ${props => (props.card ? "initial" : "none")};
   cursor: ${props => (props.card ? "pointer" : "default")};
+`
+
+const CardImage = styled.img`
+  width: 70%;
 `
 
 interface StateProps {
@@ -64,10 +70,14 @@ const CardChooser: React.SFC<StateProps & DispatchProps> = props => (
   <Wrapper>
     {Array(MAX_PLAYER_HP)
       .fill(0)
-      .map((card, index) => (
+      .map((_, index) => (
         <PlacedCardWrapper key={index}>
-          <PlacedCard card={card} onClick={() => props.removeCard(index)}>
-            {index + 1}
+          <PlacedCard card={props.cards[index]} onClick={() => props.removeCard(index)}>
+            {props.cards[index] ? (
+              <CardImage src={data.cards[props.cards[index].name].image} />
+            ) : (
+              `${index + 1}`
+            )}
           </PlacedCard>
         </PlacedCardWrapper>
       ))}

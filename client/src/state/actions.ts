@@ -154,11 +154,10 @@ export function unplaceCard(index: number): UnplaceCardAction {
 
 export interface SubmitCardsAction {
   type: "submitCards"
-  indexes: number[]
 }
 
-export function submitCards(indexes: number[]): SubmitCardsAction {
-  return { type: "submitCards", indexes }
+export function submitCards(): SubmitCardsAction {
+  return { type: "submitCards" }
 }
 
 export interface PlayerConnectedAction {

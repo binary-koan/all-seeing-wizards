@@ -2,6 +2,7 @@ import React from "react"
 import PlayerMapView from "./map/PlayerMapView"
 import CardChooser from "./player/CardChooser"
 import PlayerHeader from "./player/PlayerHeader"
+import PrimaryAction from "./player/PrimaryAction"
 import styled from "./util/styled"
 
 const CONTAINER_WIDTH = 600
@@ -31,6 +32,7 @@ const Player: React.SFC = _props => (
       <PlayerMapView maxWidth={CONTAINER_WIDTH} />
     </MapWrapper>
     <CardChooser />
+    <PrimaryAction />
   </Wrapper>
 )
 

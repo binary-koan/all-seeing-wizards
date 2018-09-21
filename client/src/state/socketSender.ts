@@ -53,6 +53,6 @@ function buildSocketEvent(state: ViewState, action: Action): { event: string; ar
     case START_GAME:
       return { event: START_GAME }
     case SUBMIT_CARDS:
-      return { event: SUBMIT_CARDS, args: { indexes: action.indexes } }
+      return { event: SUBMIT_CARDS, args: { indexes: state.placedCardIndexes } }
   }
 }

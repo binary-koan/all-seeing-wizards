@@ -13,6 +13,7 @@ const Wrapper = styled.button`
   border-radius: 0.25rem;
   background-color: white;
   font-size: 0.75rem;
+  cursor: pointer;
 
   &[disabled] {
     opacity: 0.8;

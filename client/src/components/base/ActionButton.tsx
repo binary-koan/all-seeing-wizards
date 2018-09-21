@@ -29,11 +29,16 @@ export default styled<{ type: ButtonType }, "button">("button")`
   }
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   &:active {
     transform: scale(0.95);
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    cursor: default;
   }
 
   @media screen and (min-width: 1000px) {

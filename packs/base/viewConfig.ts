@@ -6,73 +6,100 @@ import magicianImage from "./players/midas-magician.png"
 import paladinImage from "./players/pure-paladin.png"
 import windWorkerImage from "./players/wily-wind-worker.png"
 
+import chaosStormImage from "./cards/chaos-storm.png"
+import dimensionImage from "./cards/dimension.png"
+import earthquakeImage from "./cards/earthquake.png"
+import forceLightningImage from "./cards/force-lightning.png"
+import forward1Image from "./cards/forward-1.png"
+import forward2Image from "./cards/forward-2.png"
+import freezingTouchImage from "./cards/freezing-touch.png"
+import healingDrinkImage from "./cards/healing-drink.png"
+import healingMealImage from "./cards/healing-meal.png"
+import hellfireBreathImage from "./cards/hellfire-breath.png"
+import homingMissilesImage from "./cards/homing-missiles.png"
+import magicalDartImage from "./cards/magical-dart.png"
+import magicalShieldImage from "./cards/magical-shield.png"
+import mirrorShieldImage from "./cards/mirror-shield.png"
+import parentalYellImage from "./cards/parental-yell.png"
+import piercingScreamImage from "./cards/piercing-scream.png"
+import ragePotionImage from "./cards/rage-potion.png"
+import spartanKickImage from "./cards/spartan-kick.png"
+import spiderMinionsImage from "./cards/spider-minions.png"
+import turnAroundMoveImage from "./cards/turn-around-move.png"
+import turnLeftMoveImage from "./cards/turn-left-move.png"
+import turnRightMoveImage from "./cards/turn-right-move.png"
+import yellowSnowballsImage from "./cards/yellow-snowballs.png"
+
 const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
-      icon: "arrow-up"
+      image: forward1Image
     },
     "Move 2": {
-      icon: "arrow-up-circle"
+      image: forward2Image
     },
     "Turn Clockwise & Move": {
-      icon: "corner-up-right"
+      image: turnRightMoveImage
     },
     "Turn Anticlockwise & Move": {
-      icon: "corner-up-left"
+      image: turnLeftMoveImage
     },
     "Turn Around & Move": {
-      icon: "arrow-down"
+      image: turnAroundMoveImage
     },
     "Hellfire Breath": {
-      icon: "sun"
+      image: hellfireBreathImage
     },
     "Chaos Storm": {
-      icon: "cloud-lightning"
+      image: chaosStormImage
     },
     "Magical Dart": {
-      icon: "send"
+      image: magicalDartImage
     },
     "Spartan Kick": {
-      icon: "log-in"
+      image: spartanKickImage
     },
     "Homing Missile": {
-      icon: "git-branch"
+      image: homingMissilesImage
     },
     "Freezing Touch": {
-      icon: "box"
+      image: freezingTouchImage
     },
     "Yellow Snowballs": {
-      icon: "cloud-snow"
+      image: yellowSnowballsImage
     },
     "Force Lightning": {
-      icon: "zap"
+      image: forceLightningImage
     },
     "Spider Minions": {
-      icon: "more-vertical"
+      image: spiderMinionsImage
     },
     "Piercing Scream": {
-      icon: "radio"
+      image: piercingScreamImage
     },
     Earthquake: {
-      icon: "activity"
+      image: earthquakeImage
     },
     "Magical Shield": {
-      icon: "shield"
+      image: magicalShieldImage
     },
     Dimension: {
-      icon: "x-square"
+      image: dimensionImage
     },
     "Mirror Shield": {
-      icon: "external-link"
+      image: mirrorShieldImage
     },
-    Decree: {
-      icon: "thumbs-down"
+    "Parental Yell": {
+      image: parentalYellImage
     },
-    "Healing Potion": {
-      icon: "plus-square"
+    "Healing Drink": {
+      image: healingDrinkImage
+    },
+    "Healing Meal": {
+      image: healingMealImage
     },
     "Rage Potion": {
-      icon: "eye"
+      image: ragePotionImage
     }
   },
   characters: {

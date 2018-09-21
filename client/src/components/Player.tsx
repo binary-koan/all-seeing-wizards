@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   max-width: 600px;
   margin: 0 auto;
   background-color: ${props => props.theme.colorDark};
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 `
 
 const MapWrapper = styled.div`

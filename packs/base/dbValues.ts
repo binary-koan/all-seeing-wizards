@@ -2,7 +2,7 @@ import { Duration } from "../../common/src/state/duration"
 import { DbValues } from "../dbTypes"
 
 const values: DbValues = {
-  version: 2,
+  version: 3,
   name: "base",
   boards: [
     [
@@ -268,7 +268,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Decree of Total Grounding",
+      name: "Parental Yell of Grounding",
       count: 2,
       effects: [
         {
@@ -279,7 +279,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Healing Potion of Snacks",
+      name: "Healing Drink of Milkshake",
       count: 3,
       effects: [
         {
@@ -289,7 +289,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Healing Potion of Lunch",
+      name: "Healing Meal of Pizza",
       count: 3,
       effects: [
         {

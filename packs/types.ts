@@ -8,7 +8,7 @@ export interface ResultDisplay {
 export interface ViewConfig {
   cards: {
     [name: string]: {
-      icon: string
+      image: string
       resultDisplays?: {
         [resultType: string]: (result: ActionResult) => ResultDisplay[]
       }

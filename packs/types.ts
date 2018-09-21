@@ -17,8 +17,7 @@ export interface ViewConfig {
   characters: {
     [name: string]: {
       image: string
-      darkColor: string
-      lightColor: string
+      color: string
     }
   }
 }

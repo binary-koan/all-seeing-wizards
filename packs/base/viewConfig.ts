@@ -2,9 +2,8 @@ import { ViewConfig } from "../types"
 
 import alchemistImage from "./players/arcane-alchemist.png"
 import darkLordImage from "./players/despicable-dark-lord.png"
-import magicianImage from "./players/midas-magician.png"
 import paladinImage from "./players/pure-paladin.png"
-import windWorkerImage from "./players/wily-wind-worker.png"
+import clericImage from "./players/wily-wind-worker.png"
 
 import chaosStormImage from "./cards/chaos-storm.png"
 import dimensionImage from "./cards/dimension.png"
@@ -105,28 +104,19 @@ const viewConfig: ViewConfig = {
   characters: {
     "Despicable Dark Lord": {
       image: darkLordImage,
-      darkColor: "var(--dark-color)",
-      lightColor: "var(--dark-color)"
+      color: "#6A7787"
     },
-    "Wily Wind Worker": {
-      image: windWorkerImage,
-      darkColor: "var(--blue-dark)",
-      lightColor: "var(--blue)"
+    "Clever Cleric": {
+      image: clericImage,
+      color: "#F44236"
     },
     "Pure Paladin": {
       image: paladinImage,
-      darkColor: "var(--orange-dark)",
-      lightColor: "var(--orange)"
+      color: "#EC9E42"
     },
     "Arcane Alchemist": {
       image: alchemistImage,
-      darkColor: "var(--green-dark)",
-      lightColor: "var(--green)"
-    },
-    "Midas Magician": {
-      image: magicianImage,
-      darkColor: "var(--yellow-dark)",
-      lightColor: "var(--yellow)"
+      color: "#677821"
     }
   }
 }

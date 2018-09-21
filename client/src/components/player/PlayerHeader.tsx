@@ -2,20 +2,20 @@ import React from "react"
 import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
+import Heart from "./Heart"
 
 import data from "../../../../packs/base/viewConfig"
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  min-height: 6rem;
+  padding: 0.25rem;
   background-color: ${props => props.theme.colorDark};
 `
 
 const Image = styled.img`
   width: 4rem;
   height: 4rem;
-  margin-left: -0.5rem;
   margin-right: 0.5rem;
 `
 
@@ -24,19 +24,20 @@ const Details = styled.div`
 `
 
 const PlayerName = styled.h3`
-  margin: 0 0 0.25rem 0;
+  margin: 0;
+  font-size: 1rem;
 `
 
-const HpIndicator = styled.span`
+const HpIndicator = styled(Heart)`
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  background-color: #f00;
+  width: 1.25rem;
+  height: 1.25rem;
 `
 
 interface PlayerHeaderProps {
   name: string
   image: string
+  color: string
   hp: number
 }
 
@@ -49,7 +50,7 @@ const PlayerHeader: React.SFC<PlayerHeaderProps> = props => (
         {Array(props.hp)
           .fill(0)
           .map((_, index) => (
-            <HpIndicator key={index} />
+            <HpIndicator key={index} fill={props.color} />
           ))}
       </div>
     </Details>
@@ -58,10 +59,12 @@ const PlayerHeader: React.SFC<PlayerHeaderProps> = props => (
 
 function mapStateToProps(state: ViewState): PlayerHeaderProps {
   const player = state.player
+  const viewData = data.characters[player.character.name]
 
   return {
     name: player.character.name,
-    image: data.characters[player.character.name].image,
+    image: viewData.image,
+    color: viewData.color,
     hp: player.hp
   }
 }

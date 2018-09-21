@@ -2,7 +2,7 @@ import { Duration } from "../../common/src/state/duration"
 import { DbValues } from "../dbTypes"
 
 const values: DbValues = {
-  version: 3,
+  version: 4,
   name: "base",
   boards: [
     [
@@ -36,8 +36,8 @@ const values: DbValues = {
   ],
   characters: [
     {
-      name: "Wily Wind Worker",
-      type: "windWorker"
+      name: "Clever Cleric",
+      type: "cleric"
     },
     {
       name: "Pure Paladin",
@@ -50,10 +50,6 @@ const values: DbValues = {
     {
       name: "Arcane Alchemist",
       type: "alchemist"
-    },
-    {
-      name: "Midas Magician",
-      type: "midas"
     }
   ],
   cards: [

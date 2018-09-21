@@ -1,6 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Dispatch } from "redux"
 import { Card } from "../../../../common/src/state/card"
+import { Action, placeCard } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 import HandCard from "./HandCard"
@@ -11,22 +13,42 @@ const Wrapper = styled.div`
   margin-top: 0.5rem;
 `
 
-interface HandCardsProps {
+interface StateProps {
   cards: Card[]
+  pickedIds: string[]
 }
 
-const HandCards: React.SFC<HandCardsProps> = props => (
+interface DispatchProps {
+  pickCard: (index: number) => void
+}
+
+const HandCards: React.SFC<StateProps & DispatchProps> = props => (
   <Wrapper>
-    {props.cards.map(card => (
-      <HandCard key={card.id} card={card} />
+    {props.cards.map((card, index) => (
+      <HandCard
+        key={card.id}
+        card={card}
+        isPicked={props.pickedIds.includes(card.id)}
+        onClick={() => props.pickCard(index)}
+      />
     ))}
   </Wrapper>
 )
 
-function mapStateToProps(state: ViewState): HandCardsProps {
+function mapStateToProps(state: ViewState): StateProps {
   return {
-    cards: state.player.hand.cards.toArray()
+    cards: state.player.hand.cards.toArray(),
+    pickedIds: state.placedCards.toArray().map(card => card.id)
   }
 }
 
-export default connect(mapStateToProps)(HandCards)
+function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
+  return {
+    pickCard: index => dispatch(placeCard(index))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HandCards)

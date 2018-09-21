@@ -15,8 +15,14 @@ const Wrapper = styled.button`
 
 interface HandCardProps {
   card: Card
+  isPicked: boolean
+  onClick?: () => void
 }
 
-const HandCard: React.SFC<HandCardProps> = props => <Wrapper>{props.card.name}</Wrapper>
+const HandCard: React.SFC<HandCardProps> = props => (
+  <Wrapper onClick={props.onClick} disabled={props.isPicked}>
+    {props.card.name}
+  </Wrapper>
+)
 
 export default HandCard

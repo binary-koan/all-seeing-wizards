@@ -1,6 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Dispatch } from "redux"
 import { Card } from "../../../../common/src/state/card"
+import { Action, unplaceCard } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 
@@ -34,22 +36,35 @@ const PlacedCard = styled<PlacedCardProps, "button">("button")`
   cursor: ${props => (props.card ? "pointer" : "default")};
 `
 
-interface CardChooserProps {
+interface StateProps {
   cards: Card[]
 }
 
-const CardChooser: React.SFC<CardChooserProps> = props => (
+interface DispatchProps {
+  removeCard: (index: number) => void
+}
+
+const CardChooser: React.SFC<StateProps & DispatchProps> = props => (
   <Wrapper>
-    {props.cards.map(card => (
+    {props.cards.map((card, index) => (
       <PlacedCardWrapper key={card.id}>
-        <PlacedCard card={card} />
+        <PlacedCard card={card} onClick={() => props.removeCard(index)} />
       </PlacedCardWrapper>
     ))}
   </Wrapper>
 )
 
-function mapStateToProps(state: ViewState): CardChooserProps {
+function mapStateToProps(state: ViewState): StateProps {
   return { cards: state.placedCards.toArray() }
 }
 
-export default connect(mapStateToProps)(CardChooser)
+function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
+  return {
+    removeCard: index => dispatch(unplaceCard(index))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CardChooser)

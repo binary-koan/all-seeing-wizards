@@ -1,5 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Dispatch } from "redux"
+import { Action, startGame } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
@@ -35,10 +37,13 @@ interface StateProps {
   description?: string
   actionText?: string
   actionEnabled?: boolean
+}
+
+interface DispatchProps {
   performAction?: () => void
 }
 
-const StatusPanel: React.SFC<StateProps> = props => {
+const StatusPanel: React.SFC<StateProps & DispatchProps> = props => {
   if (props.title) {
     return (
       <StatusPanelWrapper>
@@ -69,4 +74,13 @@ function mapStateToProps({ game }: ViewState): StateProps {
   }
 }
 
-export default connect(mapStateToProps)(StatusPanel)
+function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
+  return {
+    performAction: () => dispatch(startGame())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StatusPanel)

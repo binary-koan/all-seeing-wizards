@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   min-height: 6rem;
+  background-color: ${props => props.theme.colorDark};
 `
 
 const Image = styled.img`

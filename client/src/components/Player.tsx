@@ -6,18 +6,13 @@ import styled from "./util/styled"
 
 const CONTAINER_WIDTH = 600
 
-const Page = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${props => props.theme.colorDark};
-`
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
   max-width: 600px;
   margin: 0 auto;
+  background-color: ${props => props.theme.colorDark};
 `
 
 const MapWrapper = styled.div`
@@ -29,15 +24,13 @@ const MapWrapper = styled.div`
 `
 
 const Player: React.SFC = _props => (
-  <Page>
-    <Wrapper>
-      <PlayerHeader />
-      <MapWrapper>
-        <PlayerMapView maxWidth={CONTAINER_WIDTH} />
-      </MapWrapper>
-      <CardChooser />
-    </Wrapper>
-  </Page>
+  <Wrapper>
+    <PlayerHeader />
+    <MapWrapper>
+      <PlayerMapView maxWidth={CONTAINER_WIDTH} />
+    </MapWrapper>
+    <CardChooser />
+  </Wrapper>
 )
 
 export default Player

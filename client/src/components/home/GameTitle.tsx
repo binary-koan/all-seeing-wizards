@@ -7,6 +7,7 @@ const TitleWrapper = styled.h1`
   text-align: center;
   font-size: ${_props => between("60px", "100px", "320px", "600px")};
   font-family: "Luckiest Guy", sans-serif;
+  font-weight: normal;
   line-height: 0.9;
   text-shadow: 0 0 10em rgba(255, 255, 255, 0.25);
 

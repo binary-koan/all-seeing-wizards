@@ -8,9 +8,11 @@ const Wrapper = styled.button`
   align-items: center;
   justify-content: center;
   min-height: 6rem;
-  margin: 0.25rem;
-  background-color: white;
+  padding: 0.25rem;
+  border: none;
   border-radius: 0.25rem;
+  background-color: white;
+  font-size: 0.75rem;
 `
 
 interface HandCardProps {

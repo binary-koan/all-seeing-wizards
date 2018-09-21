@@ -9,8 +9,10 @@ import HandCard from "./HandCard"
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 25%);
-  margin-top: 0.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 0.5rem;
+  margin: 0.5rem 0.5rem 1rem 0.5rem;
 `
 
 interface StateProps {

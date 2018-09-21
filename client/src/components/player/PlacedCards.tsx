@@ -1,19 +1,32 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
-import { Card } from "../../../../common/src/state/card"
 import { Action, unplaceCard } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 
+import { Card } from "../../../../common/src/state/card"
+import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
+
 const Wrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 0.5rem;
+  margin: 0.5rem 0.5rem 1rem 0.5rem;
+  background-color: ${props => props.theme.colorDark};
 `
 
 const PlacedCardWrapper = styled.div`
-  flex: 1;
   position: relative;
-  padding-top: 100%;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 0;
+    padding-top: 100%;
+  }
 `
 
 interface PlacedCardProps {
@@ -22,15 +35,18 @@ interface PlacedCardProps {
 
 const PlacedCard = styled<PlacedCardProps, "button">("button")`
   position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  bottom: 0.25rem;
-  right: 0.25rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   border-radius: 0.25rem;
-  background-color: white;
+  background-color: ${props => props.theme.colorDarkest};
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.2);
 
   pointer-events: ${props => (props.card ? "initial" : "none")};
   cursor: ${props => (props.card ? "pointer" : "default")};
@@ -46,11 +62,15 @@ interface DispatchProps {
 
 const CardChooser: React.SFC<StateProps & DispatchProps> = props => (
   <Wrapper>
-    {props.cards.map((card, index) => (
-      <PlacedCardWrapper key={card.id}>
-        <PlacedCard card={card} onClick={() => props.removeCard(index)} />
-      </PlacedCardWrapper>
-    ))}
+    {Array(MAX_PLAYER_HP)
+      .fill(0)
+      .map((card, index) => (
+        <PlacedCardWrapper key={index}>
+          <PlacedCard card={card} onClick={() => props.removeCard(index)}>
+            {index + 1}
+          </PlacedCard>
+        </PlacedCardWrapper>
+      ))}
   </Wrapper>
 )
 

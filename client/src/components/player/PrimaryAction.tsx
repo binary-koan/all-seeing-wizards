@@ -17,7 +17,7 @@ interface DispatchProps {
 }
 
 const Wrapper = styled.div`
-  margin: 0 0.5rem 0.5rem 0.5rem;
+  margin: auto 0.5rem 0.5rem 0.5rem;
 `
 
 const PrimaryAction: React.SFC<StateProps & DispatchProps> = props => (
@@ -35,7 +35,9 @@ const PrimaryAction: React.SFC<StateProps & DispatchProps> = props => (
 function mapStateToProps(state: ViewState): StateProps {
   const player = state.player
 
-  if (player.hand.hasPickedCards) {
+  if (!state.game.started) {
+    return { text: "Waiting for the game to start", canLockIn: false }
+  } else if (player.hand.hasPickedCards) {
     return { text: "Locked in", canLockIn: false }
   } else if (state.placedCards && state.placedCards.size < MAX_PLAYER_HP) {
     return { text: `Pick ${MAX_PLAYER_HP} cards`, canLockIn: false }

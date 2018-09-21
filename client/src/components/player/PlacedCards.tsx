@@ -59,6 +59,7 @@ const CardImage = styled.img`
 `
 
 interface StateProps {
+  isVisible: boolean
   cards: Card[]
 }
 
@@ -66,26 +67,32 @@ interface DispatchProps {
   removeCard: (index: number) => void
 }
 
-const CardChooser: React.SFC<StateProps & DispatchProps> = props => (
-  <Wrapper>
-    {Array(MAX_PLAYER_HP)
-      .fill(0)
-      .map((_, index) => (
-        <PlacedCardWrapper key={index}>
-          <PlacedCard card={props.cards[index]} onClick={() => props.removeCard(index)}>
-            {props.cards[index] ? (
-              <CardImage src={data.cards[props.cards[index].name].image} />
-            ) : (
-              `${index + 1}`
-            )}
-          </PlacedCard>
-        </PlacedCardWrapper>
-      ))}
-  </Wrapper>
-)
+const CardChooser: React.SFC<StateProps & DispatchProps> = props => {
+  if (props.isVisible) {
+    return (
+      <Wrapper>
+        {Array(MAX_PLAYER_HP)
+          .fill(0)
+          .map((_, index) => (
+            <PlacedCardWrapper key={index}>
+              <PlacedCard card={props.cards[index]} onClick={() => props.removeCard(index)}>
+                {props.cards[index] ? (
+                  <CardImage src={data.cards[props.cards[index].name].image} />
+                ) : (
+                  `${index + 1}`
+                )}
+              </PlacedCard>
+            </PlacedCardWrapper>
+          ))}
+      </Wrapper>
+    )
+  } else {
+    return null
+  }
+}
 
 function mapStateToProps(state: ViewState): StateProps {
-  return { cards: state.placedCards.toArray() }
+  return { cards: state.placedCards.toArray(), isVisible: state.player.hand.cards.size > 0 }
 }
 
 function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {

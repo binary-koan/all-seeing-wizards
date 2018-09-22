@@ -63,7 +63,7 @@ function mapStateToProps(state: ViewState): PlayerHeaderProps {
 
   return {
     name: player.character.name,
-    image: viewData.image,
+    image: viewData.images.south,
     color: viewData.color,
     hp: player.hp
   }

@@ -34,7 +34,7 @@ function mapStateToProps(state: ViewState): StateProps {
       id: player.id,
       x: player.position.x,
       y: player.position.y,
-      image: data.characters[player.character.name].image
+      image: data.characters[player.character.name].images[player.position.facing]
     }))
   }
 }

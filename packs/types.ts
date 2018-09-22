@@ -1,3 +1,4 @@
+import { Direction } from "../common/src/state/directionalPoint"
 import { ActionResult } from "../common/src/turnResults/resultTypes"
 
 export interface ResultDisplay {
@@ -16,7 +17,7 @@ export interface ViewConfig {
   }
   characters: {
     [name: string]: {
-      image: string
+      images: { [direction in Direction]: string }
       color: string
     }
   }

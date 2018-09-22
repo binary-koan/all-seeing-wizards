@@ -1,121 +1,112 @@
 import { ViewConfig } from "../types"
 
-import alchemistImage from "./players/arcane-alchemist.png"
-import darkLordImage from "./players/despicable-dark-lord.png"
-import paladinImage from "./players/pure-paladin.png"
-import clericImage from "./players/wily-wind-worker.png"
-
-import chaosStormImage from "./cards/chaos-storm.png"
-import dimensionImage from "./cards/dimension.png"
-import earthquakeImage from "./cards/earthquake.png"
-import forceLightningImage from "./cards/force-lightning.png"
-import forward1Image from "./cards/forward-1.png"
-import forward2Image from "./cards/forward-2.png"
-import freezingTouchImage from "./cards/freezing-touch.png"
-import healingDrinkImage from "./cards/healing-drink.png"
-import healingMealImage from "./cards/healing-meal.png"
-import hellfireBreathImage from "./cards/hellfire-breath.png"
-import homingMissilesImage from "./cards/homing-missiles.png"
-import magicalDartImage from "./cards/magical-dart.png"
-import magicalShieldImage from "./cards/magical-shield.png"
-import mirrorShieldImage from "./cards/mirror-shield.png"
-import parentalYellImage from "./cards/parental-yell.png"
-import piercingScreamImage from "./cards/piercing-scream.png"
-import ragePotionImage from "./cards/rage-potion.png"
-import spartanKickImage from "./cards/spartan-kick.png"
-import spiderMinionsImage from "./cards/spider-minions.png"
-import turnAroundMoveImage from "./cards/turn-around-move.png"
-import turnLeftMoveImage from "./cards/turn-left-move.png"
-import turnRightMoveImage from "./cards/turn-right-move.png"
-import yellowSnowballsImage from "./cards/yellow-snowballs.png"
-
 const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
-      image: forward1Image
+      image: require("./cards/forward-1.png")
     },
     "Move 2": {
-      image: forward2Image
+      image: require("./cards/forward-2.png")
     },
     "Turn Clockwise & Move": {
-      image: turnRightMoveImage
+      image: require("./cards/turn-right-move.png")
     },
     "Turn Anticlockwise & Move": {
-      image: turnLeftMoveImage
+      image: require("./cards/turn-left-move.png")
     },
     "Turn Around & Move": {
-      image: turnAroundMoveImage
+      image: require("./cards/turn-around-move.png")
     },
     "Hellfire Breath": {
-      image: hellfireBreathImage
+      image: require("./cards/hellfire-breath.png")
     },
     "Chaos Storm": {
-      image: chaosStormImage
+      image: require("./cards/chaos-storm.png")
     },
     "Magical Dart": {
-      image: magicalDartImage
+      image: require("./cards/magical-dart.png")
     },
     "Spartan Kick": {
-      image: spartanKickImage
+      image: require("./cards/spartan-kick.png")
     },
     "Homing Missile": {
-      image: homingMissilesImage
+      image: require("./cards/homing-missiles.png")
     },
     "Freezing Touch": {
-      image: freezingTouchImage
+      image: require("./cards/freezing-touch.png")
     },
     "Yellow Snowballs": {
-      image: yellowSnowballsImage
+      image: require("./cards/yellow-snowballs.png")
     },
     "Force Lightning": {
-      image: forceLightningImage
+      image: require("./cards/force-lightning.png")
     },
     "Spider Minions": {
-      image: spiderMinionsImage
+      image: require("./cards/spider-minions.png")
     },
     "Piercing Scream": {
-      image: piercingScreamImage
+      image: require("./cards/piercing-scream.png")
     },
     Earthquake: {
-      image: earthquakeImage
+      image: require("./cards/earthquake.png")
     },
     "Magical Shield": {
-      image: magicalShieldImage
+      image: require("./cards/magical-shield.png")
     },
     Dimension: {
-      image: dimensionImage
+      image: require("./cards/dimension.png")
     },
     "Mirror Shield": {
-      image: mirrorShieldImage
+      image: require("./cards/mirror-shield.png")
     },
     "Parental Yell": {
-      image: parentalYellImage
+      image: require("./cards/parental-yell.png")
     },
     "Healing Drink": {
-      image: healingDrinkImage
+      image: require("./cards/healing-drink.png")
     },
     "Healing Meal": {
-      image: healingMealImage
+      image: require("./cards/healing-meal.png")
     },
     "Rage Potion": {
-      image: ragePotionImage
+      image: require("./cards/rage-potion.png")
     }
   },
   characters: {
     "Despicable Dark Lord": {
-      image: darkLordImage,
+      images: {
+        north: require("./players/dark-lord-north.png"),
+        south: require("./players/dark-lord-south.png"),
+        east: require("./players/dark-lord-east.png"),
+        west: require("./players/dark-lord-west.png")
+      },
       color: "#6A7787"
     },
     "Clever Cleric": {
-      image: clericImage,
+      images: {
+        north: require("./players/cleric-north.png"),
+        south: require("./players/cleric-south.png"),
+        east: require("./players/cleric-east.png"),
+        west: require("./players/cleric-west.png")
+      },
       color: "#F44236"
     },
     "Pure Paladin": {
-      image: paladinImage,
+      images: {
+        north: require("./players/paladin-north.png"),
+        south: require("./players/paladin-south.png"),
+        east: require("./players/paladin-east.png"),
+        west: require("./players/paladin-west.png")
+      },
       color: "#EC9E42"
     },
     "Arcane Alchemist": {
-      image: alchemistImage,
+      images: {
+        north: require("./players/alchemist-north.png"),
+        south: require("./players/alchemist-south.png"),
+        east: require("./players/alchemist-east.png"),
+        west: require("./players/alchemist-west.png")
+      },
       color: "#677821"
     }
   }

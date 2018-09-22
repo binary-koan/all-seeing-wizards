@@ -15,7 +15,7 @@ import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
 import loadCards from "./loaders/cards"
-import { BOARD_SIZE, BoardDoc, CardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
+import { BOARD_SIZE, BoardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 export default async function loadGameState(code: string, db: Db): Promise<Game> {
   const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, code)

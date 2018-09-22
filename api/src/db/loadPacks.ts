@@ -2,9 +2,8 @@ import { List, Range } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { BoardObjectType } from "../../../common/src/state/boardObject"
 import { BoardTileType } from "../../../common/src/state/boardTile"
-import { Pack } from "../../../common/src/state/pack"
 import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../packs/types"
-import { BoardDoc, BoardObjectDoc, CardDoc, CharacterDoc } from "./types"
+import { BoardDoc, BoardObjectDoc, CardDoc, CharacterDoc, PackDoc } from "./types"
 
 import packDefinitions from "../../packs/dbValues"
 
@@ -24,7 +23,9 @@ const BOARD_OBJECT_TYPE_MAPPING: { [key: string]: BoardObjectType } = {
 export default async function loadPacks(db: Db) {
   const existingPacks = await db
     .collection("packs")
-    .find<Pack>({ $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version })) })
+    .find<PackDoc>({
+      $or: packDefinitions.map(pack => ({ name: pack.name, version: pack.version }))
+    })
     .toArray()
 
   const existingPacksByName = List(existingPacks)

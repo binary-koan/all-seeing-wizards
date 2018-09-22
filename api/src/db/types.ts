@@ -1,10 +1,14 @@
 import { ObjectID } from "mongodb"
 import { CardEffect } from "../../../common/src/state/cardEffect"
-import { CardRange } from "../../../common/src/state/cardRange"
-import { DirectionalPoint, Rotation } from "../../../common/src/state/directionalPoint"
-import { Duration } from "../../../common/src/state/duration"
+import { DirectionalPoint } from "../../../common/src/state/directionalPoint"
 
 export const BOARD_SIZE = 5
+
+export interface PackDoc {
+  _id?: ObjectID
+  version: number
+  name: string
+}
 
 export interface GameDiff {
   started: boolean

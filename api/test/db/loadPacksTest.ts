@@ -1,23 +1,25 @@
 // tslint:disable-next-line:no-reference
 ///<reference path="../../typings/mongo-unit.d.ts" />
-import * as mongoUnit from "mongo-unit"
-import { Db, MongoClient } from "mongodb"
-import { Pack } from "../../../common/src/state/pack"
+import { Db, MongoClient } from "mongo-mock"
 import loadPacks from "../../src/db/loadPacks"
+import { PackDoc } from "../../src/db/types"
 
 import defaultPackDefinitions from "../../packs/dbValues"
 
 let db: Db
 
-beforeAll(done =>
-  mongoUnit
-    .start()
-    .then(url => MongoClient.connect(url))
-    .then(client => (db = client.db("test")))
-    .then(() => done())
-)
+beforeAll(done => {
+  MongoClient.connect("http://localhost:27017/test", {}, (err, dbInstance) => {
+    if (err) throw err
 
-afterAll(done => mongoUnit.stop().then(() => done()))
+    db = dbInstance
+    done()
+  })
+})
+
+afterAll(() => db.close())
+
+// afterAll(done => mongoUnit.stop().then(() => done()))
 
 describe("#loadPacks", () => {
   it("loads packs from the default directory", async () => {
@@ -26,11 +28,11 @@ describe("#loadPacks", () => {
     await loadPacks(db)
 
     const packsCount = await db.collection("packs").count({ name: { $in: names } })
-    await expect(packsCount).toBe(names.length)
+    expect(packsCount).toBe(names.length)
 
     await Promise.all(
       names.map(async name => {
-        const packId = (await db.collection("packs").findOne<Pack>({ name })).name
+        const packId = (await db.collection("packs").findOne<PackDoc>({ name }))._id
 
         const boardsCount = await db.collection("boards").count({ packId })
         expect(boardsCount).toBeGreaterThan(0)

@@ -5,95 +5,95 @@ const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
       image: require("./cards/forward-1.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Move 2": {
       image: require("./cards/forward-2.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Turn Clockwise & Move": {
       image: require("./cards/turn-right-move.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Turn Anticlockwise & Move": {
       image: require("./cards/turn-left-move.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Turn Around & Move": {
       image: require("./cards/turn-around-move.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Hellfire Breath": {
       image: require("./cards/hellfire-breath.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Chaos Storm": {
       image: require("./cards/chaos-storm.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Magical Dart": {
       image: require("./cards/magical-dart.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Spartan Kick": {
       image: require("./cards/spartan-kick.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Homing Missile": {
       image: require("./cards/homing-missiles.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Freezing Touch": {
       image: require("./cards/freezing-touch.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Yellow Snowballs": {
       image: require("./cards/yellow-snowballs.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Force Lightning": {
       image: require("./cards/force-lightning.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Spider Minions": {
       image: require("./cards/spider-minions.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Piercing Scream": {
       image: require("./cards/piercing-scream.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     Earthquake: {
       image: require("./cards/earthquake.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Magical Shield": {
       image: require("./cards/magical-shield.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     Dimension: {
       image: require("./cards/dimension.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Mirror Shield": {
       image: require("./cards/mirror-shield.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Parental Yell": {
       image: require("./cards/parental-yell.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Healing Drink": {
       image: require("./cards/healing-drink.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Healing Meal": {
       image: require("./cards/healing-meal.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     },
     "Rage Potion": {
       image: require("./cards/rage-potion.png"),
-      plannedResults: DefaultPlanView
+      planView: DefaultPlanView
     }
   },
   characters: {

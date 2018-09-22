@@ -3,6 +3,7 @@ import { ActionResult } from "../../turnResults/resultTypes"
 import { BoardTile } from "../boardTile"
 import { DirectionalPoint } from "../directionalPoint"
 import { Duration } from "../duration"
+import { deserializeCard } from "./card"
 import { deserializePlayer } from "./player"
 
 export function serializeResults(results: List<ActionResult>) {
@@ -14,6 +15,8 @@ export function deserializeResults(resultsData: any[]) {
 }
 
 function deserializeResult(data: any) {
+  data.card = deserializeCard(data.card)
+
   // TODO proper type-safe conversion
   if (data.tiles) {
     data.tiles = List(data.tiles.map((tileData: any) => new BoardTile(tileData)))

@@ -1,8 +1,6 @@
 import { List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import { CardEffect } from "./cardEffect"
-import { Rotation } from "./directionalPoint"
-import { Duration } from "./duration"
 
 interface ICard {
   id: string

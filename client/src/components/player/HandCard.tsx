@@ -3,7 +3,7 @@ import { Card } from "../../../../common/src/state/card"
 import CardTypeIcon from "../card/CardTypeIcon"
 import styled from "../util/styled"
 
-import data from "../../../../packs/base/viewConfig"
+import data from "../../../packs/base/viewConfig"
 
 const Wrapper = styled.button`
   position: relative;

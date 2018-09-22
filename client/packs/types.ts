@@ -1,5 +1,5 @@
-import { Direction } from "../common/src/state/directionalPoint"
-import { ActionResult } from "../common/src/turnResults/resultTypes"
+import { Direction } from "../../common/src/state/directionalPoint"
+import { ActionResult } from "../../common/src/turnResults/resultTypes"
 
 export interface ResultDisplay {
   tag: string

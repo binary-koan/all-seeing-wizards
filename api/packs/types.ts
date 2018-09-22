@@ -1,4 +1,4 @@
-import { CardEffect } from "../common/src/state/cardEffect"
+import { CardEffect } from "../../common/src/state/cardEffect"
 
 export type BoardConfig = string[][]
 

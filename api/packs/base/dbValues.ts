@@ -1,5 +1,5 @@
-import { Duration } from "../../common/src/state/duration"
-import { DbValues } from "../dbTypes"
+import { Duration } from "../../../common/src/state/duration"
+import { DbValues } from "../types"
 
 const values: DbValues = {
   version: 4,

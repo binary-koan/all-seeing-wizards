@@ -1,12 +1,11 @@
 // tslint:disable-next-line:no-reference
 ///<reference path="../../typings/mongo-unit.d.ts" />
-import { readdirSync, readFileSync } from "fs"
 import * as mongoUnit from "mongo-unit"
 import { Db, MongoClient } from "mongodb"
 import { Pack } from "../../../common/src/state/pack"
 import loadPacks from "../../src/db/loadPacks"
 
-import defaultPackDefinitions from "../../../packs/dbValues"
+import defaultPackDefinitions from "../../packs/dbValues"
 
 let db: Db
 

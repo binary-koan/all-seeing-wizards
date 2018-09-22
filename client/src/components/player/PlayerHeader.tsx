@@ -4,7 +4,7 @@ import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 import Heart from "./Heart"
 
-import data from "../../../../packs/base/viewConfig"
+import data from "../../../packs/base/viewConfig"
 
 const Wrapper = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import ViewState from "../../../state/viewState"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 
-import data from "../../../../../packs/base/viewConfig"
+import data from "../../../../packs/base/viewConfig"
 
 interface StateProps {
   players: Array<{

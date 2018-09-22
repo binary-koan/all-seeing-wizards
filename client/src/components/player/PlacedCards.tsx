@@ -8,7 +8,7 @@ import styled from "../util/styled"
 import { Card } from "../../../../common/src/state/card"
 import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
 
-import data from "../../../../packs/base/viewConfig"
+import data from "../../../packs/base/viewConfig"
 
 const Wrapper = styled.div`
   display: grid;

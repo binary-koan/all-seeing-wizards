@@ -31,11 +31,11 @@ import {
   SubmitCardsData
 } from "../../../common/src/messages/toServer"
 import { serializeGame } from "../../../common/src/state/serialization/game"
+import { serializeResults } from "../../../common/src/state/serialization/results"
 import GameManager from "../state/gameManager"
 import { Client, HostClient, PlayerClient } from "./clientTypes"
 
-import packDefinitions from "../../../packs/dbValues"
-import { serializeResults } from "../../../common/src/state/serialization/results"
+import packDefinitions from "../../packs/dbValues"
 
 export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)

@@ -2,13 +2,11 @@ import { List, Range } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { BoardObjectType } from "../../../common/src/state/boardObject"
 import { BoardTileType } from "../../../common/src/state/boardTile"
-import { CardEffect } from "../../../common/src/state/cardEffect"
-import { Duration } from "../../../common/src/state/duration"
 import { Pack } from "../../../common/src/state/pack"
-import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../../packs/dbTypes"
+import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../packs/types"
 import { BoardDoc, BoardObjectDoc, CardDoc, CharacterDoc } from "./types"
 
-import packDefinitions from "../../../packs/dbValues"
+import packDefinitions from "../../packs/dbValues"
 
 const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardTileType } = {
   ".": "ground",

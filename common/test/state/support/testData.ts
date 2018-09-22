@@ -3,10 +3,10 @@ import { Board } from "../../../src/state/board"
 import { BoardObject } from "../../../src/state/boardObject"
 import { BoardTile } from "../../../src/state/boardTile"
 import { Card } from "../../../src/state/card"
-import { CardEffect } from "../../../src/state/cardEffect"
+import { CardEffect, MovementEffect } from "../../../src/state/cardEffect"
 import { Character } from "../../../src/state/character"
 import { Deck } from "../../../src/state/deck"
-import { Direction, DirectionalPoint } from "../../../src/state/directionalPoint"
+import { Direction, DirectionalPoint, Rotation } from "../../../src/state/directionalPoint"
 import { Duration } from "../../../src/state/duration"
 import { Game } from "../../../src/state/game"
 import { Hand } from "../../../src/state/hand"
@@ -69,6 +69,16 @@ export function createTestCards(
         })
     )
     .toList()
+}
+
+export function createTestMoveCard(amount?: number, rotation?: Rotation) {
+  return createTestCards(1, {
+    effects: List.of({
+      type: "move",
+      amount: amount || 1,
+      rotation: rotation || "north"
+    } as MovementEffect)
+  }).first()
 }
 
 export function createTestDeck(
@@ -150,6 +160,8 @@ export function createTestGameState({
 } = {}) {
   return new Game({
     id: id || "",
+    code: "TEST",
+    started: false,
     players: players || Map(),
     board: board || createTestBoard(),
     deck: deck || createTestDeck()

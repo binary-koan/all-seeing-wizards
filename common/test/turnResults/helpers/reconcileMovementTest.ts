@@ -4,7 +4,8 @@ import { proposedMove, reconcileMovement } from "../../../src/turnResults/helper
 import {
   createDirectionalPoint,
   createTestGameState,
-  createTestPlayer
+  createTestPlayer,
+  createTestMoveCard
 } from "../../state/support/testData"
 
 describe("#reconcileMovement", () => {
@@ -23,10 +24,18 @@ describe("#reconcileMovement", () => {
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
     })
 
+    const moveCard1 = createTestMoveCard()
+    const moveCard2 = createTestMoveCard()
+
     const proposedMoves = List.of(
-      proposedMove(player1, List.of(createDirectionalPoint({ x: 1, y: 0, facing: "north" }))),
+      proposedMove(
+        player1,
+        moveCard1,
+        List.of(createDirectionalPoint({ x: 1, y: 0, facing: "north" }))
+      ),
       proposedMove(
         player2,
+        moveCard2,
         List.of(
           createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
           createDirectionalPoint({ x: 2, y: 0, facing: "east" })
@@ -39,11 +48,13 @@ describe("#reconcileMovement", () => {
     expect(results.size).toBe(2)
     expect(results.get(0)).toEqual({
       type: "move",
+      card: moveCard1,
       player: player1,
       movementPath: List.of(createDirectionalPoint({ x: 1, y: 0, facing: "north" }))
     })
     expect(results.get(1)).toEqual({
       type: "move",
+      card: moveCard2,
       player: player2,
       movementPath: List.of(
         createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
@@ -70,6 +81,7 @@ describe("#reconcileMovement", () => {
     const proposedMoves = List.of(
       proposedMove(
         player2,
+        createTestMoveCard(),
         List.of(
           createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
           createDirectionalPoint({ x: 2, y: 0, facing: "east" })
@@ -97,10 +109,18 @@ describe("#reconcileMovement", () => {
       players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
     })
 
+    const moveCard1 = createTestMoveCard()
+    const moveCard2 = createTestMoveCard()
+
     const proposedMoves = List.of(
-      proposedMove(player1, List.of(createDirectionalPoint({ x: 2, y: 0, facing: "north" }))),
+      proposedMove(
+        player1,
+        moveCard1,
+        List.of(createDirectionalPoint({ x: 2, y: 0, facing: "north" }))
+      ),
       proposedMove(
         player2,
+        moveCard2,
         List.of(
           createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
           createDirectionalPoint({ x: 2, y: 0, facing: "east" })
@@ -113,11 +133,13 @@ describe("#reconcileMovement", () => {
     expect(results.size).toBe(2)
     expect(results.get(0)).toEqual({
       type: "movePrevented",
+      card: moveCard1,
       player: player1,
       attemptedPosition: createDirectionalPoint({ x: 2, y: 0, facing: "north" })
     })
     expect(results.get(1)).toEqual({
       type: "movePrevented",
+      card: moveCard2,
       player: player2,
       attemptedPosition: createDirectionalPoint({ x: 2, y: 0, facing: "east" })
     })

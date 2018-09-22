@@ -1,42 +1,34 @@
 import { List, Map } from "immutable"
 
-import { ActionResult } from "./resultTypes"
+import { ActionResult, heal, increaseDamage } from "./resultTypes"
 
-import { BoardTile } from "../state/boardTile"
 import { Card } from "../state/card"
 import { CardEffect, HealEffect, IncreaseDamageEffect } from "../state/cardEffect"
-import { Duration } from "../state/duration"
 import { Game } from "../state/game"
-import { affectedPlayers, affectedTiles } from "../state/helpers/range"
 import { Player } from "../state/player"
 import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 
-const POTION_RESULTS: { [key: string]: (player: Player, effect: CardEffect) => ActionResult } = {
-  increaseDamage: (player: Player, effect: IncreaseDamageEffect) => ({
-    type: "increaseDamage",
-    amount: effect.amount,
-    duration: effect.duration,
-    player
-  }),
-  heal: (player: Player, effect: HealEffect) => ({
-    type: "heal",
-    amount: effect.amount,
-    player
-  })
+const POTION_RESULTS: {
+  [key: string]: (player: Player, card: Card, effect: CardEffect) => ActionResult
+} = {
+  increaseDamage: (caster: Player, castCard: Card, effect: IncreaseDamageEffect) =>
+    increaseDamage(castCard, effect.amount, effect.duration, caster),
+  heal: (caster: Player, castCard: Card, effect: HealEffect) =>
+    heal(castCard, effect.amount, caster)
 }
 
 const POTION_TYPES = Object.keys(POTION_RESULTS)
 
 export function calculatePotionResults(
   playedCards: Map<Player, Card>,
-  game: Game
+  _game: Game
 ): List<ActionResult> {
   return calculateResults(
-    resolveEffects(playedCards, POTION_TYPES) as Map<CardEffect, Player>,
-    (effect: CardEffect, player: Player) => effectResults(effect, player, game)
+    resolveEffects(playedCards, POTION_TYPES),
+    (effect: CardEffect, castCard: Card, caster: Player) => effectResults(effect, castCard, caster)
   )
 }
 
-function effectResults(effect: CardEffect, player: Player, game: Game) {
-  return List.of(POTION_RESULTS[effect.type](player, effect))
+function effectResults(effect: CardEffect, castCard: Card, caster: Player) {
+  return List.of(POTION_RESULTS[effect.type](caster, castCard, effect))
 }

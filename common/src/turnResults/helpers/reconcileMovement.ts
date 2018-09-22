@@ -1,16 +1,22 @@
 import { List } from "immutable"
+import { Card } from "../../state/card"
 import { DirectionalPoint } from "../../state/directionalPoint"
 import { Game } from "../../state/game"
 import { Player } from "../../state/player"
-import { ActionResult, movePreventedResult, moveResult } from "../resultTypes"
+import { ActionResult, movePrevented, move } from "../resultTypes"
 
 export interface ProposedMove {
   player: Player
+  card: Card
   movementPath: List<DirectionalPoint>
 }
 
-export function proposedMove(player: Player, movementPath: List<DirectionalPoint>): ProposedMove {
-  return { player, movementPath }
+export function proposedMove(
+  player: Player,
+  card: Card,
+  movementPath: List<DirectionalPoint>
+): ProposedMove {
+  return { player, card, movementPath }
 }
 
 export function reconcileMovement(
@@ -19,13 +25,9 @@ export function reconcileMovement(
 ): List<ActionResult> {
   const resultingState = applyProposedResults(proposedResults, game)
 
-  const [walkedBackResults, walkedBackState] = avoidWalkingThroughUnmovedPlayers(
-    game,
-    proposedResults,
-    resultingState
-  )
+  const walkedBackResults = avoidWalkingThroughUnmovedPlayers(game, proposedResults, resultingState)
 
-  return preventConflictingMovement(game, walkedBackResults, walkedBackState)
+  return preventConflictingMovement(walkedBackResults)
 }
 
 function applyProposedResults(proposedResults: List<ProposedMove>, game: Game) {
@@ -44,15 +46,12 @@ function avoidWalkingThroughUnmovedPlayers(
   const unmovedPositions = unmovedPlayerPositions(game, resultingState)
 
   return proposedResults.reduce(
-    ([newResults, newState], result) => {
+    (newResults, result) => {
       const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
 
-      const nextResults = newResult.movementPath.size > 0 ? newResults.push(newResult) : newResults
-      const nextState = applyProposedResult(newState, newResult)
-
-      return [nextResults, nextState] as [List<ProposedMove>, Game]
+      return newResult.movementPath.size > 0 ? newResults.push(newResult) : newResults
     },
-    [List(), game] as [List<ProposedMove>, Game]
+    List() as List<ProposedMove>
   )
 }
 
@@ -68,7 +67,11 @@ function checkAgainstUnmovedPlayers(
     )
 
   if (firstBadIndex > -1) {
-    return proposedMove(result.player, result.movementPath.slice(0, firstBadIndex).toList())
+    return proposedMove(
+      result.player,
+      result.card,
+      result.movementPath.slice(0, firstBadIndex).toList()
+    )
   } else {
     return result
   }
@@ -83,11 +86,7 @@ function unmovedPlayerPositions(firstState: Game, secondState: Game) {
     .toList()
 }
 
-function preventConflictingMovement(
-  game: Game,
-  proposedResults: List<ProposedMove>,
-  resultingState: Game
-): List<ActionResult> {
+function preventConflictingMovement(proposedResults: List<ProposedMove>): List<ActionResult> {
   return proposedResults.map(result => checkConflictingResult(result, proposedResults)).toList()
 }
 
@@ -100,8 +99,8 @@ function checkConflictingResult(result: ProposedMove, resultsPerAction: List<Pro
   })
 
   if (conflict) {
-    return movePreventedResult(result.player, targetPosition)
+    return movePrevented(result.card, targetPosition, result.player)
   } else {
-    return moveResult(result.player, result.movementPath)
+    return move(result.card, result.movementPath, result.player)
   }
 }

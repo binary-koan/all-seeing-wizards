@@ -1,9 +1,12 @@
-import { List } from "immutable"
 import { Player } from "../../state/player"
 import {
   ActionResult,
   KnockbackResult,
+  nothing,
+  preventActions,
   PreventActionsResult,
+  shieldFromHarm,
+  takeDamage,
   TakeDamageResult
 } from "../resultTypes"
 
@@ -19,7 +22,7 @@ const RESULT_MODIFIERS: {
 
   knockback(result: KnockbackResult, caster: Player) {
     if (result.player.hasModifier("shield") || result.player.hasModifier("mirrorShield")) {
-      return { type: "none" }
+      return nothing(result.card)
     }
   },
 
@@ -30,15 +33,15 @@ const RESULT_MODIFIERS: {
   preventActions(result: PreventActionsResult, caster: Player, previous?: ActionResult) {
     if (result.player.hasModifier("mirrorShield")) {
       if (shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
-        return { type: "shieldFromHarm", player: result.player }
+        return shieldFromHarm(result.card, result.player)
       }
 
       return modifiedResultForTarget(
-        { type: "preventActions", duration: result.duration, player: caster },
+        preventActions(result.card, result.duration, caster),
         result.player
       )
     } else if (result.player.hasModifier("shield")) {
-      return { type: "shieldFromHarm", player: result.player }
+      return shieldFromHarm(result.card, result.player)
     } else {
       return result
     }
@@ -49,15 +52,12 @@ const RESULT_MODIFIERS: {
   takeDamage(result: TakeDamageResult, caster: Player, previous?: ActionResult) {
     if (result.player.hasModifier("mirrorShield")) {
       if (shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
-        return { type: "shieldFromHarm", player: result.player }
+        return shieldFromHarm(result.card, result.player)
       }
 
-      return modifiedResultForTarget(
-        { type: "takeDamage", damage: result.damage, player: caster },
-        result.player
-      )
+      return modifiedResultForTarget(takeDamage(result.card, result.damage, caster), result.player)
     } else if (result.player.hasModifier("shield")) {
-      return { type: "shieldFromHarm", player: result.player }
+      return shieldFromHarm(result.card, result.player)
     } else {
       return result
     }

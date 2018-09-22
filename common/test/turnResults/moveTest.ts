@@ -1,26 +1,14 @@
 import { List, Map } from "immutable"
 import { Card } from "../../src/state/card"
-import { MovementEffect } from "../../src/state/cardEffect"
-import { Rotation } from "../../src/state/directionalPoint"
 import { Player } from "../../src/state/player"
 import { calculateMoveResults } from "../../src/turnResults/move"
 import {
   createDirectionalPoint,
-  createTestCards,
   createTestGameState,
   createTestModifier,
+  createTestMoveCard,
   createTestPlayer
 } from "../state/support/testData"
-
-function createMoveCard(amount?: number, rotation?: Rotation) {
-  return createTestCards(1, {
-    effects: List.of({
-      type: "move",
-      amount: amount || 1,
-      rotation: rotation || "north"
-    } as MovementEffect)
-  }).first()
-}
 
 describe("#calculateMoveResults", () => {
   it("moves a player", () => {
@@ -28,7 +16,8 @@ describe("#calculateMoveResults", () => {
       position: createDirectionalPoint({ x: 1, y: 1, facing: "north" })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard())
+    const card = createTestMoveCard()
+    const playedCards = (Map() as Map<Player, Card>).set(player, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)
@@ -39,6 +28,7 @@ describe("#calculateMoveResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "move",
+      card,
       movementPath: List.of(player.position, { x: 1, y: 0, facing: "north" }),
       player
     })
@@ -49,7 +39,8 @@ describe("#calculateMoveResults", () => {
       position: createDirectionalPoint({ x: 0, y: 0, facing: "north" })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard(1, "anticlockwise"))
+    const card = createTestMoveCard(1, "anticlockwise")
+    const playedCards = (Map() as Map<Player, Card>).set(player, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)
@@ -60,6 +51,7 @@ describe("#calculateMoveResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "move",
+      card,
       movementPath: List.of({ x: 0, y: 0, facing: "west" }),
       player
     })
@@ -71,7 +63,7 @@ describe("#calculateMoveResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "preventActions" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(player, createMoveCard())
+    const playedCards = (Map() as Map<Player, Card>).set(player, createTestMoveCard())
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(player.id, player)

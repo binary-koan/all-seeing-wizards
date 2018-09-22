@@ -11,6 +11,7 @@
     "no-implicit-dependencies": false,
     "no-submodule-imports": false,
     //TODO not working yet, see https://github.com/palantir/tslint/issues/2649
-    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
+    "curly": [true, "ignore-same-line"]
   }
 }

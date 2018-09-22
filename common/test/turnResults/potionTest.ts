@@ -1,13 +1,10 @@
 import { List, Map } from "immutable"
 import { Card } from "../../src/state/card"
 import { HealEffect, IncreaseDamageEffect } from "../../src/state/cardEffect"
-import { CardRange } from "../../src/state/cardRange"
 import { Player } from "../../src/state/player"
 import { calculatePotionResults } from "../../src/turnResults/potion"
 import {
-  createDirectionalPoint,
   createTestCards,
-  createTestDuration,
   createTestGameState,
   createTestModifier,
   createTestPlayer
@@ -36,9 +33,12 @@ describe("#calculatePotionResults", () => {
     const healer = createTestPlayer({ id: "healer" })
     const damageIncreaser = createTestPlayer({ id: "damageIncreaser" })
 
+    const healCard = createHealCard()
+    const buffCard = createIncreaseDamageCard()
+
     const playedCards = (Map() as Map<Player, Card>)
-      .set(healer, createHealCard())
-      .set(damageIncreaser, createIncreaseDamageCard())
+      .set(healer, healCard)
+      .set(damageIncreaser, buffCard)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>)
@@ -51,11 +51,13 @@ describe("#calculatePotionResults", () => {
     expect(results.size).toBe(2)
     expect(results.first()).toEqual({
       type: "heal",
+      card: healCard,
       amount: 1,
       player: healer
     })
     expect(results.last()).toEqual({
       type: "increaseDamage",
+      card: buffCard,
       amount: 1,
       player: damageIncreaser
     })

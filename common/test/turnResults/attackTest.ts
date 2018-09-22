@@ -7,13 +7,12 @@ import { calculateAttackResults } from "../../src/turnResults/attack"
 import {
   createDirectionalPoint,
   createTestCards,
-  createTestDuration,
   createTestGameState,
   createTestModifier,
   createTestPlayer
 } from "../state/support/testData"
 
-function createAttackCard(ranges: List<CardRange>) {
+function createAttackCard(ranges: CardRange[]) {
   return createTestCards(1, {
     effects: List.of({
       type: "attack",
@@ -27,7 +26,8 @@ describe("#calculateAttackResults", () => {
   it("attempts to attack the expected area", () => {
     const caster = createTestPlayer()
 
-    const playedCards = (Map() as Map<Player, Card>).set(caster, createAttackCard(List()))
+    const card = createAttackCard([])
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
@@ -37,6 +37,7 @@ describe("#calculateAttackResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "attack",
+      card,
       tiles: List()
     })
   })
@@ -46,7 +47,7 @@ describe("#calculateAttackResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "preventActions" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(caster, createAttackCard(List()))
+    const playedCards = (Map() as Map<Player, Card>).set(caster, createAttackCard([]))
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
@@ -66,15 +67,14 @@ describe("#calculateAttackResults", () => {
       position: createDirectionalPoint({ x: 1, y: 0 })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createAttackCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createAttackCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -86,6 +86,7 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "takeDamage",
+      card,
       damage: 1,
       player: target
     })
@@ -102,15 +103,14 @@ describe("#calculateAttackResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "shield" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createAttackCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createAttackCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -122,6 +122,7 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "shieldFromHarm",
+      card,
       player: target
     })
   })
@@ -137,15 +138,14 @@ describe("#calculateAttackResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "mirrorShield" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createAttackCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createAttackCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -157,6 +157,7 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "takeDamage",
+      card: card,
       damage: 1,
       player: caster
     })
@@ -172,25 +173,20 @@ describe("#calculateAttackResults", () => {
       position: createDirectionalPoint({ x: 1, y: 0, facing: "west" })
     })
 
-    const playedCards = (Map() as Map<Player, Card>)
-      .set(
-        caster1,
-        createAttackCard(
-          List.of({
-            type: "point",
-            position: "inFront"
-          } as CardRange)
-        )
-      )
-      .set(
-        caster2,
-        createAttackCard(
-          List.of({
-            type: "point",
-            position: "inFront"
-          } as CardRange)
-        )
-      )
+    const card1 = createAttackCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+    const card2 = createAttackCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster1, card1).set(caster2, card2)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster1.id, caster1).set(caster2.id, caster2)
@@ -202,12 +198,14 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "takeDamage",
+      card: card1,
       damage: 1,
       player: caster2
     })
     expect(results.get(2).type).toEqual("attack")
     expect(results.get(3)).toEqual({
       type: "takeDamage",
+      card: card2,
       damage: 1,
       player: caster1
     })
@@ -223,16 +221,15 @@ describe("#calculateAttackResults", () => {
       position: createDirectionalPoint({ x: 1, y: 0 })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createAttackCard(
-        List.of({
-          type: "area",
-          size: 2,
-          position: "around"
-        } as CardRange)
-      )
-    )
+    const card = createAttackCard([
+      {
+        type: "area",
+        size: 2,
+        position: "around"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -244,6 +241,7 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "takeDamage",
+      card,
       damage: 1,
       player: target
     })

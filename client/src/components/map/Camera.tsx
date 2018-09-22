@@ -1,4 +1,5 @@
 import { Container } from "@inlet/react-pixi"
+import { Point } from "pixi.js"
 import React from "react"
 import { MapViewScaleProps, withMapViewScale } from "./MapViewScaleContext"
 
@@ -13,10 +14,12 @@ const Camera: React.SFC<CameraProps & MapViewScaleProps> = props => {
     <Container
       width={props.mapViewScale.mapWidth}
       height={props.mapViewScale.mapHeight}
-      position={{
-        x: props.mapViewScale.viewportWidth / 2 - actualCenterOn.x,
-        y: props.mapViewScale.viewportHeight / 2 - actualCenterOn.y
-      }}
+      position={
+        new Point(
+          props.mapViewScale.viewportWidth / 2 - actualCenterOn.x,
+          props.mapViewScale.viewportHeight / 2 - actualCenterOn.y
+        )
+      }
     >
       {props.children}
     </Container>

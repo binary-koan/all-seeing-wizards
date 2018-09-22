@@ -17,11 +17,11 @@ import {
 const RESULT_APPLICATORS: {
   [key: string]: (result: ActionResult, state: Game) => Game
 } = {
-  attack(result, state: Game) {
+  attack(_result, state: Game) {
     return state
   },
 
-  attemptPreventActions(result, state: Game) {
+  attemptPreventActions(_result, state: Game) {
     return state
   },
 
@@ -64,7 +64,7 @@ const RESULT_APPLICATORS: {
     return state.updatePlayer(result.player.updatePosition(result.movementPath.last()))
   },
 
-  none(result, state: Game) {
+  none(_result, state: Game) {
     return state
   },
 
@@ -76,7 +76,7 @@ const RESULT_APPLICATORS: {
     )
   },
 
-  shieldFromHarm(result, state: Game) {
+  shieldFromHarm(_result, state: Game) {
     return state
   },
 

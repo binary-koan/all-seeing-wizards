@@ -1,5 +1,4 @@
 import { Duration } from "../../src/state/duration"
-import { Modifier, ModifierType } from "../../src/state/modifier"
 import { createTestModifier } from "./support/testData"
 
 describe("#advance", () => {
@@ -13,11 +12,5 @@ describe("#advance", () => {
     const modifier = createTestModifier({ duration: new Duration("action", 1) })
 
     expect(modifier.advance("turn")).toEqual(modifier)
-  })
-
-  it("returns nothing when the modifier expires", () => {
-    const modifier = createTestModifier({ duration: new Duration("action", 1) })
-
-    expect(modifier.advance("action")).toBeUndefined()
   })
 })

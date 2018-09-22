@@ -3,7 +3,11 @@
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "npm run typecheck && jest --env node",
+    "typecheck": "npm run typecheck:common && npm run typecheck:api && npm run typecheck:client",
+    "typecheck:common": "cd common && tsc --noEmit -p tsconfig.check.json",
+    "typecheck:api": "cd api && tsc --noEmit -p tsconfig.check.json",
+    "typecheck:client": "cd client && tsc --noEmit -p tsconfig.check.json",
     "postinstall": "cd api && npm install && cd ../client && npm install"
   },
   "dependencies": {

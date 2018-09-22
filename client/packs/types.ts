@@ -10,9 +10,7 @@ export interface ViewConfig {
   cards: {
     [name: string]: {
       image: string
-      resultDisplays?: {
-        [resultType: string]: (result: ActionResult) => ResultDisplay[]
-      }
+      plannedResults: React.SFC<{ results: ActionResult[] }>
     }
   }
   characters: {

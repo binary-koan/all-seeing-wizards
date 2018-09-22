@@ -6,12 +6,23 @@ import { ActionResult } from "../resultTypes"
 import modifiedEffectForCaster from "./modifiedEffectForCaster"
 import modifiedResultForTarget from "./modifiedResultForTarget"
 
+export interface ResolvedEffect {
+  effect: CardEffect
+  castCard: Card
+  caster: Player
+}
+
 export function calculateResults(
-  effects: Map<CardEffect, Player>,
-  resultsForEffect: (effect: CardEffect, caster: Player) => List<ActionResult>
+  resolvedEffects: List<ResolvedEffect>,
+  resultsForEffect: (effect: CardEffect, castCard: Card, caster: Player) => List<ActionResult>
 ) {
-  return effects
-    .map((caster, effect) => actualEffectResults(resultsForEffect(effect, caster), caster))
+  return resolvedEffects
+    .map(resolvedEffect =>
+      actualEffectResults(
+        resultsForEffect(resolvedEffect.effect, resolvedEffect.castCard, resolvedEffect.caster),
+        resolvedEffect.caster
+      )
+    )
     .toList()
     .flatten() as List<ActionResult>
 }
@@ -22,21 +33,21 @@ function actualEffectResults(results: List<ActionResult>, caster: Player) {
 
 export function resolveEffects(cards: Map<Player, Card>, types: string[]) {
   return cards.reduce(
-    (results, card, caster) => results.merge(effectsFrom(card, caster, types)),
-    Map() as Map<CardEffect, Player>
+    (results, card, caster) => results.concat(effectsFrom(card, caster, types)).toList(),
+    List() as List<ResolvedEffect>
   )
 }
 
-function effectsFrom(card: Card, caster: Player, types: string[]) {
-  return card.effects.reduce(
+function effectsFrom(castCard: Card, caster: Player, types: string[]) {
+  return castCard.effects.reduce(
     (results, effect) => {
       if (types.includes(effect.type)) {
         const actualEffect = modifiedEffectForCaster(effect, caster)
-        return actualEffect ? results.set(actualEffect, caster) : results
+        return actualEffect ? results.push({ effect: actualEffect, castCard, caster }) : results
       } else {
         return results
       }
     },
-    Map() as Map<CardEffect, Player>
+    List() as List<ResolvedEffect>
   )
 }

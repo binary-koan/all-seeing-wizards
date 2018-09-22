@@ -13,7 +13,7 @@ import {
   createTestPlayer
 } from "../state/support/testData"
 
-function createPreventActionsCard(ranges: List<CardRange>) {
+function createPreventActionsCard(ranges: CardRange[]) {
   return createTestCards(1, {
     effects: List.of({
       type: "preventActions",
@@ -27,7 +27,8 @@ describe("#calculatePreventActionsResults", () => {
   it("attempts to prevent actions in the expected area", () => {
     const caster = createTestPlayer()
 
-    const playedCards = (Map() as Map<Player, Card>).set(caster, createPreventActionsCard(List()))
+    const card = createPreventActionsCard([])
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
@@ -37,6 +38,7 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "attemptPreventActions",
+      card,
       tiles: List()
     })
   })
@@ -46,7 +48,7 @@ describe("#calculatePreventActionsResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "preventActions" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(caster, createPreventActionsCard(List()))
+    const playedCards = (Map() as Map<Player, Card>).set(caster, createPreventActionsCard([]))
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)
     })
@@ -66,15 +68,14 @@ describe("#calculatePreventActionsResults", () => {
       position: createDirectionalPoint({ x: 1, y: 0 })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createPreventActionsCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createPreventActionsCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -86,6 +87,7 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.get(0).type).toEqual("attemptPreventActions")
     expect(results.get(1)).toEqual({
       type: "preventActions",
+      card,
       duration: createTestDuration(),
       player: target
     })
@@ -102,15 +104,14 @@ describe("#calculatePreventActionsResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "shield" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createPreventActionsCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createPreventActionsCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -122,6 +123,7 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.get(0).type).toEqual("attemptPreventActions")
     expect(results.get(1)).toEqual({
       type: "shieldFromHarm",
+      card,
       player: target
     })
   })
@@ -137,15 +139,14 @@ describe("#calculatePreventActionsResults", () => {
       modifiers: List.of(createTestModifier({ type: { name: "mirrorShield" } }))
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(
-      caster,
-      createPreventActionsCard(
-        List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
-      )
-    )
+    const card = createPreventActionsCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster).set(target.id, target)
@@ -157,6 +158,7 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.get(0).type).toEqual("attemptPreventActions")
     expect(results.get(1)).toEqual({
       type: "preventActions",
+      card,
       duration: createTestDuration(),
       player: caster
     })
@@ -172,25 +174,20 @@ describe("#calculatePreventActionsResults", () => {
       position: createDirectionalPoint({ x: 1, y: 0, facing: "west" })
     })
 
-    const playedCards = (Map() as Map<Player, Card>)
-      .set(
-        caster1,
-        createPreventActionsCard(
-          List.of({
-            type: "point",
-            position: "inFront"
-          } as CardRange)
-        )
-      )
-      .set(
-        caster2,
-        createPreventActionsCard(
-          List.of({
-            type: "point",
-            position: "inFront"
-          } as CardRange)
-        )
-      )
+    const card1 = createPreventActionsCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+    const card2 = createPreventActionsCard([
+      {
+        type: "point",
+        position: "inFront"
+      } as CardRange
+    ])
+
+    const playedCards = (Map() as Map<Player, Card>).set(caster1, card1).set(caster2, card2)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster1.id, caster1).set(caster2.id, caster2)
@@ -202,12 +199,14 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.get(0).type).toEqual("attemptPreventActions")
     expect(results.get(1)).toEqual({
       type: "preventActions",
+      card: card1,
       duration: createTestDuration(),
       player: caster2
     })
     expect(results.get(2).type).toEqual("attemptPreventActions")
     expect(results.get(3)).toEqual({
       type: "preventActions",
+      card: card2,
       duration: createTestDuration(),
       player: caster1
     })
@@ -218,9 +217,7 @@ describe("#calculatePreventActionsResults", () => {
 
     const playedCards = (Map() as Map<Player, Card>).set(
       caster,
-      createPreventActionsCard(List.of({ type: "area", size: 3, position: "around" }) as List<
-        CardRange
-      >)
+      createPreventActionsCard([{ type: "area", size: 3, position: "around" }])
     )
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(caster.id, caster)

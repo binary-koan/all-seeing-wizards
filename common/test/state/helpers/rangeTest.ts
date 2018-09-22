@@ -52,7 +52,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 0, y: 0 })
       const range = { type: "area", size: 3, position: "around" } as CardRange
 
-      const tiles = affectedTiles(List.of(range), from, board)
+      const tiles = affectedTiles([range], from, board)
 
       expect(
         tiles
@@ -73,7 +73,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 1, y: 0, facing: "south" })
       const range = { type: "area", size: 3, position: "inFront" } as CardRange
 
-      const tiles = affectedTiles(List.of(range), from, board)
+      const tiles = affectedTiles([range], from, board)
 
       expect(
         tiles
@@ -96,7 +96,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 0, y: 0, facing: "east" })
       const range = { type: "line", rotation: "none" } as CardRange
 
-      const tiles = affectedTiles(List.of(range), from, board)
+      const tiles = affectedTiles([range], from, board)
 
       expect(
         tiles
@@ -119,7 +119,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 0, y: 0, facing: "east" })
       const range = { type: "point", position: "inFront" } as CardRange
 
-      const tiles = affectedTiles(List.of(range), from, board)
+      const tiles = affectedTiles([range], from, board)
 
       expect(tiles.size).toBe(1)
       expect(tiles.first().position.x).toBe(1)
@@ -131,7 +131,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 0, y: 0, facing: "east" })
       const range = { type: "point", position: "on" } as CardRange
 
-      const tiles = affectedTiles(List.of(range), from, board)
+      const tiles = affectedTiles([range], from, board)
 
       expect(tiles.size).toBe(1)
       expect(tiles.first().position.x).toBe(0)
@@ -145,7 +145,7 @@ describe("#affectedTiles", () => {
       const from = createDirectionalPoint({ x: 0, y: 0 })
       const range = { type: "wholeMap" } as CardRange
 
-      expect(affectedTiles(List.of(range), from, board)).toEqual(board.tiles)
+      expect(affectedTiles([range], from, board)).toEqual(board.tiles)
     })
   })
 
@@ -158,7 +158,7 @@ describe("#affectedTiles", () => {
         { type: "line", rotation: "reverse" }
       ] as CardRange[]
 
-      const tiles = affectedTiles(List(ranges), from, board)
+      const tiles = affectedTiles(ranges, from, board)
 
       expect(
         tiles

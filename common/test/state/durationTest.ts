@@ -1,4 +1,3 @@
-import { Duration } from "../../src/state/duration"
 import { createTestDuration } from "./support/testData"
 
 describe("#shorten", () => {

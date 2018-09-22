@@ -1,9 +1,5 @@
 import { List } from "immutable"
-import { Character } from "../../src/state/character"
-import { DirectionalPoint } from "../../src/state/directionalPoint"
-import { Hand } from "../../src/state/hand"
-import { Modifier } from "../../src/state/modifier"
-import { MAX_PLAYER_HP, Player } from "../../src/state/player"
+import { MAX_PLAYER_HP } from "../../src/state/player"
 import {
   createDirectionalPoint,
   createTestDuration,
@@ -57,7 +53,10 @@ describe("#updatePosition", () => {
 describe("#addModifier", () => {
   it("adds a modifier to the player", () => {
     const player = createTestPlayer()
-    const modifier = createTestModifier({ type: "mirrorShield" })
+    const modifier = createTestModifier({
+      type: { name: "mirrorShield" },
+      duration: createTestDuration()
+    })
 
     expect(player.addModifier(modifier).modifiers).toEqual(List.of(modifier))
   })
@@ -66,11 +65,11 @@ describe("#addModifier", () => {
 describe("#advanceModifiers", () => {
   it("advances modifiers with the correct type", () => {
     const turnModifier = createTestModifier({
-      type: "mirrorShield",
+      type: { name: "mirrorShield" },
       duration: createTestDuration({ type: "turn", length: 2 })
     })
     const actionModifier = createTestModifier({
-      type: "mirrorShield",
+      type: { name: "mirrorShield" },
       duration: createTestDuration({ type: "action", length: 2 })
     })
 
@@ -91,7 +90,7 @@ describe("#advanceModifiers", () => {
 
   it("removes expired modifiers", () => {
     const actionModifier = createTestModifier({
-      type: "mirrorShield",
+      type: { name: "mirrorShield" },
       duration: createTestDuration({ type: "action", length: 1 })
     })
 

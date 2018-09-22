@@ -1,4 +1,5 @@
 import { Container, TilingSprite } from "@inlet/react-pixi"
+import { Point } from "pixi.js"
 import React from "react"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import TileOverlay from "../tiles/TileOverlay"
@@ -19,7 +20,7 @@ const BoardTiles: React.SFC<MapViewScaleProps> = props => {
         x={props.mapViewScale.mapPadding}
         y={props.mapViewScale.mapPadding}
         {...props.mapViewScale.mapSize()}
-        tileScale={scale}
+        tileScale={new Point(scale, scale)}
         image={groundTile}
       />
       <TileOverlay tileType="block" image={blockTile} />

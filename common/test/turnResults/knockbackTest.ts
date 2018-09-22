@@ -18,10 +18,12 @@ function createKnockbackCard(amount?: number) {
     effects: List.of({
       type: "knockback",
       amount: amount || 1,
-      ranges: List.of({
-        type: "point",
-        position: "inFront"
-      } as CardRange)
+      ranges: [
+        {
+          type: "point",
+          position: "inFront"
+        }
+      ]
     } as KnockbackEffect)
   }).first()
 }
@@ -37,7 +39,8 @@ describe("#calculateKnockbackResults", () => {
       position: createDirectionalPoint({ x: 0, y: 1, facing: "north" })
     })
 
-    const playedCards = (Map() as Map<Player, Card>).set(knocker, createKnockbackCard())
+    const card = createKnockbackCard()
+    const playedCards = (Map() as Map<Player, Card>).set(knocker, card)
 
     const game = createTestGameState({
       players: (Map() as Map<string, Player>).set(knocker.id, knocker).set(knocked.id, knocked)
@@ -48,6 +51,7 @@ describe("#calculateKnockbackResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "knockback",
+      card,
       movementPath: List.of(
         knocked.position,
         createDirectionalPoint({ x: 0, y: 2, facing: "north" })

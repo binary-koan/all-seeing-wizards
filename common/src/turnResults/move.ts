@@ -13,7 +13,13 @@ export function calculateMoveResults(
   game: Game
 ): List<ActionResult> {
   const proposedResults = resolveEffects(playedCards, ["move"])
-    .map((player, effect) => proposedMove(player, pathFor(effect as MovementEffect, player, game)))
+    .map(resolvedEffect =>
+      proposedMove(
+        resolvedEffect.caster,
+        resolvedEffect.castCard,
+        pathFor(resolvedEffect.effect as MovementEffect, resolvedEffect.caster, game)
+      )
+    )
     .toList()
 
   return reconcileMovement(proposedResults, game)

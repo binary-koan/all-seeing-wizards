@@ -1,11 +1,9 @@
 import { List, Map, Range } from "immutable"
 import performTurn from "../src/performTurn"
-import { Card } from "../src/state/card"
 import {
   AttackEffect,
   CardEffect,
   HealEffect,
-  IncreaseDamageEffect,
   KnockbackEffect,
   MovementEffect
 } from "../src/state/cardEffect"
@@ -39,11 +37,13 @@ describe("#performTurn", () => {
       List.of({
         type: "attack",
         damage: 3,
-        ranges: List.of({
-          type: "area",
-          size: 3,
-          position: "around"
-        } as CardRange)
+        ranges: [
+          {
+            type: "area",
+            size: 3,
+            position: "around"
+          } as CardRange
+        ]
       } as AttackEffect)
     )
     const target = setPlayedCards(
@@ -138,10 +138,12 @@ describe("#performTurn", () => {
       List.of({
         type: "attack",
         damage: 3,
-        ranges: List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
+        ranges: [
+          {
+            type: "point",
+            position: "inFront"
+          } as CardRange
+        ]
       } as AttackEffect)
     )
     const target = setPlayedCards(
@@ -182,10 +184,12 @@ describe("#performTurn", () => {
       List.of({
         type: "knockback",
         amount: 1,
-        ranges: List.of({
-          type: "point",
-          position: "inFront"
-        } as CardRange)
+        ranges: [
+          {
+            type: "point",
+            position: "inFront"
+          }
+        ]
       } as KnockbackEffect)
     )
     const target = setPlayedCards(

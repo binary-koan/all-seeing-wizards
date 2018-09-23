@@ -29,8 +29,8 @@ const PlayerMapView: React.SFC<PlayerMapViewProps & StateProps> = props => (
 
 function mapStateToProps(state: ViewState): StateProps {
   return {
-    playerCenterX: state.player.position.x + 0.5,
-    playerCenterY: state.player.position.y + 0.5
+    playerCenterX: state.playerAfterPlacedCards.position.x + 0.5,
+    playerCenterY: state.playerAfterPlacedCards.position.y + 0.5
   }
 }
 

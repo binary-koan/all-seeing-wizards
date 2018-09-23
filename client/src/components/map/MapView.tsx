@@ -1,4 +1,4 @@
-import { Stage } from "@inlet/react-pixi"
+import { Stage, Container } from "@inlet/react-pixi"
 import React from "react"
 import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
@@ -87,6 +87,7 @@ const MapView: React.SFC<MapViewProps> = props => {
       width={size.viewportWidth}
       height={size.viewportHeight}
       options={{ backgroundColor: 0x20263d }}
+      onMount={app => ((window as any).app = app)}
     >
       <ScaleContextProvider value={buildMapViewScale(size)}>
         <Camera centerOn={props.centerOn}>

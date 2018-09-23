@@ -43,7 +43,10 @@ export default function socketReceiver(socket: SocketIOClient.Socket): SocketRec
   const send = (action: Action) => subscribers.forEach(subscriber => subscriber(action))
 
   Object.keys(ACTIONABLE_SOCKET_EVENTS).forEach(event => {
-    socket.on(event, ACTIONABLE_SOCKET_EVENTS[event](send))
+    socket.on(event, (data: any) => {
+      console.log("received", event, data)
+      ACTIONABLE_SOCKET_EVENTS[event](send)(data)
+    })
   })
 
   return {

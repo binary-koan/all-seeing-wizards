@@ -11,10 +11,11 @@ interface MovementPathProps {
 
 const MovementPath: React.SFC<MovementPathProps & MapViewScaleProps> = props => (
   <Container>
-    {props.result.movementPath.pop().forEach(position => (
+    {props.result.movementPath.pop().map(position => (
       <Sprite
         key={[position.x, position.y].toString()}
         image={image}
+        alpha={0.5}
         {...props.mapViewScale.tileSize}
         {...props.mapViewScale.mapPosition(position)}
       />

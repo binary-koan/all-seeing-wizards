@@ -1,9 +1,9 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import React from "react"
 import { MoveResult } from "../../../../../common/src/turnResults/resultTypes"
+import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 
 import image from "../../../../assets/effects/movement-path.png"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 
 interface MovementPathProps {
   result: MoveResult

@@ -124,7 +124,7 @@ const viewConfig: ViewConfig = {
       },
       color: "#EC9E42"
     },
-    "Arcane Alchemist": {
+    "Adaptable Alchemist": {
       images: {
         north: require("./players/alchemist-north.png"),
         south: require("./players/alchemist-south.png"),

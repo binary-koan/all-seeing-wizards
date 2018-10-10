@@ -29,13 +29,9 @@ function effectResults(
     .filterNot(affectedPlayer => affectedPlayer === caster)
     .toList()
 
-  return List.of(attemptAttackResult(tiles, card))
+  return List.of(attack(card, tiles, caster))
     .concat(attackPlayersResults(effect.damage, players, card))
     .toList()
-}
-
-function attemptAttackResult(tiles: List<BoardTile>, card: Card) {
-  return attack(card, tiles)
 }
 
 function attackPlayersResults(damage: number, players: List<Player>, card: Card) {

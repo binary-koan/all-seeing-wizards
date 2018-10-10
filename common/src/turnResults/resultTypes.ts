@@ -13,11 +13,12 @@ export type AttackResult = Readonly<
   CommonProperties & {
     type: "attack"
     tiles: List<BoardTile>
+    caster: Player
   }
 >
 
-export function attack(card: Card, tiles: List<BoardTile>): AttackResult {
-  return { type: "attack", card, tiles }
+export function attack(card: Card, tiles: List<BoardTile>, caster: Player): AttackResult {
+  return { type: "attack", card, tiles, caster }
 }
 
 export type AttemptPreventActionsResult = Readonly<

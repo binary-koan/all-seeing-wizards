@@ -1,4 +1,7 @@
 import DefaultPlanView from "../../src/components/map/results/DefaultPlanView"
+import StretchedAttackImage from "../../src/components/map/results/StretchedAttackImage"
+import TiledAttackImage from "../../src/components/map/results/TiledAttackImage"
+import bindProps from "../../src/components/util/bindProps"
 import { ViewConfig } from "../types"
 
 const viewConfig: ViewConfig = {
@@ -25,11 +28,13 @@ const viewConfig: ViewConfig = {
     },
     "Hellfire Breath": {
       image: require("./cards/hellfire-breath.png"),
-      planView: DefaultPlanView
+      planView: bindProps(StretchedAttackImage, { imagePath: require("./effects/attack-fire.png") })
     },
     "Chaos Storm": {
       image: require("./cards/chaos-storm.png"),
-      planView: DefaultPlanView
+      planView: bindProps(StretchedAttackImage, {
+        imagePath: require("./effects/attack-storm.png")
+      })
     },
     "Magical Dart": {
       image: require("./cards/magical-dart.png"),
@@ -41,31 +46,39 @@ const viewConfig: ViewConfig = {
     },
     "Homing Missile": {
       image: require("./cards/homing-missiles.png"),
-      planView: DefaultPlanView
+      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-homing.png") })
     },
     "Freezing Touch": {
       image: require("./cards/freezing-touch.png"),
-      planView: DefaultPlanView
+      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-freeze.png") })
     },
     "Yellow Snowballs": {
       image: require("./cards/yellow-snowballs.png"),
-      planView: DefaultPlanView
+      planView: bindProps(TiledAttackImage, {
+        imagePath: require("./effects/attack-snowballs.png")
+      })
     },
     "Force Lightning": {
       image: require("./cards/force-lightning.png"),
-      planView: DefaultPlanView
+      planView: bindProps(TiledAttackImage, {
+        imagePath: require("./effects/attack-lightning.png")
+      })
     },
     "Spider Minions": {
       image: require("./cards/spider-minions.png"),
-      planView: DefaultPlanView
+      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-spider.png") })
     },
     "Piercing Scream": {
       image: require("./cards/piercing-scream.png"),
-      planView: DefaultPlanView
+      planView: bindProps(StretchedAttackImage, {
+        imagePath: require("./effects/attack-scream.png")
+      })
     },
     Earthquake: {
       image: require("./cards/earthquake.png"),
-      planView: DefaultPlanView
+      planView: bindProps(StretchedAttackImage, {
+        imagePath: require("./effects/attack-earthquake.png")
+      })
     },
     "Magical Shield": {
       image: require("./cards/magical-shield.png"),

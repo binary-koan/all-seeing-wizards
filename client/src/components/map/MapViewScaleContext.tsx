@@ -1,6 +1,6 @@
 import React from "react"
 
-interface MapViewScale {
+export interface MapViewScale {
   viewportWidth: number
   viewportHeight: number
   mapPadding: number

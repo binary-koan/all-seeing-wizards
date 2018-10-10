@@ -1,7 +1,6 @@
 import { Container } from "@inlet/react-pixi"
 import React from "react"
 import { connect } from "react-redux"
-import { Direction } from "../../../../../common/src/state/directionalPoint"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import ViewState from "../../../state/viewState"
 

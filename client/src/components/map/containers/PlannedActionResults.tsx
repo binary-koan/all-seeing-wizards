@@ -5,18 +5,18 @@ import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import ViewState from "../../../state/viewState"
 
 import data from "../../../../packs/base/viewConfig"
-import { PlannedResultComponent } from "../../../../packs/types"
 import { playerOnly } from "../../util/stateHelpers"
 import GhostPlayer from "../GhostPlayer"
+import DefaultPlanView, { PlanViewOverrides } from "../results/DefaultPlanView"
 
 interface StateProps {
-  resultComponents: Array<[ActionResult, PlannedResultComponent]>
+  resultComponents: Array<[ActionResult, PlanViewOverrides]>
 }
 
 const PlannedActionResults: React.SFC<StateProps> = props => (
   <Container>
-    {props.resultComponents.map(([result, Component], index) => (
-      <Component key={`${result.type}${index}`} result={result} />
+    {props.resultComponents.map(([result, overrides], index) => (
+      <DefaultPlanView key={`${result.type}${index}`} result={result} overrides={overrides} />
     ))}
     <GhostPlayer />
   </Container>
@@ -29,7 +29,10 @@ function mapStateToProps(state: ViewState): StateProps {
   return {
     resultComponents: actionResults.map(
       result =>
-        [result, data.cards[result.card.name].planView] as [ActionResult, PlannedResultComponent]
+        [result, data.cards[result.card.name].planViewOverrides] as [
+          ActionResult,
+          PlanViewOverrides
+        ]
     )
   }
 }

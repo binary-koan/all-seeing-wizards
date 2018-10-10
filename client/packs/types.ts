@@ -1,13 +1,11 @@
 import { Direction } from "../../common/src/state/directionalPoint"
-import { ActionResult } from "../../common/src/turnResults/resultTypes"
-
-export type PlannedResultComponent = React.SFC<{ result: ActionResult }>
+import { PlanViewOverrides } from "../src/components/map/results/DefaultPlanView"
 
 export interface ViewConfig {
   cards: {
     [name: string]: {
       image: string
-      planView: PlannedResultComponent
+      planViewOverrides?: PlanViewOverrides
     }
   }
   characters: {

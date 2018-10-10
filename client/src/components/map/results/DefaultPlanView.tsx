@@ -5,7 +5,22 @@ import TiledAttackImage from "./TiledAttackImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
 
-const DefaultPlanView: React.SFC<{ result: ActionResult }> = props => {
+export interface PlanViewOverrides {
+  [type: string]: React.SFC<{ result: ActionResult }>
+}
+
+interface DefaultPlanViewProps {
+  result: ActionResult
+  overrides: { [type: string]: React.ComponentType<{ result: ActionResult }> }
+}
+
+const DefaultPlanView: React.SFC<DefaultPlanViewProps> = props => {
+  if (props.overrides && props.overrides[props.result.type]) {
+    ;(window as any).$comp = props.overrides[props.result.type]
+    const Component = props.overrides[props.result.type]
+    return <Component result={props.result} />
+  }
+
   switch (props.result.type) {
     case "move":
       return <MovementPath result={props.result} />

@@ -44,10 +44,7 @@ function rangePosition(range: CardRange, from: DirectionalPoint, mapViewScale: M
     case "point":
       return mapViewScale.mapPosition(range.position === "on" ? from : from.forward(1))
     case "wholeMap":
-      return mapViewScale.mapPosition({
-        x: mapViewScale.mapWidth / 2,
-        y: mapViewScale.mapHeight / 2
-      })
+      return mapViewScale.mapPosition({ x: 0, y: 0 })
   }
 }
 
@@ -59,7 +56,11 @@ const StretchedAttackImage: React.SFC<StretchedAttackImageProps & MapViewScalePr
         image={props.imagePath}
         alpha={0.75}
         {...rangeSize(range, props.mapViewScale)}
-        {...rangePosition(range, props.result.caster.position, props.mapViewScale)}
+        {...rangePosition(
+          range,
+          console.log(props.result, props.result.caster) || props.result.caster.position,
+          props.mapViewScale
+        )}
       />
     ))}
   </Container>

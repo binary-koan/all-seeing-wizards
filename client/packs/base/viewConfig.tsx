@@ -7,106 +7,112 @@ import { ViewConfig } from "../types"
 const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
-      image: require("./cards/forward-1.png"),
-      planView: DefaultPlanView
+      image: require("./cards/forward-1.png")
     },
     "Move 2": {
-      image: require("./cards/forward-2.png"),
-      planView: DefaultPlanView
+      image: require("./cards/forward-2.png")
     },
     "Turn Clockwise & Move": {
-      image: require("./cards/turn-right-move.png"),
-      planView: DefaultPlanView
+      image: require("./cards/turn-right-move.png")
     },
     "Turn Anticlockwise & Move": {
-      image: require("./cards/turn-left-move.png"),
-      planView: DefaultPlanView
+      image: require("./cards/turn-left-move.png")
     },
     "Turn Around & Move": {
-      image: require("./cards/turn-around-move.png"),
-      planView: DefaultPlanView
+      image: require("./cards/turn-around-move.png")
     },
     "Hellfire Breath": {
       image: require("./cards/hellfire-breath.png"),
-      planView: bindProps(StretchedAttackImage, { imagePath: require("./effects/attack-fire.png") })
+      planViewOverrides: {
+        attack: bindProps(StretchedAttackImage, { imagePath: require("./effects/attack-fire.png") })
+      }
     },
     "Chaos Storm": {
       image: require("./cards/chaos-storm.png"),
-      planView: bindProps(StretchedAttackImage, {
-        imagePath: require("./effects/attack-storm.png")
-      })
+      planViewOverrides: {
+        attack: bindProps(StretchedAttackImage, {
+          imagePath: require("./effects/attack-storm.png")
+        })
+      }
     },
     "Magical Dart": {
-      image: require("./cards/magical-dart.png"),
-      planView: DefaultPlanView
+      image: require("./cards/magical-dart.png")
     },
     "Spartan Kick": {
-      image: require("./cards/spartan-kick.png"),
-      planView: DefaultPlanView
+      image: require("./cards/spartan-kick.png")
     },
     "Homing Missile": {
       image: require("./cards/homing-missiles.png"),
-      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-homing.png") })
+      planViewOverrides: {
+        attack: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-homing.png") })
+      }
     },
     "Freezing Touch": {
       image: require("./cards/freezing-touch.png"),
-      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-freeze.png") })
+      planViewOverrides: {
+        attemptPreventActions: bindProps(TiledAttackImage, {
+          imagePath: require("./effects/attack-freeze.png")
+        })
+      }
     },
     "Yellow Snowballs": {
       image: require("./cards/yellow-snowballs.png"),
-      planView: bindProps(TiledAttackImage, {
-        imagePath: require("./effects/attack-snowballs.png")
-      })
+      planViewOverrides: {
+        attemptPreventActions: bindProps(TiledAttackImage, {
+          imagePath: require("./effects/attack-snowballs.png")
+        })
+      }
     },
     "Force Lightning": {
       image: require("./cards/force-lightning.png"),
-      planView: bindProps(TiledAttackImage, {
-        imagePath: require("./effects/attack-lightning.png")
-      })
+      planViewOverrides: {
+        attack: bindProps(TiledAttackImage, {
+          imagePath: require("./effects/attack-lightning.png")
+        })
+      }
     },
     "Spider Minions": {
       image: require("./cards/spider-minions.png"),
-      planView: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-spider.png") })
+      planViewOverrides: {
+        attack: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-spider.png") })
+      }
     },
     "Piercing Scream": {
       image: require("./cards/piercing-scream.png"),
-      planView: bindProps(StretchedAttackImage, {
-        imagePath: require("./effects/attack-scream.png")
-      })
+      planViewOverrides: {
+        attack: bindProps(StretchedAttackImage, {
+          imagePath: require("./effects/attack-scream.png")
+        })
+      }
     },
     Earthquake: {
       image: require("./cards/earthquake.png"),
-      planView: bindProps(StretchedAttackImage, {
-        imagePath: require("./effects/attack-earthquake.png")
-      })
+      planViewOverrides: {
+        attack: bindProps(StretchedAttackImage, {
+          imagePath: require("./effects/attack-earthquake.png")
+        })
+      }
     },
     "Magical Shield": {
-      image: require("./cards/magical-shield.png"),
-      planView: DefaultPlanView
+      image: require("./cards/magical-shield.png")
     },
     Dimension: {
-      image: require("./cards/dimension.png"),
-      planView: DefaultPlanView
+      image: require("./cards/dimension.png")
     },
     "Mirror Shield": {
-      image: require("./cards/mirror-shield.png"),
-      planView: DefaultPlanView
+      image: require("./cards/mirror-shield.png")
     },
     "Parental Yell": {
-      image: require("./cards/parental-yell.png"),
-      planView: DefaultPlanView
+      image: require("./cards/parental-yell.png")
     },
     "Healing Drink": {
-      image: require("./cards/healing-drink.png"),
-      planView: DefaultPlanView
+      image: require("./cards/healing-drink.png")
     },
     "Healing Meal": {
-      image: require("./cards/healing-meal.png"),
-      planView: DefaultPlanView
+      image: require("./cards/healing-meal.png")
     },
     "Rage Potion": {
-      image: require("./cards/rage-potion.png"),
-      planView: DefaultPlanView
+      image: require("./cards/rage-potion.png")
     }
   },
   characters: {

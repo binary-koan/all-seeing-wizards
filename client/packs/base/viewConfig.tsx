@@ -1,6 +1,6 @@
 import DefaultPlanView from "../../src/components/map/results/DefaultPlanView"
-import StretchedAttackImage from "../../src/components/map/results/StretchedAttackImage"
-import TiledAttackImage from "../../src/components/map/results/TiledAttackImage"
+import StretchedEffectImage from "../../src/components/map/results/StretchedEffectImage"
+import TiledEffectImage from "../../src/components/map/results/TiledEffectImage"
 import bindProps from "../../src/components/util/bindProps"
 import { ViewConfig } from "../types"
 
@@ -24,13 +24,13 @@ const viewConfig: ViewConfig = {
     "Hellfire Breath": {
       image: require("./cards/hellfire-breath.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedAttackImage, { imagePath: require("./effects/attack-fire.png") })
+        attack: bindProps(StretchedEffectImage, { imagePath: require("./effects/attack-fire.png") })
       }
     },
     "Chaos Storm": {
       image: require("./cards/chaos-storm.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedAttackImage, {
+        attack: bindProps(StretchedEffectImage, {
           imagePath: require("./effects/attack-storm.png")
         })
       }
@@ -44,13 +44,13 @@ const viewConfig: ViewConfig = {
     "Homing Missile": {
       image: require("./cards/homing-missiles.png"),
       planViewOverrides: {
-        attack: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-homing.png") })
+        attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-homing.png") })
       }
     },
     "Freezing Touch": {
       image: require("./cards/freezing-touch.png"),
       planViewOverrides: {
-        attemptPreventActions: bindProps(TiledAttackImage, {
+        attemptPreventActions: bindProps(TiledEffectImage, {
           imagePath: require("./effects/attack-freeze.png")
         })
       }
@@ -58,7 +58,7 @@ const viewConfig: ViewConfig = {
     "Yellow Snowballs": {
       image: require("./cards/yellow-snowballs.png"),
       planViewOverrides: {
-        attemptPreventActions: bindProps(TiledAttackImage, {
+        attemptPreventActions: bindProps(TiledEffectImage, {
           imagePath: require("./effects/attack-snowballs.png")
         })
       }
@@ -66,7 +66,7 @@ const viewConfig: ViewConfig = {
     "Force Lightning": {
       image: require("./cards/force-lightning.png"),
       planViewOverrides: {
-        attack: bindProps(TiledAttackImage, {
+        attack: bindProps(TiledEffectImage, {
           imagePath: require("./effects/attack-lightning.png")
         })
       }
@@ -74,13 +74,13 @@ const viewConfig: ViewConfig = {
     "Spider Minions": {
       image: require("./cards/spider-minions.png"),
       planViewOverrides: {
-        attack: bindProps(TiledAttackImage, { imagePath: require("./effects/attack-spider.png") })
+        attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-spider.png") })
       }
     },
     "Piercing Scream": {
       image: require("./cards/piercing-scream.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedAttackImage, {
+        attack: bindProps(StretchedEffectImage, {
           imagePath: require("./effects/attack-scream.png")
         })
       }
@@ -88,7 +88,7 @@ const viewConfig: ViewConfig = {
     Earthquake: {
       image: require("./cards/earthquake.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedAttackImage, {
+        attack: bindProps(StretchedEffectImage, {
           imagePath: require("./effects/attack-earthquake.png")
         })
       }

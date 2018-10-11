@@ -1,7 +1,7 @@
 import React from "react"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import MovementPath from "./MovementPath"
-import TiledAttackImage from "./TiledAttackImage"
+import TiledEffectImage from "./TiledEffectImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
 
@@ -25,7 +25,7 @@ const DefaultPlanView: React.SFC<DefaultPlanViewProps> = props => {
     case "move":
       return <MovementPath result={props.result} />
     case "attack":
-      return <TiledAttackImage result={props.result} imagePath={defaultAttackImage} />
+      return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} />
     default:
       return null
   }

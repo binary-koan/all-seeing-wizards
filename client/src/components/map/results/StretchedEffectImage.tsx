@@ -7,7 +7,7 @@ import { AttackResult } from "../../../../../common/src/turnResults/resultTypes"
 import { directionToRadians } from "../../util/rotation"
 import { MapViewScale, MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 
-interface StretchedAttackImageProps {
+interface StretchedEffectImageProps {
   result: AttackResult
   imagePath: string
 }
@@ -50,7 +50,7 @@ function rangePosition(range: CardRange, from: DirectionalPoint, mapViewScale: M
 // The `anchor` type definition doesn't cover numbers so force this to any to avoid type errors
 const HackyFixedSprite = Sprite as any
 
-const StretchedAttackImage: React.SFC<StretchedAttackImageProps & MapViewScaleProps> = props => (
+const StretchedEffectImage: React.SFC<StretchedEffectImageProps & MapViewScaleProps> = props => (
   <Container>
     {attackedRanges(props.result).map((range, index) => (
       <HackyFixedSprite
@@ -66,4 +66,4 @@ const StretchedAttackImage: React.SFC<StretchedAttackImageProps & MapViewScalePr
   </Container>
 )
 
-export default withMapViewScale(StretchedAttackImage)
+export default withMapViewScale(StretchedEffectImage)

@@ -2,7 +2,7 @@ import { Duration } from "../../../common/src/state/duration"
 import { DbValues } from "../types"
 
 const values: DbValues = {
-  version: 4,
+  version: 5,
   name: "base",
   boards: [
     [
@@ -48,7 +48,7 @@ const values: DbValues = {
       type: "darkLord"
     },
     {
-      name: "Arcane Alchemist",
+      name: "Adaptable Alchemist",
       type: "alchemist"
     }
   ],

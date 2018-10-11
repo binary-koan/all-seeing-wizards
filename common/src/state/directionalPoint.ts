@@ -32,7 +32,7 @@ export class DirectionalPoint implements ValueObject {
     return new DirectionalPoint({ x: this.x, y: this.y, facing: direction })
   }
 
-  public offset(xOffset: number, yOffset: number) {
+  public offset(xOffset: number, yOffset: number = xOffset) {
     return new DirectionalPoint({ x: this.x + xOffset, y: this.y + yOffset, facing: this.facing })
   }
 

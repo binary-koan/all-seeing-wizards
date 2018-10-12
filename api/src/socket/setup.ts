@@ -41,6 +41,8 @@ export default function setup(server: Server, manager: GameManager) {
   const io = socketIo(server)
 
   io.on("connection", async socket => {
+    console.log(`Client connected: ${socket.id}`)
+
     respondTo(
       socket,
       CREATE_GAME,

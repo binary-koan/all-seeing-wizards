@@ -1,6 +1,7 @@
 import { List } from "immutable"
 import { Character } from "../character"
 import { DirectionalPoint } from "../directionalPoint"
+import { Duration } from "../duration"
 import { Hand } from "../hand"
 import { Modifier } from "../modifier"
 import { Player } from "../player"
@@ -21,7 +22,14 @@ export function deserializePlayer(playerData: any) {
     }),
     connected: playerData.connected,
     modifiers: List(playerData.modifiers)
-      .map((modifierData: any) => new Modifier(modifierData))
+      .map((modifierData: any) => deserializeModifier(modifierData))
       .toList()
+  })
+}
+
+function deserializeModifier(modifierData: any) {
+  return new Modifier({
+    type: modifierData.type,
+    duration: new Duration(modifierData.duration.type, modifierData.duration.length)
   })
 }

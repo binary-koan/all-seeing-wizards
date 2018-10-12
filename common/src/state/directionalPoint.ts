@@ -87,6 +87,8 @@ export class DirectionalPoint implements ValueObject {
         return new Point({ x: 1, y: 0 })
       case "west":
         return new Point({ x: -1, y: 0 })
+      default:
+        throw new Error(`Unknown facing direction: ${this.facing}`)
     }
   }
 }

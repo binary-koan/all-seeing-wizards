@@ -105,15 +105,17 @@ function showPerformedActions(emit: (action: Action) => void, data: ActionsPerfo
   const resultingGame = deserializeGame(data.game)
   const resultsByAction = List(data.results).map(deserializeResults)
 
-  const resultsEvents = resultsByAction.flatMap(results => [
-    { action: applyResults(results), duration: 0 },
-    { action: showResults(results), duration: 900 },
-    { action: showResults(List()), duration: 100 }
-  ])
+  const resultsEvents = List([{ action: showResults(List()), duration: 500 }]).concat(
+    resultsByAction.flatMap(results => [
+      { action: applyResults(results), duration: 0 },
+      { action: showResults(results), duration: 900 },
+      { action: showResults(List()), duration: 100 }
+    ])
+  )
 
   const postResultsEvents = List([
-    { action: showResults(undefined), duration: 0 },
-    { action: gameUpdated(resultingGame), duration: 0 }
+    { action: gameUpdated(resultingGame), duration: 0 },
+    { action: showResults(undefined), duration: 0 }
   ])
 
   emit(turnResultsReceived())

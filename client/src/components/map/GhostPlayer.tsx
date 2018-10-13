@@ -5,6 +5,12 @@ import ViewState from "../../state/viewState"
 import { MapViewScaleProps, withMapViewScale } from "./MapViewScaleContext"
 
 import data from "../../../packs/base/viewConfig"
+import tweener from "../util/tweener"
+
+const TweenedSprite = tweener(Sprite, {
+  x: { duration: 500 },
+  y: { duration: 500 }
+})
 
 interface StateProps {
   playerX: number
@@ -13,7 +19,7 @@ interface StateProps {
 }
 
 const GhostPlayer: React.SFC<StateProps & MapViewScaleProps> = props => (
-  <Sprite
+  <TweenedSprite
     image={props.image}
     alpha={0.75}
     {...props.mapViewScale.mapPosition({ x: props.playerX, y: props.playerY })}

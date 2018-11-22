@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
+    "build": "webpack --config webpack.production.js",
+    "start": "webpack-dev-server --config webpack.development.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jono Mingard <reason.koan@gmail.com>",
@@ -30,6 +30,7 @@
     "ts-loader": "^5.1.1",
     "webpack": "^4.19.0",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.8"
+    "webpack-dev-server": "^3.1.8",
+    "webpack-merge": "^4.1.4"
   }
 }

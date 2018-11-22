@@ -3,12 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 
 module.exports = {
-  mode: "development",
   entry: "./src/main.tsx",
-  devtool: "inline-source-map",
-  devServer: {
-    contentBase: "./dist"
-  },
   module: {
     rules: [
       {

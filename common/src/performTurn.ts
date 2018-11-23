@@ -11,6 +11,7 @@ import { calculateMoveResults } from "./turnResults/move"
 import { calculatePotionResults } from "./turnResults/potion"
 import { calculatePreventActionsResults } from "./turnResults/preventActions"
 import { ActionResult } from "./turnResults/resultTypes"
+import { calculateShieldResults } from "./turnResults/shield"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 
@@ -44,6 +45,7 @@ function perform(baseState: Game, cards: Map<string, Card>) {
   const { game: resultingState, results: finalResults } = [
     calculatePreventActionsResults,
     calculatePotionResults,
+    calculateShieldResults,
     calculateMoveResults,
     calculateAttackResults,
     calculateKnockbackResults

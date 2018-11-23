@@ -1,4 +1,4 @@
-import DefaultPlanView from "../../src/components/map/results/DefaultPlanView"
+import { OVERRIDE_UNDERLAY } from "../../src/components/map/results/PlanViewProps"
 import StretchedEffectImage from "../../src/components/map/results/StretchedEffectImage"
 import TiledEffectImage from "../../src/components/map/results/TiledEffectImage"
 import bindProps from "../../src/components/util/bindProps"
@@ -24,15 +24,21 @@ const viewConfig: ViewConfig = {
     "Hellfire Breath": {
       image: require("./cards/hellfire-breath.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedEffectImage, { imagePath: require("./effects/attack-fire.png") })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(StretchedEffectImage, {
+            imagePath: require("./effects/attack-fire.png")
+          })
+        }
       }
     },
     "Chaos Storm": {
       image: require("./cards/chaos-storm.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedEffectImage, {
-          imagePath: require("./effects/attack-storm.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(StretchedEffectImage, {
+            imagePath: require("./effects/attack-storm.png")
+          })
+        }
       }
     },
     "Magical Dart": {
@@ -44,53 +50,67 @@ const viewConfig: ViewConfig = {
     "Homing Missile": {
       image: require("./cards/homing-missiles.png"),
       planViewOverrides: {
-        attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-homing.png") })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-homing.png") })
+        }
       }
     },
     "Freezing Touch": {
       image: require("./cards/freezing-touch.png"),
       planViewOverrides: {
-        attemptPreventActions: bindProps(TiledEffectImage, {
-          imagePath: require("./effects/attack-freeze.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attemptPreventActions: bindProps(TiledEffectImage, {
+            imagePath: require("./effects/attack-freeze.png")
+          })
+        }
       }
     },
     "Yellow Snowballs": {
       image: require("./cards/yellow-snowballs.png"),
       planViewOverrides: {
-        attemptPreventActions: bindProps(TiledEffectImage, {
-          imagePath: require("./effects/attack-snowballs.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attemptPreventActions: bindProps(TiledEffectImage, {
+            imagePath: require("./effects/attack-snowballs.png")
+          })
+        }
       }
     },
     "Force Lightning": {
       image: require("./cards/force-lightning.png"),
       planViewOverrides: {
-        attack: bindProps(TiledEffectImage, {
-          imagePath: require("./effects/attack-lightning.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(TiledEffectImage, {
+            imagePath: require("./effects/attack-lightning.png")
+          })
+        }
       }
     },
     "Spider Minions": {
       image: require("./cards/spider-minions.png"),
       planViewOverrides: {
-        attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-spider.png") })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(TiledEffectImage, { imagePath: require("./effects/attack-spider.png") })
+        }
       }
     },
     "Piercing Scream": {
       image: require("./cards/piercing-scream.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedEffectImage, {
-          imagePath: require("./effects/attack-scream.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(StretchedEffectImage, {
+            imagePath: require("./effects/attack-scream.png")
+          })
+        }
       }
     },
     Earthquake: {
       image: require("./cards/earthquake.png"),
       planViewOverrides: {
-        attack: bindProps(StretchedEffectImage, {
-          imagePath: require("./effects/attack-earthquake.png")
-        })
+        [OVERRIDE_UNDERLAY]: {
+          attack: bindProps(StretchedEffectImage, {
+            imagePath: require("./effects/attack-earthquake.png")
+          })
+        }
       }
     },
     "Magical Shield": {

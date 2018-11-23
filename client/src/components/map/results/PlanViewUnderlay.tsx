@@ -1,24 +1,20 @@
 import React from "react"
-import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import MovementPath from "./MovementPath"
+import { OVERRIDE_UNDERLAY, PlanViewProps } from "./PlanViewProps"
+import PointEffectImage from "./PointEffectImage"
 import TiledEffectImage from "./TiledEffectImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
+import defaultHealImage from "../../../../assets/effects/heal-basic.png"
 import defaultPreventActionsImage from "../../../../assets/effects/prevent-actions-basic.png"
 
-export interface PlanViewOverrides {
-  [type: string]: React.SFC<{ result: ActionResult }>
-}
-
-interface DefaultPlanViewProps {
-  result: ActionResult
-  overrides: { [type: string]: React.ComponentType<{ result: ActionResult }> }
-}
-
-const DefaultPlanView: React.SFC<DefaultPlanViewProps> = props => {
-  if (props.overrides && props.overrides[props.result.type]) {
-    ;(window as any).$comp = props.overrides[props.result.type]
-    const Component = props.overrides[props.result.type]
+const ResultPlanUnderlay: React.SFC<PlanViewProps> = props => {
+  if (
+    props.overrides &&
+    props.overrides[OVERRIDE_UNDERLAY] &&
+    props.overrides[OVERRIDE_UNDERLAY][props.result.type]
+  ) {
+    const Component = props.overrides[OVERRIDE_UNDERLAY][props.result.type]
     return <Component result={props.result} />
   }
 
@@ -29,9 +25,13 @@ const DefaultPlanView: React.SFC<DefaultPlanViewProps> = props => {
       return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} />
     case "attemptPreventActions":
       return <TiledEffectImage result={props.result} imagePath={defaultPreventActionsImage} />
+    case "heal":
+      return (
+        <PointEffectImage position={props.result.player.position} imagePath={defaultHealImage} />
+      )
     default:
       return null
   }
 }
 
-export default DefaultPlanView
+export default ResultPlanUnderlay

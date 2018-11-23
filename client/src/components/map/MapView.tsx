@@ -1,20 +1,23 @@
-import { Stage, Container } from "@inlet/react-pixi"
+import { Stage } from "@inlet/react-pixi"
 import React from "react"
 import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
 import PlannedActionResults from "./containers/PlannedActionResults"
-import PlannedPlayerPositions from "./containers/PlannedPlayerPositions"
 import Players from "./containers/Players"
 import RealActionEffects from "./containers/RealActionEffects"
+import GhostPlayer from "./GhostPlayer"
 import { buildMapViewScale, Provider as ScaleContextProvider } from "./MapViewScaleContext"
+import PlanViewOverlay from "./results/PlanViewOverlay"
+import PlanViewUnderlay from "./results/PlanViewUnderlay"
 
 const PADDING = 1
 
 interface StateProps {
   tilesWide: number
   tilesHigh: number
+  isPlayerView: boolean
 }
 
 interface MapViewProps extends StateProps {
@@ -92,10 +95,11 @@ const MapView: React.SFC<MapViewProps> = props => {
       <ScaleContextProvider value={buildMapViewScale(size)}>
         <Camera centerOn={props.centerOn}>
           <BoardTiles />
-          <PlannedActionResults />
+          <PlannedActionResults planView={PlanViewUnderlay} />
           <RealActionEffects />
           <Players />
-          <PlannedPlayerPositions />
+          {props.isPlayerView ? <GhostPlayer /> : null}
+          <PlannedActionResults planView={PlanViewOverlay} />
         </Camera>
       </ScaleContextProvider>
     </Stage>
@@ -103,7 +107,11 @@ const MapView: React.SFC<MapViewProps> = props => {
 }
 
 function mapStateToProps(state: ViewState): StateProps {
-  return { tilesWide: state.game.board.width, tilesHigh: state.game.board.height }
+  return {
+    tilesWide: state.game.board.width,
+    tilesHigh: state.game.board.height,
+    isPlayerView: Boolean(state.player)
+  }
 }
 
 export default connect(mapStateToProps)(MapView)

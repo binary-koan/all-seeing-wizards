@@ -3,28 +3,36 @@ import React from "react"
 import { connect } from "react-redux"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import ViewState from "../../../state/viewState"
+import { playerOnly } from "../../util/stateHelpers"
+import { PlanViewOverrides, PlanViewProps } from "../results/PlanViewProps"
 
 import data from "../../../../packs/base/viewConfig"
-import { playerOnly } from "../../util/stateHelpers"
-import GhostPlayer from "../GhostPlayer"
-import DefaultPlanView, { PlanViewOverrides } from "../results/DefaultPlanView"
+
+interface PlannedActionResultsProps {
+  planView: React.SFC<PlanViewProps>
+}
 
 interface StateProps {
   resultComponents: Array<[ActionResult, PlanViewOverrides]>
 }
 
-const PlannedActionResults: React.SFC<StateProps> = props => (
-  <Container>
-    {props.resultComponents.map(([result, overrides], index) => (
-      <DefaultPlanView key={`${result.type}${index}`} result={result} overrides={overrides} />
-    ))}
-    <GhostPlayer />
-  </Container>
-)
+const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = props => {
+  const PlanView = props.planView
+
+  return (
+    <Container>
+      {props.resultComponents.map(([result, overrides], index) => (
+        <PlanView key={`${result.type}${index}`} result={result} overrides={overrides} />
+      ))}
+    </Container>
+  )
+}
 
 function mapStateToProps(state: ViewState): StateProps {
   const results = state.placedCardResults
   const actionResults = results.resultsPerAction.flatten().toArray() as ActionResult[]
+
+  console.log(actionResults)
 
   return {
     resultComponents: actionResults.map(

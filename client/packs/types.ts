@@ -1,5 +1,5 @@
 import { Direction } from "../../common/src/state/directionalPoint"
-import { PlanViewOverrides } from "../src/components/map/results/DefaultPlanView"
+import { PlanViewOverrides } from "../src/components/map/results/PlanViewProps"
 
 export interface ViewConfig {
   cards: {

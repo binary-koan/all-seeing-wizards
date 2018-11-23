@@ -25,14 +25,16 @@ export type AttemptPreventActionsResult = Readonly<
   CommonProperties & {
     type: "attemptPreventActions"
     tiles: List<BoardTile>
+    caster: Player
   }
 >
 
 export function attemptPreventActions(
   card: Card,
-  tiles: List<BoardTile>
+  tiles: List<BoardTile>,
+  caster: Player
 ): AttemptPreventActionsResult {
-  return { type: "attemptPreventActions", card, tiles }
+  return { type: "attemptPreventActions", card, tiles, caster }
 }
 
 export type GrantMirrorShieldResult = Readonly<

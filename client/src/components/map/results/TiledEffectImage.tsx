@@ -1,10 +1,16 @@
 import { Container, Sprite } from "@inlet/react-pixi"
+import { List } from "immutable"
 import React from "react"
-import { AttackResult } from "../../../../../common/src/turnResults/resultTypes"
+import { BoardTile } from "../../../../../common/src/state/boardTile"
+import { Player } from "../../../../../common/src/state/player"
+import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 
 interface TiledEffectImageProps {
-  result: AttackResult
+  result: ActionResult & {
+    tiles: List<BoardTile>
+    caster: Player
+  }
   imagePath: string
 }
 

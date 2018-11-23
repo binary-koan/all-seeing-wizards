@@ -10,11 +10,11 @@ export function serializeResults(results: List<ActionResult>) {
   return results.toJS()
 }
 
-export function deserializeResults(resultsData: any[]) {
+export function deserializeResults(resultsData: any[]): List<ActionResult> {
   return List(resultsData.map(deserializeResult))
 }
 
-function deserializeResult(data: any) {
+function deserializeResult(data: any): ActionResult {
   data.card = deserializeCard(data.card)
 
   // TODO proper type-safe conversion

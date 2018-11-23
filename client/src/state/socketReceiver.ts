@@ -17,6 +17,14 @@ import {
 } from "../../../common/src/messages/toClient"
 import { deserializeGame } from "../../../common/src/state/serialization/game"
 import { deserializeResults } from "../../../common/src/state/serialization/results"
+import { ActionResult } from "../../../common/src/turnResults/resultTypes"
+import { attackResults, moveResults, priorityResults } from "../animation/resultOrdering"
+import {
+  ATTACK_DURATION,
+  BETWEEN_ACTIONS_DELAY,
+  MOVE_DURATION,
+  PRIORITY_DURATION
+} from "../animation/timing"
 import {
   Action,
   applyResults,
@@ -96,44 +104,45 @@ const ACTIONABLE_SOCKET_EVENTS: { [event: string]: EventHandler } = {
   }
 }
 
-interface TimedAction {
-  action: Action
-  duration: number
-}
-
-function showPerformedActions(emit: (action: Action) => void, data: ActionsPerformedData) {
-  const resultingGame = deserializeGame(data.game)
-  const resultsByAction = List(data.results).map(deserializeResults)
-
-  const resultsEvents = List([{ action: showResults(List()), duration: 500 }]).concat(
-    resultsByAction.flatMap(results => [
-      { action: applyResults(results), duration: 0 },
-      { action: showResults(results), duration: 900 },
-      { action: showResults(List()), duration: 100 }
-    ])
-  )
-
-  const postResultsEvents = List([
-    { action: gameUpdated(resultingGame), duration: 0 },
-    { action: showResults(undefined), duration: 0 }
-  ])
-
+async function showPerformedActions(emit: (action: Action) => void, data: ActionsPerformedData) {
   emit(turnResultsReceived())
+  emit(showResults(List()))
 
-  emitTimedActions(emit, resultsEvents.concat(postResultsEvents) as List<TimedAction>)
-}
+  await sleep(500)
 
-function emitTimedActions(emit: (action: Action) => void, actions: List<TimedAction>) {
-  function fireNext(index: number) {
-    setTimeout(() => {
-      emit(actions.get(index).action)
-      if (index + 1 < actions.size) {
-        fireNext(index + 1)
-      }
-    }, actions.get(index).duration)
+  const resultsByAction = data.results.map(deserializeResults)
+
+  for (const results of resultsByAction) {
+    await displayResults(emit, priorityResults(results), MOVE_DURATION - PRIORITY_DURATION)
+    await displayResults(emit, moveResults(results), MOVE_DURATION)
+    await displayResults(emit, attackResults(results), ATTACK_DURATION)
+
+    emit(showResults(List()))
+
+    await sleep(BETWEEN_ACTIONS_DELAY)
   }
 
-  if (actions.size) {
-    fireNext(0)
+  const resultingGame = deserializeGame(data.game)
+
+  emit(gameUpdated(resultingGame))
+  emit(showResults(undefined))
+}
+
+async function displayResults(
+  emit: (action: Action) => void,
+  results: List<ActionResult>,
+  ms: number
+) {
+  emit(applyResults(results))
+  emit(showResults(results))
+
+  await sleep(ms)
+}
+
+function sleep<T>(ms: number): (value: T) => Promise<T> {
+  return (value: T) => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(value), ms)
+    })
   }
 }

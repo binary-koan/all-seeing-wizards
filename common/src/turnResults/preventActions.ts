@@ -25,7 +25,7 @@ function effectResults(effect: PreventActionsEffect, player: Player, card: Card,
     .filterNot(affectedPlayer => affectedPlayer === player)
     .toList()
 
-  return List.of(attemptPreventActions(card, tiles)).concat(
+  return List.of(attemptPreventActions(card, tiles, player)).concat(
     preventPlayerActionsResults(effect.duration, card, players)
   ) as List<ActionResult>
 }

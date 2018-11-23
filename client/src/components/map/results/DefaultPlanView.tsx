@@ -4,6 +4,7 @@ import MovementPath from "./MovementPath"
 import TiledEffectImage from "./TiledEffectImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
+import defaultPreventActionsImage from "../../../../assets/effects/prevent-actions-basic.png"
 
 export interface PlanViewOverrides {
   [type: string]: React.SFC<{ result: ActionResult }>
@@ -26,6 +27,8 @@ const DefaultPlanView: React.SFC<DefaultPlanViewProps> = props => {
       return <MovementPath result={props.result} />
     case "attack":
       return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} />
+    case "attemptPreventActions":
+      return <TiledEffectImage result={props.result} imagePath={defaultPreventActionsImage} />
     default:
       return null
   }

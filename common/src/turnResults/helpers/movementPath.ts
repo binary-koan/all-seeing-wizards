@@ -1,5 +1,4 @@
-import { List, Range } from "immutable"
-import { KnockbackEffect, MovementEffect } from "../../state/cardEffect"
+import { List } from "immutable"
 import { Direction, DirectionalPoint } from "../../state/directionalPoint"
 import { Game } from "../../state/game"
 import { Player } from "../../state/player"
@@ -36,5 +35,8 @@ export default function movementPath({
 }
 
 function canMoveTo(position: DirectionalPoint, game: Game) {
-  return position.isWithinSize(game.board.width, game.board.height)
+  return (
+    position.isWithinSize(game.board.width, game.board.height) &&
+    game.board.tileAt(position).type !== "block"
+  )
 }

@@ -3,7 +3,7 @@ import { Card } from "../../state/card"
 import { DirectionalPoint } from "../../state/directionalPoint"
 import { Game } from "../../state/game"
 import { Player } from "../../state/player"
-import { ActionResult, movePrevented, move } from "../resultTypes"
+import { ActionResult, move, movePrevented } from "../resultTypes"
 
 export interface ProposedMove {
   player: Player

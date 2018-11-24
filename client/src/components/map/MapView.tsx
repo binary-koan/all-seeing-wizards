@@ -7,11 +7,13 @@ import BoardTiles from "./containers/BoardTiles"
 import HealthBars from "./containers/HealthBars"
 import PlannedActionResults from "./containers/PlannedActionResults"
 import Players from "./containers/Players"
-import RealActionEffects from "./containers/RealActionEffects"
+import RealActionResults from "./containers/RealActionResults"
 import GhostPlayer from "./GhostPlayer"
 import { buildMapViewScale, Provider as ScaleContextProvider } from "./MapViewScaleContext"
-import PlanViewOverlay from "./results/PlanViewOverlay"
-import PlanViewUnderlay from "./results/PlanViewUnderlay"
+import ResultPlanOverlay from "./results/ResultPlanOverlay"
+import ResultPlanUnderlay from "./results/ResultPlanUnderlay"
+import ResultRealOverlay from "./results/ResultRealOverlay"
+import ResultRealUnderlay from "./results/ResultRealUnderlay"
 
 const PADDING = 1
 
@@ -96,11 +98,12 @@ const MapView: React.SFC<MapViewProps> = props => {
       <ScaleContextProvider value={buildMapViewScale(size)}>
         <Camera centerOn={props.centerOn}>
           <BoardTiles />
-          <PlannedActionResults planView={PlanViewUnderlay} />
-          <RealActionEffects />
+          <PlannedActionResults planView={ResultPlanUnderlay} />
+          <RealActionResults resultView={ResultRealUnderlay} />
           <Players />
           {props.isPlayerView ? <GhostPlayer /> : null}
-          <PlannedActionResults planView={PlanViewOverlay} />
+          <PlannedActionResults planView={ResultPlanOverlay} />
+          <RealActionResults resultView={ResultRealOverlay} />
           {props.isPlayerView ? null : <HealthBars />}
         </Camera>
       </ScaleContextProvider>

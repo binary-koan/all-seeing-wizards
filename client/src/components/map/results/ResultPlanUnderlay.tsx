@@ -1,11 +1,9 @@
 import React from "react"
 import MovementPath from "./MovementPath"
 import { OVERRIDE_UNDERLAY, PlanViewProps } from "./PlanViewProps"
-import PointEffectImage from "./PointEffectImage"
 import TiledEffectImage from "./TiledEffectImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
-import defaultHealImage from "../../../../assets/effects/heal-basic.png"
 import defaultPreventActionsImage from "../../../../assets/effects/prevent-actions-basic.png"
 
 const ResultPlanUnderlay: React.SFC<PlanViewProps> = props => {
@@ -25,10 +23,6 @@ const ResultPlanUnderlay: React.SFC<PlanViewProps> = props => {
       return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} />
     case "attemptPreventActions":
       return <TiledEffectImage result={props.result} imagePath={defaultPreventActionsImage} />
-    case "heal":
-      return (
-        <PointEffectImage position={props.result.player.position} imagePath={defaultHealImage} />
-      )
     default:
       return null
   }

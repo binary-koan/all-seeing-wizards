@@ -139,10 +139,8 @@ async function displayResults(
   await sleep(ms)
 }
 
-function sleep<T>(ms: number): (value: T) => Promise<T> {
-  return (value: T) => {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(value), ms)
-    })
-  }
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
 }

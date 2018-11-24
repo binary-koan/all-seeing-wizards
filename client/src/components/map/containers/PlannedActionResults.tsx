@@ -32,8 +32,6 @@ function mapStateToProps(state: ViewState): StateProps {
   const results = state.placedCardResults
   const actionResults = results.resultsPerAction.flatten().toArray() as ActionResult[]
 
-  console.log(actionResults)
-
   return {
     resultComponents: actionResults.map(
       result =>

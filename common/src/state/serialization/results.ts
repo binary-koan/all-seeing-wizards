@@ -30,6 +30,10 @@ function deserializeResult(data: any): ActionResult {
     data.player = deserializePlayer(data.player)
   }
 
+  if (data.caster) {
+    data.caster = deserializePlayer(data.caster)
+  }
+
   if (data.movementPath) {
     data.movementPath = List(data.movementPath.map((point: any) => new DirectionalPoint(point)))
   }

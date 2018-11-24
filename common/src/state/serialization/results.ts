@@ -15,7 +15,9 @@ export function deserializeResults(resultsData: any[]): List<ActionResult> {
 }
 
 function deserializeResult(data: any): ActionResult {
-  data.card = deserializeCard(data.card)
+  if (data.card) {
+    data.card = deserializeCard(data.card)
+  }
 
   // TODO proper type-safe conversion
   if (data.tiles) {

@@ -1,6 +1,14 @@
 import { ValueObject } from "../util/immutableExtras"
 
 export class Duration implements ValueObject {
+  public get expired() {
+    return this.length <= 0
+  }
+
+  public static infinite() {
+    return new Duration("turn", Infinity)
+  }
+
   public readonly type: "action" | "turn"
   public readonly length: number
 
@@ -15,10 +23,6 @@ export class Duration implements ValueObject {
     }
 
     return new Duration(this.type, Math.max(this.length - amount, 0))
-  }
-
-  public get expired() {
-    return this.length <= 0
   }
 
   public equals(other: any) {

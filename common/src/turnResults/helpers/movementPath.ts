@@ -18,6 +18,8 @@ export default function movementPath({
 }) {
   let moves = List.of(player.position.face(facingDirection))
 
+  amount = slowInWater(amount, player.position, game)
+
   for (let currentAmount = 1; currentAmount <= amount; currentAmount++) {
     const position = player.position
       .face(moveInDirection)
@@ -29,6 +31,7 @@ export default function movementPath({
     }
 
     moves = moves.push(position)
+    amount = slowInWater(amount, position, game)
   }
 
   return moves
@@ -39,4 +42,12 @@ function canMoveTo(position: DirectionalPoint, game: Game) {
     position.isWithinSize(game.board.width, game.board.height) &&
     game.board.tileAt(position).type !== "block"
   )
+}
+
+function slowInWater(movementAmount: number, position: DirectionalPoint, game: Game) {
+  if (game.board.tileAt(position).type === "water") {
+    return movementAmount - 1
+  }
+
+  return movementAmount
 }

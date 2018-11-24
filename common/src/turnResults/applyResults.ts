@@ -1,7 +1,6 @@
 import { List } from "immutable"
 import { Game } from "../state/game"
 import { Modifier } from "../state/modifier"
-import { MAX_PLAYER_HP, Player } from "../state/player"
 import {
   ActionResult,
   GrantMirrorShieldResult,

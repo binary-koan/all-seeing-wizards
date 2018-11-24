@@ -101,6 +101,6 @@ function checkConflictingResult(result: ProposedMove, resultsPerAction: List<Pro
   if (conflict) {
     return movePrevented(result.card, targetPosition, result.player)
   } else {
-    return move(result.card, result.movementPath, result.player)
+    return move(result.card, result.movementPath.map(position => position).toList(), result.player)
   }
 }

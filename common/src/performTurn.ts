@@ -6,11 +6,12 @@ import { Hand } from "./state/hand"
 import { MAX_PLAYER_HP, Player } from "./state/player"
 import { applyResults } from "./turnResults/applyResults"
 import { calculateAttackResults } from "./turnResults/attack"
+import modifiedResultForTarget from "./turnResults/helpers/modifiedResultForTarget"
 import { calculateKnockbackResults } from "./turnResults/knockback"
 import { calculateMoveResults } from "./turnResults/move"
 import { calculatePotionResults } from "./turnResults/potion"
 import { calculatePreventActionsResults } from "./turnResults/preventActions"
-import { ActionResult } from "./turnResults/resultTypes"
+import { ActionResult, takeDamage } from "./turnResults/resultTypes"
 import { calculateShieldResults } from "./turnResults/shield"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
@@ -21,7 +22,7 @@ export interface PerformTurnResults {
 }
 
 export default function performTurn(baseState: Game): PerformTurnResults {
-  const { game: resultingState, resultsPerAction: finalResults } = Range(
+  const { game: stateAfterActions, resultsPerAction: resultsAfterActions } = Range(
     0,
     MAX_ACTIONS_PER_TURN
   ).reduce(
@@ -31,6 +32,11 @@ export default function performTurn(baseState: Game): PerformTurnResults {
       return { game: nextState, resultsPerAction: resultsPerAction.push(results) }
     },
     { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
+  )
+
+  const { game: resultingState, results: finalResults } = addEnvironmentResults(
+    stateAfterActions,
+    resultsAfterActions
   )
 
   const finalState = [advanceTurn, discardPickedCards, drawHands].reduce(
@@ -90,6 +96,21 @@ function advanceAction(game: Game) {
       return advancePlayerModifiers(state, player, "action")
     }
   }, game)
+}
+
+function addEnvironmentResults(game: Game, results: List<List<ActionResult>>) {
+  const playersInLava = game.players.filter(
+    player => game.board.tileAt(player.position).type === "lava"
+  )
+
+  const environmentResults = playersInLava
+    .map(player => modifiedResultForTarget(takeDamage(undefined, 1, player)))
+    .toList()
+
+  return {
+    game: applyResults(environmentResults, game),
+    results: environmentResults.size ? results.push(environmentResults) : results
+  }
 }
 
 function advanceTurn(game: Game) {

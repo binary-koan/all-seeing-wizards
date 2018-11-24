@@ -11,7 +11,7 @@ import {
 } from "../resultTypes"
 
 const RESULT_MODIFIERS: {
-  [key: string]: (result: ActionResult, caster: Player, previous?: ActionResult) => ActionResult
+  [key: string]: (result: ActionResult, caster?: Player, previous?: ActionResult) => ActionResult
 } = {
   attack: neverModified,
   attemptPreventActions: neverModified,
@@ -20,7 +20,7 @@ const RESULT_MODIFIERS: {
   heal: neverModified,
   increaseDamage: neverModified,
 
-  knockback(result: KnockbackResult, caster: Player) {
+  knockback(result: KnockbackResult) {
     if (result.player.hasModifier("shield") || result.player.hasModifier("mirrorShield")) {
       return nothing(result.card)
     }
@@ -30,9 +30,9 @@ const RESULT_MODIFIERS: {
   movePrevented: neverModified,
   none: neverModified,
 
-  preventActions(result: PreventActionsResult, caster: Player, previous?: ActionResult) {
+  preventActions(result: PreventActionsResult, caster?: Player, previous?: ActionResult) {
     if (result.player.hasModifier("mirrorShield")) {
-      if (shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
+      if (!caster || shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
         return shieldFromHarm(result.card, result.player)
       }
 
@@ -49,9 +49,9 @@ const RESULT_MODIFIERS: {
 
   shieldFromHarm: neverModified,
 
-  takeDamage(result: TakeDamageResult, caster: Player, previous?: ActionResult) {
+  takeDamage(result: TakeDamageResult, caster?: Player, previous?: ActionResult) {
     if (result.player.hasModifier("mirrorShield")) {
-      if (shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
+      if (!caster || shouldAvoidInfiniteMirrorShieldLoop(caster, previous)) {
         return shieldFromHarm(result.card, result.player)
       }
 
@@ -66,7 +66,7 @@ const RESULT_MODIFIERS: {
 
 export default function modifiedResultForTarget(
   result: ActionResult,
-  caster: Player
+  caster?: Player
 ): ActionResult {
   return RESULT_MODIFIERS[result.type](result, caster)
 }

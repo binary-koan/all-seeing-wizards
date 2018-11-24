@@ -13,7 +13,7 @@ interface PlannedActionResultsProps {
 }
 
 interface StateProps {
-  resultComponents: Array<[ActionResult, ResultViewOverrides]>
+  resultComponents: Array<{ result: ActionResult; overrides: ResultViewOverrides }>
 }
 
 const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = props => {
@@ -21,7 +21,7 @@ const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = 
 
   return (
     <Container>
-      {props.resultComponents.map(([result, overrides], index) => (
+      {props.resultComponents.map(({ result, overrides }, index) => (
         <PlanView key={`${result.type}${index}`} result={result} overrides={overrides} />
       ))}
     </Container>
@@ -33,13 +33,10 @@ function mapStateToProps(state: ViewState): StateProps {
   const actionResults = results.resultsPerAction.flatten().toArray() as ActionResult[]
 
   return {
-    resultComponents: actionResults.map(
-      result =>
-        [result, data.cards[result.card.name].planViewOverrides] as [
-          ActionResult,
-          ResultViewOverrides
-        ]
-    )
+    resultComponents: actionResults.map(result => ({
+      result,
+      overrides: result.card && data.cards[result.card.name].planViewOverrides
+    }))
   }
 }
 

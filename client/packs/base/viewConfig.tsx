@@ -143,6 +143,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/dark-lord-east.png"),
         west: require("./players/dark-lord-west.png")
       },
+      heartImage: require("./players/dark-lord-heart.png"),
       color: "#6A7787"
     },
     "Clever Cleric": {
@@ -152,6 +153,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/cleric-east.png"),
         west: require("./players/cleric-west.png")
       },
+      heartImage: require("./players/cleric-heart.png"),
       color: "#F44236"
     },
     "Pure Paladin": {
@@ -161,6 +163,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/paladin-east.png"),
         west: require("./players/paladin-west.png")
       },
+      heartImage: require("./players/paladin-heart.png"),
       color: "#EC9E42"
     },
     "Adaptable Alchemist": {
@@ -170,6 +173,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/alchemist-east.png"),
         west: require("./players/alchemist-west.png")
       },
+      heartImage: require("./players/alchemist-heart.png"),
       color: "#677821"
     }
   }

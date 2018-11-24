@@ -77,6 +77,10 @@ export class DirectionalPoint implements ValueObject {
     return `DirectionalPoint { x: ${this.x}, y: ${this.y}, facing: ${this.facing} }`
   }
 
+  public toPoint() {
+    return new Point({ x: this.x, y: this.y })
+  }
+
   private get forwardDirection() {
     switch (this.facing) {
       case "north":

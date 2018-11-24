@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.production.js",
-    "start": "webpack-dev-server --config webpack.development.js",
+    "build": "webpack --progress --config webpack.production.js",
+    "start": "webpack-dev-server --progress --config webpack.development.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jono Mingard <reason.koan@gmail.com>",

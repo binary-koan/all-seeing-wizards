@@ -11,6 +11,7 @@ export interface ViewConfig {
   characters: {
     [name: string]: {
       images: { [direction in Direction]: string }
+      heartImage: string
       color: string
     }
   }

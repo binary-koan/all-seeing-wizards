@@ -9,6 +9,10 @@ export class Point implements ValueObject {
     this.y = y
   }
 
+  public add(other: { x: number; y: number }) {
+    return new Point({ x: this.x + other.x, y: this.y + other.y })
+  }
+
   public multiply(multiplier: number) {
     return new Point({ x: this.x * multiplier, y: this.y * multiplier })
   }

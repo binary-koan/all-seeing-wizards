@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
+import HealthBars from "./containers/HealthBars"
 import PlannedActionResults from "./containers/PlannedActionResults"
 import Players from "./containers/Players"
 import RealActionEffects from "./containers/RealActionEffects"
@@ -100,6 +101,7 @@ const MapView: React.SFC<MapViewProps> = props => {
           <Players />
           {props.isPlayerView ? <GhostPlayer /> : null}
           <PlannedActionResults planView={PlanViewOverlay} />
+          {props.isPlayerView ? null : <HealthBars />}
         </Camera>
       </ScaleContextProvider>
     </Stage>

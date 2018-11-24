@@ -1,11 +1,11 @@
 import React from "react"
-import { OVERRIDE_UNDERLAY, PlanViewProps } from "./PlanViewProps"
+import { OVERRIDE_UNDERLAY, ResultViewProps } from "./ResultViewProps"
 import TiledEffectImage from "./TiledEffectImage"
 
 import defaultAttackImage from "../../../../assets/effects/attack-basic.png"
 import defaultPreventActionsImage from "../../../../assets/effects/prevent-actions-basic.png"
 
-const ResultPlanUnderlay: React.SFC<PlanViewProps> = props => {
+const ResultPlanUnderlay: React.SFC<ResultViewProps> = props => {
   if (
     props.overrides &&
     props.overrides[OVERRIDE_UNDERLAY] &&
@@ -17,9 +17,11 @@ const ResultPlanUnderlay: React.SFC<PlanViewProps> = props => {
 
   switch (props.result.type) {
     case "attack":
-      return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} />
+      return <TiledEffectImage result={props.result} imagePath={defaultAttackImage} alpha={1} />
     case "attemptPreventActions":
-      return <TiledEffectImage result={props.result} imagePath={defaultPreventActionsImage} />
+      return (
+        <TiledEffectImage result={props.result} imagePath={defaultPreventActionsImage} alpha={1} />
+      )
     default:
       return null
   }

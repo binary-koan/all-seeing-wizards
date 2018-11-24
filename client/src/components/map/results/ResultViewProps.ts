@@ -3,7 +3,7 @@ import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 export const OVERRIDE_UNDERLAY = "underlay"
 export const OVERRIDE_OVERLAY = "overlay"
 
-export interface PlanViewOverrides {
+export interface ResultViewOverrides {
   [OVERRIDE_UNDERLAY]?: {
     [type: string]: React.SFC<{ result: ActionResult }>
   }
@@ -13,7 +13,7 @@ export interface PlanViewOverrides {
   }
 }
 
-export interface PlanViewProps {
+export interface ResultViewProps {
   result: ActionResult
-  overrides: PlanViewOverrides
+  overrides: ResultViewOverrides
 }

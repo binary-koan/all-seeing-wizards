@@ -1,12 +1,12 @@
 import React from "react"
-import { OVERRIDE_OVERLAY, PlanViewProps } from "./PlanViewProps"
 import PointEffectImage from "./PointEffectImage"
+import { OVERRIDE_OVERLAY, ResultViewProps } from "./ResultViewProps"
 
 import defaultHealImage from "../../../../assets/effects/heal-basic.png"
 import defaultPowerUpImage from "../../../../assets/effects/power-up-basic.png"
 import defaultShieldImage from "../../../../assets/effects/shield-basic.png"
 
-const ResultPlanOverlay: React.SFC<PlanViewProps> = props => {
+const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
   if (
     props.overrides &&
     props.overrides[OVERRIDE_OVERLAY] &&

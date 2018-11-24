@@ -12,6 +12,7 @@ interface TiledEffectImageProps {
     caster: Player
   }
   imagePath: string
+  alpha: number
 }
 
 const TiledEffectImage: React.SFC<TiledEffectImageProps & MapViewScaleProps> = props => (
@@ -20,7 +21,7 @@ const TiledEffectImage: React.SFC<TiledEffectImageProps & MapViewScaleProps> = p
       <Sprite
         key={[tile.position.x, tile.position.y].toString()}
         image={props.imagePath}
-        alpha={0.75}
+        alpha={props.alpha}
         {...props.mapViewScale.tileSize}
         {...props.mapViewScale.mapPosition(tile.position)}
       />

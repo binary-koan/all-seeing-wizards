@@ -5,16 +5,16 @@ import { connect } from "react-redux"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import ViewState from "../../../state/viewState"
 import { playerOnly } from "../../util/stateHelpers"
-import { PlanViewOverrides, PlanViewProps } from "../results/PlanViewProps"
+import { ResultViewOverrides, ResultViewProps } from "../results/ResultViewProps"
 
 import data from "../../../../packs/base/viewConfig"
 
 interface PlannedActionResultsProps {
-  resultView: React.SFC<PlanViewProps>
+  resultView: React.SFC<ResultViewProps>
 }
 
 interface StateProps {
-  resultComponents: Array<[ActionResult, PlanViewOverrides]>
+  resultComponents: Array<[ActionResult, ResultViewOverrides]>
 }
 
 const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = props => {
@@ -37,9 +37,9 @@ function mapStateToProps(state: ViewState): StateProps {
       .toArray()
       .map(
         result =>
-          [result, data.cards[result.card.name].planViewOverrides] as [
+          [result, data.cards[result.card.name].realViewOverrides] as [
             ActionResult,
-            PlanViewOverrides
+            ResultViewOverrides
           ]
       )
   }

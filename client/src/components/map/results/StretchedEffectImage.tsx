@@ -10,6 +10,7 @@ import { MapViewScale, MapViewScaleProps, withMapViewScale } from "../MapViewSca
 interface StretchedEffectImageProps {
   result: AttackResult
   imagePath: string
+  alpha: number
 }
 
 function attackedRanges(result: AttackResult): CardRange[] {
@@ -56,7 +57,7 @@ const StretchedEffectImage: React.SFC<StretchedEffectImageProps & MapViewScalePr
       <HackyFixedSprite
         key={[range.type, index].toString()}
         image={props.imagePath}
-        alpha={0.75}
+        alpha={props.alpha || 1}
         anchor={0.5}
         rotation={directionToRadians(props.result.caster.position.facing)}
         {...rangeSize(range, props.mapViewScale)}

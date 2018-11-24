@@ -1,11 +1,12 @@
 import { Direction } from "../../common/src/state/directionalPoint"
-import { PlanViewOverrides } from "../src/components/map/results/PlanViewProps"
+import { ResultViewOverrides } from "../src/components/map/results/ResultViewProps"
 
 export interface ViewConfig {
   cards: {
     [name: string]: {
       image: string
-      planViewOverrides?: PlanViewOverrides
+      planViewOverrides?: ResultViewOverrides
+      realViewOverrides?: ResultViewOverrides
     }
   }
   characters: {

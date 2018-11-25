@@ -1,5 +1,6 @@
 import { List } from "immutable"
 import performTurn, { PerformTurnResults } from "../../../common/src/performTurn"
+import { Card } from "../../../common/src/state/card"
 import { Game } from "../../../common/src/state/game"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
 import { RecordFactory } from "../../../common/src/util/immutableExtras"
@@ -16,6 +17,7 @@ interface IViewState {
   error?: { message: string; exception?: string }
   socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
   showingResults?: List<ActionResult>
+  showingCardDetails?: Card
 }
 
 const viewState = RecordFactory<IViewState>({
@@ -24,7 +26,8 @@ const viewState = RecordFactory<IViewState>({
   connectedAs: { type: "none" },
   error: undefined,
   socketState: "connecting",
-  showingResults: undefined
+  showingResults: undefined,
+  showingCardDetails: undefined
 })
 
 export default class ViewState extends viewState implements IViewState {
@@ -34,6 +37,7 @@ export default class ViewState extends viewState implements IViewState {
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
   public readonly showingResults?: List<ActionResult>
+  public readonly showingCardDetails?: Card
 
   constructor(config?: Partial<IViewState>) {
     super(config)

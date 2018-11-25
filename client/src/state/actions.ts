@@ -1,6 +1,7 @@
 import { List } from "immutable"
 import { Game } from "../../../common/src/state/game"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
+import { Card } from "../../../common/src/state/card"
 
 export interface SetGameCodeAction {
   type: "setGameCode"
@@ -178,6 +179,15 @@ export function playerDisconnected(playerId: string): PlayerDisconnectedAction {
   return { type: "playerDisconnected", playerId }
 }
 
+export interface ShowCardDetailsAction {
+  type: "showCardDetails"
+  card: Card
+}
+
+export function showCardDetails(card?: Card): ShowCardDetailsAction {
+  return { type: "showCardDetails", card }
+}
+
 export type Action =
   | SocketConnectedAction
   | SocketDisconnectedAction
@@ -199,3 +209,4 @@ export type Action =
   | ApplyResultsAction
   | PlayerConnectedAction
   | PlayerDisconnectedAction
+  | ShowCardDetailsAction

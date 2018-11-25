@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
 import { Card } from "../../../../common/src/state/card"
-import { Action, placeCard } from "../../state/actions"
+import { Action, placeCard, showCardDetails } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 import HandCard from "./HandCard"
@@ -22,6 +22,7 @@ interface StateProps {
 
 interface DispatchProps {
   pickCard: (index: number) => void
+  showDetails: (card: Card) => void
 }
 
 const HandCards: React.SFC<StateProps & DispatchProps> = props => (
@@ -32,6 +33,7 @@ const HandCards: React.SFC<StateProps & DispatchProps> = props => (
         card={card}
         isPicked={props.pickedIds.includes(card.id)}
         onClick={() => props.pickCard(index)}
+        onLongPress={() => props.showDetails(card)}
       />
     ))}
   </Wrapper>
@@ -46,7 +48,8 @@ function mapStateToProps(state: ViewState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   return {
-    pickCard: index => dispatch(placeCard(index))
+    pickCard: index => dispatch(placeCard(index)),
+    showDetails: card => dispatch(showCardDetails(card))
   }
 }
 

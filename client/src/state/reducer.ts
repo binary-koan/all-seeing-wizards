@@ -75,6 +75,9 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
         state.game.updatePlayer(state.game.player(action.playerId).disconnect())
       )
 
+    case "showCardDetails":
+      return state.set("showingCardDetails", action.card)
+
     default:
       return state
   }

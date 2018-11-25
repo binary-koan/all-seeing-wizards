@@ -1,4 +1,5 @@
 import React from "react"
+import CardDetails from "./card/CardDetails"
 import PlayerMapView from "./map/PlayerMapView"
 import CardChooser from "./player/CardChooser"
 import PlayerHeader from "./player/PlayerHeader"
@@ -33,6 +34,7 @@ const Player: React.SFC = _props => (
     </MapWrapper>
     <CardChooser />
     <PrimaryAction />
+    <CardDetails />
   </Wrapper>
 )
 

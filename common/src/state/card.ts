@@ -12,6 +12,7 @@ interface ICard {
 const card = RecordFactory<ICard>({
   id: "",
   name: "",
+  tagline: undefined,
   effects: List()
 })
 

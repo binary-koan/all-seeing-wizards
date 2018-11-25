@@ -5,6 +5,7 @@ export interface ViewConfig {
   cards: {
     [name: string]: {
       image: string
+      description?: JSX.Element
       planViewOverrides?: ResultViewOverrides
       realViewOverrides?: ResultViewOverrides
     }

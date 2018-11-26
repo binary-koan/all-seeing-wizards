@@ -31,9 +31,19 @@ export default async function showPerformedActions(
   const resultsByAction = data.results.map(deserializeResults)
 
   for (const results of resultsByAction) {
-    await displayResults(emit, priorityResults(results), MOVE_DURATION - PRIORITY_DURATION)
-    await displayResults(emit, moveResults(results), MOVE_DURATION)
-    await displayResults(emit, attackResults(results), ATTACK_DURATION)
+    const priority = priorityResults(results)
+    const move = moveResults(results)
+    const attack = attackResults(results)
+
+    if (priority.size > 0) {
+      await displayResults(emit, priority, PRIORITY_DURATION - MOVE_DURATION)
+    }
+    if (priority.size > 0 || move.size > 0) {
+      await displayResults(emit, move, MOVE_DURATION)
+    }
+    if (attack.size > 0) {
+      await displayResults(emit, attack, ATTACK_DURATION)
+    }
 
     emit(prepareForNextResults())
 

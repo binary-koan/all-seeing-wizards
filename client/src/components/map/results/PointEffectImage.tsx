@@ -11,7 +11,7 @@ interface PointEffectImageProps {
 const PointEffectImage: React.SFC<PointEffectImageProps & MapViewScaleProps> = props => (
   <Sprite
     image={props.imagePath}
-    alpha={props.alpha || 1}
+    alpha={props.alpha == null ? 1 : props.alpha}
     {...props.mapViewScale.tileSize}
     {...props.mapViewScale.mapPosition(props.position)}
   />

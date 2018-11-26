@@ -25,7 +25,7 @@ export class Modifier extends modifier implements IModifier {
     super(config)
   }
 
-  public advance(advancementType: "action" | "turn") {
+  public advance(advancementType: Duration["type"]) {
     const newDuration = this.duration.shorten(advancementType, 1)
 
     if (newDuration === this.duration) {

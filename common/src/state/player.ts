@@ -4,7 +4,8 @@ import { RecordFactory } from "../util/immutableExtras"
 import { Character } from "./character"
 import { DirectionalPoint } from "./directionalPoint"
 import { Hand } from "./hand"
-import { Modifier } from "./modifier"
+import { Modifier, ModifierType } from "./modifier"
+import { Duration } from "./duration"
 
 export const MAX_PLAYER_HP = 5
 
@@ -60,11 +61,11 @@ export class Player extends player implements IPlayer {
     return this.set("modifiers", this.modifiers.push(modifier))
   }
 
-  public hasModifier(typeName: string) {
+  public hasModifier(typeName: ModifierType["name"]) {
     return this.modifiers.find(modifier => modifier.type.name === typeName) != null
   }
 
-  public advanceModifiers(advancementType: "action" | "turn") {
+  public advanceModifiers(advancementType: Duration["type"]) {
     return this.set(
       "modifiers",
       this.modifiers

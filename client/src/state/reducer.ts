@@ -57,6 +57,9 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
     case "applyResults":
       return state.set("game", applyResults(action.results, state.game))
 
+    case "prepareForNextResults":
+      return applyPrepareForNextResults(state)
+
     case "placeCard":
       return applyPlaceCard(state, action.index)
 
@@ -114,4 +117,16 @@ function applyUnplaceCard(state: ViewState, index: number) {
     ...state.connectedAs,
     placedCards: state.connectedAs.placedCards.remove(index)
   })
+}
+
+function applyPrepareForNextResults(state: ViewState) {
+  return state
+    .set(
+      "game",
+      state.game.players.reduce(
+        (game, player) => game.updatePlayer(player.advanceModifiers("action")),
+        state.game
+      )
+    )
+    .set("showingResults", List())
 }

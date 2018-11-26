@@ -10,7 +10,14 @@ import {
   MOVE_DURATION,
   PRIORITY_DURATION
 } from "../../animation/timing"
-import { Action, applyResults, gameUpdated, showResults, turnResultsReceived } from "../actions"
+import {
+  Action,
+  applyResults,
+  gameUpdated,
+  prepareForNextResults,
+  showResults,
+  turnResultsReceived
+} from "../actions"
 
 export default async function showPerformedActions(
   emit: (action: Action) => void,
@@ -28,7 +35,7 @@ export default async function showPerformedActions(
     await displayResults(emit, moveResults(results), MOVE_DURATION)
     await displayResults(emit, attackResults(results), ATTACK_DURATION)
 
-    emit(showResults(List()))
+    emit(prepareForNextResults())
 
     await sleep(BETWEEN_ACTIONS_DELAY)
   }

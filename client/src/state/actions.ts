@@ -135,6 +135,14 @@ export function applyResults(results: List<ActionResult>): ApplyResultsAction {
   return { type: "applyResults", results }
 }
 
+export interface PrepareForNextResultsAction {
+  type: "prepareForNextResults"
+}
+
+export function prepareForNextResults(): PrepareForNextResultsAction {
+  return { type: "prepareForNextResults" }
+}
+
 export interface PlaceCardAction {
   type: "placeCard"
   index: number
@@ -207,6 +215,7 @@ export type Action =
   | TurnResultsReceivedAction
   | ShowResultsAction
   | ApplyResultsAction
+  | PrepareForNextResultsAction
   | PlayerConnectedAction
   | PlayerDisconnectedAction
   | ShowCardDetailsAction

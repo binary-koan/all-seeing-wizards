@@ -44,7 +44,10 @@ function rangePosition(range: CardRange, from: DirectionalPoint, mapViewScale: M
     case "point":
       return mapViewScale.mapPosition(range.position === "on" ? from : from.forward(1))
     case "wholeMap":
-      return mapViewScale.mapPosition({ x: 0, y: 0 })
+      return {
+        x: mapViewScale.mapWidth / 2,
+        y: mapViewScale.mapHeight / 2
+      }
   }
 }
 

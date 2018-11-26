@@ -1,6 +1,7 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import React from "react"
 import { connect } from "react-redux"
+import { Player } from "../../../../../common/src/state/player"
 import ViewState from "../../../state/viewState"
 import tweener from "../../util/tweener"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
@@ -11,6 +12,11 @@ import powerUpImage from "../../../../assets/effects/power-up-basic.png"
 import shieldImage from "../../../../assets/effects/shield-basic.png"
 import waterSlowImage from "../../../../assets/effects/water-slow.png"
 import data from "../../../../packs/base/viewConfig"
+
+const NO_TINT = 0xffffff
+const DAMAGE_TINT = 0xff0000
+const HEALING_TINT = 0x00ff00
+const ACTIONS_PREVENTED_TINT = 0x7777ff
 
 const TweenedSprite = tweener(Sprite, {
   x: { duration: 500 },
@@ -23,6 +29,7 @@ interface StateProps {
     x: number
     y: number
     image: string
+    tint: number
     isInWater?: boolean
     isInLava?: boolean
     hasShield?: boolean
@@ -36,6 +43,7 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
       <Container key={player.id}>
         <TweenedSprite
           image={player.image}
+          tint={player.tint}
           {...props.mapViewScale.mapPosition(player)}
           {...props.mapViewScale.tileSize}
         />
@@ -64,6 +72,26 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
   </Container>
 )
 
+function playerTint(player: Player, state: ViewState) {
+  if (
+    state.showingResults &&
+    state.showingResults.some(
+      result => result.type === "takeDamage" && result.player.id === player.id
+    )
+  ) {
+    return DAMAGE_TINT
+  } else if (
+    state.showingResults &&
+    state.showingResults.some(result => result.type === "heal" && result.player.id === player.id)
+  ) {
+    return HEALING_TINT
+  } else if (player.hasModifier("preventActions")) {
+    return ACTIONS_PREVENTED_TINT
+  } else {
+    return NO_TINT
+  }
+}
+
 function mapStateToProps(state: ViewState): StateProps {
   return {
     players: state.game.players.toArray().map(player => ({
@@ -71,6 +99,7 @@ function mapStateToProps(state: ViewState): StateProps {
       x: player.position.x,
       y: player.position.y,
       image: data.characters[player.character.name].images[player.position.facing],
+      tint: playerTint(player, state),
       isInWater: state.game.board.tileAt(player.position).type === "water",
       isInLava: state.game.board.tileAt(player.position).type === "lava",
       hasShield: player.hasModifier("shield") || player.hasModifier("mirrorShield"),

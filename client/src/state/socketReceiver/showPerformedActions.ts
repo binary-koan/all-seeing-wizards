@@ -39,7 +39,7 @@ export default async function showPerformedActions(
       await displayResults(emit, priority, PRIORITY_DURATION - MOVE_DURATION)
     }
     if (priority.size > 0 || move.size > 0) {
-      await displayResults(emit, move, MOVE_DURATION)
+      await displayResults(emit, priority.concat(move).toList(), MOVE_DURATION)
     }
     if (attack.size > 0) {
       await displayResults(emit, attack, ATTACK_DURATION)

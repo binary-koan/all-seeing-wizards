@@ -23,6 +23,11 @@ const TweenedSprite = tweener(Sprite, {
   y: { duration: 500 }
 })
 
+const TweenedPointEffectImage = tweener(PointEffectImage, {
+  x: { duration: 500 },
+  y: { duration: 500 }
+})
+
 interface StateProps {
   players: Array<{
     id: string
@@ -47,24 +52,28 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
           {...props.mapViewScale.mapPosition(player)}
           {...props.mapViewScale.tileSize}
         />
-        <PointEffectImage
+        <TweenedPointEffectImage
           imagePath={waterSlowImage}
-          position={{ x: player.x, y: player.y }}
+          x={player.x}
+          y={player.y}
           alpha={player.isInWater ? 1 : 0}
         />
-        <PointEffectImage
+        <TweenedPointEffectImage
           imagePath={lavaFireImage}
-          position={{ x: player.x, y: player.y }}
+          x={player.x}
+          y={player.y}
           alpha={player.isInLava ? 1 : 0}
         />
-        <PointEffectImage
+        <TweenedPointEffectImage
           imagePath={shieldImage}
-          position={{ x: player.x, y: player.y }}
+          x={player.x}
+          y={player.y}
           alpha={player.hasShield ? 1 : 0}
         />
-        <PointEffectImage
+        <TweenedPointEffectImage
           imagePath={powerUpImage}
-          position={{ x: player.x, y: player.y }}
+          x={player.x}
+          y={player.y}
           alpha={player.hasDamageIncrease ? 1 : 0}
         />
       </Container>

@@ -19,16 +19,28 @@ const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
   switch (props.result.type) {
     case "heal":
       return (
-        <PointEffectImage position={props.result.player.position} imagePath={defaultHealImage} />
+        <PointEffectImage
+          x={props.result.player.position.x}
+          y={props.result.player.position.y}
+          imagePath={defaultHealImage}
+        />
       )
     case "increaseDamage":
       return (
-        <PointEffectImage position={props.result.player.position} imagePath={defaultPowerUpImage} />
+        <PointEffectImage
+          x={props.result.player.position.x}
+          y={props.result.player.position.y}
+          imagePath={defaultPowerUpImage}
+        />
       )
     case "grantShield":
     case "grantMirrorShield":
       return (
-        <PointEffectImage position={props.result.player.position} imagePath={defaultShieldImage} />
+        <PointEffectImage
+          x={props.result.player.position.x}
+          y={props.result.player.position.y}
+          imagePath={defaultShieldImage}
+        />
       )
     default:
       return null

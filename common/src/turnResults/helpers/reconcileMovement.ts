@@ -70,7 +70,7 @@ function checkAgainstUnmovedPlayers(
     return proposedMove(
       result.player,
       result.card,
-      result.movementPath.slice(0, firstBadIndex).toList()
+      result.movementPath.slice(0, firstBadIndex + 1).toList()
     )
   } else {
     return result

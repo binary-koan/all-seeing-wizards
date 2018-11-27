@@ -6,12 +6,13 @@ import { Hand } from "./state/hand"
 import { MAX_PLAYER_HP, Player } from "./state/player"
 import { applyResults } from "./turnResults/applyResults"
 import { calculateAttackResults } from "./turnResults/attack"
-import modifiedResultForTarget from "./turnResults/helpers/modifiedResultForTarget"
+import { calculateEnvironmentResults } from "./turnResults/environment"
+import { calculateHauntingResults } from "./turnResults/haunting"
 import { calculateKnockbackResults } from "./turnResults/knockback"
 import { calculateMoveResults } from "./turnResults/move"
 import { calculatePotionResults } from "./turnResults/potion"
 import { calculatePreventActionsResults } from "./turnResults/preventActions"
-import { ActionResult, takeDamage } from "./turnResults/resultTypes"
+import { ActionResult } from "./turnResults/resultTypes"
 import { calculateShieldResults } from "./turnResults/shield"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
@@ -90,22 +91,11 @@ function advanceAction(game: Game) {
 }
 
 function postCardsOutcome(initialGame: Game) {
-  return composeOutcomes([addEnvironmentResults], (game, operator) => operator(game), initialGame)
-}
-
-function addEnvironmentResults(game: Game) {
-  const playersInLava = game.players.filter(
-    player => game.board.tileAt(player.position).type === "lava"
+  return composeOutcomes(
+    [calculateEnvironmentResults, calculateHauntingResults],
+    (game, operator) => operator(game),
+    initialGame
   )
-
-  const environmentResults = playersInLava
-    .map(player => modifiedResultForTarget(takeDamage(undefined, 1, player)))
-    .toList()
-
-  return {
-    game: applyResults(environmentResults, game),
-    results: environmentResults
-  }
 }
 
 function advanceGame(game: Game) {

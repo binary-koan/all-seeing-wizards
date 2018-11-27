@@ -16,61 +16,29 @@ import { calculateShieldResults } from "./turnResults/shield"
 
 const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
 
-export interface PerformTurnResults {
+export interface PerformTurnOutcome {
   game: Game
   resultsPerAction: List<List<ActionResult>>
 }
 
-export default function performTurn(baseState: Game): PerformTurnResults {
-  const { game: stateAfterActions, resultsPerAction: resultsAfterActions } = Range(
-    0,
-    MAX_ACTIONS_PER_TURN
-  ).reduce(
-    ({ game, resultsPerAction }, index) => {
-      const { game: nextState, results } = perform(game, playedCards(index, game))
+export default function performTurn(baseState: Game): PerformTurnOutcome {
+  let outcome = { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
 
-      return { game: nextState, resultsPerAction: resultsPerAction.push(results) }
-    },
-    { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
-  )
+  Range(0, MAX_ACTIONS_PER_TURN).forEach(index => {
+    outcome = addActionOutcome(
+      cardActionOutcome(outcome.game, playedCards(index, outcome.game)),
+      outcome
+    )
+  })
 
-  const { game: resultingState, results: finalResults } = addEnvironmentResults(
-    stateAfterActions,
-    resultsAfterActions
-  )
+  outcome = addActionOutcome(postCardsOutcome(outcome.game), outcome)
 
-  const finalState = [advanceTurn, discardPickedCards, drawHands].reduce(
-    (state, operator) => operator(state),
-    resultingState
-  )
-
-  return { game: finalState, resultsPerAction: finalResults }
+  return { game: advanceGame(outcome.game), resultsPerAction: outcome.resultsPerAction }
 }
 
-function perform(baseState: Game, cards: Map<string, Card>) {
-  const { game: resultingState, results: finalResults } = [
-    calculatePreventActionsResults,
-    calculatePotionResults,
-    calculateShieldResults,
-    calculateMoveResults,
-    calculateAttackResults,
-    calculateKnockbackResults
-  ].reduce(
-    (
-      { game, results },
-      // For some reason TypeScript breaks if you take this signature off ...
-      getResults: (cards: Map<Player, Card>, game: Game) => List<ActionResult>
-    ) => {
-      const cardsByPlayer = cards.mapKeys(id => game.player(id)).toMap()
-      const nextResults = getResults(cardsByPlayer, game)
-      const nextState = applyResults(nextResults, game)
-
-      return { results: results.concat(nextResults), game: nextState }
-    },
-    { game: baseState, results: List() as List<ActionResult> }
-  )
-
-  return { game: advanceAction(resultingState), results: finalResults.toList() }
+interface PerformActionOutcome {
+  game: Game
+  results: List<ActionResult>
 }
 
 function playedCards(index: number, game: Game) {
@@ -88,6 +56,29 @@ function playedCards(index: number, game: Game) {
   )
 }
 
+function cardActionOutcome(baseState: Game, cards: Map<string, Card>) {
+  const outcome = composeOutcomes(
+    [
+      calculatePreventActionsResults,
+      calculatePotionResults,
+      calculateShieldResults,
+      calculateMoveResults,
+      calculateAttackResults,
+      calculateKnockbackResults
+    ],
+    (game, getResults) => {
+      const cardsByPlayer = cards.mapKeys(id => game.player(id)).toMap()
+      const nextResults = getResults(cardsByPlayer, game)
+      const nextState = applyResults(nextResults, game)
+
+      return { game: nextState, results: nextResults }
+    },
+    baseState
+  )
+
+  return { game: advanceAction(outcome.game), results: outcome.results }
+}
+
 function advanceAction(game: Game) {
   return game.players.reduce((state, player) => {
     if (player.knockedOut) {
@@ -98,7 +89,11 @@ function advanceAction(game: Game) {
   }, game)
 }
 
-function addEnvironmentResults(game: Game, results: List<List<ActionResult>>) {
+function postCardsOutcome(initialGame: Game) {
+  return composeOutcomes([addEnvironmentResults], (game, operator) => operator(game), initialGame)
+}
+
+function addEnvironmentResults(game: Game) {
   const playersInLava = game.players.filter(
     player => game.board.tileAt(player.position).type === "lava"
   )
@@ -109,8 +104,15 @@ function addEnvironmentResults(game: Game, results: List<List<ActionResult>>) {
 
   return {
     game: applyResults(environmentResults, game),
-    results: environmentResults.size ? results.push(environmentResults) : results
+    results: environmentResults
   }
+}
+
+function advanceGame(game: Game) {
+  return [advanceTurn, discardPickedCards, drawHands].reduce(
+    (state, operator) => operator(state),
+    game
+  )
 }
 
 function advanceTurn(game: Game) {
@@ -141,4 +143,21 @@ function discardPickedCards(game: Game) {
         .setIn(["players", player.id, "hand"], player.hand.removePickedCards()),
     game
   )
+}
+
+function addActionOutcome(outcome: PerformActionOutcome, initial: PerformTurnOutcome) {
+  return { game: outcome.game, resultsPerAction: initial.resultsPerAction.push(outcome.results) }
+}
+
+function composeOutcomes<T>(
+  collection: T[],
+  reducer: (game: Game, value: T) => PerformActionOutcome,
+  game: Game
+): PerformActionOutcome {
+  const initialState = { game, results: List() as List<ActionResult> }
+
+  return collection.reduce((current, value) => {
+    const next = reducer(current.game, value)
+    return { game: next.game, results: current.results.concat(next.results).toList() }
+  }, initialState)
 }

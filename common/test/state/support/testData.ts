@@ -13,6 +13,7 @@ import { Hand } from "../../../src/state/hand"
 import { Modifier, ModifierType } from "../../../src/state/modifier"
 import { Player } from "../../../src/state/player"
 import { Point } from "../../../src/state/point"
+import { BoardZone } from "../../../src/state/boardZone"
 
 export function createTestPoint({
   x,
@@ -52,7 +53,13 @@ export function createTestBoard({ width, height }: { width?: number; height?: nu
     )
     .toList()
 
-  return new Board({ tiles, objects: List() as List<BoardObject> })
+  return new Board({
+    tiles,
+    objects: List() as List<BoardObject>,
+    zones: List.of(new BoardZone({ x: 0, y: 0, width, height })),
+    hauntingZoneIndexes: List(),
+    hauntedZoneIndexes: List()
+  })
 }
 
 export function createTestCards(

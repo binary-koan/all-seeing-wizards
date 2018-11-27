@@ -1,5 +1,5 @@
 import { List } from "immutable"
-import performTurn, { PerformTurnResults } from "../../../common/src/performTurn"
+import performTurn, { PerformTurnOutcome } from "../../../common/src/performTurn"
 import { Card } from "../../../common/src/state/card"
 import { Game } from "../../../common/src/state/game"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
@@ -69,7 +69,7 @@ export default class ViewState extends viewState implements IViewState {
     }
   }
 
-  public get placedCardResults(): PerformTurnResults {
+  public get placedCardResults(): PerformTurnOutcome {
     const placedCards = this.placedCards
 
     // We don't want to show planned results when real ones are being displayed

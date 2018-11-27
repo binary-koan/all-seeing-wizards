@@ -4,8 +4,8 @@ import { proposedMove, reconcileMovement } from "../../../src/turnResults/helper
 import {
   createDirectionalPoint,
   createTestGameState,
-  createTestPlayer,
-  createTestMoveCard
+  createTestMoveCard,
+  createTestPlayer
 } from "../../state/support/testData"
 
 describe("#reconcileMovement", () => {
@@ -71,6 +71,46 @@ describe("#reconcileMovement", () => {
 
     const player2 = createTestPlayer({
       id: "player2",
+      position: createDirectionalPoint({ x: 0, y: 0, facing: "north" })
+    })
+
+    const game = createTestGameState({
+      players: (Map() as Map<string, Player>).set(player1.id, player1).set(player2.id, player2)
+    })
+
+    const moveCard = createTestMoveCard()
+
+    const proposedMoves = List.of(
+      proposedMove(
+        player2,
+        moveCard,
+        List.of(
+          createDirectionalPoint({ x: 0, y: 0, facing: "east" }),
+          createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
+          createDirectionalPoint({ x: 2, y: 0, facing: "east" })
+        )
+      )
+    )
+
+    const results = reconcileMovement(proposedMoves, game)
+
+    expect(results.size).toBe(1)
+    expect(results.get(0)).toEqual({
+      type: "move",
+      card: moveCard,
+      player: player2,
+      movementPath: List.of(createDirectionalPoint({ x: 0, y: 0, facing: "east" }))
+    })
+  })
+
+  it("returns nothing if the player does not move at all", () => {
+    const player1 = createTestPlayer({
+      id: "player1",
+      position: createDirectionalPoint({ x: 1, y: 0, facing: "north" })
+    })
+
+    const player2 = createTestPlayer({
+      id: "player2",
       position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
     })
 
@@ -83,8 +123,8 @@ describe("#reconcileMovement", () => {
         player2,
         createTestMoveCard(),
         List.of(
-          createDirectionalPoint({ x: 1, y: 0, facing: "east" }),
-          createDirectionalPoint({ x: 2, y: 0, facing: "east" })
+          createDirectionalPoint({ x: 0, y: 0, facing: "east" }),
+          createDirectionalPoint({ x: 1, y: 0, facing: "east" })
         )
       )
     )

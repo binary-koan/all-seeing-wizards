@@ -1,7 +1,6 @@
 import { List, Map } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import { Board } from "./board"
-import { Card } from "./card"
 import { Deck } from "./deck"
 import { Player } from "./player"
 
@@ -19,7 +18,13 @@ const game = RecordFactory<IGame>({
   code: "",
   started: false,
   players: Map(),
-  board: new Board({ tiles: List(), objects: List() }),
+  board: new Board({
+    tiles: List(),
+    objects: List(),
+    zones: List(),
+    hauntingZoneIndexes: List(),
+    hauntedZoneIndexes: List()
+  }),
   deck: new Deck({ availableCards: List(), discardedCards: List() })
 })
 
@@ -49,5 +54,9 @@ export class Game extends game implements IGame {
 
   public updatePlayer(player: Player) {
     return this.setIn(["players", player.id], player)
+  }
+
+  public updateBoard(board: Board) {
+    return this.set("board", board)
   }
 }

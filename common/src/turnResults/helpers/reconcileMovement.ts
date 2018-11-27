@@ -49,7 +49,7 @@ function avoidWalkingThroughUnmovedPlayers(
     (newResults, result) => {
       const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
 
-      return newResult.movementPath.size > 0 ? newResults.push(newResult) : newResults
+      return isActualMovement(newResult) ? newResults.push(newResult) : newResults
     },
     List() as List<ProposedMove>
   )
@@ -103,4 +103,11 @@ function checkConflictingResult(result: ProposedMove, resultsPerAction: List<Pro
   } else {
     return move(result.card, result.movementPath.map(position => position).toList(), result.player)
   }
+}
+
+function isActualMovement(result: ProposedMove) {
+  return (
+    result.movementPath.size > 1 ||
+    (result.movementPath.size === 1 && !result.movementPath.first().equals(result.player.position))
+  )
 }

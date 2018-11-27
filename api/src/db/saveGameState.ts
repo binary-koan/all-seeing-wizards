@@ -23,7 +23,9 @@ function updateGameState(game: Game, db: Db) {
       .toArray(),
     availableCardIds: game.deck.availableCards
       .map(card => ObjectID.createFromHexString(card.id))
-      .toArray()
+      .toArray(),
+    hauntingZoneIndexes: game.board.hauntingZoneIndexes.toArray(),
+    hauntedZoneIndexes: game.board.hauntedZoneIndexes.toArray()
   }
 
   return db

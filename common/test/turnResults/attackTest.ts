@@ -37,6 +37,7 @@ describe("#calculateAttackResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "attack",
+      caster,
       card,
       tiles: List()
     })

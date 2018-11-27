@@ -1,9 +1,10 @@
 import { List, Map } from "immutable"
-import { every, find, flatten, partition } from "lodash"
-import { Db, ObjectID } from "mongodb"
+import { every, find } from "lodash"
+import { Db } from "mongodb"
 import { Board } from "../../../common/src/state/board"
 import { BoardObject } from "../../../common/src/state/boardObject"
 import { BoardTile } from "../../../common/src/state/boardTile"
+import { BoardZone } from "../../../common/src/state/boardZone"
 import { Card } from "../../../common/src/state/card"
 import { Character } from "../../../common/src/state/character"
 import { Deck } from "../../../common/src/state/deck"
@@ -37,10 +38,6 @@ export default async function loadGameState(code: string, db: Db): Promise<Game>
     deck,
     board
   })
-}
-
-function buildCharacters(characterDocs: CharacterDoc[]) {
-  return characterDocs.map(doc => ({ name: doc.name, type: doc.type })) as Character[]
 }
 
 function buildPlayers(
@@ -99,8 +96,6 @@ function addPlayer(
 }
 
 function buildDeck(cards: Map<string, Card>, players: Map<string, Player>, gameDoc: GameDoc) {
-  const cardsInHands = players.flatMap(player => player.hand.cards)
-
   const usedCardIdStrings = gameDoc.usedCardIds.map(id => id.toHexString())
   const availableCardIdStrings = gameDoc.availableCardIds.map(id => id.toHexString())
 
@@ -112,6 +107,7 @@ function buildDeck(cards: Map<string, Card>, players: Map<string, Player>, gameD
 
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
   let tiles = List() as List<BoardTile>
+  let zones = List() as List<BoardZone>
 
   gameDoc.boardLayout.forEach((ids, boardX) => {
     ids.forEach((id, boardY) => {
@@ -119,6 +115,7 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
 
       if (board) {
         tiles = tiles.concat(addTiles(board, boardX, boardY)).toList()
+        zones = zones.concat(buildZone(board, boardX, boardY)).toList()
       }
     })
   })
@@ -135,13 +132,27 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
     )
   )
 
-  return new Board({ tiles, objects })
+  return new Board({
+    tiles,
+    objects,
+    zones,
+    hauntingZoneIndexes: List(gameDoc.hauntingZoneIndexes || []),
+    hauntedZoneIndexes: List(gameDoc.hauntedZoneIndexes || [])
+  })
 }
 
 function addTiles(board: BoardDoc, boardX: number, boardY: number) {
   return board.tiles.map((type, index) => {
     const position = positionOnBoard(index, boardX, boardY)
     return new BoardTile({ position, type })
+  })
+}
+
+function buildZone(board: BoardDoc, boardX: number, boardY: number) {
+  return new BoardZone({
+    ...positionOnBoard(0, boardX, boardY),
+    width: BOARD_SIZE,
+    height: BOARD_SIZE
   })
 }
 

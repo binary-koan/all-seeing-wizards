@@ -15,6 +15,8 @@ export interface GameDiff {
   playerIds: ObjectID[]
   usedCardIds: ObjectID[]
   availableCardIds: ObjectID[]
+  hauntingZoneIndexes?: number[]
+  hauntedZoneIndexes?: number[]
 }
 
 export interface GameDoc extends GameDiff {

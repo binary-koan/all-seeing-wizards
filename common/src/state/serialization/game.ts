@@ -2,6 +2,7 @@ import { List, Map } from "immutable"
 import { Board } from "../board"
 import { BoardObject } from "../boardObject"
 import { BoardTile } from "../boardTile"
+import { BoardZone } from "../boardZone"
 import { Deck } from "../deck"
 import { Game } from "../game"
 import { Point } from "../point"
@@ -27,7 +28,12 @@ export function deserializeGame(data: any) {
         .toList(),
       objects: List(data.board.objects)
         .map((objectData: any) => new BoardObject(objectData))
-        .toList()
+        .toList(),
+      zones: List(data.board.zones)
+        .map((zoneData: any) => new BoardZone(zoneData))
+        .toList(),
+      hauntingZoneIndexes: List(data.board.hauntingZoneIndexes),
+      hauntedZoneIndexes: List(data.board.hauntedZoneIndexes)
     }),
     deck: new Deck({
       availableCards: List(data.deck.availableCards)

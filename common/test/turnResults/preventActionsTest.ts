@@ -38,6 +38,7 @@ describe("#calculatePreventActionsResults", () => {
     expect(results.size).toBe(1)
     expect(results.first()).toEqual({
       type: "attemptPreventActions",
+      caster,
       card,
       tiles: List()
     })

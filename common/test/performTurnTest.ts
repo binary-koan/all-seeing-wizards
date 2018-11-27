@@ -64,7 +64,7 @@ describe("#performTurn", () => {
 
     const result = performTurn(game)
 
-    expect(result.resultsPerAction.size).toBe(5)
+    expect(result.resultsPerAction.size).toBe(6) // 5 + 1 post-turn action
     expect(
       result.resultsPerAction
         .first()

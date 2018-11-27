@@ -26,6 +26,7 @@ export function calculateHauntingResults(game: Game) {
 
 function advanceHaunting(game: Game) {
   const newHauntedZones = game.board.hauntedZones.concat(game.board.hauntingZones).toList()
+
   const newHauntingZones = findHauntingZones(game)
     .filterNot(zone => newHauntedZones.includes(zone))
     .toList()
@@ -39,7 +40,7 @@ function findHauntingZones(game: Game) {
   return game.players.reduce(
     (zones, player) => {
       if (player.knockedOut) {
-        return zones.concat(nextHauntingZone(game.board, player.position, zones)).toList()
+        return zones.push(nextHauntingZone(game.board, player.position, zones)).toList()
       } else {
         return zones
       }
@@ -53,11 +54,13 @@ function nextHauntingZone(
   position: DirectionalPoint,
   existingZones: List<BoardZone>
 ) {
-  let zone = board.zones.find(z => z.contains(position))
+  const zones = board.zonesAnticlockwise
+
+  let zone = zones.find(z => z.contains(position))
 
   while (existingZones.includes(zone)) {
-    const index = board.zonesAnticlockwise.indexOf(zone)
-    zone = index === board.zones.size - 1 ? board.zones.first() : board.zones.get(index + 1)
+    const index = zones.indexOf(zone)
+    zone = index === zones.size - 1 ? zones.first() : zones.get(index + 1)
   }
 
   return zone

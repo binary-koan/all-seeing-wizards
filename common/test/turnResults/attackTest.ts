@@ -158,7 +158,7 @@ describe("#calculateAttackResults", () => {
     expect(results.get(0).type).toEqual("attack")
     expect(results.get(1)).toEqual({
       type: "takeDamage",
-      card: card,
+      card,
       damage: 1,
       player: caster
     })

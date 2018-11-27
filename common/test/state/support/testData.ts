@@ -2,6 +2,7 @@ import { List, Map, Range } from "immutable"
 import { Board } from "../../../src/state/board"
 import { BoardObject } from "../../../src/state/boardObject"
 import { BoardTile } from "../../../src/state/boardTile"
+import { BoardZone } from "../../../src/state/boardZone"
 import { Card } from "../../../src/state/card"
 import { CardEffect, MovementEffect } from "../../../src/state/cardEffect"
 import { Character } from "../../../src/state/character"
@@ -13,7 +14,6 @@ import { Hand } from "../../../src/state/hand"
 import { Modifier, ModifierType } from "../../../src/state/modifier"
 import { Player } from "../../../src/state/player"
 import { Point } from "../../../src/state/point"
-import { BoardZone } from "../../../src/state/boardZone"
 
 export function createTestPoint({
   x,
@@ -44,19 +44,37 @@ export function createTestDuration({
   return new Duration(type || "action", length != null ? length : 1)
 }
 
-export function createTestBoard({ width, height }: { width?: number; height?: number } = {}) {
-  const tiles = Range(0, width || 4)
-    .flatMap(x =>
-      Range(0, height || 3).map(
-        y => new BoardTile({ position: new Point({ x, y }), type: "ground" })
-      )
-    )
+export function createTestBoard({
+  width,
+  height,
+  zones
+}: { width?: number; height?: number; zones?: number } = {}) {
+  width = width || 4
+  height = height || 3
+  zones = zones || 1
+
+  const config = Range(0, zones)
+    .map(zoneIndex => {
+      const baseX = Math.floor(zoneIndex / 2) * width
+      const baseY = (zoneIndex % 2) * height
+
+      return {
+        tiles: Range(baseX, baseX + width)
+          .flatMap(x =>
+            Range(baseY, baseY + height).map(
+              y => new BoardTile({ position: new Point({ x, y }), type: "ground" })
+            )
+          )
+          .toList(),
+        zone: new BoardZone({ x: baseX, y: baseY, width, height })
+      }
+    })
     .toList()
 
   return new Board({
-    tiles,
+    tiles: config.flatMap(item => item.tiles).toList(),
     objects: List() as List<BoardObject>,
-    zones: List.of(new BoardZone({ x: 0, y: 0, width, height })),
+    zones: config.map(item => item.zone).toList(),
     hauntingZoneIndexes: List(),
     hauntedZoneIndexes: List()
   })

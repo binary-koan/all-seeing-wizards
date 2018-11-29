@@ -1,4 +1,4 @@
-import Hashids from "hashids"
+import Hashids = require("hashids")
 import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import shuffle from "../../../common/src/util/shuffle"
@@ -6,7 +6,7 @@ import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
 
-const hashids = new Hashids("don't get salty", 4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+const hashids = new (Hashids as any)("don't get salty", 4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   const packs = await db

@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
+import HauntedZones from "./containers/HauntedZones"
 import HealthBars from "./containers/HealthBars"
 import PlannedActionResults from "./containers/PlannedActionResults"
 import Players from "./containers/Players"
@@ -98,6 +99,7 @@ const MapView: React.SFC<MapViewProps> = props => {
       <ScaleContextProvider value={buildMapViewScale(size)}>
         <Camera centerOn={props.centerOn}>
           <BoardTiles />
+          <HauntedZones />
           <PlannedActionResults planView={ResultPlanUnderlay} />
           <RealActionResults resultView={ResultRealUnderlay} />
           <Players />

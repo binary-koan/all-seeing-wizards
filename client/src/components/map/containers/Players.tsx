@@ -11,6 +11,7 @@ import lavaFireImage from "../../../../assets/effects/lava-fire.png"
 import powerUpImage from "../../../../assets/effects/power-up-basic.png"
 import shieldImage from "../../../../assets/effects/shield-basic.png"
 import waterSlowImage from "../../../../assets/effects/water-slow.png"
+import knockedOutImage from "../../../../assets/effects/knocked-out.png"
 import data from "../../../../packs/base/viewConfig"
 
 const NO_TINT = 0xffffff
@@ -103,17 +104,31 @@ function playerTint(player: Player, state: ViewState) {
 
 function mapStateToProps(state: ViewState): StateProps {
   return {
-    players: state.game.players.toArray().map(player => ({
-      id: player.id,
-      x: player.position.x,
-      y: player.position.y,
-      image: data.characters[player.character.name].images[player.position.facing],
-      tint: playerTint(player, state),
-      isInWater: state.game.board.tileAt(player.position).type === "water",
-      isInLava: state.game.board.tileAt(player.position).type === "lava",
-      hasShield: player.hasModifier("shield") || player.hasModifier("mirrorShield"),
-      hasDamageIncrease: player.hasModifier("increaseDamage")
-    }))
+    players: state.game.players.toArray().map(player => {
+      const baseProps = {
+        id: player.id,
+        x: player.position.x,
+        y: player.position.y
+      }
+
+      if (player.knockedOut) {
+        return {
+          ...baseProps,
+          image: knockedOutImage,
+          tint: NO_TINT
+        }
+      } else {
+        return {
+          ...baseProps,
+          image: data.characters[player.character.name].images[player.position.facing],
+          tint: playerTint(player, state),
+          isInWater: state.game.board.tileAt(player.position).type === "water",
+          isInLava: state.game.board.tileAt(player.position).type === "lava",
+          hasShield: player.hasModifier("shield") || player.hasModifier("mirrorShield"),
+          hasDamageIncrease: player.hasModifier("increaseDamage")
+        }
+      }
+    })
   }
 }
 

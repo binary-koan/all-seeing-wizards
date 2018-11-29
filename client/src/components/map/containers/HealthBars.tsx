@@ -52,7 +52,7 @@ const HealthBars: React.SFC<StateProps & MapViewScaleProps> = props => {
 
 function mapStateToProps(state: ViewState): StateProps {
   return {
-    players: state.game.players.toArray().map(player => ({
+    players: state.game.activePlayers.toArray().map(player => ({
       id: player.id,
       position: player.position.toPoint(),
       hp: player.hp,

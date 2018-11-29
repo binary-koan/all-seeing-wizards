@@ -115,7 +115,7 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
 
       if (board) {
         tiles = tiles.concat(addTiles(board, boardX, boardY)).toList()
-        zones = zones.concat(buildZone(board, boardX, boardY)).toList()
+        zones = zones.push(buildZone(board, boardX, boardY)).toList()
       }
     })
   })

@@ -44,6 +44,10 @@ export class Game extends game implements IGame {
     return this.set("started", true)
   }
 
+  public get activePlayers() {
+    return this.players.filterNot(player => player.knockedOut)
+  }
+
   public player(id: string) {
     return this.players.get(id)
   }

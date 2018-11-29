@@ -1,9 +1,10 @@
 import { List } from "immutable"
 import performTurn from "./performTurn"
 import { Game } from "./state/game"
+import { MAX_PLAYER_HP } from "./state/player"
 
 export default function submitCards(game: Game, playerId: string, indexes: number[]) {
-  const player = game.players.get(playerId)
+  const player = game.activePlayers.get(playerId)
 
   if (!player) {
     return
@@ -29,5 +30,5 @@ export default function submitCards(game: Game, playerId: string, indexes: numbe
 }
 
 function readyToAdvance(game: Game) {
-  return !game.players.find(player => player.hand.pickedIndexes.size < player.hp)
+  return !game.activePlayers.find(player => player.hand.pickedIndexes.size < MAX_PLAYER_HP)
 }

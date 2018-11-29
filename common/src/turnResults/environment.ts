@@ -4,7 +4,7 @@ import modifiedResultForTarget from "./helpers/modifiedResultForTarget"
 import { takeDamage } from "./resultTypes"
 
 export function calculateEnvironmentResults(game: Game) {
-  const playersInLava = game.players.filter(
+  const playersInLava = game.activePlayers.filter(
     player => game.board.tileAt(player.position).type === "lava"
   )
 

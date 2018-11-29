@@ -8,7 +8,7 @@ import modifiedResultForTarget from "./helpers/modifiedResultForTarget"
 import { takeDamage } from "./resultTypes"
 
 export function calculateHauntingResults(game: Game) {
-  const hauntedPlayers = game.players.filter(player =>
+  const hauntedPlayers = game.activePlayers.filter(player =>
     game.board.hauntedZones.some(zone => zone.contains(player.position))
   )
 

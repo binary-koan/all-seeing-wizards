@@ -8,7 +8,7 @@ import { Game } from "../game"
 import { Player } from "../player"
 
 export function affectedPlayers(tiles: List<BoardTile>, game: Game): List<Player> {
-  return game.players
+  return game.activePlayers
     .filter(
       player => tiles.find(tile => player.position.equalsWithoutDirection(tile.position)) != null
     )

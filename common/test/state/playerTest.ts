@@ -83,9 +83,7 @@ describe("#advanceModifiers", () => {
 
     const afterAdvancingTurn = player.advanceModifiers("turn")
 
-    expect(afterAdvancingTurn.modifiers).toEqual(
-      List.of(turnModifier.advance("turn"), actionModifier)
-    )
+    expect(afterAdvancingTurn.modifiers).toEqual(List.of(turnModifier.advance("turn")))
   })
 
   it("removes expired modifiers", () => {

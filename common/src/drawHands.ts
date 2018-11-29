@@ -3,7 +3,7 @@ import { Game } from "./state/game"
 import { Player } from "./state/player"
 
 export function drawHands(baseState: Game): Game {
-  return baseState.players.reduce((game, player) => {
+  return baseState.activePlayers.reduce((game, player) => {
     const { player: newPlayer, deck } = drawHandForPlayer(player, game.deck)
 
     return game.set("deck", deck).setIn(["players", player.id], newPlayer)

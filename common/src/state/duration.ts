@@ -12,12 +12,16 @@ export class Duration implements ValueObject {
   public readonly type: "action" | "turn"
   public readonly length: number
 
-  constructor(type: "action" | "turn", length: number) {
+  constructor(type: Duration["type"], length: number) {
     this.type = type
     this.length = length
   }
 
-  public shorten(type: "action" | "turn", amount: number) {
+  public shorten(type: Duration["type"], amount: number) {
+    if (this.type === "action" && type === "turn") {
+      return new Duration(this.type, 0)
+    }
+
     if (this.type !== type) {
       return this
     }

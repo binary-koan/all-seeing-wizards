@@ -63,4 +63,8 @@ export class Game extends game implements IGame {
   public updateBoard(board: Board) {
     return this.set("board", board)
   }
+
+  public updateDeck(deck: Deck) {
+    return this.set("deck", deck)
+  }
 }

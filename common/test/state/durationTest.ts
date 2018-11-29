@@ -7,10 +7,16 @@ describe("#shorten", () => {
     expect(duration.shorten("action", 2).length).toEqual(1)
   })
 
-  it("does not modify a different duration type", () => {
-    const duration = createTestDuration({ type: "action" })
+  it("sets an action duration to 0 when shortening by a turn", () => {
+    const duration = createTestDuration({ type: "action", length: 5 })
 
-    expect(duration.shorten("turn", 1)).toEqual(duration)
+    expect(duration.shorten("turn", 1).length).toEqual(0)
+  })
+
+  it("does not modify a turn duration when shorted by an action", () => {
+    const duration = createTestDuration({ type: "turn" })
+
+    expect(duration.shorten("action", 1)).toEqual(duration)
   })
 
   it("does not go below zero", () => {

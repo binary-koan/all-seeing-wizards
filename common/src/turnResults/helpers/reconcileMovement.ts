@@ -78,7 +78,7 @@ function checkAgainstUnmovedPlayers(
 }
 
 function unmovedPlayerPositions(firstState: Game, secondState: Game) {
-  return firstState.players
+  return firstState.activePlayers
     .filter(player =>
       player.position.equalsWithoutDirection(secondState.player(player.id).position)
     )

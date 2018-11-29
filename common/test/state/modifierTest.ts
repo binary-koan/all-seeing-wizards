@@ -9,8 +9,8 @@ describe("#advance", () => {
   })
 
   it("does nothing when given a different duration type", () => {
-    const modifier = createTestModifier({ duration: new Duration("action", 1) })
+    const modifier = createTestModifier({ duration: new Duration("turn", 1) })
 
-    expect(modifier.advance("turn")).toEqual(modifier)
+    expect(modifier.advance("action")).toEqual(modifier)
   })
 })

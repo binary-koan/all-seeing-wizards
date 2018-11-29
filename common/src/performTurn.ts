@@ -43,7 +43,7 @@ interface PerformActionOutcome {
 }
 
 function playedCards(index: number, game: Game) {
-  return game.players.reduce(
+  return game.activePlayers.reduce(
     (cards, player) => {
       const card = player.hand.pickedCard(index)
 
@@ -83,7 +83,7 @@ function cardActionOutcome(baseState: Game, cards: Map<string, Card>) {
 function advanceAction(game: Game) {
   return game.players.reduce((state, player) => {
     if (player.knockedOut) {
-      return ensurePlayerKnockedOut(state, player)
+      return clearPlayerState(state, player)
     } else {
       return advancePlayerModifiers(state, player, "action")
     }
@@ -106,31 +106,28 @@ function advanceGame(game: Game) {
 }
 
 function advanceTurn(game: Game) {
-  return game.players.reduce((state, player) => {
-    if (player.knockedOut) {
-      return state
-    } else {
-      return advancePlayerModifiers(state, player, "turn")
-    }
-  }, game)
+  return game.activePlayers.reduce(
+    (state, player) => advancePlayerModifiers(state, player, "turn"),
+    game
+  )
 }
 
 function advancePlayerModifiers(state: Game, player: Player, advancementType: "action" | "turn") {
   return state.updatePlayer(player.advanceModifiers(advancementType))
 }
 
-function ensurePlayerKnockedOut(state: Game, player: Player) {
+function clearPlayerState(state: Game, player: Player) {
   return state
-    .set("deck", state.deck.withCardsDiscarded(player.hand.cards))
-    .set("players", state.players.setIn([player.id, "hand"], Hand.empty()))
+    .updateDeck(state.deck.withCardsDiscarded(player.hand.cards))
+    .updatePlayer(player.updateHand(Hand.empty()).clearModifiers())
 }
 
 function discardPickedCards(game: Game) {
-  return game.players.reduce(
+  return game.activePlayers.reduce(
     (state, player) =>
       state
-        .set("deck", state.deck.withCardsDiscarded(player.hand.pickedCards))
-        .setIn(["players", player.id, "hand"], player.hand.removePickedCards()),
+        .updateDeck(state.deck.withCardsDiscarded(player.hand.pickedCards))
+        .updatePlayer(player.updateHand(player.hand.removePickedCards())),
     game
   )
 }

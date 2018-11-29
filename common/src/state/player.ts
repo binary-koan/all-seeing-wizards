@@ -74,6 +74,10 @@ export class Player extends player implements IPlayer {
     )
   }
 
+  public clearModifiers() {
+    return this.set("modifiers", List())
+  }
+
   public updateHand(newHand: Hand) {
     return this.set("hand", newHand)
   }

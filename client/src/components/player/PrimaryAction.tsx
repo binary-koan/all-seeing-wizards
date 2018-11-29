@@ -37,6 +37,8 @@ function mapStateToProps(state: ViewState): StateProps {
 
   if (!state.game.started) {
     return { text: "Waiting for the game to start", canLockIn: false }
+  } else if (player.knockedOut) {
+    return { text: "Knocked out!", canLockIn: false }
   } else if (player.hand.hasPickedCards) {
     return { text: "Locked in", canLockIn: false }
   } else if (state.placedCards && state.placedCards.size < MAX_PLAYER_HP) {

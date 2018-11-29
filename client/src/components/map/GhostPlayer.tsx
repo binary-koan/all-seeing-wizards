@@ -16,12 +16,13 @@ interface StateProps {
   playerX: number
   playerY: number
   image: string
+  isKnockedOut: boolean
 }
 
 const GhostPlayer: React.SFC<StateProps & MapViewScaleProps> = props => (
   <TweenedSprite
     image={props.image}
-    alpha={0.75}
+    alpha={props.isKnockedOut ? 0 : 0.75}
     {...props.mapViewScale.mapPosition({ x: props.playerX, y: props.playerY })}
     {...props.mapViewScale.tileSize}
   />
@@ -33,7 +34,8 @@ function mapStateToProps(state: ViewState): StateProps {
   return {
     playerX: player.position.x,
     playerY: player.position.y,
-    image: data.characters[player.character.name].images[player.position.facing]
+    image: data.characters[player.character.name].images[player.position.facing],
+    isKnockedOut: player.knockedOut
   }
 }
 

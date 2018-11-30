@@ -2,14 +2,14 @@ import { Duration } from "../../../common/src/state/duration"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 6,
+  version: 8,
   name: "base",
   boards: [
     boardConfig(`
-      . . b .
-      b * . .
-      . . . w
-      . l . w
+      w . b .
+      w * . .
+      . . . .
+      . l . .
     `),
     boardConfig(`
       . * l .
@@ -18,28 +18,28 @@ const values: DbValues = {
       . . b b
     `),
     boardConfig(`
-      . b w b
-      . * . .
+      . . w .
+      . * b .
       . . . .
       l . . .
     `),
     boardConfig(`
-      . . b .
+      w . . .
       b * . .
-      . . . w
-      . l . w
+      . . . .
+      . l w .
     `),
     boardConfig(`
       b * . .
       . . w .
-      . b . .
+      . . . .
       . . . l
     `),
     boardConfig(`
       . * . .
-      . . w .
+      b . w w
       b . . .
-      . w . .
+      . . . .
     `)
   ],
   characters: [

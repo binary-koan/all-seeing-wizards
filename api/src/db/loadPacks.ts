@@ -3,15 +3,16 @@ import { Db, ObjectID } from "mongodb"
 import { BoardObjectType } from "../../../common/src/state/boardObject"
 import { BoardTileType } from "../../../common/src/state/boardTile"
 import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../packs/types"
-import { BoardDoc, BoardObjectDoc, CardDoc, CharacterDoc, PackDoc } from "./types"
+import { BoardDoc, BoardDocTile, BoardObjectDoc, CardDoc, CharacterDoc, PackDoc } from "./types"
 
 import packDefinitions from "../../packs/dbValues"
 
-const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardTileType } = {
+const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardDocTile } = {
   ".": "ground",
   b: "block",
   w: "water",
-  l: "lava"
+  l: "lava",
+  "*": "start"
 }
 
 const DEFAULT_BOARD_TILE_TYPE: BoardTileType = "ground"
@@ -62,8 +63,8 @@ function buildBoard(board: BoardConfig, packId: ObjectID): BoardDoc {
   return {
     packId,
     tiles: List(board)
-      .flatMap((row, y) =>
-        List(row).map((tile, x) => BOARD_TILE_TYPE_MAPPING[tile] || DEFAULT_BOARD_TILE_TYPE)
+      .flatMap(row =>
+        List(row).map(tile => BOARD_TILE_TYPE_MAPPING[tile] || DEFAULT_BOARD_TILE_TYPE)
       )
       .toArray(),
     objects: List(board)

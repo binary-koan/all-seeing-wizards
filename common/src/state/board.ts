@@ -10,6 +10,7 @@ interface IBoard {
   tiles: List<BoardTile>
   objects: List<BoardObject>
   zones: List<BoardZone>
+  startPositions: List<DirectionalPoint>
   hauntingZoneIndexes: List<number>
   hauntedZoneIndexes: List<number>
 }
@@ -18,6 +19,7 @@ const board = RecordFactory<IBoard>({
   tiles: List(),
   objects: List(),
   zones: List(),
+  startPositions: List(),
   hauntingZoneIndexes: List(),
   hauntedZoneIndexes: List()
 })
@@ -26,6 +28,7 @@ export class Board extends board implements IBoard {
   public readonly tiles: List<BoardTile>
   public readonly objects: List<BoardObject>
   public readonly zones: List<BoardZone>
+  public readonly startPositions: List<DirectionalPoint>
   public readonly hauntingZoneIndexes: List<number>
   public readonly hauntedZoneIndexes: List<number>
 

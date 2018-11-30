@@ -16,7 +16,7 @@ import ResultPlanUnderlay from "./results/ResultPlanUnderlay"
 import ResultRealOverlay from "./results/ResultRealOverlay"
 import ResultRealUnderlay from "./results/ResultRealUnderlay"
 
-const PADDING = 1
+const PADDING = 0.5
 
 interface StateProps {
   tilesWide: number

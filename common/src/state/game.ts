@@ -22,6 +22,7 @@ const game = RecordFactory<IGame>({
     tiles: List(),
     objects: List(),
     zones: List(),
+    startPositions: List(),
     hauntingZoneIndexes: List(),
     hauntedZoneIndexes: List()
   }),

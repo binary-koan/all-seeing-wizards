@@ -15,8 +15,9 @@ import { Hand } from "../../../common/src/state/hand"
 import { Modifier } from "../../../common/src/state/modifier"
 import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
+import { BOARD_SIZE } from "../../packs/types"
 import loadCards from "./loaders/cards"
-import { BOARD_SIZE, BoardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
+import { BoardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 export default async function loadGameState(code: string, db: Db): Promise<Game> {
   const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, code)
@@ -108,14 +109,18 @@ function buildDeck(cards: Map<string, Card>, players: Map<string, Player>, gameD
 function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
   let tiles = List() as List<BoardTile>
   let zones = List() as List<BoardZone>
+  let startPositions = List() as List<DirectionalPoint>
 
   gameDoc.boardLayout.forEach((ids, boardX) => {
     ids.forEach((id, boardY) => {
       const board = find(boardDocs, doc => doc._id.equals(id))
 
       if (board) {
-        tiles = tiles.concat(addTiles(board, boardX, boardY)).toList()
-        zones = zones.push(buildZone(board, boardX, boardY)).toList()
+        const newTiles = addTiles(board, boardX, boardY)
+
+        tiles = tiles.concat(newTiles.tiles).toList()
+        zones = zones.push(buildZone(boardX, boardY)).toList()
+        startPositions = startPositions.push(newTiles.startPosition)
       }
     })
   })
@@ -136,19 +141,40 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
     tiles,
     objects,
     zones,
+    startPositions,
     hauntingZoneIndexes: List(gameDoc.hauntingZoneIndexes || []),
     hauntedZoneIndexes: List(gameDoc.hauntedZoneIndexes || [])
   })
 }
 
 function addTiles(board: BoardDoc, boardX: number, boardY: number) {
-  return board.tiles.map((type, index) => {
+  const initialState: { tiles: BoardTile[]; startPosition: DirectionalPoint } = {
+    tiles: [],
+    startPosition: undefined
+  }
+
+  return rotateTiles(board.tiles, boardY).reduce(({ tiles, startPosition }, type, index) => {
     const position = positionOnBoard(index, boardX, boardY)
-    return new BoardTile({ position, type })
-  })
+
+    if (type === "start") {
+      return {
+        tiles: tiles.concat([new BoardTile({ position, type: "ground" })]),
+        startPosition: new DirectionalPoint({
+          ...position,
+          facing: boardY % 2 === 1 ? "north" : "south"
+        })
+      }
+    } else {
+      return { tiles: tiles.concat([new BoardTile({ position, type })]), startPosition }
+    }
+  }, initialState)
 }
 
-function buildZone(board: BoardDoc, boardX: number, boardY: number) {
+function rotateTiles<T>(tiles: T[], boardY: number) {
+  return boardY % 2 === 1 ? List(tiles).reverse() : List(tiles)
+}
+
+function buildZone(boardX: number, boardY: number) {
   return new BoardZone({
     ...positionOnBoard(0, boardX, boardY),
     width: BOARD_SIZE,

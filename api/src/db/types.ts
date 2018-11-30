@@ -2,8 +2,6 @@ import { ObjectID } from "mongodb"
 import { CardEffect } from "../../../common/src/state/cardEffect"
 import { DirectionalPoint } from "../../../common/src/state/directionalPoint"
 
-export const BOARD_SIZE = 5
-
 export interface PackDoc {
   _id?: ObjectID
   version: number
@@ -59,10 +57,12 @@ export interface CharacterDoc {
   type: string
 }
 
+export type BoardDocTile = "ground" | "block" | "water" | "lava" | "start"
+
 export interface BoardDoc {
   _id?: ObjectID
   packId: ObjectID
-  tiles: Array<"ground" | "block" | "water" | "lava">
+  tiles: BoardDocTile[]
   objects: BoardObjectDoc[]
 }
 

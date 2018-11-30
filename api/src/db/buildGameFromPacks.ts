@@ -1,4 +1,4 @@
-import Hashids = require("hashids")
+import * as Hashids from "hashids"
 import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import shuffle from "../../../common/src/util/shuffle"
@@ -32,7 +32,7 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   const gameDoc: GameDoc = {
     code,
     packIds,
-    boardLayout: layout.map(row => row.map(board => board._id)),
+    boardLayout: layout.map(row => row.map(board => board._id).toArray()).toArray(),
     boardObjects: [], // TODO board objects,
     playerIds: [],
     usedCardIds: [],
@@ -51,14 +51,12 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
 }
 
 function boardLayout(boardDocs: BoardDoc[]) {
-  const shuffledDocs = List(boardDocs).sortBy(Math.random)
+  const docs = List(boardDocs).groupBy(doc => startPositionIndex(doc))
 
   // TODO configurable number of boards
-  return [
-    shuffledDocs.take(2).toArray(),
-    shuffledDocs
-      .skip(2)
-      .take(2)
-      .toArray()
-  ]
+  return docs.valueSeq().map(docGroup => docGroup.sortBy(Math.random).take(2))
+}
+
+function startPositionIndex(boardDoc: BoardDoc) {
+  return boardDoc.tiles.findIndex(tile => tile === "start")
 }

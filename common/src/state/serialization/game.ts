@@ -4,6 +4,7 @@ import { BoardObject } from "../boardObject"
 import { BoardTile } from "../boardTile"
 import { BoardZone } from "../boardZone"
 import { Deck } from "../deck"
+import { DirectionalPoint } from "../directionalPoint"
 import { Game } from "../game"
 import { Point } from "../point"
 import { deserializeCard } from "./card"
@@ -28,6 +29,9 @@ export function deserializeGame(data: any) {
         .toList(),
       objects: List(data.board.objects)
         .map((objectData: any) => new BoardObject(objectData))
+        .toList(),
+      startPositions: List(data.board.startPositions)
+        .map((positionData: any) => new DirectionalPoint(positionData))
         .toList(),
       zones: List(data.board.zones)
         .map((zoneData: any) => new BoardZone(zoneData))

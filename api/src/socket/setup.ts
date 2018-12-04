@@ -52,7 +52,8 @@ export default function setup(server: Server, manager: GameManager) {
             (await manager.db
               .collection("packs")
               .find<any>({ name: packDefinitions[0].name, version: packDefinitions[0].version })
-              .toArray()).map(doc => doc._id.toHexString())
+              .toArray()).map(doc => doc._id.toHexString()),
+          data.boards
         )
 
         socket.request.gameClient = new HostClient(game.code)

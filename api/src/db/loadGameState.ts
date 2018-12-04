@@ -111,8 +111,8 @@ function buildBoard(boardDocs: BoardDoc[], gameDoc: GameDoc) {
   let zones = List() as List<BoardZone>
   let startPositions = List() as List<DirectionalPoint>
 
-  gameDoc.boardLayout.forEach((ids, boardX) => {
-    ids.forEach((id, boardY) => {
+  gameDoc.boardLayout.forEach((ids, boardY) => {
+    ids.forEach((id, boardX) => {
       const board = find(boardDocs, doc => doc._id.equals(id))
 
       if (board) {

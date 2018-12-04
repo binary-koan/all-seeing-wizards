@@ -36,7 +36,7 @@ function buildSocketEvent(state: ViewState, action: Action): { event: string; ar
     case CREATE_GAME:
       return {
         event: CREATE_GAME,
-        args: { packIds: null }
+        args: { packIds: null, boards: action.boards }
       }
     case REHOST_GAME:
       return { event: REHOST_GAME, args: { gameCode: action.code } }

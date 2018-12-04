@@ -2,6 +2,7 @@ export const CREATE_GAME = "createGame"
 
 export interface CreateGameData {
   packIds: string[]
+  boards: number
 }
 
 export const REHOST_GAME = "rehostGame"

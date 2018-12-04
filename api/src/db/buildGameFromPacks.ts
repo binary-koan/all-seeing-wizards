@@ -8,7 +8,7 @@ import { BoardDoc, GameDoc } from "./types"
 
 const hashids = new (Hashids as any)("don't get salty", 4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
+export default async function buildGameFromPacks(packIds: ObjectID[], boards: number, db: Db) {
   const packs = await db
     .collection("packs")
     .find({ _id: { $in: packIds } })
@@ -27,7 +27,7 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
     .find<BoardDoc>({ packId: { $in: packIds } })
     .toArray()
 
-  const layout = boardLayout(boardDocs)
+  const layout = boardLayout(boardDocs, boards)
 
   const gameDoc: GameDoc = {
     code,
@@ -50,11 +50,14 @@ export default async function buildGameFromPacks(packIds: ObjectID[], db: Db) {
   return loadGameState(code, db)
 }
 
-function boardLayout(boardDocs: BoardDoc[]) {
+function boardLayout(boardDocs: BoardDoc[], boardCount: number) {
   const docs = List(boardDocs).groupBy(doc => startPositionIndex(doc))
+  const first = docs.first().sortBy(Math.random)
+  const second = docs.last().sortBy(Math.random)
 
-  // TODO configurable number of boards
-  return docs.valueSeq().map(docGroup => docGroup.sortBy(Math.random).take(2))
+  const boards = first.toList().interleave(second)
+
+  return List.of(boards.take(boardCount / 2), boards.skip(boardCount / 2).take(boardCount / 2))
 }
 
 function startPositionIndex(boardDoc: BoardDoc) {

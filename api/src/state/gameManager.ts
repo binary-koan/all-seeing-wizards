@@ -17,8 +17,12 @@ export default class GameManager {
     this.games = {}
   }
 
-  public async create(packIds: string[]) {
-    const game = await buildGameFromPacks(packIds.map(ObjectID.createFromHexString), this.db)
+  public async create(packIds: string[], boards: number) {
+    const game = await buildGameFromPacks(
+      packIds.map(ObjectID.createFromHexString),
+      boards,
+      this.db
+    )
 
     return this.upsert(game)
   }

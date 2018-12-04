@@ -40,10 +40,11 @@ export function socketDisconnected(): SocketDisconnectedAction {
 
 export interface CreateGameAction {
   type: "createGame"
+  boards: number
 }
 
-export function createGame(): CreateGameAction {
-  return { type: "createGame" }
+export function createGame(boards: number): CreateGameAction {
+  return { type: "createGame", boards }
 }
 
 export interface GameCreatedAction {

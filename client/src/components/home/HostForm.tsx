@@ -3,19 +3,39 @@ import { connect } from "react-redux"
 import { Action, Dispatch } from "redux"
 import { createGame } from "../../state/actions"
 import ActionButton from "../base/ActionButton"
+import BoardSizePicker from "./BoardSizePicker"
 
 interface DispatchProps {
-  createGame: () => void
+  createGame: (boards: number) => void
 }
 
-const HostForm: React.SFC<DispatchProps> = props => {
-  return (
-    <div>
-      <ActionButton type="primary" onClick={props.createGame}>
-        Start Hosting
-      </ActionButton>
-    </div>
-  )
+class HostForm extends React.Component<DispatchProps, { boards: number }> {
+  constructor(props: DispatchProps) {
+    super(props)
+    this.state = { boards: 4 }
+
+    this.createGame = this.createGame.bind(this)
+    this.setBoards = this.setBoards.bind(this)
+  }
+
+  public render() {
+    return (
+      <div>
+        <BoardSizePicker value={this.state.boards} onChange={this.setBoards} />
+        <ActionButton type="primary" onClick={this.createGame}>
+          Start Hosting
+        </ActionButton>
+      </div>
+    )
+  }
+
+  private setBoards(boards: number) {
+    this.setState({ boards })
+  }
+
+  private createGame() {
+    this.props.createGame(this.state.boards)
+  }
 }
 
 function mapStateToProps() {
@@ -24,7 +44,7 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   return {
-    createGame: () => dispatch(createGame())
+    createGame: (boards: number) => dispatch(createGame(boards))
   }
 }
 

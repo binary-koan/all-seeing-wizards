@@ -8,12 +8,12 @@ import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import frameImage from "../../../../assets/heart-frame.png"
 import data from "../../../../packs/base/viewConfig"
 
-const FRAME_SIZE = { width: 2, height: 1 }
-const FRAME_OFFSET = { x: -0.5, y: -0.7 }
+const FRAME_SIZE = { width: 1.5, height: 0.75 }
+const FRAME_OFFSET = { x: -0.25, y: -0.55 }
 
-const HEART_SIZE = { width: 0.3, height: 0.3 }
-const HEART_OFFSET = { x: -0.35, y: -0.4 }
-const HEART_SPACING = 0.05
+const HEART_SIZE = { width: 0.23, height: 0.23 }
+const HEART_OFFSET = { x: -0.13, y: -0.34 }
+const HEART_SPACING = 0.03
 
 interface StateProps {
   players: Array<{ id: string; position: Point; hp: number; heartImage: string }>

@@ -2,7 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
-import Heart from "./Heart"
 
 import data from "../../../packs/base/viewConfig"
 
@@ -28,7 +27,7 @@ const PlayerName = styled.h3`
   font-size: 1rem;
 `
 
-const HpIndicator = styled(Heart)`
+const HpIndicator = styled.img`
   display: inline-block;
   width: 1.25rem;
   height: 1.25rem;
@@ -37,7 +36,7 @@ const HpIndicator = styled(Heart)`
 interface PlayerHeaderProps {
   name: string
   image: string
-  color: string
+  heartImage: string
   hp: number
 }
 
@@ -50,7 +49,7 @@ const PlayerHeader: React.SFC<PlayerHeaderProps> = props => (
         {Array(props.hp)
           .fill(0)
           .map((_, index) => (
-            <HpIndicator key={index} fill={props.color} />
+            <HpIndicator key={index} src={props.heartImage} />
           ))}
       </div>
     </Details>
@@ -64,7 +63,7 @@ function mapStateToProps(state: ViewState): PlayerHeaderProps {
   return {
     name: player.character.name,
     image: viewData.images.south,
-    color: viewData.color,
+    heartImage: viewData.heartImage,
     hp: player.hp
   }
 }

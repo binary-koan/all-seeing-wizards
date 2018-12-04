@@ -1,4 +1,3 @@
-import { readdirSync, readFileSync } from "fs"
 import { MongoClient } from "mongodb"
 import loadPacks from "./loadPacks"
 

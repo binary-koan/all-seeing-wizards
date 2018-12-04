@@ -378,8 +378,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/dark-lord-east.png"),
         west: require("./players/dark-lord-west.png")
       },
-      heartImage: require("./players/dark-lord-heart.png"),
-      color: "#6A7787"
+      heartImage: require("./players/dark-lord-heart.png")
     },
 
     "Clever Cleric": {
@@ -389,8 +388,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/cleric-east.png"),
         west: require("./players/cleric-west.png")
       },
-      heartImage: require("./players/cleric-heart.png"),
-      color: "#F44236"
+      heartImage: require("./players/cleric-heart.png")
     },
 
     "Pure Paladin": {
@@ -400,8 +398,7 @@ const viewConfig: ViewConfig = {
         east: require("./players/paladin-east.png"),
         west: require("./players/paladin-west.png")
       },
-      heartImage: require("./players/paladin-heart.png"),
-      color: "#EC9E42"
+      heartImage: require("./players/paladin-heart.png")
     },
 
     "Adaptable Alchemist": {
@@ -411,8 +408,57 @@ const viewConfig: ViewConfig = {
         east: require("./players/alchemist-east.png"),
         west: require("./players/alchemist-west.png")
       },
-      heartImage: require("./players/alchemist-heart.png"),
-      color: "#677821"
+      heartImage: require("./players/alchemist-heart.png")
+    },
+
+    "Bold Battlemage": {
+      images: {
+        north: require("./players/battlemage-north.png"),
+        south: require("./players/battlemage-south.png"),
+        east: require("./players/battlemage-east.png"),
+        west: require("./players/battlemage-west.png")
+      },
+      heartImage: require("./players/battlemage-heart.png")
+    },
+
+    "Grumpy Gnome": {
+      images: {
+        north: require("./players/gnome-north.png"),
+        south: require("./players/gnome-south.png"),
+        east: require("./players/gnome-east.png"),
+        west: require("./players/gnome-west.png")
+      },
+      heartImage: require("./players/gnome-heart.png")
+    },
+
+    "Indignant Imp": {
+      images: {
+        north: require("./players/imp-north.png"),
+        south: require("./players/imp-south.png"),
+        east: require("./players/imp-east.png"),
+        west: require("./players/imp-west.png")
+      },
+      heartImage: require("./players/imp-heart.png")
+    },
+
+    "Thuggish Troll": {
+      images: {
+        north: require("./players/troll-north.png"),
+        south: require("./players/troll-south.png"),
+        east: require("./players/troll-east.png"),
+        west: require("./players/troll-west.png")
+      },
+      heartImage: require("./players/troll-heart.png")
+    },
+
+    "Warping Warlock": {
+      images: {
+        north: require("./players/warlock-north.png"),
+        south: require("./players/warlock-south.png"),
+        east: require("./players/warlock-east.png"),
+        west: require("./players/warlock-west.png")
+      },
+      heartImage: require("./players/warlock-heart.png")
     }
   }
 }

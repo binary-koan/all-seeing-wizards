@@ -2,7 +2,7 @@ import { Duration } from "../../../common/src/state/duration"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 8,
+  version: 11,
   name: "base",
   boards: [
     boardConfig(`
@@ -24,21 +24,33 @@ const values: DbValues = {
       l . . .
     `),
     boardConfig(`
-      w . . .
-      b * . .
-      . . . .
-      . l w .
-    `),
-    boardConfig(`
       b * . .
       . . w .
       . . . .
       . . . l
     `),
     boardConfig(`
-      . * . .
-      b . w w
+      w . . .
+      b * . .
+      . . . .
+      . l w .
+    `),
+    boardConfig(`
+      . * . w
+      b . . w
       b . . .
+      . . . .
+    `),
+    boardConfig(`
+      . . . w
+      b * . .
+      . . . .
+      . l w .
+    `),
+    boardConfig(`
+      . * w .
+      . . . .
+      . b b .
       . . . .
     `)
   ],
@@ -58,6 +70,26 @@ const values: DbValues = {
     {
       name: "Adaptable Alchemist",
       type: "alchemist"
+    },
+    {
+      name: "Bold Battlemage",
+      type: "battlemage"
+    },
+    {
+      name: "Grumpy Gnome",
+      type: "gnome"
+    },
+    {
+      name: "Indignant Imp",
+      type: "imp"
+    },
+    {
+      name: "Thuggish Troll",
+      type: "troll"
+    },
+    {
+      name: "Warping Warlock",
+      type: "warlock"
     }
   ],
   cards: [

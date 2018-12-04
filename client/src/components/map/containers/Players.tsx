@@ -7,14 +7,16 @@ import tweener from "../../util/tweener"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import PointEffectImage from "../results/PointEffectImage"
 
+import disconnectedImage from "../../../../assets/effects/disconnected.png"
+import knockedOutImage from "../../../../assets/effects/knocked-out.png"
 import lavaFireImage from "../../../../assets/effects/lava-fire.png"
 import powerUpImage from "../../../../assets/effects/power-up-basic.png"
 import shieldImage from "../../../../assets/effects/shield-basic.png"
 import waterSlowImage from "../../../../assets/effects/water-slow.png"
-import knockedOutImage from "../../../../assets/effects/knocked-out.png"
 import data from "../../../../packs/base/viewConfig"
 
 const NO_TINT = 0xffffff
+const DISCONNECTED_TINT = 0x444444
 const DAMAGE_TINT = 0xff0000
 const HEALING_TINT = 0x00ff00
 const ACTIONS_PREVENTED_TINT = 0x7777ff
@@ -36,6 +38,7 @@ interface StateProps {
     y: number
     image: string
     tint: number
+    isConnected: boolean
     isInWater?: boolean
     isInLava?: boolean
     hasShield?: boolean
@@ -77,13 +80,21 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
           y={player.y}
           alpha={player.hasDamageIncrease ? 1 : 0}
         />
+        <TweenedPointEffectImage
+          imagePath={disconnectedImage}
+          x={player.x}
+          y={player.y}
+          alpha={player.isConnected ? 0 : 1}
+        />
       </Container>
     ))}
   </Container>
 )
 
 function playerTint(player: Player, state: ViewState) {
-  if (
+  if (!player.connected) {
+    return DISCONNECTED_TINT
+  } else if (
     state.showingResults &&
     state.showingResults.some(
       result => result.type === "takeDamage" && result.player.id === player.id
@@ -108,7 +119,8 @@ function mapStateToProps(state: ViewState): StateProps {
       const baseProps = {
         id: player.id,
         x: player.position.x,
-        y: player.position.y
+        y: player.position.y,
+        isConnected: player.connected
       }
 
       if (player.knockedOut) {

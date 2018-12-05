@@ -51,6 +51,9 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
     case "turnResultsReceived":
       return applyTurnResultsReceived(state)
 
+    case "showCountdown":
+      return state.set("showingCountdown", action.number)
+
     case "showResults":
       return state.set("showingResults", action.results)
 

@@ -15,6 +15,7 @@ import {
   applyResults,
   gameUpdated,
   prepareForNextResults,
+  showCountdown,
   showResults,
   turnResultsReceived
 } from "../actions"
@@ -26,7 +27,18 @@ export default async function showPerformedActions(
   emit(turnResultsReceived())
   emit(showResults(List()))
 
-  await sleep(500)
+  emit(showCountdown(3))
+  await sleep(1000)
+
+  emit(showCountdown(2))
+  await sleep(1000)
+
+  emit(showCountdown(1))
+  await sleep(1000)
+
+  emit(showCountdown(undefined))
+
+  await sleep(200)
 
   const resultsByAction = data.results.map(deserializeResults)
 

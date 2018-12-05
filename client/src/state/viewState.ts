@@ -16,6 +16,7 @@ interface IViewState {
   connectedAs: Connection
   error?: { message: string; exception?: string }
   socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
+  showingCountdown?: number
   showingResults?: List<ActionResult>
   showingCardDetails?: Card
 }
@@ -26,6 +27,7 @@ const viewState = RecordFactory<IViewState>({
   connectedAs: { type: "none" },
   error: undefined,
   socketState: "connecting",
+  showingCountdown: undefined,
   showingResults: undefined,
   showingCardDetails: undefined
 })
@@ -36,6 +38,7 @@ export default class ViewState extends viewState implements IViewState {
   public readonly error?: { message: string; exception?: string }
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
+  public readonly showingCountdown?: number
   public readonly showingResults?: List<ActionResult>
   public readonly showingCardDetails?: Card
 

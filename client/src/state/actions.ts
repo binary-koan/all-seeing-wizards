@@ -127,6 +127,15 @@ export function turnResultsReceived(): TurnResultsReceivedAction {
   return { type: "turnResultsReceived" }
 }
 
+export interface ShowCountdownAction {
+  type: "showCountdown"
+  number: number
+}
+
+export function showCountdown(number: number): ShowCountdownAction {
+  return { type: "showCountdown", number }
+}
+
 export interface ShowResultsAction {
   type: "showResults"
   results: List<ActionResult>
@@ -224,6 +233,7 @@ export type Action =
   | GameJoinedAction
   | GameUpdatedAction
   | TurnResultsReceivedAction
+  | ShowCountdownAction
   | ShowResultsAction
   | ApplyResultsAction
   | PrepareForNextResultsAction

@@ -1,4 +1,5 @@
 import React from "react"
+import Countdown from "./host/Countdown"
 import StatusPanel from "./host/StatusPanel"
 import { ImagePreloader } from "./ImagePreloader"
 import FullMapView from "./map/FullMapView"
@@ -15,6 +16,7 @@ const Host: React.SFC = _props => {
       {() => (
         <Wrapper>
           <StatusPanel />
+          <Countdown />
           <FullMapView />
         </Wrapper>
       )}

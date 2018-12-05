@@ -61,18 +61,20 @@ function addPlayer(
   const characterDoc = find(characterDocs, c => c._id.equals(doc.characterId))
   const cardsInHand = doc.hand.cardIds.map(id => cards.get(id.toHexString()))
 
-  if (characterDoc && every(cardsInHand)) {
+  if (every(cardsInHand)) {
     const id = doc._id.toHexString()
 
     players = players.set(
       id,
       new Player({
         id,
-        character: new Character({
-          id: characterDoc._id.toHexString(),
-          name: characterDoc.name,
-          type: characterDoc.type
-        }),
+        character:
+          characterDoc &&
+          new Character({
+            id: characterDoc._id.toHexString(),
+            name: characterDoc.name,
+            type: characterDoc.type
+          }),
         hp: doc.hp,
         position: new DirectionalPoint(doc.position),
         hand: new Hand({

@@ -18,6 +18,8 @@ import {
   UnexpectedErrorData
 } from "../../../common/src/messages/toClient"
 import {
+  CHOOSE_CHARACTER,
+  ChooseCharacterData,
   CREATE_GAME,
   CreateGameData,
   JOIN_GAME,
@@ -92,6 +94,30 @@ export default function setup(server: Server, manager: GameManager) {
           game: serializedNewState,
           playerId: player.id
         })
+        emitToGame<GameUpdatedData>(socket.request.gameClient, io, GAME_UPDATED, {
+          game: serializedNewState
+        })
+      })
+    )
+
+    respondTo(
+      socket,
+      CHOOSE_CHARACTER,
+      withGameClient(socket, async (client, data: ChooseCharacterData) => {
+        if (!client.isPlayer) {
+          return emitToGame<UnexpectedErrorData>(client, io, UNEXPECTED_ERROR, {
+            message: "Host cannot choose a character"
+          })
+        }
+
+        const newGame = await manager.setCharacter(
+          client.gameCode,
+          (client as PlayerClient).playerId,
+          data.name
+        )
+
+        const serializedNewState = serializeGame(newGame)
+
         emitToGame<GameUpdatedData>(socket.request.gameClient, io, GAME_UPDATED, {
           game: serializedNewState
         })

@@ -1,5 +1,6 @@
 import { Dispatch, Middleware } from "redux"
 import {
+  CHOOSE_CHARACTER,
   CREATE_GAME,
   JOIN_GAME,
   REHOST_GAME,
@@ -44,6 +45,11 @@ function buildSocketEvent(state: ViewState, action: Action): { event: string; ar
       return {
         event: JOIN_GAME,
         args: { gameCode: state.gameCode }
+      }
+    case CHOOSE_CHARACTER:
+      return {
+        event: CHOOSE_CHARACTER,
+        args: { name: action.name }
       }
     case REJOIN_GAME:
       return {

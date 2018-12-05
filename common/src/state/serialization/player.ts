@@ -10,7 +10,7 @@ import { deserializeCard } from "./card"
 export function deserializePlayer(playerData: any) {
   return new Player({
     id: playerData.id,
-    character: new Character(playerData.character),
+    character: playerData.character && new Character(playerData.character),
     hp: playerData.hp,
     position: new DirectionalPoint(playerData.position),
     lastPosition: playerData.lastPosition && new DirectionalPoint(playerData.lastPosition),

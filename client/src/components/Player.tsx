@@ -1,7 +1,10 @@
 import React from "react"
+import { connect } from "react-redux"
+import ViewState from "../state/viewState"
 import CardDetails from "./card/CardDetails"
 import PlayerMapView from "./map/PlayerMapView"
 import CardChooser from "./player/CardChooser"
+import CharacterChooser from "./player/CharacterChooser"
 import PlayerHeader from "./player/PlayerHeader"
 import PrimaryAction from "./player/PrimaryAction"
 import styled from "./util/styled"
@@ -26,16 +29,30 @@ const MapWrapper = styled.div`
   align-items: center;
 `
 
-const Player: React.SFC = _props => (
+interface StateProps {
+  hasCharacter: boolean
+}
+
+const Player: React.SFC<StateProps> = props => (
   <Wrapper>
-    <PlayerHeader />
-    <MapWrapper>
-      <PlayerMapView maxWidth={CONTAINER_WIDTH} />
-    </MapWrapper>
-    <CardChooser />
-    <PrimaryAction />
-    <CardDetails />
+    {props.hasCharacter ? (
+      <>
+        <PlayerHeader />
+        <MapWrapper>
+          <PlayerMapView maxWidth={CONTAINER_WIDTH} />
+        </MapWrapper>
+        <CardChooser />
+        <PrimaryAction />
+        <CardDetails />
+      </>
+    ) : (
+      <CharacterChooser />
+    )}
   </Wrapper>
 )
 
-export default Player
+function mapStateToProps(state: ViewState): StateProps {
+  return { hasCharacter: Boolean(state.player.character) }
+}
+
+export default connect(mapStateToProps)(Player)

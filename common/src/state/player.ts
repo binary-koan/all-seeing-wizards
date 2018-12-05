@@ -3,9 +3,9 @@ import clamp from "../util/clamp"
 import { RecordFactory } from "../util/immutableExtras"
 import { Character } from "./character"
 import { DirectionalPoint } from "./directionalPoint"
+import { Duration } from "./duration"
 import { Hand } from "./hand"
 import { Modifier, ModifierType } from "./modifier"
-import { Duration } from "./duration"
 
 export const MAX_PLAYER_HP = 5
 
@@ -88,5 +88,11 @@ export class Player extends player implements IPlayer {
 
   public disconnect() {
     return this.set("connected", false)
+  }
+
+  public setCharacter(character: Character) {
+    if (this.character) throw new Error("Character is already set for this player")
+
+    return this.set("character", character)
   }
 }

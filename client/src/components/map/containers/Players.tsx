@@ -114,33 +114,38 @@ function playerTint(player: Player, state: ViewState) {
 }
 
 function mapStateToProps(state: ViewState): StateProps {
-  return {
-    players: state.game.players.toArray().map(player => {
-      const baseProps = {
-        id: player.id,
-        x: player.position.x,
-        y: player.position.y,
-        isConnected: player.connected
-      }
+  function playerConfig(player: Player) {
+    const baseProps = {
+      id: player.id,
+      x: player.position.x,
+      y: player.position.y,
+      isConnected: player.connected
+    }
 
-      if (player.knockedOut) {
-        return {
-          ...baseProps,
-          image: knockedOutImage,
-          tint: NO_TINT
-        }
-      } else {
-        return {
-          ...baseProps,
-          image: data.characters[player.character.name].images[player.position.facing],
-          tint: playerTint(player, state),
-          isInWater: state.game.board.tileAt(player.position).type === "water",
-          isInLava: state.game.board.tileAt(player.position).type === "lava",
-          hasShield: player.hasModifier("shield") || player.hasModifier("mirrorShield"),
-          hasDamageIncrease: player.hasModifier("increaseDamage")
-        }
+    if (player.knockedOut) {
+      return {
+        ...baseProps,
+        image: knockedOutImage,
+        tint: NO_TINT
       }
-    })
+    } else if (player.character) {
+      return {
+        ...baseProps,
+        image: data.characters[player.character.name].images[player.position.facing],
+        tint: playerTint(player, state),
+        isInWater: state.game.board.tileAt(player.position).type === "water",
+        isInLava: state.game.board.tileAt(player.position).type === "lava",
+        hasShield: player.hasModifier("shield") || player.hasModifier("mirrorShield"),
+        hasDamageIncrease: player.hasModifier("increaseDamage")
+      }
+    }
+  }
+
+  return {
+    players: state.game.players
+      .toArray()
+      .map(playerConfig)
+      .filter(Boolean)
   }
 }
 

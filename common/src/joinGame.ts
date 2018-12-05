@@ -1,5 +1,4 @@
 import { List } from "immutable"
-import { Character } from "./state/character"
 import { Game } from "./state/game"
 import { Hand } from "./state/hand"
 import { MAX_PLAYER_HP, Player } from "./state/player"
@@ -9,7 +8,7 @@ export interface JoinResult {
   newState: Game
 }
 
-export default function joinGame(game: Game, id: string, as: Character): JoinResult {
+export default function joinGame(game: Game, id: string): JoinResult {
   const startingPosition = pickStartingPosition(game)
 
   if (!startingPosition) {
@@ -18,7 +17,7 @@ export default function joinGame(game: Game, id: string, as: Character): JoinRes
 
   const player = new Player({
     id,
-    character: as,
+    character: undefined,
     hp: MAX_PLAYER_HP,
     position: startingPosition,
     hand: Hand.empty(),

@@ -73,6 +73,15 @@ export function joinGame(): JoinGameAction {
   return { type: "joinGame" }
 }
 
+export interface ChooseCharacterAction {
+  type: "chooseCharacter"
+  name: string
+}
+
+export function chooseCharacter(name: string): ChooseCharacterAction {
+  return { type: "chooseCharacter", name }
+}
+
 export interface RejoinGameAction {
   type: "rejoinGame"
   code: string
@@ -205,6 +214,7 @@ export type Action =
   | CreateGameAction
   | RehostGameAction
   | JoinGameAction
+  | ChooseCharacterAction
   | RejoinGameAction
   | StartGameAction
   | PlaceCardAction

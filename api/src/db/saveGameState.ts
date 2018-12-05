@@ -35,7 +35,7 @@ function updateGameState(game: Game, db: Db) {
 
 function updatePlayer(player: Player, db: Db) {
   const doc: PlayerDoc = {
-    characterId: ObjectID.createFromHexString(player.character.id),
+    characterId: player.character && ObjectID.createFromHexString(player.character.id),
     connected: player.connected,
     hp: player.hp,
     position: player.position,

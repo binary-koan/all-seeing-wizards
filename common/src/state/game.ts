@@ -46,7 +46,7 @@ export class Game extends game implements IGame {
   }
 
   public get activePlayers() {
-    return this.players.filterNot(player => player.knockedOut)
+    return this.players.filter(player => player.character && !player.knockedOut)
   }
 
   public player(id: string) {

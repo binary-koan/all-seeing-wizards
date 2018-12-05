@@ -17,6 +17,12 @@ export interface JoinGameData {
   gameCode: string
 }
 
+export const CHOOSE_CHARACTER = "chooseCharacter"
+
+export interface ChooseCharacterData {
+  name: string
+}
+
 export const REJOIN_GAME = "rejoinGame"
 
 export interface RejoinGameData {

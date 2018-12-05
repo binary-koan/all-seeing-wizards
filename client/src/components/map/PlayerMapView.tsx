@@ -22,7 +22,7 @@ const PlayerMapView: React.SFC<PlayerMapViewProps & StateProps> = props => (
   <FullWidthMapView
     sizeBasedOn="width"
     maxSize={props.maxWidth}
-    viewportSize={{ width: 7, height: 7 }}
+    viewportSize={{ width: 6, height: 6 }}
     centerOn={{ x: props.playerCenterX, y: props.playerCenterY }}
   />
 )

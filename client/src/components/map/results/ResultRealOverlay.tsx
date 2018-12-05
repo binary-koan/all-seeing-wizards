@@ -1,8 +1,7 @@
 import React from "react"
+import { effectImages } from "../../ImagePreloader"
 import PointEffectImage from "./PointEffectImage"
 import { OVERRIDE_OVERLAY, ResultViewProps } from "./ResultViewProps"
-
-import defaultHealImage from "../../../../assets/effects/heal-basic.png"
 
 const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
   if (
@@ -20,7 +19,7 @@ const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
         <PointEffectImage
           x={props.result.player.position.x}
           y={props.result.player.position.y}
-          imagePath={defaultHealImage}
+          imagePath={effectImages.heal}
         />
       )
     default:

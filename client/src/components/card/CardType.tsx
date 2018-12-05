@@ -1,27 +1,21 @@
-import { Card } from "../../../../common/src/state/card"
-
 import { List } from "immutable"
 import React, { HTMLAttributes, ImgHTMLAttributes } from "react"
-import attackIcon from "../../../assets/card-types/attack.png"
-import healIcon from "../../../assets/card-types/heal.png"
-import moveIcon from "../../../assets/card-types/move.png"
-import powerUpIcon from "../../../assets/card-types/power-up.png"
-import preventActionsIcon from "../../../assets/card-types/prevent-actions.png"
-import shieldIcon from "../../../assets/card-types/shield.png"
+import { Card } from "../../../../common/src/state/card"
+import { cardIcons } from "../ImagePreloader"
 
 const IMAGE_MAPPINGS = List([
-  { effect: "attack", title: "Attack", color: "#ff3d00", icon: attackIcon },
-  { effect: "heal", title: "Heal", color: "#479333", icon: healIcon },
-  { effect: "move", title: "Move", color: "#3f51b5", icon: moveIcon },
-  { effect: "increaseDamage", title: "Increase Damage", color: "#ffc515", icon: powerUpIcon },
+  { effect: "attack", title: "Attack", color: "#ff3d00", icon: cardIcons.attack },
+  { effect: "heal", title: "Heal", color: "#479333", icon: cardIcons.heal },
+  { effect: "move", title: "Move", color: "#3f51b5", icon: cardIcons.move },
+  { effect: "increaseDamage", title: "Increase Damage", color: "#ffc515", icon: cardIcons.powerUp },
   {
     effect: "preventActions",
     title: "Prevent Actions",
     color: "#239dfa",
-    icon: preventActionsIcon
+    icon: cardIcons.preventActions
   },
-  { effect: "shield", title: "Shield", color: "#8389ad", icon: shieldIcon },
-  { effect: "mirrorShield", title: "Mirror Shield", color: "#8389ad", icon: shieldIcon }
+  { effect: "shield", title: "Shield", color: "#8389ad", icon: cardIcons.shield },
+  { effect: "mirrorShield", title: "Mirror Shield", color: "#8389ad", icon: cardIcons.shield }
 ])
 
 interface CardProps {

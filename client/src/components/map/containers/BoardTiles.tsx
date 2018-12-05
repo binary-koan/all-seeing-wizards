@@ -1,13 +1,9 @@
 import { Container, TilingSprite } from "@inlet/react-pixi"
 import { Point } from "pixi.js"
 import React from "react"
+import { tileImages } from "../../ImagePreloader"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import TileOverlay from "../tiles/TileOverlay"
-
-import blockTile from "../../../../assets/tiles/block.png"
-import groundTile from "../../../../assets/tiles/ground.png"
-import lavaTile from "../../../../assets/tiles/lava.png"
-import waterTile from "../../../../assets/tiles/water.png"
 
 const TILE_IMAGE_SIZE = 64
 
@@ -21,11 +17,11 @@ const BoardTiles: React.SFC<MapViewScaleProps> = props => {
         y={props.mapViewScale.mapPadding}
         {...props.mapViewScale.mapSize()}
         tileScale={new Point(scale, scale)}
-        image={groundTile}
+        image={tileImages.ground}
       />
-      <TileOverlay tileType="block" image={blockTile} />
-      <TileOverlay tileType="water" image={waterTile} />
-      <TileOverlay tileType="lava" image={lavaTile} />
+      <TileOverlay tileType="block" image={tileImages.block} />
+      <TileOverlay tileType="water" image={tileImages.water} />
+      <TileOverlay tileType="lava" image={tileImages.lava} />
     </Container>
   )
 }

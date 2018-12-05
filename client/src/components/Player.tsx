@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import ViewState from "../state/viewState"
 import CardDetails from "./card/CardDetails"
+import { ImagePreloader } from "./ImagePreloader"
 import PlayerMapView from "./map/PlayerMapView"
 import CardChooser from "./player/CardChooser"
 import CharacterChooser from "./player/CharacterChooser"
@@ -34,21 +35,25 @@ interface StateProps {
 }
 
 const Player: React.SFC<StateProps> = props => (
-  <Wrapper>
-    {props.hasCharacter ? (
-      <>
-        <PlayerHeader />
-        <MapWrapper>
-          <PlayerMapView maxWidth={CONTAINER_WIDTH} />
-        </MapWrapper>
-        <CardChooser />
-        <PrimaryAction />
-        <CardDetails />
-      </>
-    ) : (
-      <CharacterChooser />
+  <ImagePreloader>
+    {() => (
+      <Wrapper>
+        {props.hasCharacter ? (
+          <>
+            <PlayerHeader />
+            <MapWrapper>
+              <PlayerMapView maxWidth={CONTAINER_WIDTH} />
+            </MapWrapper>
+            <CardChooser />
+            <PrimaryAction />
+            <CardDetails />
+          </>
+        ) : (
+          <CharacterChooser />
+        )}
+      </Wrapper>
     )}
-  </Wrapper>
+  </ImagePreloader>
 )
 
 function mapStateToProps(state: ViewState): StateProps {

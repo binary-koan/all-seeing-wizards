@@ -1,5 +1,6 @@
 import React from "react"
 import StatusPanel from "./host/StatusPanel"
+import { ImagePreloader } from "./ImagePreloader"
 import FullMapView from "./map/FullMapView"
 import styled from "./util/styled"
 
@@ -10,10 +11,14 @@ const Wrapper = styled.div`
 
 const Host: React.SFC = _props => {
   return (
-    <Wrapper>
-      <StatusPanel />
-      <FullMapView />
-    </Wrapper>
+    <ImagePreloader>
+      {() => (
+        <Wrapper>
+          <StatusPanel />
+          <FullMapView />
+        </Wrapper>
+      )}
+    </ImagePreloader>
   )
 }
 

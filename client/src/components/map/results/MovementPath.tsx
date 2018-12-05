@@ -1,9 +1,8 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import React from "react"
 import { MoveResult } from "../../../../../common/src/turnResults/resultTypes"
+import { effectImages } from "../../ImagePreloader"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
-
-import image from "../../../../assets/effects/movement-path.png"
 
 interface MovementPathProps {
   result: MoveResult
@@ -14,7 +13,7 @@ const MovementPath: React.SFC<MovementPathProps & MapViewScaleProps> = props => 
     {props.result.movementPath.pop().map(position => (
       <Sprite
         key={[position.x, position.y].toString()}
-        image={image}
+        image={effectImages.move}
         alpha={0.5}
         {...props.mapViewScale.tileSize}
         {...props.mapViewScale.mapPosition(position)}

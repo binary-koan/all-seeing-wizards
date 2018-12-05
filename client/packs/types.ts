@@ -8,6 +8,7 @@ export interface ViewConfig {
       description?: JSX.Element
       planViewOverrides?: ResultViewOverrides
       realViewOverrides?: ResultViewOverrides
+      preloadImages?: string[]
     }
   }
   characters: {

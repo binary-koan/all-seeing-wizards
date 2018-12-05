@@ -1,10 +1,7 @@
 import React from "react"
+import { effectImages } from "../../ImagePreloader"
 import PointEffectImage from "./PointEffectImage"
 import { OVERRIDE_OVERLAY, ResultViewProps } from "./ResultViewProps"
-
-import defaultHealImage from "../../../../assets/effects/heal-basic.png"
-import defaultPowerUpImage from "../../../../assets/effects/power-up-basic.png"
-import defaultShieldImage from "../../../../assets/effects/shield-basic.png"
 
 const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
   if (
@@ -22,7 +19,7 @@ const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
         <PointEffectImage
           x={props.result.player.position.x}
           y={props.result.player.position.y}
-          imagePath={defaultHealImage}
+          imagePath={effectImages.heal}
         />
       )
     case "increaseDamage":
@@ -30,7 +27,7 @@ const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
         <PointEffectImage
           x={props.result.player.position.x}
           y={props.result.player.position.y}
-          imagePath={defaultPowerUpImage}
+          imagePath={effectImages.powerUp}
         />
       )
     case "grantShield":
@@ -39,7 +36,7 @@ const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
         <PointEffectImage
           x={props.result.player.position.x}
           y={props.result.player.position.y}
-          imagePath={defaultShieldImage}
+          imagePath={effectImages.shield}
         />
       )
     default:

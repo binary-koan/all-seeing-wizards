@@ -3,16 +3,11 @@ import React from "react"
 import { connect } from "react-redux"
 import { Player } from "../../../../../common/src/state/player"
 import ViewState from "../../../state/viewState"
+import { effectImages } from "../../ImagePreloader"
 import tweener from "../../util/tweener"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import PointEffectImage from "../results/PointEffectImage"
 
-import disconnectedImage from "../../../../assets/effects/disconnected.png"
-import knockedOutImage from "../../../../assets/effects/knocked-out.png"
-import lavaFireImage from "../../../../assets/effects/lava-fire.png"
-import powerUpImage from "../../../../assets/effects/power-up-basic.png"
-import shieldImage from "../../../../assets/effects/shield-basic.png"
-import waterSlowImage from "../../../../assets/effects/water-slow.png"
 import data from "../../../../packs/base/viewConfig"
 
 const NO_TINT = 0xffffff
@@ -57,31 +52,31 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
           {...props.mapViewScale.tileSize}
         />
         <TweenedPointEffectImage
-          imagePath={waterSlowImage}
+          imagePath={effectImages.waterSlow}
           x={player.x}
           y={player.y}
           alpha={player.isInWater ? 1 : 0}
         />
         <TweenedPointEffectImage
-          imagePath={lavaFireImage}
+          imagePath={effectImages.lavaFire}
           x={player.x}
           y={player.y}
           alpha={player.isInLava ? 1 : 0}
         />
         <TweenedPointEffectImage
-          imagePath={shieldImage}
+          imagePath={effectImages.shield}
           x={player.x}
           y={player.y}
           alpha={player.hasShield ? 1 : 0}
         />
         <TweenedPointEffectImage
-          imagePath={powerUpImage}
+          imagePath={effectImages.powerUp}
           x={player.x}
           y={player.y}
           alpha={player.hasDamageIncrease ? 1 : 0}
         />
         <TweenedPointEffectImage
-          imagePath={disconnectedImage}
+          imagePath={effectImages.disconnected}
           x={player.x}
           y={player.y}
           alpha={player.isConnected ? 0 : 1}
@@ -125,7 +120,7 @@ function mapStateToProps(state: ViewState): StateProps {
     if (player.knockedOut) {
       return {
         ...baseProps,
-        image: knockedOutImage,
+        image: effectImages.knockedOut,
         tint: NO_TINT
       }
     } else if (player.character) {

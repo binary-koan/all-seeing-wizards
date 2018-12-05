@@ -75,7 +75,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-fire.png")]
     },
 
     "Chaos Storm": {
@@ -100,7 +101,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-storm.png")]
     },
 
     "Magical Dart": {
@@ -145,7 +147,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-homing.png")]
     },
 
     "Freezing Touch": {
@@ -171,7 +174,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-freeze.png")]
     },
 
     "Yellow Snowballs": {
@@ -197,7 +201,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-snowballs.png")]
     },
 
     "Force Lightning": {
@@ -223,7 +228,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-lightning.png")]
     },
 
     "Spider Minions": {
@@ -249,7 +255,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-spider.png")]
     },
 
     "Piercing Scream": {
@@ -275,7 +282,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-scream.png")]
     },
 
     Earthquake: {
@@ -300,7 +308,8 @@ const viewConfig: ViewConfig = {
             alpha: 1
           })
         }
-      }
+      },
+      preloadImages: [require("./effects/attack-earthquake.png")]
     },
 
     "Magical Shield": {

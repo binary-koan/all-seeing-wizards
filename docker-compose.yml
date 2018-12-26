@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 services:
   db:
     image: "mongo:4"
@@ -7,6 +7,10 @@ services:
     build:
       context: "."
       dockerfile: "./api/Dockerfile"
+    volumes:
+      - type: bind
+        source: "."
+        target: "/code"
     environment:
       MONGO_URI: "mongodb://db:27017"
     ports:
@@ -16,5 +20,9 @@ services:
     build:
       context: "."
       dockerfile: "./client/Dockerfile"
+    volumes:
+      - type: bind
+        source: "."
+        target: "/code"
     ports:
-      - "4000:80"
+      - "8080:8080"

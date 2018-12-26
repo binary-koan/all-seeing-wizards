@@ -1,11 +1,4 @@
-# Run in context .. (base directory)
-FROM node:10
-ADD . /code
-WORKDIR /code
-RUN yarn install
+FROM node:10-alpine
 WORKDIR /code/client
-RUN yarn run build
-
-FROM nginx:latest
-WORKDIR /usr/share/nginx/html
-COPY --from=0 /code/client/dist/* ./
+CMD ["yarn", "start"]
+EXPOSE 8080

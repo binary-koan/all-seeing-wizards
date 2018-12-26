@@ -1,0 +1,21 @@
+version: "3"
+services:
+  db:
+    image: "mongo:4"
+
+  api:
+    build:
+      context: "."
+      dockerfile: "./api/Dockerfile-prod"
+    environment:
+      MONGO_URI: "mongodb://db:27017"
+      NODE_ENV: "production"
+    ports:
+      - "3000:3000"
+
+  client:
+    build:
+      context: "."
+      dockerfile: "./client/Dockerfile-prod"
+    ports:
+      - "8080:80"

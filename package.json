@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "all-seeing-wizards",
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
@@ -8,8 +9,7 @@
     "typecheck": "npm run typecheck:common && npm run typecheck:api && npm run typecheck:client",
     "typecheck:common": "cd common && tsc --noEmit -p tsconfig.check.json",
     "typecheck:api": "cd api && tsc --noEmit -p tsconfig.check.json",
-    "typecheck:client": "cd client && tsc --noEmit -p tsconfig.check.json",
-    "postinstall": "cd api && npm install && cd ../client && npm install"
+    "typecheck:client": "cd client && tsc --noEmit -p tsconfig.check.json"
   },
   "dependencies": {
     "@types/socket.io-client": "^1.4.32",
@@ -26,6 +26,7 @@
     "tslint-config-prettier": "^1.10.0",
     "typescript": "^3.0.3"
   },
+  "workspaces": ["api", "client"],
   "prettier": {
     "printWidth": 100,
     "semi": false

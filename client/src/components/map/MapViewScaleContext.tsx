@@ -72,7 +72,7 @@ export function withMapViewScale<Props extends MapViewScaleProps>(
 ): React.SFC<Pick<Props, Exclude<keyof Props, keyof MapViewScaleProps>>> {
   return props => (
     <MapViewScaleContext.Consumer>
-      {scale => <Component mapViewScale={scale} {...props} />}
+      {scale => <Component mapViewScale={scale} {...props as any} />}
     </MapViewScaleContext.Consumer>
   )
 }

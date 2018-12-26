@@ -21,13 +21,13 @@ export default function tweener<BaseProps>(
 ) {
   type WrapperProps = BaseProps & { app: PIXI.Application }
 
-  const Wrapper = class extends React.Component<WrapperProps> {
+  const Wrapper = class extends React.Component<WrapperProps, WrapperProps> {
     private tweens: { [prop: string]: Tween }
 
     constructor(props: WrapperProps) {
       super(props)
 
-      this.state = { ...(props as {}) }
+      this.state = { ...props }
       this.tweens = {}
       this.tick = this.tick.bind(this)
     }
@@ -48,10 +48,10 @@ export default function tweener<BaseProps>(
             to: value,
             duration: propsToTween[name].duration,
             interpolate: linearInterpolator,
-            update: newValue => this.setState({ [name]: newValue })
+            update: newValue => this.setState({ [name]: newValue } as any)
           })
         } else {
-          this.setState({ [name]: value })
+          this.setState({ [name]: value } as any)
         }
       }
     }

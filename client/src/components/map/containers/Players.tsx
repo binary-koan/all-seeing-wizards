@@ -1,12 +1,14 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import React from "react"
 import { connect } from "react-redux"
+import { DirectionalPoint } from "../../../../../common/src/state/directionalPoint"
 import { Player } from "../../../../../common/src/state/player"
 import ViewState from "../../../state/viewState"
 import { effectImages } from "../../ImagePreloader"
 import tweener from "../../util/tweener"
 import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import PointEffectImage from "../results/PointEffectImage"
+import TileEffectIndicators from "../tiles/TileEffectIndicators"
 
 import data from "../../../../packs/base/viewConfig"
 
@@ -29,10 +31,10 @@ const TweenedPointEffectImage = tweener(PointEffectImage, {
 interface StateProps {
   players: Array<{
     id: string
-    x: number
-    y: number
+    position: DirectionalPoint
     image: string
     tint: number
+    isKnockedOut: boolean
     isConnected: boolean
     isInWater?: boolean
     isInLava?: boolean
@@ -48,37 +50,26 @@ const Players: React.SFC<StateProps & MapViewScaleProps> = props => (
         <TweenedSprite
           image={player.image}
           tint={player.tint}
-          {...props.mapViewScale.mapPosition(player)}
+          {...props.mapViewScale.mapPosition(player.position)}
           {...props.mapViewScale.tileSize}
         />
-        <TweenedPointEffectImage
-          imagePath={effectImages.waterSlow}
-          x={player.x}
-          y={player.y}
-          alpha={player.isInWater ? 1 : 0}
-        />
-        <TweenedPointEffectImage
-          imagePath={effectImages.lavaFire}
-          x={player.x}
-          y={player.y}
-          alpha={player.isInLava ? 1 : 0}
-        />
+        <TileEffectIndicators position={player.position} alpha={player.isKnockedOut ? 0 : 1} />
         <TweenedPointEffectImage
           imagePath={effectImages.shield}
-          x={player.x}
-          y={player.y}
+          x={player.position.x}
+          y={player.position.y}
           alpha={player.hasShield ? 1 : 0}
         />
         <TweenedPointEffectImage
           imagePath={effectImages.powerUp}
-          x={player.x}
-          y={player.y}
+          x={player.position.x}
+          y={player.position.y}
           alpha={player.hasDamageIncrease ? 1 : 0}
         />
         <TweenedPointEffectImage
           imagePath={effectImages.disconnected}
-          x={player.x}
-          y={player.y}
+          x={player.position.x}
+          y={player.position.y}
           alpha={player.isConnected ? 0 : 1}
         />
       </Container>
@@ -112,9 +103,9 @@ function mapStateToProps(state: ViewState): StateProps {
   function playerConfig(player: Player) {
     const baseProps = {
       id: player.id,
-      x: player.position.x,
-      y: player.position.y,
-      isConnected: player.connected
+      position: player.position,
+      isConnected: player.connected,
+      isKnockedOut: player.knockedOut
     }
 
     if (player.knockedOut) {

@@ -3,7 +3,7 @@ import { effectImages } from "../../ImagePreloader"
 import { OVERRIDE_UNDERLAY, ResultViewProps } from "./ResultViewProps"
 import TiledEffectImage from "./TiledEffectImage"
 
-const ResultPlanUnderlay: React.SFC<ResultViewProps> = props => {
+const ResultRealUnderlay: React.SFC<ResultViewProps> = props => {
   if (
     props.overrides &&
     props.overrides[OVERRIDE_UNDERLAY] &&
@@ -25,4 +25,4 @@ const ResultPlanUnderlay: React.SFC<ResultViewProps> = props => {
   }
 }
 
-export default ResultPlanUnderlay
+export default ResultRealUnderlay

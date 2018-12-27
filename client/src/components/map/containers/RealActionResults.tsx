@@ -4,12 +4,11 @@ import React from "react"
 import { connect } from "react-redux"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
 import ViewState from "../../../state/viewState"
-import { playerOnly } from "../../util/stateHelpers"
 import { ResultViewOverrides, ResultViewProps } from "../results/ResultViewProps"
 
 import data from "../../../../packs/base/viewConfig"
 
-interface PlannedActionResultsProps {
+interface RealActionResultsProps {
   resultView: React.SFC<ResultViewProps>
 }
 
@@ -17,7 +16,7 @@ interface StateProps {
   resultComponents: Array<{ result: ActionResult; overrides: ResultViewOverrides }>
 }
 
-const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = props => {
+const RealActionResults: React.SFC<StateProps & RealActionResultsProps> = props => {
   const ResultView = props.resultView
 
   return (
@@ -42,4 +41,4 @@ function mapStateToProps(state: ViewState): StateProps {
   }
 }
 
-export default playerOnly(connect(mapStateToProps)(PlannedActionResults))
+export default connect(mapStateToProps)(RealActionResults)

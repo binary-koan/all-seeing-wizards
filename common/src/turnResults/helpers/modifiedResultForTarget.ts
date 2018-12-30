@@ -10,9 +10,13 @@ import {
   TakeDamageResult
 } from "../resultTypes"
 
-const RESULT_MODIFIERS: {
-  [key: string]: (result: ActionResult, caster?: Player, previous?: ActionResult) => ActionResult
-} = {
+type ResultModifier = (
+  result: ActionResult,
+  caster?: Player,
+  previous?: ActionResult
+) => ActionResult
+
+const RESULT_MODIFIERS: { [K in ActionResult["type"]]: ResultModifier } = {
   attack: neverModified,
   attemptPreventActions: neverModified,
   grantMirrorShield: neverModified,

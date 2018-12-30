@@ -9,7 +9,7 @@ import { Player } from "../state/player"
 import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
 
 const POTION_RESULTS: {
-  [key: string]: (player: Player, card: Card, effect: CardEffect) => ActionResult
+  [K in CardEffect["type"]]?: (player: Player, card: Card, effect: CardEffect) => ActionResult
 } = {
   increaseDamage: (caster: Player, castCard: Card, effect: IncreaseDamageEffect) =>
     increaseDamage(castCard, effect.amount, effect.duration, caster),

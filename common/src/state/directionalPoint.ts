@@ -97,7 +97,7 @@ export class DirectionalPoint implements ValueObject {
   }
 }
 
-const NEXT_DIRECTION_CLOCKWISE: { [key: string]: Direction } = {
+const NEXT_DIRECTION_CLOCKWISE: { [K in Direction]: Direction } = {
   north: "east",
   east: "south",
   south: "west",

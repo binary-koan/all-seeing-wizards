@@ -1,8 +1,6 @@
 import { Record } from "immutable"
 
-interface Constructable<T> {
-  new (...args: any[]): T
-}
+type Constructable<T> = new (...args: any[]) => T
 
 interface StaticallyTypedRecord<T> {
   get<K extends keyof T>(key: K): T[K]

@@ -14,7 +14,7 @@ import {
 } from "./resultTypes"
 
 const RESULT_APPLICATORS: {
-  [key: string]: (result: ActionResult, state: Game) => Game
+  [K in ActionResult["type"]]: (result: ActionResult, state: Game) => Game
 } = {
   attack(_result, state: Game) {
     return state
@@ -61,6 +61,10 @@ const RESULT_APPLICATORS: {
 
   move(result: MoveResult, state: Game) {
     return state.updatePlayer(result.player.updatePosition(result.movementPath.last()))
+  },
+
+  movePrevented(_result, state: Game) {
+    return state
   },
 
   none(_result, state: Game) {

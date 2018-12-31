@@ -2,7 +2,7 @@ import { Duration } from "../../../common/src/state/duration"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 11,
+  version: 12,
   name: "base",
   boards: [
     boardConfig(`
@@ -256,10 +256,9 @@ const values: DbValues = {
       effects: [
         {
           type: "attack",
-          damage: 1,
+          damage: 2,
           ranges: [{ type: "area", size: 3, position: "around" }]
-        },
-        { type: "knockback", amount: 2, ranges: [{ type: "area", size: 3, position: "around" }] }
+        }
       ]
     },
     {

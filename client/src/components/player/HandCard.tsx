@@ -48,7 +48,10 @@ interface HandCardProps {
 }
 
 function abbreviateName(name: string) {
-  return name.replace("Clockwise", "").replace("Anticlockwise", "")
+  return name
+    .replace("Clockwise", "")
+    .replace("Anticlockwise", "")
+    .replace("Around", "")
 }
 
 const LONG_PRESS_DELAY = 700
@@ -62,6 +65,7 @@ class HandCard extends React.Component<HandCardProps> {
 
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
+    this.onContextMenu = this.onContextMenu.bind(this)
   }
 
   public render() {
@@ -69,6 +73,7 @@ class HandCard extends React.Component<HandCardProps> {
       <Wrapper
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
+        onContextMenu={this.onContextMenu}
         disabled={this.props.isPicked}
       >
         <Content>
@@ -96,6 +101,16 @@ class HandCard extends React.Component<HandCardProps> {
       clearTimeout(this.longPressTimer)
       this.props.onClick()
     }
+  }
+
+  private onContextMenu(event: React.SyntheticEvent) {
+    event.stopPropagation()
+    event.preventDefault()
+
+    this.props.onLongPress()
+    this.wasLongPressed = true
+
+    return false
   }
 }
 

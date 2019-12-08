@@ -1,0 +1,32 @@
+# RSpec
+/api/spec/examples.txt
+
+# Logs
+**/log/*.log
+
+# Temp files
+**/tmp/*
+
+# SQLite databases
+**/db/*.sqlite
+
+# NPM stuff
+**/node_modules
+
+# Webpack stuff
+**/bundle.js
+
+# OS stuff
+**/.DS_Store
+
+# Test coverage
+/api/coverage
+
+# Built Node stuff
+/build
+
+# Parcel stuff
+**/dist
+**/.cache
+
+.vscode

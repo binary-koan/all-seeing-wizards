@@ -25,31 +25,9 @@ const viewConfig: ViewConfig = {
       )
     },
 
-    "Turn Clockwise & Move": {
-      image: require("./cards/turn-right-move.png"),
-      description: (
-        <>
-          Turn 90 degrees <strong>clockwise</strong>, then move <strong>1 space</strong>.
-        </>
-      )
-    },
-
-    "Turn Anticlockwise & Move": {
-      image: require("./cards/turn-left-move.png"),
-      description: (
-        <>
-          Turn 90 degrees <strong>anticlockwise</strong>, then move <strong>1 space</strong>.
-        </>
-      )
-    },
-
-    "Turn Around & Move": {
+    Turn: {
       image: require("./cards/turn-around-move.png"),
-      description: (
-        <>
-          Turn <strong>180 degrees</strong>, then move <strong>1 space</strong>.
-        </>
-      )
+      description: <>Turn on the spot without moving.</>
     },
 
     "Hellfire Breath": {

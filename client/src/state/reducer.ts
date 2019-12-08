@@ -1,4 +1,5 @@
 import { List } from "immutable"
+import { Card } from "../../../common/src/state/card"
 import { MAX_PLAYER_HP } from "../../../common/src/state/player"
 import { applyResults } from "../../../common/src/turnResults/applyResults"
 import ViewState from "../state/viewState"
@@ -64,7 +65,7 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
       return applyPrepareForNextResults(state)
 
     case "placeCard":
-      return applyPlaceCard(state, action.index)
+      return applyPlaceCard(state, action.card, action.index)
 
     case "unplaceCard":
       return applyUnplaceCard(state, action.index)
@@ -100,14 +101,14 @@ function applyTurnResultsReceived(state: ViewState) {
   return state
 }
 
-function applyPlaceCard(state: ViewState, index: number) {
+function applyPlaceCard(state: ViewState, configuredCard: Card, index: number) {
   if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size >= MAX_PLAYER_HP) {
     return state
   }
 
   return state.set("connectedAs", {
     ...state.connectedAs,
-    placedCards: state.connectedAs.placedCards.push(index)
+    placedCards: state.connectedAs.placedCards.push({ configuredCard, index })
   })
 }
 

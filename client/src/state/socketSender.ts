@@ -6,7 +6,8 @@ import {
   REHOST_GAME,
   REJOIN_GAME,
   START_GAME,
-  SUBMIT_CARDS
+  SUBMIT_CARDS,
+  ToServerSocketEvent
 } from "../../../common/src/messages/toServer"
 import { Action } from "./actions"
 import ViewState from "./viewState"
@@ -32,7 +33,7 @@ function sendSocketEvent(socket: SocketIOClient.Socket, event: SocketEvent) {
   }
 }
 
-function buildSocketEvent(state: ViewState, action: Action): { event: string; args?: any } {
+function buildSocketEvent(state: ViewState, action: Action): ToServerSocketEvent {
   switch (action.type) {
     case CREATE_GAME:
       return {
@@ -59,6 +60,6 @@ function buildSocketEvent(state: ViewState, action: Action): { event: string; ar
     case START_GAME:
       return { event: START_GAME }
     case SUBMIT_CARDS:
-      return { event: SUBMIT_CARDS, args: { indexes: state.placedCardIndexes } }
+      return { event: SUBMIT_CARDS, args: { pickedCards: state.placedCards.toJS() } }
   }
 }

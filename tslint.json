@@ -1,5 +1,8 @@
 {
-  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
   "rules": {
     "object-literal-sort-keys": false,
     "max-classes-per-file": false,
@@ -11,7 +14,19 @@
     "no-implicit-dependencies": false,
     "no-submodule-imports": false,
     //TODO not working yet, see https://github.com/palantir/tslint/issues/2649
-    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
-    "curly": [true, "ignore-same-line"]
+    "no-unused-variable": [
+      true,
+      {
+        "ignore-pattern": "^_"
+      }
+    ],
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "no-console": [
+      true,
+      "log"
+    ]
   }
 }

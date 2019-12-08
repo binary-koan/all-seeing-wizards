@@ -173,7 +173,7 @@ export default function setup(server: Server, manager: GameManager) {
         const result = await manager.submitCards(
           client.gameCode,
           (client as PlayerClient).playerId,
-          data.indexes
+          data.pickedCards
         )
 
         if (result.game) {

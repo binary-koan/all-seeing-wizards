@@ -1,4 +1,5 @@
 import { ValueObject } from "../util/immutableExtras"
+import { Direction, DirectionalPoint } from "./directionalPoint"
 
 export class Point implements ValueObject {
   public readonly x: number
@@ -15,6 +16,10 @@ export class Point implements ValueObject {
 
   public multiply(multiplier: number) {
     return new Point({ x: this.x * multiplier, y: this.y * multiplier })
+  }
+
+  public facing(direction: Direction) {
+    return new DirectionalPoint({ x: this.x, y: this.y, facing: direction })
   }
 
   public equals(other: any) {

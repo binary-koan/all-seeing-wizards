@@ -1,6 +1,4 @@
-import { List, Range } from "immutable"
-import { Card } from "../../src/state/card"
-import { Hand } from "../../src/state/hand"
+import { List } from "immutable"
 import { createTestCards, createTestHand } from "./support/testData"
 
 describe("#hasEnoughCards", () => {
@@ -28,22 +26,6 @@ describe("#addCard", () => {
   })
 })
 
-describe("#pickedCard", () => {
-  it("returns a picked card when one exists", () => {
-    const cards = createTestCards(2)
-    const hand = createTestHand({ cards, pickedIndexes: List.of(1) })
-
-    expect(hand.pickedCard(0)).toEqual(cards.get(1))
-  })
-
-  it("returns nothing when no card is picked at the index", () => {
-    const cards = createTestCards(2)
-    const hand = createTestHand({ cards, pickedIndexes: List.of(1) })
-
-    expect(hand.pickedCard(2)).toBeUndefined()
-  })
-})
-
 describe("#pickedCards", () => {
   it("returns an empty list when no cards are picked", () => {
     const hand = createTestHand({ pickedIndexes: List() })
@@ -55,7 +37,12 @@ describe("#pickedCards", () => {
     const cards = createTestCards(3)
     const hand = createTestHand({ cards, pickedIndexes: List.of(1, 0) })
 
-    expect(hand.pickedCards).toEqual(List.of(cards.get(1), cards.get(0)))
+    expect(hand.pickedCards).toEqual(
+      List.of(
+        { configuredCard: cards.get(1), index: 1 },
+        { configuredCard: cards.get(0), index: 0 }
+      )
+    )
   })
 })
 
@@ -68,6 +55,5 @@ describe("#removePickedCards", () => {
 
     expect(afterRemoval.cards).toEqual(List.of(cards.get(2)))
     expect(afterRemoval.pickedCards.size).toBe(0)
-    expect(afterRemoval.pickedIndexes.size).toBe(0)
   })
 })

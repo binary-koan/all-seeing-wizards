@@ -18,7 +18,15 @@ export function deserializePlayer(playerData: any) {
       cards: List(playerData.hand.cards)
         .map(deserializeCard)
         .toList(),
-      pickedIndexes: List(playerData.hand.pickedIndexes as number[]).toList()
+      pickedCards: List(
+        (playerData.hand.pickedCards as Array<{
+          configuredCard: any
+          index: number
+        }>).map(pickedCard => ({
+          configuredCard: deserializeCard(pickedCard.configuredCard),
+          index: pickedCard.index
+        }))
+      ).toList()
     }),
     connected: playerData.connected,
     modifiers: List(playerData.modifiers)

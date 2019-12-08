@@ -4,6 +4,7 @@
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dokku": "node dokku/cli.js",
     "test": "npm run typecheck && npm run jest",
     "jest": "jest --env node",
     "typecheck": "npm run typecheck:common && npm run typecheck:api && npm run typecheck:client",
@@ -26,7 +27,10 @@
     "tslint-config-prettier": "^1.10.0",
     "typescript": "^3.0.3"
   },
-  "workspaces": ["api", "client"],
+  "workspaces": [
+    "api",
+    "client"
+  ],
   "prettier": {
     "printWidth": 100,
     "semi": false

@@ -2,7 +2,7 @@ import { Duration } from "../../../common/src/state/duration"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 12,
+  version: 14,
   name: "base",
   boards: [
     boardConfig(`
@@ -95,40 +95,18 @@ const values: DbValues = {
   cards: [
     {
       name: "Move 1",
-      count: 3,
+      count: 12,
       effects: [{ type: "move", amount: 1, rotation: "none" }]
     },
     {
       name: "Move 2",
-      count: 7,
+      count: 12,
       effects: [{ type: "move", amount: 2, rotation: "none" }]
     },
     {
-      name: "Turn Clockwise & Move",
-      count: 7,
-      effects: [{ type: "move", amount: 1, rotation: "clockwise" }]
-    },
-    {
-      name: "Turn Anticlockwise & Move",
-      count: 7,
-      effects: [
-        {
-          type: "move",
-          amount: 1,
-          rotation: "anticlockwise"
-        }
-      ]
-    },
-    {
-      name: "Turn Around & Move",
-      count: 7,
-      effects: [
-        {
-          type: "move",
-          amount: 1,
-          rotation: "reverse"
-        }
-      ]
+      name: "Turn",
+      count: 4,
+      effects: [{ type: "move", amount: 0, rotation: "none" }]
     },
     {
       name: "Hellfire Breath of Chillies",
@@ -215,12 +193,18 @@ const values: DbValues = {
         {
           type: "attack",
           damage: 1,
-          ranges: [{ type: "line", rotation: "none" }, { type: "line", rotation: "reverse" }]
+          ranges: [
+            { type: "line", rotation: "none" },
+            { type: "line", rotation: "reverse" }
+          ]
         },
         {
           type: "knockback",
           amount: 1,
-          ranges: [{ type: "line", rotation: "none" }, { type: "line", rotation: "reverse" }]
+          ranges: [
+            { type: "line", rotation: "none" },
+            { type: "line", rotation: "reverse" }
+          ]
         }
       ]
     },

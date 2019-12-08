@@ -35,5 +35,14 @@ export const START_GAME = "startGame"
 export const SUBMIT_CARDS = "submitCards"
 
 export interface SubmitCardsData {
-  indexes: number[]
+  pickedCards: Array<{ configuredCard: any; index: number }>
 }
+
+export type ToServerSocketEvent =
+  | { event: typeof CREATE_GAME; args: CreateGameData }
+  | { event: typeof REHOST_GAME; args: RehostGameData }
+  | { event: typeof JOIN_GAME; args: JoinGameData }
+  | { event: typeof CHOOSE_CHARACTER; args: ChooseCharacterData }
+  | { event: typeof REJOIN_GAME; args: RejoinGameData }
+  | { event: typeof START_GAME }
+  | { event: typeof SUBMIT_CARDS; args: SubmitCardsData }

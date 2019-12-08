@@ -1,16 +1,16 @@
 import { lighten } from "polished"
 import styled from "../util/styled"
 
-type ButtonType = "primary" | "secondary"
+type ButtonVariant = "primary" | "secondary"
 
-export default styled<{ type: ButtonType }, "button">("button")`
+export default styled<{ variant: ButtonVariant }, "button">("button")`
   display: block;
   width: 100%;
   padding: 1rem 2rem;
   border: none;
   border-radius: 0.375rem;
   background-color: ${props =>
-    props.type === "secondary" ? props.theme.colorMuted : props.theme.colorPrimary};
+    props.variant === "secondary" ? props.theme.colorMuted : props.theme.colorPrimary};
   text-align: center;
   font-size: 1.25rem;
   font-weight: 600;
@@ -24,7 +24,7 @@ export default styled<{ type: ButtonType }, "button">("button")`
     background-color: ${props =>
       lighten(
         0.05,
-        props.type === "secondary" ? props.theme.colorMuted : props.theme.colorPrimary
+        props.variant === "secondary" ? props.theme.colorMuted : props.theme.colorPrimary
       )};
   }
 

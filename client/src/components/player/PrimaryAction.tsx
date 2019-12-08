@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 const PrimaryAction: React.SFC<StateProps & DispatchProps> = props => (
   <Wrapper>
     <ActionButton
-      type={props.canLockIn ? "primary" : "secondary"}
+      variant={props.canLockIn ? "primary" : "secondary"}
       disabled={!props.canLockIn}
       onClick={props.lockIn}
     >
@@ -56,7 +56,4 @@ function mapDispatchToProps(dispatch: Dispatch<Action>) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PrimaryAction)
+export default connect(mapStateToProps, mapDispatchToProps)(PrimaryAction)

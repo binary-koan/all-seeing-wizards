@@ -60,16 +60,10 @@ export default class ViewState extends viewState implements IViewState {
   }
 
   public get placedCards() {
-    if (this.placedCardIndexes) {
-      return this.placedCardIndexes.map(index => this.player.hand.cards.get(index)).toList()
-    }
-  }
-
-  public get placedCardIndexes() {
     if (this.player && this.player.hand.pickedCards.size > 0) {
-      return this.player.hand.pickedCards.map(pickedCard => pickedCard.index).toList()
+      return this.player.hand.pickedCards
     } else if (this.connectedAs.type === "player") {
-      return this.connectedAs.placedCards.map(placedCard => placedCard.index).toList()
+      return this.connectedAs.placedCards
     }
   }
 
@@ -82,7 +76,7 @@ export default class ViewState extends viewState implements IViewState {
     }
 
     let gameWithPlacedCards = this.game.updatePlayer(
-      this.player.updateHand(this.player.hand.pickCards(this.connectedAs.placedCards))
+      this.player.updateHand(this.player.hand.pickCards(placedCards))
     )
 
     this.game.players

@@ -51,7 +51,11 @@ const StatusPanel: React.SFC<StateProps & DispatchProps> = props => {
           <StatusPanelTitle>{props.title}</StatusPanelTitle>
           <StatusPanelDescription>{props.description}</StatusPanelDescription>
         </div>
-        <ActionButton type="primary" disabled={!props.actionEnabled} onClick={props.performAction}>
+        <ActionButton
+          variant="primary"
+          disabled={!props.actionEnabled}
+          onClick={props.performAction}
+        >
           {props.actionText}
         </ActionButton>
       </StatusPanelWrapper>
@@ -80,7 +84,4 @@ function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StatusPanel)
+export default connect(mapStateToProps, mapDispatchToProps)(StatusPanel)

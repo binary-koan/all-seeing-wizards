@@ -12,10 +12,10 @@ const OptionAction = styled(ActionButton)`
 
 const JoinHostOptions: React.SFC<{ onHost?: () => void; onJoin?: () => void }> = props => (
   <div>
-    <OptionAction type="primary" onClick={props.onHost}>
+    <OptionAction variant="primary" onClick={props.onHost}>
       Host Game
     </OptionAction>
-    <OptionAction type="secondary" onClick={props.onJoin}>
+    <OptionAction variant="secondary" onClick={props.onJoin}>
       Join Game
     </OptionAction>
   </div>

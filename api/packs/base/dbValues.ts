@@ -2,7 +2,7 @@ import { Duration } from "../../../common/src/state/duration"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 13,
+  version: 14,
   name: "base",
   boards: [
     boardConfig(`
@@ -104,6 +104,11 @@ const values: DbValues = {
       effects: [{ type: "move", amount: 2, rotation: "none" }]
     },
     {
+      name: "Turn",
+      count: 4,
+      effects: [{ type: "move", amount: 0, rotation: "none" }]
+    },
+    {
       name: "Hellfire Breath of Chillies",
       count: 2,
       effects: [
@@ -188,12 +193,18 @@ const values: DbValues = {
         {
           type: "attack",
           damage: 1,
-          ranges: [{ type: "line", rotation: "none" }, { type: "line", rotation: "reverse" }]
+          ranges: [
+            { type: "line", rotation: "none" },
+            { type: "line", rotation: "reverse" }
+          ]
         },
         {
           type: "knockback",
           amount: 1,
-          ranges: [{ type: "line", rotation: "none" }, { type: "line", rotation: "reverse" }]
+          ranges: [
+            { type: "line", rotation: "none" },
+            { type: "line", rotation: "reverse" }
+          ]
         }
       ]
     },

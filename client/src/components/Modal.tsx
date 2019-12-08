@@ -1,4 +1,4 @@
-import React from "react"
+import React, { MouseEvent, useRef } from "react"
 import styled from "./util/styled"
 
 interface VisibleProps {
@@ -11,6 +11,7 @@ const Overlay = styled.div<VisibleProps>`
   left: 0;
   bottom: 0;
   right: 0;
+  z-index: 1000;
   background: rgba(0, 0, 0, 0.3);
   visibility: ${props => (props.isVisible ? "visible" : "hidden")};
   opacity: ${props => (props.isVisible ? 1 : 0)};
@@ -58,19 +59,31 @@ const Modal: React.SFC<{ isVisible: boolean; close: () => void }> = ({
   isVisible,
   close,
   children
-}) => (
-  <Overlay isVisible={isVisible} onClick={close}>
-    <Wrapper>
-      <Content isVisible={isVisible}>
-        {children ? (
-          <div>
-            <CloseButton>&times;</CloseButton>
-            {children}
-          </div>
-        ) : null}
-      </Content>
-    </Wrapper>
-  </Overlay>
-)
+}) => {
+  const wrapperRef = useRef<HTMLElement>()
+
+  const maybeClose = (e: MouseEvent) => {
+    if (wrapperRef.current && e.target instanceof Node && wrapperRef.current.contains(e.target)) {
+      return
+    }
+
+    close()
+  }
+
+  return (
+    <Overlay isVisible={isVisible} onClick={maybeClose}>
+      <Wrapper innerRef={wrapperRef}>
+        <Content isVisible={isVisible}>
+          {children ? (
+            <div>
+              <CloseButton onClick={close}>&times;</CloseButton>
+              {children}
+            </div>
+          ) : null}
+        </Content>
+      </Wrapper>
+    </Overlay>
+  )
+}
 
 export default Modal

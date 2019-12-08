@@ -92,7 +92,10 @@ const CardChooser: React.SFC<StateProps & DispatchProps> = props => {
 }
 
 function mapStateToProps(state: ViewState): StateProps {
-  return { cards: state.placedCards.toArray(), isVisible: state.player.hand.cards.size > 0 }
+  return {
+    cards: state.placedCards.map(placedCard => placedCard.configuredCard).toArray(),
+    isVisible: state.player.hand.cards.size > 0
+  }
 }
 
 function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
@@ -101,7 +104,4 @@ function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CardChooser)
+export default connect(mapStateToProps, mapDispatchToProps)(CardChooser)

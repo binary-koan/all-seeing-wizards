@@ -31,7 +31,7 @@ const JoinForm: React.SFC<StateProps & DispatchProps> = props => (
       onChange={code => props.setGameCode(code)}
     />
 
-    <ActionButton type="primary" disabled={props.isLoading} onClick={() => props.joinGame()}>
+    <ActionButton variant="primary" disabled={props.isLoading} onClick={() => props.joinGame()}>
       Join Now
     </ActionButton>
   </JoinFormWrapper>
@@ -51,7 +51,4 @@ function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JoinForm)
+export default connect(mapStateToProps, mapDispatchToProps)(JoinForm)

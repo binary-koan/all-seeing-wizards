@@ -22,7 +22,7 @@ class HostForm extends React.Component<DispatchProps, { boards: number }> {
     return (
       <div>
         <BoardSizePicker value={this.state.boards} onChange={this.setBoards} />
-        <ActionButton type="primary" onClick={this.createGame}>
+        <ActionButton variant="primary" onClick={this.createGame}>
           Start Hosting
         </ActionButton>
       </div>
@@ -48,7 +48,4 @@ function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HostForm)
+export default connect(mapStateToProps, mapDispatchToProps)(HostForm)

@@ -40,7 +40,7 @@ export default function socketReceiver(socket: SocketIOClient.Socket): SocketRec
 
   Object.keys(ACTIONABLE_SOCKET_EVENTS).forEach(event => {
     socket.on(event, (data: any) => {
-      console.log("received", event, data)
+      console.info("received", event, data)
       ACTIONABLE_SOCKET_EVENTS[event](send)(data)
     })
   })
@@ -52,7 +52,7 @@ export default function socketReceiver(socket: SocketIOClient.Socket): SocketRec
   }
 }
 
-type EventHandler = (emit: (action: Action) => void) => ((data: any) => void)
+type EventHandler = (emit: (action: Action) => void) => (data: any) => void
 
 const ACTIONABLE_SOCKET_EVENTS: { [event: string]: EventHandler } = {
   connect: emit => () => {

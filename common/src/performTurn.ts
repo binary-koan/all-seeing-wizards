@@ -42,19 +42,16 @@ interface PerformActionOutcome {
   results: List<ActionResult>
 }
 
-function playedCards(index: number, game: Game) {
-  return game.activePlayers.reduce(
-    (cards, player) => {
-      const card = player.hand.pickedCard(index)
+function playedCards(actionIndex: number, game: Game) {
+  return game.activePlayers.reduce((cards, player) => {
+    const pickedCard = player.hand.pickedCards.get(actionIndex)
 
-      if (card) {
-        return cards.set(player.id, card)
-      } else {
-        return cards
-      }
-    },
-    Map() as Map<string, Card>
-  )
+    if (pickedCard) {
+      return cards.set(player.id, pickedCard.configuredCard)
+    } else {
+      return cards
+    }
+  }, Map() as Map<string, Card>)
 }
 
 function cardActionOutcome(baseState: Game, cards: Map<string, Card>) {
@@ -126,7 +123,11 @@ function discardPickedCards(game: Game) {
   return game.activePlayers.reduce(
     (state, player) =>
       state
-        .updateDeck(state.deck.withCardsDiscarded(player.hand.pickedCards))
+        .updateDeck(
+          state.deck.withCardsDiscarded(
+            player.hand.pickedCards.map(pickedCard => player.hand.cards.get(pickedCard.index))
+          )
+        )
         .updatePlayer(player.updateHand(player.hand.removePickedCards())),
     game
   )

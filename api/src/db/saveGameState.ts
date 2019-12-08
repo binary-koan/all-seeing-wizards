@@ -1,6 +1,7 @@
 import { Db, ObjectID } from "mongodb"
 import { Game } from "../../../common/src/state/game"
 import { Player } from "../../../common/src/state/player"
+import serializeCard from "./serializers/card"
 import { GameDiff, PlayerDoc } from "./types"
 
 export default async function saveGameState(game: Game, db: Db) {
@@ -41,7 +42,12 @@ function updatePlayer(player: Player, db: Db) {
     position: player.position,
     hand: {
       cardIds: player.hand.cards.map(card => ObjectID.createFromHexString(card.id)).toArray(),
-      pickedIndexes: player.hand.pickedIndexes.toArray()
+      pickedCards: player.hand.pickedCards
+        .map(pickedCard => ({
+          configuredCard: serializeCard(pickedCard.configuredCard),
+          index: pickedCard.index
+        }))
+        .toArray()
     },
     modifiers: player.modifiers
       .map(modifier => ({

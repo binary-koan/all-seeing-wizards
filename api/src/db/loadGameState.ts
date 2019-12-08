@@ -17,6 +17,7 @@ import { Player } from "../../../common/src/state/player"
 import { Point } from "../../../common/src/state/point"
 import { BOARD_SIZE } from "../../packs/types"
 import loadCards from "./loaders/cards"
+import parseCard from "./parsers/card"
 import { BoardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
 
 export default async function loadGameState(code: string, db: Db): Promise<Game> {
@@ -79,7 +80,12 @@ function addPlayer(
         position: new DirectionalPoint(doc.position),
         hand: new Hand({
           cards: List(cardsInHand),
-          pickedIndexes: List(doc.hand.pickedIndexes)
+          pickedCards: List(
+            doc.hand.pickedCards.map(pickedCard => ({
+              configuredCard: parseCard(pickedCard.configuredCard),
+              index: pickedCard.index
+            }))
+          )
         }),
         modifiers: List(doc.modifiers)
           .map(
@@ -186,7 +192,7 @@ function buildZone(boardX: number, boardY: number) {
 
 function positionOnBoard(index: number, boardX: number, boardY: number) {
   return new Point({
-    x: boardX * BOARD_SIZE + index % BOARD_SIZE,
+    x: boardX * BOARD_SIZE + (index % BOARD_SIZE),
     y: boardY * BOARD_SIZE + Math.floor(index / BOARD_SIZE)
   })
 }

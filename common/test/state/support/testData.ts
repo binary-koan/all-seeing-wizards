@@ -72,6 +72,7 @@ export function createTestBoard({
     .toList()
 
   return new Board({
+    startPositions: config.map(item => item.zone.center.facing("north")).toList(),
     tiles: config.flatMap(item => item.tiles).toList(),
     objects: List() as List<BoardObject>,
     zones: config.map(item => item.zone).toList(),
@@ -128,7 +129,12 @@ export function createTestHand({
   cards?: List<Card>
   pickedIndexes?: List<number>
 } = {}) {
-  return new Hand({ cards: cards || List(), pickedIndexes: pickedIndexes || List() })
+  return new Hand({
+    cards: cards || List(),
+    pickedCards: (pickedIndexes || List())
+      .map(index => ({ configuredCard: cards.get(index), index }))
+      .toList()
+  })
 }
 
 export function createTestModifier({

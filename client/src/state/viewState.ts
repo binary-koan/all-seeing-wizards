@@ -8,7 +8,7 @@ import { RecordFactory } from "../../../common/src/util/immutableExtras"
 type Connection =
   | { type: "none" }
   | { type: "host"; id: string }
-  | { type: "player"; id: string; placedCards: List<number> }
+  | { type: "player"; id: string; placedCards: List<{ configuredCard: Card; index: number }> }
 
 interface IViewState {
   game?: Game
@@ -40,6 +40,7 @@ export default class ViewState extends viewState implements IViewState {
   public readonly socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
   public readonly showingCountdown?: number
   public readonly showingResults?: List<ActionResult>
+  public readonly showingCardOptions?: Card
   public readonly showingCardDetails?: Card
 
   constructor(config?: Partial<IViewState>) {
@@ -66,9 +67,9 @@ export default class ViewState extends viewState implements IViewState {
 
   public get placedCardIndexes() {
     if (this.player && this.player.hand.pickedCards.size > 0) {
-      return this.player.hand.pickedIndexes
+      return this.player.hand.pickedCards.map(pickedCard => pickedCard.index).toList()
     } else if (this.connectedAs.type === "player") {
-      return this.connectedAs.placedCards
+      return this.connectedAs.placedCards.map(placedCard => placedCard.index).toList()
     }
   }
 
@@ -76,12 +77,12 @@ export default class ViewState extends viewState implements IViewState {
     const placedCards = this.placedCards
 
     // We don't want to show planned results when real ones are being displayed
-    if (!placedCards || this.showingResults) {
+    if (!placedCards || this.showingResults || this.connectedAs.type !== "player") {
       return { game: this.game, resultsPerAction: List() }
     }
 
     let gameWithPlacedCards = this.game.updatePlayer(
-      this.player.updateHand(this.player.hand.pickCards(this.placedCardIndexes))
+      this.player.updateHand(this.player.hand.pickCards(this.connectedAs.placedCards))
     )
 
     this.game.players

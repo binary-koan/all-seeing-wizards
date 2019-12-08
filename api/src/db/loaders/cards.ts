@@ -1,7 +1,7 @@
-import { List, Map } from "immutable"
+import { Map } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { Card } from "../../../../common/src/state/card"
-import { Duration } from "../../../../common/src/state/duration"
+import parseCard from "../parsers/card"
 import { CardDoc } from "../types"
 
 export default async function loadCards(packIds: ObjectID[], db: Db) {
@@ -18,22 +18,7 @@ function buildCards(cardDocs: CardDoc[]) {
 }
 
 function addCard(cards: Map<string, Card>, doc: CardDoc) {
-  const card = new Card({
-    id: doc._id.toHexString(),
-    name: doc.name,
-    tagline: doc.tagline,
-    effects: List(doc.effects)
-      .map(buildEffect)
-      .toList()
-  })
+  const card = parseCard(doc)
 
   return cards.set(card.id, card)
-}
-
-// TODO improve
-function buildEffect(effect: any) {
-  if (effect.duration) {
-    effect.duration = new Duration(effect.duration.type, effect.duration.length)
-  }
-  return effect
 }

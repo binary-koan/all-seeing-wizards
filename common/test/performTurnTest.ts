@@ -24,7 +24,13 @@ function setPlayedCards(player: Player, effects: List<CardEffect>) {
     effect => (hand = hand.addCard(createTestCards(1, { effects: List.of(effect) }).first()))
   )
 
-  return player.updateHand(hand.pickCards(Range(0, effects.size).toList()))
+  return player.updateHand(
+    hand.pickCards(
+      Range(0, effects.size)
+        .map(index => ({ configuredCard: hand.cards.get(index), index }))
+        .toList()
+    )
+  )
 }
 
 describe("#performTurn", () => {
@@ -81,7 +87,7 @@ describe("#performTurn", () => {
         id: "preventer",
         position: createDirectionalPoint({ x: 0, y: 0, facing: "east" })
       }),
-      List.of({
+      (List.of({
         type: "preventActions",
         duration: createTestDuration({ type: "turn", length: 1 }),
         ranges: List.of({
@@ -89,7 +95,7 @@ describe("#performTurn", () => {
           size: 3,
           position: "around"
         } as CardRange)
-      }) as List<CardEffect>
+      }) as unknown) as List<CardEffect>
     )
 
     const preventee = setPlayedCards(

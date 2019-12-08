@@ -26,6 +26,13 @@ export class BoardZone extends boardZone implements IBoardZone {
     super(config)
   }
 
+  public get center() {
+    return new Point({
+      x: Math.floor(this.x + this.width / 2),
+      y: Math.floor(this.y + this.height / 2)
+    })
+  }
+
   public contains(position: DirectionalPoint | Point) {
     return (
       position.x >= this.x &&

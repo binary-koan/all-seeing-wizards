@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
 import { Card } from "../../../../common/src/state/card"
 import { Action, placeCard, showCardDetails } from "../../state/actions"
 import ViewState from "../../state/viewState"
+import Modal from "../Modal"
 import styled from "../util/styled"
 import HandCard from "./HandCard"
 
@@ -21,23 +22,39 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  pickCard: (index: number) => void
+  pickCard: (card: Card, index: number) => void
   showDetails: (card: Card) => void
 }
 
-const HandCards: React.SFC<StateProps & DispatchProps> = props => (
-  <Wrapper>
-    {props.cards.map((card, index) => (
-      <HandCard
-        key={card.id}
-        card={card}
-        isPicked={props.pickedIds.includes(card.id)}
-        onClick={() => props.pickCard(index)}
-        onLongPress={() => props.showDetails(card)}
-      />
-    ))}
-  </Wrapper>
-)
+const HandCards: React.SFC<StateProps & DispatchProps> = props => {
+  const [configuringCard, setConfiguringCard] = useState<Card | undefined>(undefined)
+
+  const pickCard = (card: Card) => {
+    if (card.effects.some(effect => effect.type === "move")) {
+      setConfiguringCard(card)
+    } else {
+      props.pickCard(card, props.cards.indexOf(card))
+    }
+  }
+
+  return (
+    <Wrapper>
+      <Modal isVisible={Boolean(configuringCard)} close={() => setConfiguringCard(undefined)}>
+        Configuring card
+      </Modal>
+
+      {props.cards.map(card => (
+        <HandCard
+          key={card.id}
+          card={card}
+          isPicked={props.pickedIds.includes(card.id)}
+          onClick={() => pickCard(card)}
+          onLongPress={() => props.showDetails(card)}
+        />
+      ))}
+    </Wrapper>
+  )
+}
 
 function mapStateToProps(state: ViewState): StateProps {
   return {
@@ -48,12 +65,9 @@ function mapStateToProps(state: ViewState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
   return {
-    pickCard: index => dispatch(placeCard(index)),
+    pickCard: (card, index) => dispatch(placeCard(card, index)),
     showDetails: card => dispatch(showCardDetails(card))
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HandCards)
+export default connect(mapStateToProps, mapDispatchToProps)(HandCards)

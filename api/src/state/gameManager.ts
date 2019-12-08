@@ -1,12 +1,14 @@
+import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import joinGame, { JoinResult } from "../../../common/src/joinGame"
 import startGame from "../../../common/src/startGame"
 import { Game } from "../../../common/src/state/game"
+import { deserializeCard } from "../../../common/src/state/serialization/card"
 import submitCards from "../../../common/src/submitCards"
 import buildGameFromPacks from "../db/buildGameFromPacks"
+import findCharacter from "../db/findCharacter"
 import loadGameState from "../db/loadGameState"
 import saveGameState from "../db/saveGameState"
-import findCharacter from "../db/findCharacter"
 
 export default class GameManager {
   public readonly db: Db
@@ -56,13 +58,9 @@ export default class GameManager {
   public async setCharacter(code: string, playerId: string, characterName: string) {
     const game = await this.get(code)
 
-    console.log("game", game)
-
     if (game) {
       const character = await findCharacter(game, characterName, this.db)
       const player = game.player(playerId)
-
-      console.log(character, player)
 
       if (character && player) {
         const newGame = game.updatePlayer(player.setCharacter(character))
@@ -109,11 +107,24 @@ export default class GameManager {
     }
   }
 
-  public async submitCards(code: string, playerId: string, indexes: number[]) {
+  public async submitCards(
+    code: string,
+    playerId: string,
+    pickedCards: Array<{ configuredCard: any; index: number }>
+  ) {
     const game = await this.get(code)
 
     if (game) {
-      const result = submitCards(game, playerId, indexes)
+      const result = submitCards(
+        game,
+        playerId,
+        List(
+          pickedCards.map(pickedCard => ({
+            configuredCard: deserializeCard(pickedCard.configuredCard),
+            index: pickedCard.index
+          }))
+        )
+      )
 
       if (result) {
         this.upsert(result.game)

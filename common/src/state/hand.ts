@@ -4,23 +4,28 @@ import { Card } from "./card"
 
 export const MAX_CARDS_IN_HAND = 7
 
+export interface PickedCard {
+  configuredCard: Card
+  index: number
+}
+
 interface IHand {
   cards: List<Card>
-  pickedIndexes: List<number>
+  pickedCards: List<PickedCard>
 }
 
 const hand = RecordFactory<IHand>({
   cards: List(),
-  pickedIndexes: List()
+  pickedCards: List()
 })
 
 export class Hand extends hand implements IHand {
   public static empty() {
-    return new Hand({ cards: List(), pickedIndexes: List() })
+    return new Hand({ cards: List(), pickedCards: List() })
   }
 
   public readonly cards: List<Card>
-  public readonly pickedIndexes: List<number>
+  public readonly pickedCards: List<PickedCard>
 
   constructor(config: IHand) {
     super(config)
@@ -34,26 +39,23 @@ export class Hand extends hand implements IHand {
     return this.set("cards", this.cards.push(card))
   }
 
-  public pickCards(indexes: List<number>) {
-    return this.set("pickedIndexes", indexes.filter(index => index >= 0 && index < this.cards.size))
-  }
-
-  public pickedCard(index: number) {
-    return this.cards.get(this.pickedIndexes.get(index))
-  }
-
-  public get pickedCards() {
-    return this.pickedIndexes.map(index => this.cards.get(index)).toList()
+  public pickCards(pickedCards: List<PickedCard>) {
+    return this.set(
+      "pickedCards",
+      pickedCards.filter(({ index }) => index >= 0 && index < this.cards.size)
+    )
   }
 
   public get hasPickedCards() {
-    return this.pickedIndexes.size > 0
+    return this.pickedCards.size > 0
   }
 
   public removePickedCards() {
     return this.set(
       "cards",
-      this.cards.filterNot((card, index) => this.pickedIndexes.contains(index))
-    ).set("pickedIndexes", List())
+      this.cards.filterNot((_, index) =>
+        this.pickedCards.some(pickedCard => index === pickedCard.index)
+      )
+    ).set("pickedCards", List())
   }
 }

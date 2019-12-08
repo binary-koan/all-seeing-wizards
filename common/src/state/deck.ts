@@ -1,4 +1,4 @@
-import { List } from "immutable"
+import { Iterable, List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import shuffle from "../util/shuffle"
 import { Card } from "./card"
@@ -25,7 +25,7 @@ export class Deck extends deckFactory implements IDeck {
     super(config)
   }
 
-  public withCardsDiscarded(cards: List<Card>) {
+  public withCardsDiscarded(cards: Iterable<number, Card>) {
     return this.set("discardedCards", this.discardedCards.concat(cards).toList())
   }
 

@@ -33,7 +33,10 @@ export interface PlayerDoc {
   position: DirectionalPoint
   hand: {
     cardIds: ObjectID[]
-    pickedIndexes: number[]
+    pickedCards: Array<{
+      configuredCard: CardDoc
+      index: number
+    }>
   }
   modifiers: Array<{
     type: any
@@ -44,7 +47,7 @@ export interface PlayerDoc {
 
 export interface CardDoc {
   _id?: ObjectID
-  packId: ObjectID
+  packId?: ObjectID
   name: string
   tagline: string
   effects: CardEffect[]

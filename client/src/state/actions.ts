@@ -164,11 +164,12 @@ export function prepareForNextResults(): PrepareForNextResultsAction {
 
 export interface PlaceCardAction {
   type: "placeCard"
+  card: Card
   index: number
 }
 
-export function placeCard(index: number): PlaceCardAction {
-  return { type: "placeCard", index }
+export function placeCard(card: Card, index: number): PlaceCardAction {
+  return { type: "placeCard", card, index }
 }
 
 export interface UnplaceCardAction {

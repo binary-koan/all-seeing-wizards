@@ -4,6 +4,7 @@ import { PreventActionsEffect } from "../../src/state/cardEffect"
 import { CardRange } from "../../src/state/cardRange"
 import { Player } from "../../src/state/player"
 import { calculatePreventActionsResults } from "../../src/turnResults/preventActions"
+import { ActionResult } from "../../src/turnResults/resultTypes"
 import {
   createDirectionalPoint,
   createTestCards,
@@ -20,7 +21,7 @@ function createPreventActionsCard(ranges: CardRange[]) {
       duration: createTestDuration(),
       ranges
     } as PreventActionsEffect)
-  }).first()
+  }).first<Card>()
 }
 
 describe("#calculatePreventActionsResults", () => {
@@ -227,6 +228,6 @@ describe("#calculatePreventActionsResults", () => {
     const results = calculatePreventActionsResults(playedCards, game)
 
     expect(results.size).toBe(1)
-    expect(results.first().type).toEqual("attemptPreventActions")
+    expect(results.first<ActionResult>().type).toEqual("attemptPreventActions")
   })
 })

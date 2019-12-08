@@ -25,7 +25,7 @@ function createKnockbackCard(amount?: number) {
         }
       ]
     } as KnockbackEffect)
-  }).first()
+  }).first<Card>()
 }
 
 describe("#calculateKnockbackResults", () => {

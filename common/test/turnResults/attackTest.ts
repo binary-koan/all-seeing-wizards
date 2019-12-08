@@ -19,7 +19,7 @@ function createAttackCard(ranges: CardRange[]) {
       damage: 1,
       ranges
     } as AttackEffect)
-  }).first()
+  }).first<Card>()
 }
 
 describe("#calculateAttackResults", () => {

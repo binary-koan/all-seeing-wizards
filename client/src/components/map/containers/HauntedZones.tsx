@@ -27,6 +27,7 @@ const BoardTiles: React.SFC<MapViewScaleProps & StateProps> = props => {
           image={hauntingTile}
           {...props.mapViewScale.mapSize(zone)}
           {...props.mapViewScale.mapPosition(zone)}
+          tilePosition={0}
           tileScale={new Point(scale, scale)}
         />
       ))}
@@ -36,6 +37,7 @@ const BoardTiles: React.SFC<MapViewScaleProps & StateProps> = props => {
           image={hauntedTile}
           {...props.mapViewScale.mapSize(zone)}
           {...props.mapViewScale.mapPosition(zone)}
+          tilePosition={0}
           tileScale={new Point(scale, scale)}
         />
       ))}

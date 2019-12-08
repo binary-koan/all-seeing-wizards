@@ -45,14 +45,11 @@ function avoidWalkingThroughUnmovedPlayers(
 ) {
   const unmovedPositions = unmovedPlayerPositions(game, resultingState)
 
-  return proposedResults.reduce(
-    (newResults, result) => {
-      const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
+  return proposedResults.reduce((newResults, result) => {
+    const newResult = checkAgainstUnmovedPlayers(result, unmovedPositions)
 
-      return isActualMovement(newResult) ? newResults.push(newResult) : newResults
-    },
-    List() as List<ProposedMove>
-  )
+    return isActualMovement(newResult) ? newResults.push(newResult) : newResults
+  }, List() as List<ProposedMove>)
 }
 
 function checkAgainstUnmovedPlayers(
@@ -91,10 +88,10 @@ function preventConflictingMovement(proposedResults: List<ProposedMove>): List<A
 }
 
 function checkConflictingResult(result: ProposedMove, resultsPerAction: List<ProposedMove>) {
-  const targetPosition = result.movementPath.last()
+  const targetPosition = result.movementPath.last<DirectionalPoint>()
 
   const conflict = resultsPerAction.find(other => {
-    const otherTarget = other.movementPath.last()
+    const otherTarget = other.movementPath.last<DirectionalPoint>()
     return targetPosition !== otherTarget && targetPosition.equalsWithoutDirection(otherTarget)
   })
 
@@ -108,6 +105,7 @@ function checkConflictingResult(result: ProposedMove, resultsPerAction: List<Pro
 function isActualMovement(result: ProposedMove) {
   return (
     result.movementPath.size > 1 ||
-    (result.movementPath.size === 1 && !result.movementPath.first().equals(result.player.position))
+    (result.movementPath.size === 1 &&
+      !result.movementPath.first<DirectionalPoint>().equals(result.player.position))
   )
 }

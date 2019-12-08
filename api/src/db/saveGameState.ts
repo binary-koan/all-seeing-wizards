@@ -7,7 +7,7 @@ import { GameDiff, PlayerDoc } from "./types"
 export default async function saveGameState(game: Game, db: Db) {
   const updateResult = await updateGameState(game, db)
 
-  await Promise.all(game.players.toArray().map(player => updatePlayer(player, db)))
+  await Promise.all(game.players.toArray().map(([_, player]) => updatePlayer(player, db)))
 
   return (
     (updateResult.upsertedId && updateResult.upsertedId._id) ||
@@ -18,7 +18,10 @@ export default async function saveGameState(game: Game, db: Db) {
 function updateGameState(game: Game, db: Db) {
   const diff: GameDiff = {
     started: game.started,
-    playerIds: game.players.map(player => ObjectID.createFromHexString(player.id)).toArray(),
+    playerIds: game.players
+      .valueSeq()
+      .map(player => ObjectID.createFromHexString(player.id))
+      .toArray(),
     usedCardIds: game.deck.discardedCards
       .map(card => ObjectID.createFromHexString(card.id))
       .toArray(),

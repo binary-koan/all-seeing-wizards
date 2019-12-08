@@ -3,7 +3,7 @@ import styled from "../util/styled"
 
 type ButtonVariant = "primary" | "secondary"
 
-export default styled<{ variant: ButtonVariant }, "button">("button")`
+export default styled("button")<{ variant: ButtonVariant }>`
   display: block;
   width: 100%;
   padding: 1rem 2rem;

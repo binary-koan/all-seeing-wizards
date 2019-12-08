@@ -104,7 +104,7 @@ export function createTestMoveCard(amount?: number, rotation?: Rotation) {
       amount: amount || 1,
       rotation: rotation || "north"
     } as MovementEffect)
-  }).first()
+  }).first<Card>()
 }
 
 export function createTestDeck(

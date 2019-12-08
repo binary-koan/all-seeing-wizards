@@ -1,4 +1,4 @@
-import { Iterable, List } from "immutable"
+import { Collection, List } from "immutable"
 import { RecordFactory } from "../util/immutableExtras"
 import shuffle from "../util/shuffle"
 import { Card } from "./card"
@@ -25,7 +25,7 @@ export class Deck extends deckFactory implements IDeck {
     super(config)
   }
 
-  public withCardsDiscarded(cards: Iterable<number, Card>) {
+  public withCardsDiscarded(cards: Collection<number, Card>) {
     return this.set("discardedCards", this.discardedCards.concat(cards).toList())
   }
 
@@ -33,7 +33,7 @@ export class Deck extends deckFactory implements IDeck {
     const deck = this.availableCards.size === 0 ? this.recycleDiscardedCards() : this
 
     return {
-      card: deck.availableCards.first(),
+      card: deck.availableCards.first<Card>(),
       deck: deck.set("availableCards", deck.availableCards.shift())
     }
   }

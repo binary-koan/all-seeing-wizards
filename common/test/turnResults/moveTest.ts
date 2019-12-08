@@ -1,5 +1,6 @@
 import { List, Map } from "immutable"
 import { Card } from "../../src/state/card"
+import { DirectionalPoint } from "../../src/state/directionalPoint"
 import { Player } from "../../src/state/player"
 import { calculateMoveResults } from "../../src/turnResults/move"
 import {
@@ -29,7 +30,7 @@ describe("#calculateMoveResults", () => {
     expect(results.first()).toEqual({
       type: "move",
       card,
-      movementPath: List.of(player.position, { x: 1, y: 0, facing: "north" }),
+      movementPath: List.of(player.position, new DirectionalPoint({ x: 1, y: 0, facing: "north" })),
       player
     })
   })

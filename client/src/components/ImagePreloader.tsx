@@ -51,7 +51,7 @@ export class ImagePreloader extends React.Component<ImagePreloaderProps, ImagePr
   }
 
   public componentWillMount() {
-    const loader = new PIXI.loaders.Loader()
+    const loader = new PIXI.Loader()
     const imagesToLoad = Object.values(data.characters)
       .map(character => [character.heartImage].concat(Object.values(character.images)))
       .concat(

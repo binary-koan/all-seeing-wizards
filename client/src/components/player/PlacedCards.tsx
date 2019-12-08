@@ -35,7 +35,7 @@ interface PlacedCardProps {
   card: Card
 }
 
-const PlacedCard = styled<PlacedCardProps, "button">("button")`
+const PlacedCard = styled.button<PlacedCardProps>`
   position: absolute;
   top: 0;
   left: 0;

@@ -129,6 +129,7 @@ function mapStateToProps(state: ViewState): StateProps {
 
   return {
     players: state.game.players
+      .valueSeq()
       .toArray()
       .map(playerConfig)
       .filter(Boolean)

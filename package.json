@@ -13,19 +13,17 @@
     "typecheck:client": "cd client && tsc --noEmit -p tsconfig.check.json"
   },
   "dependencies": {
-    "@types/socket.io-client": "^1.4.32",
-    "immutable": "^3.8.2",
-    "lodash": "^4.17.5",
-    "socket.io-client": "^2.1.1"
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.2",
-    "@types/lodash": "^4.14.105",
-    "jest": "^22.4.3",
-    "ts-jest": "^22.4.2",
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.10.0",
-    "typescript": "^3.0.3"
+    "@types/jest": "^24.0.23",
+    "@types/lodash": "^4.14.149",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.3"
   },
   "workspaces": [
     "api",

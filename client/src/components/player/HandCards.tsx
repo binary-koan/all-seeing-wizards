@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { connect } from "react-redux"
 import { Dispatch } from "redux"
 import { Card } from "../../../../common/src/state/card"
+import { CardEffect } from "../../../../common/src/state/cardEffect"
 import {
   Direction,
   DirectionalPoint,
@@ -37,7 +38,7 @@ const HandCards: React.SFC<StateProps & DispatchProps> = props => {
   const [configuringCard, setConfiguringCard] = useState<Card | undefined>(undefined)
 
   const pickCard = (card: Card) => {
-    if (card.effects.first().type === "move") {
+    if (card.effects.first<CardEffect>().type === "move") {
       setConfiguringCard(card)
     } else {
       props.pickCard(card, props.cards.indexOf(card))

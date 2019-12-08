@@ -122,8 +122,8 @@ describe("#affectedTiles", () => {
       const tiles = affectedTiles([range], from, board)
 
       expect(tiles.size).toBe(1)
-      expect(tiles.first().position.x).toBe(1)
-      expect(tiles.first().position.y).toBe(0)
+      expect(tiles.first<BoardTile>().position.x).toBe(1)
+      expect(tiles.first<BoardTile>().position.y).toBe(0)
     })
 
     it("affects a tile on top of the caster", () => {
@@ -134,8 +134,8 @@ describe("#affectedTiles", () => {
       const tiles = affectedTiles([range], from, board)
 
       expect(tiles.size).toBe(1)
-      expect(tiles.first().position.x).toBe(0)
-      expect(tiles.first().position.y).toBe(0)
+      expect(tiles.first<BoardTile>().position.x).toBe(0)
+      expect(tiles.first<BoardTile>().position.y).toBe(0)
     })
   })
 

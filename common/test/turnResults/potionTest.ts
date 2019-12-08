@@ -16,7 +16,7 @@ function createHealCard() {
       type: "heal",
       amount: 1
     } as HealEffect)
-  }).first()
+  }).first<Card>()
 }
 
 function createIncreaseDamageCard() {
@@ -25,7 +25,7 @@ function createIncreaseDamageCard() {
       type: "increaseDamage",
       amount: 1
     } as IncreaseDamageEffect)
-  }).first()
+  }).first<Card>()
 }
 
 describe("#calculatePotionResults", () => {

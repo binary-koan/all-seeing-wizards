@@ -60,7 +60,7 @@ const Modal: React.SFC<{ isVisible: boolean; close: () => void }> = ({
   close,
   children
 }) => {
-  const wrapperRef = useRef<HTMLElement>()
+  const wrapperRef = useRef<HTMLDivElement>()
 
   const maybeClose = (e: MouseEvent) => {
     if (wrapperRef.current && e.target instanceof Node && wrapperRef.current.contains(e.target)) {
@@ -72,7 +72,7 @@ const Modal: React.SFC<{ isVisible: boolean; close: () => void }> = ({
 
   return (
     <Overlay isVisible={isVisible} onClick={maybeClose}>
-      <Wrapper innerRef={wrapperRef}>
+      <Wrapper ref={wrapperRef}>
         <Content isVisible={isVisible}>
           {children ? (
             <div>

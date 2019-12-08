@@ -1,5 +1,5 @@
 import * as Hashids from "hashids"
-import { List } from "immutable"
+import { Collection, List } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import shuffle from "../../../common/src/util/shuffle"
 import loadCards from "./loaders/cards"
@@ -52,8 +52,8 @@ export default async function buildGameFromPacks(packIds: ObjectID[], boards: nu
 
 function boardLayout(boardDocs: BoardDoc[], boardCount: number) {
   const docs = List(boardDocs).groupBy(doc => startPositionIndex(doc))
-  const first = docs.first().sortBy(Math.random)
-  const second = docs.last().sortBy(Math.random)
+  const first = docs.first<Collection<number, BoardDoc>>().sortBy(Math.random)
+  const second = docs.last<Collection<number, BoardDoc>>().sortBy(Math.random)
 
   const boards = first.toList().interleave(second)
 

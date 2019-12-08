@@ -9,6 +9,7 @@ import {
 } from "../src/state/cardEffect"
 import { CardRange } from "../src/state/cardRange"
 import { Player } from "../src/state/player"
+import { ActionResult } from "../src/turnResults/resultTypes"
 import {
   createDirectionalPoint,
   createTestCards,
@@ -73,7 +74,7 @@ describe("#performTurn", () => {
     expect(result.resultsPerAction.size).toBe(6) // 5 + 1 post-turn action
     expect(
       result.resultsPerAction
-        .first()
+        .first<List<ActionResult>>()
         .map(actionResult => actionResult.type)
         .toArray()
     ).toEqual(["heal", "attack", "takeDamage"])
@@ -173,7 +174,7 @@ describe("#performTurn", () => {
 
     expect(
       result.resultsPerAction
-        .first()
+        .first<List<ActionResult>>()
         .map(actionResult => actionResult.type)
         .toArray()
     ).toEqual(["move", "attack", "takeDamage"])
@@ -234,7 +235,7 @@ describe("#performTurn", () => {
 
     expect(
       result.resultsPerAction
-        .first()
+        .first<List<ActionResult>>()
         .map(actionResult => actionResult.type)
         .toArray()
     ).toEqual(["move", "move"])

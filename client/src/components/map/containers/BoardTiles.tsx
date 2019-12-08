@@ -16,6 +16,7 @@ const BoardTiles: React.SFC<MapViewScaleProps> = props => {
         x={props.mapViewScale.mapPadding}
         y={props.mapViewScale.mapPadding}
         {...props.mapViewScale.mapSize()}
+        tilePosition={0}
         tileScale={new Point(scale, scale)}
         image={tileImages.ground}
       />

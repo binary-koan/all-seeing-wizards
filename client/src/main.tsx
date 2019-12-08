@@ -7,7 +7,7 @@ import styled, { theme, ThemeProvider } from "./components/util/styled"
 
 import store from "./state"
 
-import "./components/util/globalStyles"
+import GlobalStyles from "./components/util/globalStyles"
 
 const Wrapper = styled.div`
   height: 100%;
@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 render(
   <StoreProvider store={store}>
     <ThemeProvider theme={theme}>
+      <GlobalStyles />
       <Wrapper>
         <FatalError />
         <App />

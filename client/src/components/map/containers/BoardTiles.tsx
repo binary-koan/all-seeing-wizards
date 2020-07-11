@@ -1,21 +1,22 @@
 import { Container, TilingSprite } from "@inlet/react-pixi"
 import { Point } from "pixi.js"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { tileImages } from "../../ImagePreloader"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { useMapViewScale } from "../MapViewScaleContext"
 import TileOverlay from "../tiles/TileOverlay"
 
 const TILE_IMAGE_SIZE = 64
 
-const BoardTiles: React.SFC<MapViewScaleProps> = props => {
-  const scale = props.mapViewScale.tileSize.width / TILE_IMAGE_SIZE
+const BoardTiles: FunctionComponent = props => {
+  const mapViewScale = useMapViewScale()
+  const scale = mapViewScale.tileSize.width / TILE_IMAGE_SIZE
 
   return (
     <Container>
       <TilingSprite
-        x={props.mapViewScale.mapPadding}
-        y={props.mapViewScale.mapPadding}
-        {...props.mapViewScale.mapSize()}
+        x={mapViewScale.mapPadding}
+        y={mapViewScale.mapPadding}
+        {...mapViewScale.mapSize()}
         tilePosition={0}
         tileScale={new Point(scale, scale)}
         image={tileImages.ground}
@@ -27,4 +28,4 @@ const BoardTiles: React.SFC<MapViewScaleProps> = props => {
   )
 }
 
-export default withMapViewScale(BoardTiles)
+export default BoardTiles

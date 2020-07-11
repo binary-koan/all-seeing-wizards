@@ -1,6 +1,6 @@
 import { Sprite } from "@inlet/react-pixi"
-import React from "react"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import React, { FunctionComponent } from "react"
+import { useMapViewScale } from "../MapViewScaleContext"
 
 interface PointEffectImageProps {
   x: number
@@ -9,13 +9,16 @@ interface PointEffectImageProps {
   alpha?: number
 }
 
-const PointEffectImage: React.SFC<PointEffectImageProps & MapViewScaleProps> = props => (
-  <Sprite
-    image={props.imagePath}
-    alpha={props.alpha == null ? 1 : props.alpha}
-    {...props.mapViewScale.tileSize}
-    {...props.mapViewScale.mapPosition(props)}
-  />
-)
+const PointEffectImage: FunctionComponent<PointEffectImageProps> = props => {
+  const mapViewScale = useMapViewScale()
+  return (
+    <Sprite
+      image={props.imagePath}
+      alpha={props.alpha == null ? 1 : props.alpha}
+      {...mapViewScale.tileSize}
+      {...mapViewScale.mapPosition(props)}
+    />
+  )
+}
 
-export default withMapViewScale(PointEffectImage)
+export default PointEffectImage

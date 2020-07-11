@@ -1,7 +1,7 @@
 import { Container } from "@inlet/react-pixi"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import tweener from "../util/tweener"
-import { MapViewScaleProps, withMapViewScale } from "./MapViewScaleContext"
+import { useMapViewScale } from "./MapViewScaleContext"
 
 const TweenedContainer = tweener(Container, {
   x: { duration: 500 },
@@ -12,17 +12,18 @@ interface CameraProps {
   centerOn: { x: number; y: number }
 }
 
-const Camera: React.SFC<CameraProps & MapViewScaleProps> = props => {
-  const actualCenterOn = props.mapViewScale.mapPosition(props.centerOn)
+const Camera: FunctionComponent<CameraProps> = ({ centerOn, children }) => {
+  const mapViewScale = useMapViewScale()
+  const actualCenterOn = mapViewScale.mapPosition(centerOn)
 
   return (
     <TweenedContainer
-      x={props.mapViewScale.viewportWidth / 2 - actualCenterOn.x}
-      y={props.mapViewScale.viewportHeight / 2 - actualCenterOn.y}
+      x={mapViewScale.viewportWidth / 2 - actualCenterOn.x}
+      y={mapViewScale.viewportHeight / 2 - actualCenterOn.y}
     >
-      {props.children}
+      {children}
     </TweenedContainer>
   )
 }
 
-export default withMapViewScale(Camera)
+export default Camera

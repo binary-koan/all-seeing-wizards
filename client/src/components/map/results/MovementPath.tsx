@@ -1,25 +1,29 @@
 import { Container, Sprite } from "@inlet/react-pixi"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { MoveResult } from "../../../../../common/src/turnResults/resultTypes"
 import { effectImages } from "../../ImagePreloader"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { useMapViewScale } from "../MapViewScaleContext"
 
 interface MovementPathProps {
   result: MoveResult
 }
 
-const MovementPath: React.SFC<MovementPathProps & MapViewScaleProps> = props => (
-  <Container>
-    {props.result.movementPath.pop().map(position => (
-      <Sprite
-        key={[position.x, position.y].toString()}
-        image={effectImages.move}
-        alpha={0.5}
-        {...props.mapViewScale.tileSize}
-        {...props.mapViewScale.mapPosition(position)}
-      />
-    ))}
-  </Container>
-)
+const MovementPath: FunctionComponent<MovementPathProps> = props => {
+  const mapViewScale = useMapViewScale()
 
-export default withMapViewScale(MovementPath)
+  return (
+    <Container>
+      {props.result.movementPath.pop().map(position => (
+        <Sprite
+          key={[position.x, position.y].toString()}
+          image={effectImages.move}
+          alpha={0.5}
+          {...mapViewScale.tileSize}
+          {...mapViewScale.mapPosition(position)}
+        />
+      ))}
+    </Container>
+  )
+}
+
+export default MovementPath

@@ -1,43 +1,41 @@
 import { Container } from "@inlet/react-pixi"
-import React from "react"
-import { connect } from "react-redux"
+import { List } from "immutable"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
-import ViewState from "../../../state/viewState"
-import { playerOnly } from "../../util/stateHelpers"
-import { ResultViewOverrides, ResultViewProps } from "../results/ResultViewProps"
-
 import data from "../../../../packs/base/viewConfig"
+import ViewState from "../../../state/viewState"
+import { ResultViewProps } from "../results/ResultViewProps"
+
+const getResultComponents = createSelector(
+  (state: ViewState) => state.placedCardResults.resultsPerAction,
+  results => {
+    const actionResults = results.flatten() as List<ActionResult>
+
+    return actionResults.map(result => ({
+      result,
+      overrides: result.card && data.cards[result.card.name].planViewOverrides
+    }))
+  }
+)
 
 interface PlannedActionResultsProps {
   planView: React.SFC<ResultViewProps>
 }
 
-interface StateProps {
-  resultComponents: Array<{ result: ActionResult; overrides: ResultViewOverrides }>
-}
+const PlannedActionResults: FunctionComponent<PlannedActionResultsProps> = props => {
+  const resultComponents = useSelector(getResultComponents)
 
-const PlannedActionResults: React.SFC<StateProps & PlannedActionResultsProps> = props => {
   const PlanView = props.planView
 
   return (
     <Container>
-      {props.resultComponents.map(({ result, overrides }, index) => (
+      {resultComponents.toArray().map(({ result, overrides }, index) => (
         <PlanView key={`${result.type}${index}`} result={result} overrides={overrides} />
       ))}
     </Container>
   )
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  const results = state.placedCardResults
-  const actionResults = results.resultsPerAction.flatten().toArray() as ActionResult[]
-
-  return {
-    resultComponents: actionResults.map(result => ({
-      result,
-      overrides: result.card && data.cards[result.card.name].planViewOverrides
-    }))
-  }
-}
-
-export default playerOnly(connect(mapStateToProps)(PlannedActionResults))
+export default PlannedActionResults

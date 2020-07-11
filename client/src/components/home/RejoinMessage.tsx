@@ -1,9 +1,7 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
-import { Action, rehostGame, rejoinGame } from "../../state/actions"
+import React, { FunctionComponent, useCallback } from "react"
+import { useDispatch } from "react-redux"
+import { rehostGame, rejoinGame } from "../../state/actions"
 import { fetchSession } from "../../state/sessionStore"
-import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 
 const RejoinLink = styled.a`
@@ -14,16 +12,18 @@ const RejoinLink = styled.a`
   color: ${props => props.theme.colorDarkest};
 `
 
-interface DispatchProps {
-  rejoinGame: (code: string, playerId?: string) => void
-}
+const { gameCode, playerId } = fetchSession()
 
-const RejoinMessage: React.SFC<DispatchProps> = props => {
-  const { gameCode, playerId } = fetchSession()
+const RejoinMessage: FunctionComponent = props => {
+  const dispatch = useDispatch()
+  const doRejoinGame = useCallback(
+    () => dispatch(playerId ? rejoinGame(gameCode, playerId) : rehostGame(gameCode)),
+    [dispatch]
+  )
 
   if (gameCode) {
     return (
-      <RejoinLink href="javascript:" onClick={() => props.rejoinGame(gameCode, playerId)}>
+      <RejoinLink href="javascript:" onClick={doRejoinGame}>
         Looks like you left in the middle of a game! <strong>Rejoin ›</strong>
       </RejoinLink>
     )
@@ -32,23 +32,4 @@ const RejoinMessage: React.SFC<DispatchProps> = props => {
   }
 }
 
-function mapStateToProps(_state: ViewState): {} {
-  return {}
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    rejoinGame: (code: string, playerId?: string) => {
-      if (playerId) {
-        dispatch(rejoinGame(code, playerId))
-      } else {
-        dispatch(rehostGame(code))
-      }
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RejoinMessage)
+export default RejoinMessage

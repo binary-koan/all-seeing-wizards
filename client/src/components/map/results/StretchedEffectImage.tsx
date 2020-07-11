@@ -1,11 +1,11 @@
 import { Container, Sprite } from "@inlet/react-pixi"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { AttackEffect } from "../../../../../common/src/state/cardEffect"
 import { CardRange } from "../../../../../common/src/state/cardRange"
 import { DirectionalPoint } from "../../../../../common/src/state/directionalPoint"
 import { AttackResult } from "../../../../../common/src/turnResults/resultTypes"
 import { directionToRadians } from "../../util/rotation"
-import { MapViewScale, MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { MapViewScale, useMapViewScale } from "../MapViewScaleContext"
 
 interface StretchedEffectImageProps {
   result: AttackResult
@@ -54,20 +54,24 @@ function rangePosition(range: CardRange, from: DirectionalPoint, mapViewScale: M
 // The `anchor` type definition doesn't cover numbers so force this to any to avoid type errors
 const HackyFixedSprite = Sprite as any
 
-const StretchedEffectImage: React.SFC<StretchedEffectImageProps & MapViewScaleProps> = props => (
-  <Container>
-    {attackedRanges(props.result).map((range, index) => (
-      <HackyFixedSprite
-        key={[range.type, index].toString()}
-        image={props.imagePath}
-        alpha={props.alpha || 1}
-        anchor={0.5}
-        rotation={directionToRadians(props.result.caster.position.facing)}
-        {...rangeSize(range, props.mapViewScale)}
-        {...rangePosition(range, props.result.caster.position, props.mapViewScale)}
-      />
-    ))}
-  </Container>
-)
+const StretchedEffectImage: FunctionComponent<StretchedEffectImageProps> = props => {
+  const mapViewScale = useMapViewScale()
 
-export default withMapViewScale(StretchedEffectImage)
+  return (
+    <Container>
+      {attackedRanges(props.result).map((range, index) => (
+        <HackyFixedSprite
+          key={[range.type, index].toString()}
+          image={props.imagePath}
+          alpha={props.alpha || 1}
+          anchor={0.5}
+          rotation={directionToRadians(props.result.caster.position.facing)}
+          {...rangeSize(range, mapViewScale)}
+          {...rangePosition(range, props.result.caster.position, mapViewScale)}
+        />
+      ))}
+    </Container>
+  )
+}
+
+export default StretchedEffectImage

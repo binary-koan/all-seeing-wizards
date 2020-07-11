@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 
 export interface MapViewScale {
   viewportWidth: number
@@ -8,9 +8,13 @@ export interface MapViewScale {
   mapHeight: number
   tileSize: { width: number; height: number }
   mapPosition: ({ x, y }: { x: number; y: number }) => { x: number; y: number }
-  mapSize: (
-    { width, height }?: { width: number; height: number }
-  ) => { width: number; height: number }
+  mapSize: ({
+    width,
+    height
+  }?: {
+    width: number
+    height: number
+  }) => { width: number; height: number }
 }
 
 const MapViewScaleContext = React.createContext<MapViewScale>(
@@ -61,18 +65,4 @@ export function buildMapViewScale({
 
 export const Provider = MapViewScaleContext.Provider
 
-export const Consumer = MapViewScaleContext.Consumer
-
-export interface MapViewScaleProps {
-  mapViewScale: MapViewScale
-}
-
-export function withMapViewScale<Props extends MapViewScaleProps>(
-  Component: React.ComponentType<Props>
-): React.SFC<Pick<Props, Exclude<keyof Props, keyof MapViewScaleProps>>> {
-  return props => (
-    <MapViewScaleContext.Consumer>
-      {scale => <Component mapViewScale={scale} {...props as any} />}
-    </MapViewScaleContext.Consumer>
-  )
-}
+export const useMapViewScale = () => useContext(MapViewScaleContext)

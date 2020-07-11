@@ -1,14 +1,12 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
-import { Action, unplaceCard } from "../../state/actions"
-import ViewState from "../../state/viewState"
-import styled from "../util/styled"
-
+import React, { FunctionComponent } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import { Card } from "../../../../common/src/state/card"
 import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
-
 import data from "../../../packs/base/viewConfig"
+import { unplaceCard } from "../../state/actions"
+import ViewState from "../../state/viewState"
+import styled from "../util/styled"
 
 const Wrapper = styled.div`
   display: grid;
@@ -58,26 +56,27 @@ const CardImage = styled.img`
   width: 70%;
 `
 
-interface StateProps {
-  isVisible: boolean
-  cards: Card[]
-}
+const getCards = createSelector(
+  (state: ViewState) => state.placedCards,
+  placedCards => placedCards.map(placedCard => placedCard.configuredCard)
+)
 
-interface DispatchProps {
-  removeCard: (index: number) => void
-}
+const CardChooser: FunctionComponent = props => {
+  const isVisible = useSelector((state: ViewState) => state.player.hand.cards.size > 0)
+  const cards = useSelector(getCards)
 
-const CardChooser: React.SFC<StateProps & DispatchProps> = props => {
-  if (props.isVisible) {
+  const dispatch = useDispatch()
+
+  if (isVisible) {
     return (
       <Wrapper>
         {Array(MAX_PLAYER_HP)
           .fill(0)
           .map((_, index) => (
             <PlacedCardWrapper key={index}>
-              <PlacedCard card={props.cards[index]} onClick={() => props.removeCard(index)}>
-                {props.cards[index] ? (
-                  <CardImage src={data.cards[props.cards[index].name].image} />
+              <PlacedCard card={cards.get(index)} onClick={() => dispatch(unplaceCard(index))}>
+                {cards.get(index) ? (
+                  <CardImage src={data.cards[cards.get(index).name].image} />
                 ) : (
                   `${index + 1}`
                 )}
@@ -91,17 +90,4 @@ const CardChooser: React.SFC<StateProps & DispatchProps> = props => {
   }
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    cards: state.placedCards.map(placedCard => placedCard.configuredCard).toArray(),
-    isVisible: state.player.hand.cards.size > 0
-  }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    removeCard: index => dispatch(unplaceCard(index))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardChooser)
+export default CardChooser

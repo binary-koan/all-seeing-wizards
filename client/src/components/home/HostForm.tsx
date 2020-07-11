@@ -1,51 +1,22 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Action, Dispatch } from "redux"
+import React, { FunctionComponent, useCallback, useState } from "react"
+import { useDispatch } from "react-redux"
 import { createGame } from "../../state/actions"
 import ActionButton from "../base/ActionButton"
 import BoardSizePicker from "./BoardSizePicker"
 
-interface DispatchProps {
-  createGame: (boards: number) => void
+const HostForm: FunctionComponent = () => {
+  const [boards, setBoards] = useState(4)
+  const dispatch = useDispatch()
+  const doCreateGame = useCallback(() => dispatch(createGame(boards)), [dispatch, boards])
+
+  return (
+    <div>
+      <BoardSizePicker value={boards} onChange={setBoards} />
+      <ActionButton variant="primary" onClick={doCreateGame}>
+        Start Hosting
+      </ActionButton>
+    </div>
+  )
 }
 
-class HostForm extends React.Component<DispatchProps, { boards: number }> {
-  constructor(props: DispatchProps) {
-    super(props)
-    this.state = { boards: 4 }
-
-    this.createGame = this.createGame.bind(this)
-    this.setBoards = this.setBoards.bind(this)
-  }
-
-  public render() {
-    return (
-      <div>
-        <BoardSizePicker value={this.state.boards} onChange={this.setBoards} />
-        <ActionButton variant="primary" onClick={this.createGame}>
-          Start Hosting
-        </ActionButton>
-      </div>
-    )
-  }
-
-  private setBoards(boards: number) {
-    this.setState({ boards })
-  }
-
-  private createGame() {
-    this.props.createGame(this.state.boards)
-  }
-}
-
-function mapStateToProps() {
-  return {}
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    createGame: (boards: number) => dispatch(createGame(boards))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HostForm)
+export default HostForm

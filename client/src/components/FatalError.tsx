@@ -1,5 +1,6 @@
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { connect, useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import ViewState from "../state/viewState"
 import styled from "./util/styled"
 
@@ -36,18 +37,28 @@ const FatalErrorException = styled.pre`
   color: ${props => props.theme.colorMuted};
 `
 
-interface StateProps {
-  message?: string
-  exception?: string
-}
+const getError = createSelector(
+  [(state: ViewState) => state.error, (state: ViewState) => state.socketState],
+  (error, socketState) => {
+    if (error) {
+      return error
+    } else if (socketState === "disconnected") {
+      return { message: "Disconnected from the server. Try reloading the page." }
+    } else {
+      return { message: undefined }
+    }
+  }
+)
 
-const FatalError: React.SFC<StateProps> = props => {
-  if (props.message) {
+const FatalError: FunctionComponent = props => {
+  const { message, exception } = useSelector(getError)
+
+  if (message) {
     return (
       <FatalErrorWrapper>
         <FatalErrorTitle>Fatal Error</FatalErrorTitle>
-        <FatalErrorMessage>{props.message}</FatalErrorMessage>
-        {props.exception ? <FatalErrorException>{props.exception}</FatalErrorException> : null}
+        <FatalErrorMessage>{message}</FatalErrorMessage>
+        {exception ? <FatalErrorException>{exception}</FatalErrorException> : null}
       </FatalErrorWrapper>
     )
   } else {
@@ -55,14 +66,4 @@ const FatalError: React.SFC<StateProps> = props => {
   }
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  if (state.error) {
-    return state.error
-  } else if (state.socketState === "disconnected") {
-    return { message: "Disconnected from the server. Try reloading the page." }
-  } else {
-    return {}
-  }
-}
-
-export default connect(mapStateToProps)(FatalError)
+export default FatalError

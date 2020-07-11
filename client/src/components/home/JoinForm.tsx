@@ -1,7 +1,6 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
-import { Action, joinGame, setGameCode } from "../../state/actions"
+import React, { FunctionComponent, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { joinGame, setGameCode } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import InputText from "../base/InputText"
@@ -11,44 +10,29 @@ const JoinFormWrapper = styled.div`
   text-align: center;
 `
 
-interface StateProps {
-  gameCode: string
-  isLoading: boolean
+const JoinForm: FunctionComponent = props => {
+  const gameCode = useSelector((state: ViewState) => state.gameCode)
+  const isLoading = useSelector((state: ViewState) => state.socketState === "awaitingResponse")
+
+  const dispatch = useDispatch()
+  const doSetGameCode = useCallback(() => dispatch(setGameCode(gameCode)), [dispatch, gameCode])
+  const doJoinGame = useCallback(() => dispatch(joinGame()), [dispatch])
+
+  return (
+    <JoinFormWrapper>
+      <InputText
+        label="Game Code"
+        placeholder="ABCD"
+        autoFocus={true}
+        value={gameCode}
+        onChange={doSetGameCode}
+      />
+
+      <ActionButton variant="primary" disabled={isLoading} onClick={doJoinGame}>
+        Join Now
+      </ActionButton>
+    </JoinFormWrapper>
+  )
 }
 
-interface DispatchProps {
-  setGameCode: (code: string) => void
-  joinGame: () => void
-}
-
-const JoinForm: React.SFC<StateProps & DispatchProps> = props => (
-  <JoinFormWrapper>
-    <InputText
-      label="Game Code"
-      placeholder="ABCD"
-      autoFocus={true}
-      value={props.gameCode}
-      onChange={code => props.setGameCode(code)}
-    />
-
-    <ActionButton variant="primary" disabled={props.isLoading} onClick={() => props.joinGame()}>
-      Join Now
-    </ActionButton>
-  </JoinFormWrapper>
-)
-
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    gameCode: state.gameCode,
-    isLoading: state.socketState === "awaitingResponse"
-  }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    setGameCode: (code: string) => dispatch(setGameCode(code)),
-    joinGame: () => dispatch(joinGame())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(JoinForm)
+export default JoinForm

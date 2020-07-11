@@ -1,5 +1,5 @@
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import ViewState from "../state/viewState"
 import CardDetails from "./card/CardDetails"
 import { ImagePreloader } from "./ImagePreloader"
@@ -30,34 +30,30 @@ const MapWrapper = styled.div`
   align-items: center;
 `
 
-interface StateProps {
-  hasCharacter: boolean
+const Player: FunctionComponent = props => {
+  const hasCharacter = useSelector((state: ViewState) => Boolean(state.player.character))
+
+  return (
+    <ImagePreloader>
+      {() => (
+        <Wrapper>
+          {hasCharacter ? (
+            <>
+              <PlayerHeader />
+              <MapWrapper>
+                <PlayerMapView maxWidth={CONTAINER_WIDTH} />
+              </MapWrapper>
+              <CardChooser />
+              <PrimaryAction />
+              <CardDetails />
+            </>
+          ) : (
+            <CharacterChooser />
+          )}
+        </Wrapper>
+      )}
+    </ImagePreloader>
+  )
 }
 
-const Player: React.SFC<StateProps> = props => (
-  <ImagePreloader>
-    {() => (
-      <Wrapper>
-        {props.hasCharacter ? (
-          <>
-            <PlayerHeader />
-            <MapWrapper>
-              <PlayerMapView maxWidth={CONTAINER_WIDTH} />
-            </MapWrapper>
-            <CardChooser />
-            <PrimaryAction />
-            <CardDetails />
-          </>
-        ) : (
-          <CharacterChooser />
-        )}
-      </Wrapper>
-    )}
-  </ImagePreloader>
-)
-
-function mapStateToProps(state: ViewState): StateProps {
-  return { hasCharacter: Boolean(state.player.character) }
-}
-
-export default connect(mapStateToProps)(Player)
+export default Player

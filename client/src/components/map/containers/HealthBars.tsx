@@ -1,9 +1,10 @@
 import { Container, Sprite } from "@inlet/react-pixi"
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import { Point } from "../../../../../common/src/state/point"
 import ViewState from "../../../state/viewState"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { useMapViewScale } from "../MapViewScaleContext"
 
 import frameImage from "../../../../assets/heart-frame.png"
 import data from "../../../../packs/base/viewConfig"
@@ -19,15 +20,29 @@ interface StateProps {
   players: Array<{ id: string; position: Point; hp: number; heartImage: string }>
 }
 
-const HealthBars: React.SFC<StateProps & MapViewScaleProps> = props => {
+const getPlayerState = createSelector(
+  (state: ViewState) => state.game.activePlayers,
+  activePlayers =>
+    activePlayers.valueSeq().map(player => ({
+      id: player.id,
+      position: player.position.toPoint(),
+      hp: player.hp,
+      heartImage: data.characters[player.character.name].heartImage
+    }))
+)
+
+const HealthBars: FunctionComponent = () => {
+  const playerStates = useSelector(getPlayerState)
+  const mapViewScale = useMapViewScale()
+
   return (
     <Container>
-      {props.players.map(player => (
+      {playerStates.toArray().map(player => (
         <Container key={player.id}>
           <Sprite
             image={frameImage}
-            {...props.mapViewScale.mapSize(FRAME_SIZE)}
-            {...props.mapViewScale.mapPosition(player.position.add(FRAME_OFFSET))}
+            {...mapViewScale.mapSize(FRAME_SIZE)}
+            {...mapViewScale.mapPosition(player.position.add(FRAME_OFFSET))}
           />
           {Array(player.hp)
             .fill(0)
@@ -35,8 +50,8 @@ const HealthBars: React.SFC<StateProps & MapViewScaleProps> = props => {
               <Sprite
                 key={index}
                 image={player.heartImage}
-                {...props.mapViewScale.mapSize(HEART_SIZE)}
-                {...props.mapViewScale.mapPosition(
+                {...mapViewScale.mapSize(HEART_SIZE)}
+                {...mapViewScale.mapPosition(
                   player.position.add({
                     x: HEART_OFFSET.x + HEART_SIZE.width * index + HEART_SPACING * index,
                     y: HEART_OFFSET.y
@@ -50,18 +65,4 @@ const HealthBars: React.SFC<StateProps & MapViewScaleProps> = props => {
   )
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    players: state.game.activePlayers
-      .valueSeq()
-      .toArray()
-      .map(player => ({
-        id: player.id,
-        position: player.position.toPoint(),
-        hp: player.hp,
-        heartImage: data.characters[player.character.name].heartImage
-      }))
-  }
-}
-
-export default connect(mapStateToProps)(withMapViewScale(HealthBars))
+export default HealthBars

@@ -1,6 +1,6 @@
 import { Stage } from "@inlet/react-pixi"
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
@@ -18,13 +18,7 @@ import ResultRealUnderlay from "./results/ResultRealUnderlay"
 
 const PADDING = 0.5
 
-interface StateProps {
-  tilesWide: number
-  tilesHigh: number
-  isPlayerView: boolean
-}
-
-interface MapViewProps extends StateProps {
+interface MapViewProps {
   className?: string
   sizeBasedOn: "width" | "height"
   maxSize?: number
@@ -48,45 +42,51 @@ function baseSize(dimension: "width" | "height", maxSize?: number) {
   return size
 }
 
-function canvasSizeBasedOnWidth(props: MapViewProps) {
+function canvasSizeBasedOnWidth(props: MapViewProps, tilesWide: number, tilesHigh: number) {
   const viewportSize = props.viewportSize || {
-    width: pad(props.tilesWide),
-    height: pad(props.tilesHigh)
+    width: pad(tilesWide),
+    height: pad(tilesHigh)
   }
 
   const tileSize = Math.ceil(baseSize("width", props.maxSize) / viewportSize.width)
 
   return {
     mapPadding: tileSize * PADDING,
-    mapWidth: tileSize * pad(props.tilesWide),
-    mapHeight: tileSize * pad(props.tilesHigh),
+    mapWidth: tileSize * pad(tilesWide),
+    mapHeight: tileSize * pad(tilesHigh),
     viewportWidth: tileSize * viewportSize.width,
     viewportHeight: tileSize * viewportSize.height,
     tileSize
   }
 }
 
-function canvasSizeBasedOnHeight(props: MapViewProps) {
+function canvasSizeBasedOnHeight(props: MapViewProps, tilesWide: number, tilesHigh: number) {
   const viewportSize = props.viewportSize || {
-    width: pad(props.tilesWide),
-    height: pad(props.tilesHigh)
+    width: pad(tilesWide),
+    height: pad(tilesHigh)
   }
 
   const tileSize = Math.ceil(baseSize("height", props.maxSize) / viewportSize.height)
 
   return {
     mapPadding: tileSize * PADDING,
-    mapWidth: tileSize * pad(props.tilesWide),
-    mapHeight: tileSize * pad(props.tilesHigh),
+    mapWidth: tileSize * pad(tilesWide),
+    mapHeight: tileSize * pad(tilesHigh),
     viewportWidth: tileSize * viewportSize.width,
     viewportHeight: tileSize * viewportSize.height,
     tileSize
   }
 }
 
-const MapView: React.SFC<MapViewProps> = props => {
+const MapView: FunctionComponent<MapViewProps> = props => {
+  const tilesWide = useSelector((state: ViewState) => state.game.board.width)
+  const tilesHigh = useSelector((state: ViewState) => state.game.board.height)
+  const isPlayerView = useSelector((state: ViewState) => Boolean(state.player))
+
   const size =
-    props.sizeBasedOn === "height" ? canvasSizeBasedOnHeight(props) : canvasSizeBasedOnWidth(props)
+    props.sizeBasedOn === "height"
+      ? canvasSizeBasedOnHeight(props, tilesWide, tilesHigh)
+      : canvasSizeBasedOnWidth(props, tilesWide, tilesHigh)
 
   return (
     <Stage
@@ -103,22 +103,14 @@ const MapView: React.SFC<MapViewProps> = props => {
           <PlannedActionResults planView={ResultPlanUnderlay} />
           <RealActionResults resultView={ResultRealUnderlay} />
           <Players />
-          {props.isPlayerView ? <GhostPlayer /> : null}
+          {isPlayerView ? <GhostPlayer /> : null}
           <PlannedActionResults planView={ResultPlanOverlay} />
           <RealActionResults resultView={ResultRealOverlay} />
-          {props.isPlayerView ? null : <HealthBars />}
+          {isPlayerView ? null : <HealthBars />}
         </Camera>
       </ScaleContextProvider>
     </Stage>
   )
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    tilesWide: state.game.board.width,
-    tilesHigh: state.game.board.height,
-    isPlayerView: Boolean(state.player)
-  }
-}
-
-export default connect(mapStateToProps)(MapView)
+export default MapView

@@ -1,5 +1,5 @@
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 import MapView from "./MapView"
@@ -13,25 +13,22 @@ interface PlayerMapViewProps {
   maxWidth: number
 }
 
-interface StateProps {
-  playerCenterX: number
-  playerCenterY: number
+const PlayerMapView: FunctionComponent<PlayerMapViewProps> = props => {
+  const playerCenterX = useSelector(
+    (state: ViewState) => state.playerAfterPlacedCards.position.x + 0.5
+  )
+  const playerCenterY = useSelector(
+    (state: ViewState) => state.playerAfterPlacedCards.position.y + 0.5
+  )
+
+  return (
+    <FullWidthMapView
+      sizeBasedOn="width"
+      maxSize={props.maxWidth}
+      viewportSize={{ width: 6, height: 6 }}
+      centerOn={{ x: playerCenterX, y: playerCenterY }}
+    />
+  )
 }
 
-const PlayerMapView: React.SFC<PlayerMapViewProps & StateProps> = props => (
-  <FullWidthMapView
-    sizeBasedOn="width"
-    maxSize={props.maxWidth}
-    viewportSize={{ width: 6, height: 6 }}
-    centerOn={{ x: props.playerCenterX, y: props.playerCenterY }}
-  />
-)
-
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    playerCenterX: state.playerAfterPlacedCards.position.x + 0.5,
-    playerCenterY: state.playerAfterPlacedCards.position.y + 0.5
-  }
-}
-
-export default connect(mapStateToProps)(PlayerMapView)
+export default PlayerMapView

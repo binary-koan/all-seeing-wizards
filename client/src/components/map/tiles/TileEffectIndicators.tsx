@@ -1,11 +1,10 @@
 import { Container } from "@inlet/react-pixi"
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import { DirectionalPoint } from "../../../../../common/src/state/directionalPoint"
 import ViewState from "../../../state/viewState"
 import { effectImages } from "../../ImagePreloader"
 import tweener from "../../util/tweener"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
 import PointEffectImage from "../results/PointEffectImage"
 
 const TweenedPointEffectImage = tweener(PointEffectImage, {
@@ -18,33 +17,30 @@ interface TileEffectIndicatorsProps {
   alpha: number
 }
 
-interface StateProps {
-  isInWater?: boolean
-  isInLava?: boolean
+const Players: FunctionComponent<TileEffectIndicatorsProps> = ({ position, alpha }) => {
+  const isInWater = useSelector(
+    (state: ViewState) => state.game.board.tileAt(position).type === "water"
+  )
+  const isInLava = useSelector(
+    (state: ViewState) => state.game.board.tileAt(position).type === "lava"
+  )
+
+  return (
+    <Container>
+      <TweenedPointEffectImage
+        imagePath={effectImages.waterSlow}
+        x={position.x}
+        y={position.y}
+        alpha={isInWater ? alpha : 0}
+      />
+      <TweenedPointEffectImage
+        imagePath={effectImages.lavaFire}
+        x={position.x}
+        y={position.y}
+        alpha={isInLava ? alpha : 0}
+      />
+    </Container>
+  )
 }
 
-const Players: React.SFC<TileEffectIndicatorsProps & StateProps & MapViewScaleProps> = props => (
-  <Container>
-    <TweenedPointEffectImage
-      imagePath={effectImages.waterSlow}
-      x={props.position.x}
-      y={props.position.y}
-      alpha={props.isInWater ? props.alpha : 0}
-    />
-    <TweenedPointEffectImage
-      imagePath={effectImages.lavaFire}
-      x={props.position.x}
-      y={props.position.y}
-      alpha={props.isInLava ? props.alpha : 0}
-    />
-  </Container>
-)
-
-function mapStateToProps(state: ViewState, ownProps: TileEffectIndicatorsProps): StateProps {
-  return {
-    isInWater: state.game.board.tileAt(ownProps.position).type === "water",
-    isInLava: state.game.board.tileAt(ownProps.position).type === "lava"
-  }
-}
-
-export default connect(mapStateToProps)(withMapViewScale(Players))
+export default Players

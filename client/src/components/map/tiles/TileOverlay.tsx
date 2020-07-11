@@ -1,41 +1,33 @@
 import { Container, Sprite } from "@inlet/react-pixi"
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import { BoardTileType } from "../../../../../common/src/state/boardTile"
 import ViewState from "../../../state/viewState"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { useMapViewScale } from "../MapViewScaleContext"
 
 interface TileOverlayProps {
   image: string
   tileType: BoardTileType
 }
 
-interface StateProps {
-  image: string
-  positions: Array<{ x: number; y: number }>
-}
+const TileOverlay: FunctionComponent<TileOverlayProps> = ({ image, tileType }) => {
+  const mapViewScale = useMapViewScale()
+  const positions = useSelector((state: ViewState) =>
+    state.game.board.tiles.filter(tile => tile.type === tileType).map(tile => tile.position)
+  )
 
-const TileOverlay: React.SFC<StateProps & MapViewScaleProps> = props => {
-  const sprites = props.positions.map(position => (
-    <Sprite
-      key={[position.x, position.y].toString()}
-      image={props.image}
-      {...props.mapViewScale.mapPosition(position)}
-      {...props.mapViewScale.tileSize}
-    />
-  ))
+  const sprites = positions
+    .toArray()
+    .map(position => (
+      <Sprite
+        key={[position.x, position.y].toString()}
+        image={image}
+        {...mapViewScale.mapPosition(position)}
+        {...mapViewScale.tileSize}
+      />
+    ))
 
   return <Container>{sprites}</Container>
 }
 
-function mapStateToProps(state: ViewState, ownProps: TileOverlayProps): StateProps {
-  return {
-    image: ownProps.image,
-    positions: state.game.board.tiles
-      .filter(tile => tile.type === ownProps.tileType)
-      .map(tile => tile.position)
-      .toArray()
-  }
-}
-
-export default connect(mapStateToProps)(withMapViewScale(TileOverlay))
+export default TileOverlay

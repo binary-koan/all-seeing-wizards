@@ -1,6 +1,6 @@
 import { transparentize } from "polished"
-import React from "react"
-import { connect } from "react-redux"
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 
@@ -26,16 +26,10 @@ const Numeral = styled.div`
   }
 `
 
-interface StateProps {
-  number: number
+const Countdown: FunctionComponent = props => {
+  const number = useSelector((state: ViewState) => state.showingCountdown)
+
+  return <Numeral>{number}</Numeral>
 }
 
-const Countdown: React.SFC<StateProps> = props => {
-  return <Numeral>{props.number}</Numeral>
-}
-
-function mapStateToProps({ showingCountdown }: ViewState): StateProps {
-  return { number: showingCountdown }
-}
-
-export default connect(mapStateToProps)(Countdown)
+export default Countdown

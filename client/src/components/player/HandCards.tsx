@@ -1,15 +1,11 @@
-import React, { useState } from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
+import React, { FunctionComponent, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import { Card } from "../../../../common/src/state/card"
 import { CardEffect } from "../../../../common/src/state/cardEffect"
-import {
-  Direction,
-  DirectionalPoint,
-  rotationBetween,
-} from "../../../../common/src/state/directionalPoint"
+import { Direction, rotationBetween } from "../../../../common/src/state/directionalPoint"
 import { GameFeature } from "../../../../common/src/state/game"
-import { Action, placeCard, showCardDetails } from "../../state/actions"
+import { placeCard, showCardDetails } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import Modal from "../Modal"
 import styled from "../util/styled"
@@ -24,33 +20,28 @@ const Wrapper = styled.div`
   margin: 0.5rem 0.5rem 1rem 0.5rem;
 `
 
-interface StateProps {
-  chooseMoveDirection: boolean
-  cards: Card[]
-  pickedIds: string[]
-  playerPosition: DirectionalPoint
-}
+const getPickedIds = createSelector(
+  (state: ViewState) => state.placedCards,
+  (cards) => cards.map((card) => card.configuredCard.id)
+)
 
-interface DispatchProps {
-  pickCard: (card: Card, index: number) => void
-  showDetails: (card: Card) => void
-}
+const HandCards: FunctionComponent = () => {
+  const chooseMoveDirection = useSelector((state: ViewState) =>
+    state.game?.hasFeature(GameFeature.PickMoveDirection)
+  )
+  const cards = useSelector((state: ViewState) => state.player.hand.cards)
+  const pickedIds = useSelector(getPickedIds)
+  const playerPosition = useSelector((state: ViewState) => state.playerAfterPlacedCards.position)
 
-const HandCards: React.SFC<StateProps & DispatchProps> = ({
-  chooseMoveDirection,
-  cards,
-  pickedIds,
-  playerPosition,
-  pickCard,
-  showDetails,
-}) => {
+  const dispatch = useDispatch()
+
   const [configuringCard, setConfiguringCard] = useState<Card | undefined>(undefined)
 
   const startPickingCard = (card: Card) => {
     if (chooseMoveDirection && card.effects.first<CardEffect>().type === "move") {
       setConfiguringCard(card)
     } else {
-      pickCard(card, cards.indexOf(card))
+      dispatch(placeCard(card, cards.indexOf(card)))
     }
   }
 
@@ -64,7 +55,7 @@ const HandCards: React.SFC<StateProps & DispatchProps> = ({
       )
     )
 
-    pickCard(configuredCard, cards.indexOf(configuringCard))
+    dispatch(placeCard(configuredCard, cards.indexOf(configuringCard)))
 
     setConfiguringCard(undefined)
   }
@@ -75,33 +66,17 @@ const HandCards: React.SFC<StateProps & DispatchProps> = ({
         <MoveDirectionPicker onConfigured={onConfigured} />
       </Modal>
 
-      {cards.map((card) => (
+      {cards.toArray().map((card) => (
         <HandCard
           key={card.id}
           card={card}
           isPicked={pickedIds.includes(card.id)}
           onClick={() => startPickingCard(card)}
-          onLongPress={() => showDetails(card)}
+          onLongPress={() => dispatch(showCardDetails(card))}
         />
       ))}
     </Wrapper>
   )
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  return {
-    chooseMoveDirection: state.game?.hasFeature(GameFeature.PickMoveDirection),
-    cards: state.player.hand.cards.toArray(),
-    pickedIds: state.placedCards.toArray().map((card) => card.configuredCard.id),
-    playerPosition: state.playerAfterPlacedCards.position,
-  }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    pickCard: (card, index) => dispatch(placeCard(card, index)),
-    showDetails: (card) => dispatch(showCardDetails(card)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HandCards)
+export default HandCards

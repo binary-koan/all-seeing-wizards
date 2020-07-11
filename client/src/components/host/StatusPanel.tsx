@@ -1,7 +1,7 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
-import { Action, startGame } from "../../state/actions"
+import React, { FunctionComponent, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { createSelector } from "reselect"
+import { startGame } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
@@ -32,31 +32,37 @@ const StatusPanelDescription = styled.p`
   margin: 0 2rem 0 0;
 `
 
-interface StateProps {
-  title?: string
-  description?: string
-  actionText?: string
-  actionEnabled?: boolean
-}
+const getState = createSelector(
+  [
+    (state: ViewState) => state.game?.started,
+    (state: ViewState) => state.game?.code,
+    (state: ViewState) => state.game?.players?.size
+  ],
+  (started, code, playerCount) =>
+    code && !started
+      ? {
+          title: `Waiting for players ...`,
+          description: `Game code: ${code}`,
+          actionText: "Start",
+          actionEnabled: playerCount >= 2
+        }
+      : {}
+)
 
-interface DispatchProps {
-  performAction?: () => void
-}
+const StatusPanel: FunctionComponent = () => {
+  const { title, description, actionText, actionEnabled } = useSelector(getState)
+  const dispatch = useDispatch()
+  const doStartGame = useCallback(() => dispatch(startGame), [dispatch])
 
-const StatusPanel: React.SFC<StateProps & DispatchProps> = props => {
-  if (props.title) {
+  if (title) {
     return (
       <StatusPanelWrapper>
         <div>
-          <StatusPanelTitle>{props.title}</StatusPanelTitle>
-          <StatusPanelDescription>{props.description}</StatusPanelDescription>
+          <StatusPanelTitle>{title}</StatusPanelTitle>
+          <StatusPanelDescription>{description}</StatusPanelDescription>
         </div>
-        <ActionButton
-          variant="primary"
-          disabled={!props.actionEnabled}
-          onClick={props.performAction}
-        >
-          {props.actionText}
+        <ActionButton variant="primary" disabled={!actionEnabled} onClick={doStartGame}>
+          {actionText}
         </ActionButton>
       </StatusPanelWrapper>
     )
@@ -65,23 +71,4 @@ const StatusPanel: React.SFC<StateProps & DispatchProps> = props => {
   }
 }
 
-function mapStateToProps({ game }: ViewState): StateProps {
-  if (game && !game.started) {
-    return {
-      title: `Waiting for players ...`,
-      description: `Game code: ${game.code}`,
-      actionText: "Start",
-      actionEnabled: game.players.size >= 2
-    }
-  } else {
-    return {}
-  }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>): DispatchProps {
-  return {
-    performAction: () => dispatch(startGame())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StatusPanel)
+export default StatusPanel

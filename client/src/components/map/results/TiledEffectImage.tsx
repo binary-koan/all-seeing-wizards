@@ -1,10 +1,10 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import { List } from "immutable"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { BoardTile } from "../../../../../common/src/state/boardTile"
 import { Player } from "../../../../../common/src/state/player"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
-import { MapViewScaleProps, withMapViewScale } from "../MapViewScaleContext"
+import { useMapViewScale } from "../MapViewScaleContext"
 
 interface TiledEffectImageProps {
   result: ActionResult & {
@@ -15,18 +15,26 @@ interface TiledEffectImageProps {
   alpha: number
 }
 
-const TiledEffectImage: React.SFC<TiledEffectImageProps & MapViewScaleProps> = props => (
-  <Container>
-    {props.result.tiles.map(tile => (
-      <Sprite
-        key={[tile.position.x, tile.position.y].toString()}
-        image={props.imagePath}
-        alpha={props.alpha}
-        {...props.mapViewScale.tileSize}
-        {...props.mapViewScale.mapPosition(tile.position)}
-      />
-    ))}
-  </Container>
-)
+const TiledEffectImage: FunctionComponent<TiledEffectImageProps> = ({
+  result,
+  imagePath,
+  alpha
+}) => {
+  const mapViewScale = useMapViewScale()
 
-export default withMapViewScale(TiledEffectImage)
+  return (
+    <Container>
+      {result.tiles.map(tile => (
+        <Sprite
+          key={[tile.position.x, tile.position.y].toString()}
+          image={imagePath}
+          alpha={alpha}
+          {...mapViewScale.tileSize}
+          {...mapViewScale.mapPosition(tile.position)}
+        />
+      ))}
+    </Container>
+  )
+}
+
+export default TiledEffectImage

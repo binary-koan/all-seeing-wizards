@@ -1,8 +1,6 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
-import { Card } from "../../../../common/src/state/card"
-import { Action, showCardDetails } from "../../state/actions"
+import React, { FunctionComponent, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { showCardDetails } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import Modal from "../Modal"
 import styled from "../util/styled"
@@ -43,41 +41,29 @@ const DescriptionContainer = styled.div`
   line-height: 1.5;
 `
 
-interface StateProps {
-  card?: Card
+const CardDetails: FunctionComponent = () => {
+  const card = useSelector((state: ViewState) => state.showingCardDetails)
+  const dispatch = useDispatch()
+  const close = useCallback(() => dispatch(showCardDetails(undefined)), [dispatch])
+
+  return (
+    <Modal isVisible={Boolean(card)} close={close}>
+      {card ? (
+        <>
+          <CardImage src={data.cards[card.name] && data.cards[card.name].image} />
+          <Title>{card.name}</Title>
+          {card.tagline ? <Subtitle>of {card.tagline}</Subtitle> : null}
+          <CardTypeContainer>
+            <StyledCardTypeIcon card={card} />
+            <CardTypeName card={card} />
+          </CardTypeContainer>
+          <DescriptionContainer>
+            {data.cards[card.name] && data.cards[card.name].description}
+          </DescriptionContainer>
+        </>
+      ) : null}
+    </Modal>
+  )
 }
 
-interface DispatchProps {
-  close: () => void
-}
-
-const CardDetails: React.SFC<StateProps & DispatchProps> = props => (
-  <Modal isVisible={Boolean(props.card)} close={props.close}>
-    {props.card ? (
-      <>
-        <CardImage src={data.cards[props.card.name] && data.cards[props.card.name].image} />
-        <Title>{props.card.name}</Title>
-        {props.card.tagline ? <Subtitle>of {props.card.tagline}</Subtitle> : null}
-        <CardTypeContainer>
-          <StyledCardTypeIcon card={props.card} />
-          <CardTypeName card={props.card} />
-        </CardTypeContainer>
-        <DescriptionContainer>
-          {data.cards[props.card.name] && data.cards[props.card.name].description}
-        </DescriptionContainer>
-      </>
-    ) : null}
-  </Modal>
-)
-
-function mapStateToProps(state: ViewState): StateProps {
-  return { card: state.showingCardDetails }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<Action>) {
-  return {
-    close: () => dispatch(showCardDetails(undefined))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardDetails)
+export default CardDetails

@@ -1,44 +1,37 @@
 import { Container } from "@inlet/react-pixi"
 import { List } from "immutable"
-import React from "react"
-import { connect } from "react-redux"
-import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
-import ViewState from "../../../state/viewState"
-import { ResultViewOverrides, ResultViewProps } from "../results/ResultViewProps"
-
+import React, { FunctionComponent } from "react"
+import { useSelector } from "react-redux"
+import { createSelector } from "reselect"
 import data from "../../../../packs/base/viewConfig"
+import ViewState from "../../../state/viewState"
+import { ResultViewProps } from "../results/ResultViewProps"
+
+const getResultComponents = createSelector(
+  (state: ViewState) => state.showingResults,
+  (actionResults = List()) =>
+    actionResults.map(result => ({
+      result,
+      overrides: result.card && data.cards[result.card.name].realViewOverrides
+    }))
+)
 
 interface RealActionResultsProps {
-  resultView: React.SFC<ResultViewProps>
+  resultView: FunctionComponent<ResultViewProps>
 }
 
-interface StateProps {
-  resultComponents: Array<{ result: ActionResult; overrides: ResultViewOverrides }>
-}
+const RealActionResults: FunctionComponent<RealActionResultsProps> = props => {
+  const resultComponents = useSelector(getResultComponents)
 
-const RealActionResults: React.SFC<StateProps & RealActionResultsProps> = props => {
   const ResultView = props.resultView
 
   return (
     <Container>
-      {props.resultComponents.map(({ result, overrides }, index) => (
+      {resultComponents.toArray().map(({ result, overrides }, index) => (
         <ResultView key={`${result.type}${index}`} result={result} overrides={overrides} />
       ))}
     </Container>
   )
 }
 
-function mapStateToProps(state: ViewState): StateProps {
-  const actionResults = state.showingResults || List()
-
-  return {
-    resultComponents: actionResults
-      .toArray()
-      .map(result => ({
-        result,
-        overrides: result.card && data.cards[result.card.name].realViewOverrides
-      }))
-  }
-}
-
-export default connect(mapStateToProps)(RealActionResults)
+export default RealActionResults

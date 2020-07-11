@@ -195,6 +195,7 @@ export function createTestGameState({
     started: false,
     players: players || Map(),
     board: board || createTestBoard(),
-    deck: deck || createTestDeck()
+    deck: deck || createTestDeck(),
+    features: List()
   })
 }

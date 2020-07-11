@@ -1,11 +1,13 @@
 import { ObjectID } from "mongodb"
 import { CardEffect } from "../../../common/src/state/cardEffect"
 import { DirectionalPoint } from "../../../common/src/state/directionalPoint"
+import { GameFeature } from "../../../common/src/state/game"
 
 export interface PackDoc {
   _id?: ObjectID
   version: number
   name: string
+  features: GameFeature[]
 }
 
 export interface GameDiff {

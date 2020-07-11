@@ -1,10 +1,11 @@
 import { Duration } from "../../../common/src/state/duration"
+import { GameFeature } from "../../../common/src/state/game"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
   version: 14,
-  name: "base",
-  features: [],
+  name: "pickMoveDirection",
+  features: [GameFeature.PickMoveDirection],
   boards: [
     boardConfig(`
       w . b .
@@ -96,18 +97,40 @@ const values: DbValues = {
   cards: [
     {
       name: "Move 1",
-      count: 12,
+      count: 3,
       effects: [{ type: "move", amount: 1, rotation: "none" }],
     },
     {
       name: "Move 2",
-      count: 12,
+      count: 7,
       effects: [{ type: "move", amount: 2, rotation: "none" }],
     },
     {
-      name: "Turn",
-      count: 4,
-      effects: [{ type: "move", amount: 0, rotation: "none" }],
+      name: "Turn Clockwise & Move",
+      count: 7,
+      effects: [{ type: "move", amount: 1, rotation: "clockwise" }],
+    },
+    {
+      name: "Turn Anticlockwise & Move",
+      count: 7,
+      effects: [
+        {
+          type: "move",
+          amount: 1,
+          rotation: "anticlockwise",
+        },
+      ],
+    },
+    {
+      name: "Turn Around & Move",
+      count: 7,
+      effects: [
+        {
+          type: "move",
+          amount: 1,
+          rotation: "reverse",
+        },
+      ],
     },
     {
       name: "Hellfire Breath of Chillies",

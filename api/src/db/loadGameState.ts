@@ -18,10 +18,10 @@ import { Point } from "../../../common/src/state/point"
 import { BOARD_SIZE } from "../../packs/types"
 import loadCards from "./loaders/cards"
 import parseCard from "./parsers/card"
-import { BoardDoc, CharacterDoc, GameDoc, PlayerDoc } from "./types"
+import { BoardDoc, CharacterDoc, GameDoc, PackDoc, PlayerDoc } from "./types"
 
 export default async function loadGameState(code: string, db: Db): Promise<Game> {
-  const { gameDoc, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, code)
+  const { gameDoc, packDocs, boardDocs, characterDocs, playerDocs } = await loadFromDb(db, code)
 
   if (!gameDoc) {
     return
@@ -29,7 +29,7 @@ export default async function loadGameState(code: string, db: Db): Promise<Game>
 
   const cards = await loadCards(gameDoc.packIds, db)
   const players = buildPlayers(playerDocs, characterDocs, cards)
-  const deck = buildDeck(cards, players, gameDoc)
+  const deck = buildDeck(cards, gameDoc)
   const board = buildBoard(boardDocs, gameDoc)
 
   return new Game({
@@ -38,7 +38,8 @@ export default async function loadGameState(code: string, db: Db): Promise<Game>
     started: gameDoc.started,
     players,
     deck,
-    board
+    board,
+    features: List(packDocs).flatMap(pack => pack.features)
   })
 }
 
@@ -104,7 +105,7 @@ function addPlayer(
   return players
 }
 
-function buildDeck(cards: Map<string, Card>, players: Map<string, Player>, gameDoc: GameDoc) {
+function buildDeck(cards: Map<string, Card>, gameDoc: GameDoc) {
   const usedCardIdStrings = gameDoc.usedCardIds.map(id => id.toHexString())
   const availableCardIdStrings = gameDoc.availableCardIds.map(id => id.toHexString())
 
@@ -208,6 +209,10 @@ async function loadFromDb(db: Db, code: string) {
 
   return {
     gameDoc,
+    packDocs: await db
+      .collection("packs")
+      .find<PackDoc>({ _id: { $in: gameDoc.packIds } })
+      .toArray(),
     boardDocs: await db
       .collection("boards")
       .find<BoardDoc>(fromPacks)

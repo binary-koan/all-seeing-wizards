@@ -43,17 +43,17 @@ export default async function loadPacks(db: Db) {
 
 async function loadPack(data: DbValues, db: Db) {
   const packInsert = await db
-    .collection("packs")
-    .insertOne({ version: data.version, name: data.name })
+    .collection<PackDoc>("packs")
+    .insertOne({ version: data.version, name: data.name, features: data.features })
 
   await db
-    .collection("boards")
+    .collection<BoardDoc>("boards")
     .insertMany(data.boards.map(board => buildBoard(board, packInsert.insertedId)))
   await db
-    .collection("characters")
+    .collection<CharacterDoc>("characters")
     .insertMany(data.characters.map(character => buildCharacter(character, packInsert.insertedId)))
   await db
-    .collection("cards")
+    .collection<CardDoc>("cards")
     .insertMany(
       data.cards.reduce((docs, card) => docs.concat(buildCards(card, packInsert.insertedId)), [])
     )

@@ -46,6 +46,7 @@ export function deserializeGame(data: any) {
       discardedCards: List(data.deck.discardedCards)
         .map(deserializeCard)
         .toList()
-    })
+    }),
+    features: List(data.features)
   })
 }

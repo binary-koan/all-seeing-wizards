@@ -1,16 +1,7 @@
 import { List } from "immutable"
+import { Card } from "../../../common/src/state/card"
 import { Game } from "../../../common/src/state/game"
 import { ActionResult } from "../../../common/src/turnResults/resultTypes"
-import { Card } from "../../../common/src/state/card"
-
-export interface SetGameCodeAction {
-  type: "setGameCode"
-  code: string
-}
-
-export function setGameCode(code: string): SetGameCodeAction {
-  return { type: "setGameCode", code }
-}
 
 export interface FatalErrorAction {
   type: "fatalError"
@@ -38,13 +29,31 @@ export function socketDisconnected(): SocketDisconnectedAction {
   return { type: "socketDisconnected" }
 }
 
+export interface FetchPacksAction {
+  type: "fetchPacks"
+}
+
+export function fetchPacks(): FetchPacksAction {
+  return { type: "fetchPacks" }
+}
+
+export interface PacksFetchedAction {
+  type: "packsFetched"
+  packs: List<{ id: string; name: string }>
+}
+
+export function packsFetched(packs: List<{ id: string; name: string }>): PacksFetchedAction {
+  return { type: "packsFetched", packs }
+}
+
 export interface CreateGameAction {
   type: "createGame"
   boards: number
+  packIds: List<string>
 }
 
-export function createGame(boards: number): CreateGameAction {
-  return { type: "createGame", boards }
+export function createGame(boards: number, packIds: List<string>): CreateGameAction {
+  return { type: "createGame", boards, packIds }
 }
 
 export interface GameCreatedAction {
@@ -67,10 +76,11 @@ export function rehostGame(code: string): RehostGameAction {
 
 export interface JoinGameAction {
   type: "joinGame"
+  gameCode: string
 }
 
-export function joinGame(): JoinGameAction {
-  return { type: "joinGame" }
+export function joinGame(gameCode: string): JoinGameAction {
+  return { type: "joinGame", gameCode }
 }
 
 export interface ChooseCharacterAction {
@@ -220,7 +230,8 @@ export type Action =
   | SocketConnectedAction
   | SocketDisconnectedAction
   | FatalErrorAction
-  | SetGameCodeAction
+  | FetchPacksAction
+  | PacksFetchedAction
   | CreateGameAction
   | RehostGameAction
   | JoinGameAction

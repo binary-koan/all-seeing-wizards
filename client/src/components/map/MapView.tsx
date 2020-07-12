@@ -1,6 +1,6 @@
 import { Stage } from "@inlet/react-pixi"
 import React, { FunctionComponent } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useStore } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
@@ -15,6 +15,7 @@ import ResultPlanOverlay from "./results/ResultPlanOverlay"
 import ResultPlanUnderlay from "./results/ResultPlanUnderlay"
 import ResultRealOverlay from "./results/ResultRealOverlay"
 import ResultRealUnderlay from "./results/ResultRealUnderlay"
+import { Provider as StoreProvider } from "react-redux"
 
 const PADDING = 0.5
 
@@ -79,6 +80,7 @@ function canvasSizeBasedOnHeight(props: MapViewProps, tilesWide: number, tilesHi
 }
 
 const MapView: FunctionComponent<MapViewProps> = props => {
+  const store = useStore()
   const tilesWide = useSelector((state: ViewState) => state.game.board.width)
   const tilesHigh = useSelector((state: ViewState) => state.game.board.height)
   const isPlayerView = useSelector((state: ViewState) => Boolean(state.player))
@@ -96,19 +98,22 @@ const MapView: FunctionComponent<MapViewProps> = props => {
       options={{ backgroundColor: 0x20263d }}
       onMount={app => ((window as any).app = app)}
     >
-      <ScaleContextProvider value={buildMapViewScale(size)}>
-        <Camera centerOn={props.centerOn}>
-          <BoardTiles />
-          <HauntedZones />
-          <PlannedActionResults planView={ResultPlanUnderlay} />
-          <RealActionResults resultView={ResultRealUnderlay} />
-          <Players />
-          {isPlayerView ? <GhostPlayer /> : null}
-          <PlannedActionResults planView={ResultPlanOverlay} />
-          <RealActionResults resultView={ResultRealOverlay} />
-          {isPlayerView ? null : <HealthBars />}
-        </Camera>
-      </ScaleContextProvider>
+      {/* https://github.com/inlet/react-pixi/issues/77 & https://github.com/facebook/react/issues/17275 */}
+      <StoreProvider store={store}>
+        <ScaleContextProvider value={buildMapViewScale(size)}>
+          <Camera centerOn={props.centerOn}>
+            <BoardTiles />
+            <HauntedZones />
+            <PlannedActionResults planView={ResultPlanUnderlay} />
+            <RealActionResults resultView={ResultRealUnderlay} />
+            <Players />
+            {isPlayerView ? <GhostPlayer /> : null}
+            <PlannedActionResults planView={ResultPlanOverlay} />
+            <RealActionResults resultView={ResultRealOverlay} />
+            {isPlayerView ? null : <HealthBars />}
+          </Camera>
+        </ScaleContextProvider>
+      </StoreProvider>
     </Stage>
   )
 }

@@ -2,6 +2,7 @@ import { Dispatch, Middleware } from "redux"
 import {
   CHOOSE_CHARACTER,
   CREATE_GAME,
+  FETCH_PACKS,
   JOIN_GAME,
   REHOST_GAME,
   REJOIN_GAME,
@@ -35,17 +36,19 @@ function sendSocketEvent(socket: SocketIOClient.Socket, event: SocketEvent) {
 
 function buildSocketEvent(state: ViewState, action: Action): ToServerSocketEvent {
   switch (action.type) {
+    case FETCH_PACKS:
+      return { event: FETCH_PACKS }
     case CREATE_GAME:
       return {
         event: CREATE_GAME,
-        args: { packIds: null, boards: action.boards }
+        args: { packIds: action.packIds.toArray(), boards: action.boards }
       }
     case REHOST_GAME:
       return { event: REHOST_GAME, args: { gameCode: action.code } }
     case JOIN_GAME:
       return {
         event: JOIN_GAME,
-        args: { gameCode: state.gameCode }
+        args: { gameCode: action.gameCode }
       }
     case CHOOSE_CHARACTER:
       return {

@@ -1,6 +1,6 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const CleanWebpackPlugin = require("clean-webpack-plugin")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 module.exports = {
   entry: "./src/main.tsx",
@@ -26,7 +26,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"]
   },
   plugins: [
-    new CleanWebpackPlugin(["dist"]),
+    new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ["dist"] }),
     new HtmlWebpackPlugin({
       template: "index.html"
     })

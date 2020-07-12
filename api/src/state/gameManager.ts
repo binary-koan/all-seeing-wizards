@@ -1,6 +1,6 @@
 import { List } from "immutable"
 import { Db, ObjectID } from "mongodb"
-import joinGame, { JoinResult } from "../../../common/src/joinGame"
+import joinGame from "../../../common/src/joinGame"
 import startGame from "../../../common/src/startGame"
 import { Game } from "../../../common/src/state/game"
 import { deserializeCard } from "../../../common/src/state/serialization/card"
@@ -9,6 +9,7 @@ import buildGameFromPacks from "../db/buildGameFromPacks"
 import findCharacter from "../db/findCharacter"
 import loadGameState from "../db/loadGameState"
 import saveGameState from "../db/saveGameState"
+import { PackDoc } from "../db/types"
 
 export default class GameManager {
   public readonly db: Db
@@ -17,6 +18,14 @@ export default class GameManager {
   constructor(db: Db) {
     this.db = db
     this.games = {}
+  }
+
+  public async fetchPacks() {
+    const packs = await this.db
+      .collection<PackDoc>("packs")
+      .find()
+      .toArray()
+    return packs.map(pack => ({ id: pack._id.toHexString(), name: pack.name }))
   }
 
   public async create(packIds: string[], boards: number) {

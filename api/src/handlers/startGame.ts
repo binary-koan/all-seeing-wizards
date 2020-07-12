@@ -11,7 +11,7 @@ import { emitToGame } from "../socket/emit"
 
 const handleStartGame = createEventHandler(
   START_GAME,
-  withGameClient(async (client, { socket, manager }) => {
+  withGameClient(async (_, { client, socket, manager }) => {
     const newState = await manager.start(client.gameCode)
 
     if (newState) {

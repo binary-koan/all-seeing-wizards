@@ -1,3 +1,5 @@
+export const FETCH_PACKS = "fetchPacks"
+
 export const CREATE_GAME = "createGame"
 
 export interface CreateGameData {
@@ -39,6 +41,7 @@ export interface SubmitCardsData {
 }
 
 export type ToServerSocketEvent =
+  | { event: typeof FETCH_PACKS }
   | { event: typeof CREATE_GAME; args: CreateGameData }
   | { event: typeof REHOST_GAME; args: RehostGameData }
   | { event: typeof JOIN_GAME; args: JoinGameData }

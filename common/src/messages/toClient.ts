@@ -1,3 +1,9 @@
+export const PACKS_FETCHED = "packsFetched"
+
+export interface PacksFetchedData {
+  packs: Array<{ id: string; name: string }>
+}
+
 export const GAME_CREATED = "gameCreated"
 
 export interface GameCreatedData {

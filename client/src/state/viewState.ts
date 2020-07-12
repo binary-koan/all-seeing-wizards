@@ -10,9 +10,14 @@ type Connection =
   | { type: "host"; id: string }
   | { type: "player"; id: string; placedCards: List<{ configuredCard: Card; index: number }> }
 
+interface PackDetails {
+  readonly id: string
+  readonly name: string
+}
+
 interface IViewState {
+  packs?: List<PackDetails>
   game?: Game
-  gameCode: string
   connectedAs: Connection
   error?: { message: string; exception?: string }
   socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"
@@ -22,8 +27,8 @@ interface IViewState {
 }
 
 const viewState = RecordFactory<IViewState>({
+  packs: undefined,
   game: undefined,
-  gameCode: "",
   connectedAs: { type: "none" },
   error: undefined,
   socketState: "connecting",
@@ -33,8 +38,8 @@ const viewState = RecordFactory<IViewState>({
 })
 
 export default class ViewState extends viewState implements IViewState {
+  public readonly packs?: List<PackDetails>
   public readonly game?: Game
-  public readonly gameCode: string
   public readonly error?: { message: string; exception?: string }
   public readonly connectedAs: Connection
   public readonly socketState: "connecting" | "awaitingResponse" | "connected" | "disconnected"

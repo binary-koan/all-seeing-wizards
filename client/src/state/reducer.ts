@@ -10,14 +10,14 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
     case "fatalError":
       return state.set("error", { message: action.message, exception: action.exception })
 
-    case "setGameCode":
-      return state.set("gameCode", action.code.toUpperCase())
-
     case "socketConnected":
       return state.set("socketState", "connected")
 
     case "socketDisconnected":
       return state.set("socketState", "disconnected")
+
+    case "packsFetched":
+      return state.set("packs", action.packs)
 
     case "createGame":
       return state.set("socketState", "awaitingResponse")

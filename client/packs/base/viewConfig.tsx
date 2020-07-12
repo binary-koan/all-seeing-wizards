@@ -8,7 +8,7 @@ import { ViewConfig } from "../types"
 const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
-      image: require("./cards/forward-1.png"),
+      image: require("./cards/forward-1.png").default,
       description: (
         <>
           Move forward <strong>1 space</strong>.
@@ -17,7 +17,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Move 2": {
-      image: require("./cards/forward-2.png"),
+      image: require("./cards/forward-2.png").default,
       description: (
         <>
           Move forward <strong>2 spaces</strong>.
@@ -26,12 +26,12 @@ const viewConfig: ViewConfig = {
     },
 
     Turn: {
-      image: require("./cards/turn-around-move.png"),
+      image: require("./cards/turn-around-move.png").default,
       description: <>Turn on the spot without moving.</>
     },
 
     "Hellfire Breath": {
-      image: require("./cards/hellfire-breath.png"),
+      image: require("./cards/hellfire-breath.png").default,
       description: (
         <>
           Deal <strong>2 damage</strong> to all players in a <strong>3x3 square</strong> in front of
@@ -41,7 +41,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-fire.png"),
+            imagePath: require("./effects/attack-fire.png").default,
             alpha: 0.75
           })
         }
@@ -49,16 +49,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-fire.png"),
+            imagePath: require("./effects/attack-fire.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-fire.png")]
+      preloadImages: [require("./effects/attack-fire.png").default]
     },
 
     "Chaos Storm": {
-      image: require("./cards/chaos-storm.png"),
+      image: require("./cards/chaos-storm.png").default,
       description: (
         <>
           Deal <strong>2 damage</strong> to all players in a <strong>5x5 square</strong> around you.
@@ -67,7 +67,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-storm.png"),
+            imagePath: require("./effects/attack-storm.png").default,
             alpha: 0.75
           })
         }
@@ -75,16 +75,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-storm.png"),
+            imagePath: require("./effects/attack-storm.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-storm.png")]
+      preloadImages: [require("./effects/attack-storm.png").default]
     },
 
     "Magical Dart": {
-      image: require("./cards/magical-dart.png"),
+      image: require("./cards/magical-dart.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players in a <strong>line</strong> directly in front
@@ -94,7 +94,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Spartan Kick": {
-      image: require("./cards/spartan-kick.png"),
+      image: require("./cards/spartan-kick.png").default,
       description: (
         <>
           Deal <strong>3 damage</strong> to a player <strong>directly in front</strong> of you, and
@@ -104,7 +104,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Homing Missile": {
-      image: require("./cards/homing-missiles.png"),
+      image: require("./cards/homing-missiles.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players in a <strong>9x9 square</strong> around you.
@@ -113,7 +113,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-homing.png"),
+            imagePath: require("./effects/attack-homing.png").default,
             alpha: 0.75
           })
         }
@@ -121,16 +121,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-homing.png"),
+            imagePath: require("./effects/attack-homing.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-homing.png")]
+      preloadImages: [require("./effects/attack-homing.png").default]
     },
 
     "Freezing Touch": {
-      image: require("./cards/freezing-touch.png"),
+      image: require("./cards/freezing-touch.png").default,
       description: (
         <>
           <strong>Prevent</strong> a player <strong>directly in front</strong> of you from doing
@@ -140,7 +140,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attemptPreventActions: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-freeze.png"),
+            imagePath: require("./effects/attack-freeze.png").default,
             alpha: 0.75
           })
         }
@@ -148,16 +148,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attemptPreventActions: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-freeze.png"),
+            imagePath: require("./effects/attack-freeze.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-freeze.png")]
+      preloadImages: [require("./effects/attack-freeze.png").default]
     },
 
     "Yellow Snowballs": {
-      image: require("./cards/yellow-snowballs.png"),
+      image: require("./cards/yellow-snowballs.png").default,
       description: (
         <>
           <strong>Prevent</strong> all players in a <strong>5x5 square</strong> around you from
@@ -167,7 +167,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attemptPreventActions: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-snowballs.png"),
+            imagePath: require("./effects/attack-snowballs.png").default,
             alpha: 0.75
           })
         }
@@ -175,16 +175,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attemptPreventActions: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-snowballs.png"),
+            imagePath: require("./effects/attack-snowballs.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-snowballs.png")]
+      preloadImages: [require("./effects/attack-snowballs.png").default]
     },
 
     "Force Lightning": {
-      image: require("./cards/force-lightning.png"),
+      image: require("./cards/force-lightning.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players in a <strong>line</strong> in front and
@@ -194,7 +194,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-lightning.png"),
+            imagePath: require("./effects/attack-lightning.png").default,
             alpha: 0.75
           })
         }
@@ -202,16 +202,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-lightning.png"),
+            imagePath: require("./effects/attack-lightning.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-lightning.png")]
+      preloadImages: [require("./effects/attack-lightning.png").default]
     },
 
     "Spider Minions": {
-      image: require("./cards/spider-minions.png"),
+      image: require("./cards/spider-minions.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players in a <strong>line</strong> in the 4
@@ -221,7 +221,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-spider.png"),
+            imagePath: require("./effects/attack-spider.png").default,
             alpha: 0.75
           })
         }
@@ -229,16 +229,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(TiledEffectImage, {
-            imagePath: require("./effects/attack-spider.png"),
+            imagePath: require("./effects/attack-spider.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-spider.png")]
+      preloadImages: [require("./effects/attack-spider.png").default]
     },
 
     "Piercing Scream": {
-      image: require("./cards/piercing-scream.png"),
+      image: require("./cards/piercing-scream.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players in a <strong>3x3 square</strong> around you,
@@ -248,7 +248,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-scream.png"),
+            imagePath: require("./effects/attack-scream.png").default,
             alpha: 0.75
           })
         }
@@ -256,16 +256,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-scream.png"),
+            imagePath: require("./effects/attack-scream.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-scream.png")]
+      preloadImages: [require("./effects/attack-scream.png").default]
     },
 
     Earthquake: {
-      image: require("./cards/earthquake.png"),
+      image: require("./cards/earthquake.png").default,
       description: (
         <>
           Deal <strong>1 damage</strong> to all players.
@@ -274,7 +274,7 @@ const viewConfig: ViewConfig = {
       planViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-earthquake.png"),
+            imagePath: require("./effects/attack-earthquake.png").default,
             alpha: 0.75
           })
         }
@@ -282,16 +282,16 @@ const viewConfig: ViewConfig = {
       realViewOverrides: {
         [OVERRIDE_UNDERLAY]: {
           attack: bindProps(StretchedEffectImage, {
-            imagePath: require("./effects/attack-earthquake.png"),
+            imagePath: require("./effects/attack-earthquake.png").default,
             alpha: 1
           })
         }
       },
-      preloadImages: [require("./effects/attack-earthquake.png")]
+      preloadImages: [require("./effects/attack-earthquake.png").default]
     },
 
     "Magical Shield": {
-      image: require("./cards/magical-shield.png"),
+      image: require("./cards/magical-shield.png").default,
       description: (
         <>
           <strong>Shield</strong> yourself from damage for <strong>this action</strong> only.
@@ -300,7 +300,7 @@ const viewConfig: ViewConfig = {
     },
 
     Dimension: {
-      image: require("./cards/dimension.png"),
+      image: require("./cards/dimension.png").default,
       description: (
         <>
           <strong>Shield</strong> yourself from damage for <strong>the rest of the turn</strong>.
@@ -309,7 +309,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Mirror Shield": {
-      image: require("./cards/mirror-shield.png"),
+      image: require("./cards/mirror-shield.png").default,
       description: (
         <>
           <strong>Reflect</strong> any damage you would normally take back at the attacker for{" "}
@@ -319,7 +319,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Parental Yell": {
-      image: require("./cards/parental-yell.png"),
+      image: require("./cards/parental-yell.png").default,
       description: (
         <>
           <strong>Prevent</strong> all other players' cards from having any effect on{" "}
@@ -329,7 +329,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Healing Drink": {
-      image: require("./cards/healing-drink.png"),
+      image: require("./cards/healing-drink.png").default,
       description: (
         <>
           <strong>Heal 1 point</strong> of damage.
@@ -338,7 +338,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Healing Meal": {
-      image: require("./cards/healing-meal.png"),
+      image: require("./cards/healing-meal.png").default,
       description: (
         <>
           <strong>Heal 2 points</strong> of damage.
@@ -347,7 +347,7 @@ const viewConfig: ViewConfig = {
     },
 
     "Rage Potion": {
-      image: require("./cards/rage-potion.png"),
+      image: require("./cards/rage-potion.png").default,
       description: (
         <>
           If your next action is an attack, <strong>increase its damage</strong> by{" "}
@@ -360,92 +360,92 @@ const viewConfig: ViewConfig = {
   characters: {
     "Despicable Dark Lord": {
       images: {
-        north: require("./players/dark-lord-north.png"),
-        south: require("./players/dark-lord-south.png"),
-        east: require("./players/dark-lord-east.png"),
-        west: require("./players/dark-lord-west.png")
+        north: require("./players/dark-lord-north.png").default,
+        south: require("./players/dark-lord-south.png").default,
+        east: require("./players/dark-lord-east.png").default,
+        west: require("./players/dark-lord-west.png").default
       },
-      heartImage: require("./players/dark-lord-heart.png")
+      heartImage: require("./players/dark-lord-heart.png").default
     },
 
     "Clever Cleric": {
       images: {
-        north: require("./players/cleric-north.png"),
-        south: require("./players/cleric-south.png"),
-        east: require("./players/cleric-east.png"),
-        west: require("./players/cleric-west.png")
+        north: require("./players/cleric-north.png").default,
+        south: require("./players/cleric-south.png").default,
+        east: require("./players/cleric-east.png").default,
+        west: require("./players/cleric-west.png").default
       },
-      heartImage: require("./players/cleric-heart.png")
+      heartImage: require("./players/cleric-heart.png").default
     },
 
     "Pure Paladin": {
       images: {
-        north: require("./players/paladin-north.png"),
-        south: require("./players/paladin-south.png"),
-        east: require("./players/paladin-east.png"),
-        west: require("./players/paladin-west.png")
+        north: require("./players/paladin-north.png").default,
+        south: require("./players/paladin-south.png").default,
+        east: require("./players/paladin-east.png").default,
+        west: require("./players/paladin-west.png").default
       },
-      heartImage: require("./players/paladin-heart.png")
+      heartImage: require("./players/paladin-heart.png").default
     },
 
     "Adaptable Alchemist": {
       images: {
-        north: require("./players/alchemist-north.png"),
-        south: require("./players/alchemist-south.png"),
-        east: require("./players/alchemist-east.png"),
-        west: require("./players/alchemist-west.png")
+        north: require("./players/alchemist-north.png").default,
+        south: require("./players/alchemist-south.png").default,
+        east: require("./players/alchemist-east.png").default,
+        west: require("./players/alchemist-west.png").default
       },
-      heartImage: require("./players/alchemist-heart.png")
+      heartImage: require("./players/alchemist-heart.png").default
     },
 
     "Bold Battlemage": {
       images: {
-        north: require("./players/battlemage-north.png"),
-        south: require("./players/battlemage-south.png"),
-        east: require("./players/battlemage-east.png"),
-        west: require("./players/battlemage-west.png")
+        north: require("./players/battlemage-north.png").default,
+        south: require("./players/battlemage-south.png").default,
+        east: require("./players/battlemage-east.png").default,
+        west: require("./players/battlemage-west.png").default
       },
-      heartImage: require("./players/battlemage-heart.png")
+      heartImage: require("./players/battlemage-heart.png").default
     },
 
     "Grumpy Gnome": {
       images: {
-        north: require("./players/gnome-north.png"),
-        south: require("./players/gnome-south.png"),
-        east: require("./players/gnome-east.png"),
-        west: require("./players/gnome-west.png")
+        north: require("./players/gnome-north.png").default,
+        south: require("./players/gnome-south.png").default,
+        east: require("./players/gnome-east.png").default,
+        west: require("./players/gnome-west.png").default
       },
-      heartImage: require("./players/gnome-heart.png")
+      heartImage: require("./players/gnome-heart.png").default
     },
 
     "Indignant Imp": {
       images: {
-        north: require("./players/imp-north.png"),
-        south: require("./players/imp-south.png"),
-        east: require("./players/imp-east.png"),
-        west: require("./players/imp-west.png")
+        north: require("./players/imp-north.png").default,
+        south: require("./players/imp-south.png").default,
+        east: require("./players/imp-east.png").default,
+        west: require("./players/imp-west.png").default
       },
-      heartImage: require("./players/imp-heart.png")
+      heartImage: require("./players/imp-heart.png").default
     },
 
     "Thuggish Troll": {
       images: {
-        north: require("./players/troll-north.png"),
-        south: require("./players/troll-south.png"),
-        east: require("./players/troll-east.png"),
-        west: require("./players/troll-west.png")
+        north: require("./players/troll-north.png").default,
+        south: require("./players/troll-south.png").default,
+        east: require("./players/troll-east.png").default,
+        west: require("./players/troll-west.png").default
       },
-      heartImage: require("./players/troll-heart.png")
+      heartImage: require("./players/troll-heart.png").default
     },
 
     "Warping Warlock": {
       images: {
-        north: require("./players/warlock-north.png"),
-        south: require("./players/warlock-south.png"),
-        east: require("./players/warlock-east.png"),
-        west: require("./players/warlock-west.png")
+        north: require("./players/warlock-north.png").default,
+        south: require("./players/warlock-south.png").default,
+        east: require("./players/warlock-east.png").default,
+        west: require("./players/warlock-west.png").default
       },
-      heartImage: require("./players/warlock-heart.png")
+      heartImage: require("./players/warlock-heart.png").default
     }
   }
 }

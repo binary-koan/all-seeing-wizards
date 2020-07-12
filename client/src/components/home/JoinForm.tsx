@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useCallback } from "react"
+import React, { FunctionComponent, useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { joinGame, setGameCode } from "../../state/actions"
+import { joinGame } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import InputText from "../base/InputText"
@@ -11,12 +11,11 @@ const JoinFormWrapper = styled.div`
 `
 
 const JoinForm: FunctionComponent = props => {
-  const gameCode = useSelector((state: ViewState) => state.gameCode)
+  const [gameCode, setGameCode] = useState("")
   const isLoading = useSelector((state: ViewState) => state.socketState === "awaitingResponse")
 
   const dispatch = useDispatch()
-  const doSetGameCode = useCallback(() => dispatch(setGameCode(gameCode)), [dispatch, gameCode])
-  const doJoinGame = useCallback(() => dispatch(joinGame()), [dispatch])
+  const doJoinGame = useCallback(() => dispatch(joinGame(gameCode)), [dispatch, gameCode])
 
   return (
     <JoinFormWrapper>
@@ -25,7 +24,7 @@ const JoinForm: FunctionComponent = props => {
         placeholder="ABCD"
         autoFocus={true}
         value={gameCode}
-        onChange={doSetGameCode}
+        onChange={setGameCode}
       />
 
       <ActionButton variant="primary" disabled={isLoading} onClick={doJoinGame}>

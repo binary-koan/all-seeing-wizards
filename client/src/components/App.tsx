@@ -7,7 +7,7 @@ import Loading from "./Loading"
 import Player from "./Player"
 
 const App: FunctionComponent = () => {
-  const gameCode = useSelector((state: ViewState) => state.gameCode)
+  const gameCode = useSelector((state: ViewState) => state.game?.code)
   const playerId = useSelector(
     (state: ViewState) => state.connectedAs.type === "player" && state.connectedAs.id
   )

@@ -2,6 +2,7 @@ import { Container } from "@inlet/react-pixi"
 import React, { FunctionComponent } from "react"
 import tweener from "../util/tweener"
 import { useMapViewScale } from "./MapViewScaleContext"
+import { useSelector } from "react-redux"
 
 const TweenedContainer = tweener(Container, {
   x: { duration: 500 },
@@ -13,6 +14,7 @@ interface CameraProps {
 }
 
 const Camera: FunctionComponent<CameraProps> = ({ centerOn, children }) => {
+  const state = useSelector(state => state)
   const mapViewScale = useMapViewScale()
   const actualCenterOn = mapViewScale.mapPosition(centerOn)
 

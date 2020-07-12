@@ -1,3 +1,4 @@
+import { List } from "immutable"
 import {
   ACTIONS_PERFORMED,
   ActionsPerformedData,
@@ -7,6 +8,8 @@ import {
   GameCreatedData,
   GameJoinedData,
   GameUpdatedData,
+  PACKS_FETCHED,
+  PacksFetchedData,
   PLAYER_CONNECTED,
   PLAYER_DISCONNECTED,
   PlayerConnectedData,
@@ -21,6 +24,7 @@ import {
   gameCreated,
   gameJoined,
   gameUpdated,
+  packsFetched,
   playerConnected,
   playerDisconnected,
   socketConnected,
@@ -61,6 +65,10 @@ const ACTIONABLE_SOCKET_EVENTS: { [event: string]: EventHandler } = {
 
   disconnect: emit => () => {
     emit(socketDisconnected())
+  },
+
+  [PACKS_FETCHED]: emit => (data: PacksFetchedData) => {
+    emit(packsFetched(List(data.packs)))
   },
 
   [GAME_CREATED]: emit => (data: GameCreatedData) => {

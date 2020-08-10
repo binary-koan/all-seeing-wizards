@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSelector } from "reselect"
-import { startGame } from "../../state/actions"
+import { endGame, startGame } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
@@ -35,24 +35,48 @@ const StatusPanelDescription = styled.p`
 const getState = createSelector(
   [
     (state: ViewState) => state.game?.started,
+    (state: ViewState) => state.game?.winner,
+    (state: ViewState) => state.game?.isFinished,
     (state: ViewState) => state.game?.code,
     (state: ViewState) => state.game?.players?.size
   ],
-  (started, code, playerCount) =>
-    code && !started
-      ? {
-          title: `Waiting for players ...`,
-          description: `Game code: ${code}`,
-          actionText: "Start",
-          actionEnabled: playerCount >= 2
-        }
-      : {}
+  (started, winner, isFinished, code, playerCount) => {
+    if (code && !started) {
+      return {
+        title: `Waiting for players ...`,
+        description: `Game code: ${code}`,
+        actionText: "Start",
+        actionEnabled: playerCount >= 2,
+        actionToDispatch: startGame()
+      }
+    }
+
+    if (winner) {
+      return {
+        title: `The ${winner.character.name} wins!`,
+        actionText: "Quit",
+        actionEnabled: true,
+        actionToDispatch: endGame()
+      }
+    }
+
+    if (isFinished) {
+      return {
+        title: "It's a draw!",
+        actionText: "Quit",
+        actionEnabled: true,
+        actionToDispatch: endGame()
+      }
+    }
+
+    return {}
+  }
 )
 
 const StatusPanel: FunctionComponent = () => {
-  const { title, description, actionText, actionEnabled } = useSelector(getState)
+  const { title, description, actionText, actionEnabled, actionToDispatch } = useSelector(getState)
   const dispatch = useDispatch()
-  const doStartGame = useCallback(() => dispatch(startGame()), [dispatch])
+  const doAction = useCallback(() => dispatch(actionToDispatch), [dispatch, actionToDispatch])
 
   if (title) {
     return (
@@ -61,7 +85,7 @@ const StatusPanel: FunctionComponent = () => {
           <StatusPanelTitle>{title}</StatusPanelTitle>
           <StatusPanelDescription>{description}</StatusPanelDescription>
         </div>
-        <ActionButton variant="primary" disabled={!actionEnabled} onClick={doStartGame}>
+        <ActionButton variant="primary" disabled={!actionEnabled} onClick={doAction}>
           {actionText}
         </ActionButton>
       </StatusPanelWrapper>

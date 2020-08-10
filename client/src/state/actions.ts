@@ -110,6 +110,14 @@ export function startGame(): StartGameAction {
   return { type: "startGame" }
 }
 
+export interface EndGameAction {
+  type: "endGame"
+}
+
+export function endGame(): EndGameAction {
+  return { type: "endGame" }
+}
+
 export interface GameJoinedAction {
   type: "gameJoined"
   game: Game
@@ -238,6 +246,7 @@ export type Action =
   | ChooseCharacterAction
   | RejoinGameAction
   | StartGameAction
+  | EndGameAction
   | PlaceCardAction
   | UnplaceCardAction
   | SubmitCardsAction

@@ -32,15 +32,12 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
       return state.set("connectedAs", { type: "player", id: action.playerId, placedCards: List() })
 
     case "gameCreated":
-      sessionStorage.setItem("all-seeing-wizards.lastGameCode", action.game.code)
       return state
         .set("socketState", "connected")
         .set("game", action.game)
         .set("connectedAs", { type: "host" })
 
     case "gameJoined":
-      sessionStorage.setItem("all-seeing-wizards.lastGameCode", action.game.code)
-      sessionStorage.setItem("all-seeing-wizards.lastPlayerId", action.playerId)
       return state
         .set("socketState", "connected")
         .set("game", action.game)
@@ -84,6 +81,9 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
 
     case "showCardDetails":
       return state.set("showingCardDetails", action.card)
+
+    case "endGame":
+      return state.set("game", undefined).set("connectedAs", { type: "none" })
 
     default:
       return state

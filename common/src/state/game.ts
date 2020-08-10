@@ -5,7 +5,7 @@ import { Deck } from "./deck"
 import { Player } from "./player"
 
 export enum GameFeature {
-  PickMoveDirection = "PICK_MOVE_DIRECTION",
+  PickMoveDirection = "PICK_MOVE_DIRECTION"
 }
 
 interface IGame {
@@ -29,10 +29,10 @@ const game = RecordFactory<IGame>({
     zones: List(),
     startPositions: List(),
     hauntingZoneIndexes: List(),
-    hauntedZoneIndexes: List(),
+    hauntedZoneIndexes: List()
   }),
   deck: new Deck({ availableCards: List(), discardedCards: List() }),
-  features: List(),
+  features: List()
 })
 
 export class Game extends game implements IGame {
@@ -57,7 +57,17 @@ export class Game extends game implements IGame {
   }
 
   public get activePlayers() {
-    return this.players.filter((player) => player.character && !player.knockedOut)
+    return this.players.filter(player => player.character && !player.knockedOut)
+  }
+
+  public get winner() {
+    if (this.activePlayers.size === 1) {
+      return this.activePlayers.valueSeq().first<Player | undefined>()
+    }
+  }
+
+  public get isFinished() {
+    return this.activePlayers.size <= 1
   }
 
   public player(id: string) {

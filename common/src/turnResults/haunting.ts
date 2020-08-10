@@ -37,16 +37,13 @@ function advanceHaunting(game: Game) {
 }
 
 function findHauntingZones(game: Game) {
-  return game.players.reduce(
-    (zones, player) => {
-      if (player.knockedOut) {
-        return zones.push(nextHauntingZone(game.board, player.position, zones)).toList()
-      } else {
-        return zones
-      }
-    },
-    List() as List<BoardZone>
-  )
+  return game.players.reduce((zones, player) => {
+    if (player.knockedOut) {
+      return zones.push(nextHauntingZone(game.board, player.position, zones)).toList()
+    } else {
+      return zones
+    }
+  }, List() as List<BoardZone>)
 }
 
 function nextHauntingZone(

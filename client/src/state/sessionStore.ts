@@ -18,6 +18,10 @@ export const sessionStorageUpdater: Middleware<
       sessionStorage.setItem(GAME_CODE_KEY, action.game.code)
       sessionStorage.setItem(PLAYER_ID_KEY, action.playerId)
       break
+    case "endGame":
+      sessionStorage.setItem(GAME_CODE_KEY, "")
+      sessionStorage.setItem(PLAYER_ID_KEY, "")
+      break
   }
 
   return next(action)

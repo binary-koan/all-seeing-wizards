@@ -22,17 +22,20 @@ export interface PerformTurnOutcome {
   resultsPerAction: List<List<ActionResult>>
 }
 
-export default function performTurn(baseState: Game): PerformTurnOutcome {
+export default function performTurn(
+  baseState: Game,
+  { preview = false }: { preview?: boolean } = {}
+): PerformTurnOutcome {
   let outcome = { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
 
   Range(0, MAX_ACTIONS_PER_TURN).forEach(index => {
     outcome = addActionOutcome(
-      cardActionOutcome(outcome.game, playedCards(index, outcome.game)),
+      cardActionOutcome(outcome.game, playedCards(index, outcome.game), preview),
       outcome
     )
   })
 
-  outcome = addActionOutcome(postCardsOutcome(outcome.game), outcome)
+  outcome = addActionOutcome(postCardsOutcome(outcome.game, preview), outcome)
 
   return { game: advanceGame(outcome.game), resultsPerAction: outcome.resultsPerAction }
 }
@@ -54,7 +57,11 @@ function playedCards(actionIndex: number, game: Game) {
   }, Map() as Map<string, Card>)
 }
 
-function cardActionOutcome(baseState: Game, cards: Map<string, Card>) {
+function cardActionOutcome(baseState: Game, cards: Map<string, Card>, preview: boolean) {
+  if (baseState.isFinished && !preview) {
+    return { game: baseState, results: List<ActionResult>() }
+  }
+
   const outcome = composeOutcomes(
     [
       calculatePreventActionsResults,
@@ -87,7 +94,11 @@ function advanceAction(game: Game) {
   }, game)
 }
 
-function postCardsOutcome(initialGame: Game) {
+function postCardsOutcome(initialGame: Game, preview: boolean) {
+  if (initialGame.isFinished && !preview) {
+    return { game: initialGame, results: List<ActionResult>() }
+  }
+
   return composeOutcomes(
     [calculateEnvironmentResults, calculateHauntingResults],
     (game, operator) => operator(game),

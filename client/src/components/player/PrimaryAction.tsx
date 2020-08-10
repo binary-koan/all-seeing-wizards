@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSelector } from "reselect"
 import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
-import { submitCards } from "../../state/actions"
+import { endGame, submitCards } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
@@ -18,33 +18,35 @@ const getState = createSelector(
   (state: ViewState) => state.placedCards,
   (game, player, showingResults, placedCards) => {
     if (!game.started) {
-      return { text: "Waiting for the game to start", canLockIn: false }
+      return { text: "Waiting for the game to start" }
+    } else if (game.isFinished) {
+      return { text: "Quit game", action: endGame() }
     } else if (showingResults) {
-      return { text: "Check the host display!", canLockIn: false }
+      return { text: "Check the host display!" }
     } else if (player.knockedOut) {
-      return { text: "Knocked out!", canLockIn: false }
+      return { text: "Knocked out!" }
     } else if (player.hand.hasPickedCards) {
-      return { text: "Locked in", canLockIn: false }
+      return { text: "Locked in" }
     } else if (placedCards && placedCards.size < MAX_PLAYER_HP) {
-      return { text: `Pick ${MAX_PLAYER_HP} cards`, canLockIn: false }
+      return { text: `Pick ${MAX_PLAYER_HP} cards` }
     } else {
-      return { text: "Lock in your actions", canLockIn: true }
+      return { text: "Lock in your actions", action: submitCards() }
     }
   }
 )
 
 const PrimaryAction: FunctionComponent = () => {
-  const { text, canLockIn } = useSelector(getState)
+  const { text, action } = useSelector(getState)
 
   const dispatch = useDispatch()
-  const lockIn = useCallback(() => dispatch(submitCards()), [dispatch])
+  const doAction = useCallback(() => dispatch(action), [dispatch, action])
 
   return (
     <Wrapper>
       <ActionButton
-        variant={canLockIn ? "primary" : "secondary"}
-        disabled={!canLockIn}
-        onClick={lockIn}
+        variant={action ? "primary" : "secondary"}
+        disabled={!action}
+        onClick={doAction}
       >
         {text}
       </ActionButton>

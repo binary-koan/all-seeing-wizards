@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react"
+import React, { FunctionComponent, useCallback, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { rehostGame, rejoinGame } from "../../state/actions"
 import { fetchSession } from "../../state/sessionStore"
@@ -12,14 +12,21 @@ const RejoinLink = styled.a`
   color: ${props => props.theme.colorDarkest};
 `
 
-const { gameCode, playerId } = fetchSession()
-
 const RejoinMessage: FunctionComponent = props => {
+  const [{ gameCode, playerId }, setSessionState] = useState<{
+    gameCode?: string
+    playerId?: string
+  }>({})
+
   const dispatch = useDispatch()
   const doRejoinGame = useCallback(
     () => dispatch(playerId ? rejoinGame(gameCode, playerId) : rehostGame(gameCode)),
-    [dispatch]
+    [dispatch, gameCode, playerId]
   )
+
+  useEffect(() => {
+    setSessionState(fetchSession())
+  }, [])
 
   if (gameCode) {
     return (

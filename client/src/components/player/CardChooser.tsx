@@ -5,10 +5,12 @@ import HandCards from "./HandCards"
 import PlacedCards from "./PlacedCards"
 
 const CardChooser: FunctionComponent = props => {
-  const isKnockedOut = useSelector((state: ViewState) => state.player.knockedOut)
+  const isHidden = useSelector(
+    (state: ViewState) => state.game.isFinished || state.player.knockedOut
+  )
 
   return (
-    <div style={{ display: isKnockedOut ? "none" : "" }}>
+    <div style={{ display: isHidden ? "none" : "" }}>
       <PlacedCards />
       <HandCards />
     </div>

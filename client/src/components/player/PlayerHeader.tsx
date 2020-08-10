@@ -5,6 +5,8 @@ import data from "../../../packs/base/viewConfig"
 import ViewState from "../../state/viewState"
 import styled from "../util/styled"
 
+import undecidedPlayerImage from "../../../assets/undecided-player.png"
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -40,8 +42,8 @@ const getPlayerInfo = createSelector(
 
     return {
       name: player.character.name,
-      image: viewData.images.south,
-      heartImage: viewData.heartImage,
+      image: viewData?.images?.south || undecidedPlayerImage,
+      heartImage: viewData?.heartImage,
       hp: player.hp
     }
   }

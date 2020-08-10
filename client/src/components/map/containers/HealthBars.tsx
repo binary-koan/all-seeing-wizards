@@ -16,19 +16,18 @@ const HEART_SIZE = { width: 0.23, height: 0.23 }
 const HEART_OFFSET = { x: -0.13, y: -0.34 }
 const HEART_SPACING = 0.03
 
-interface StateProps {
-  players: Array<{ id: string; position: Point; hp: number; heartImage: string }>
-}
-
 const getPlayerState = createSelector(
   (state: ViewState) => state.game.activePlayers,
   activePlayers =>
-    activePlayers.valueSeq().map(player => ({
-      id: player.id,
-      position: player.position.toPoint(),
-      hp: player.hp,
-      heartImage: data.characters[player.character.name].heartImage
-    }))
+    activePlayers
+      .valueSeq()
+      .filter(player => player.character?.id)
+      .map(player => ({
+        id: player.id,
+        position: player.position.toPoint(),
+        hp: player.hp,
+        heartImage: data.characters[player.character.name].heartImage
+      }))
 )
 
 const HealthBars: FunctionComponent = () => {

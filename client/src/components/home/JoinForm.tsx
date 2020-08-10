@@ -12,8 +12,11 @@ const JoinFormWrapper = styled.div`
 
 const JoinForm: FunctionComponent = props => {
   const [gameCode, setGameCode] = useState("")
-  const isLoading = useSelector((state: ViewState) => state.socketState === "awaitingResponse")
+  const setGameCodeUppercase = useCallback((code: string) => setGameCode(code.toUpperCase()), [
+    setGameCode
+  ])
 
+  const isLoading = useSelector((state: ViewState) => state.socketState === "awaitingResponse")
   const dispatch = useDispatch()
   const doJoinGame = useCallback(() => dispatch(joinGame(gameCode)), [dispatch, gameCode])
 
@@ -24,7 +27,7 @@ const JoinForm: FunctionComponent = props => {
         placeholder="ABCD"
         autoFocus={true}
         value={gameCode}
-        onChange={setGameCode}
+        onChange={setGameCodeUppercase}
       />
 
       <ActionButton variant="primary" disabled={isLoading} onClick={doJoinGame}>

@@ -54,83 +54,61 @@ const values: DbValues = {
       . . . .
       . b b .
       . . . .
-    `),
+    `)
   ],
   characters: [
     {
       name: "Clever Cleric",
-      type: "cleric",
+      type: "cleric"
     },
     {
       name: "Pure Paladin",
-      type: "paladin",
+      type: "paladin"
     },
     {
       name: "Despicable Dark Lord",
-      type: "darkLord",
+      type: "darkLord"
     },
     {
       name: "Adaptable Alchemist",
-      type: "alchemist",
+      type: "alchemist"
     },
     {
       name: "Bold Battlemage",
-      type: "battlemage",
+      type: "battlemage"
     },
     {
       name: "Grumpy Gnome",
-      type: "gnome",
+      type: "gnome"
     },
     {
       name: "Indignant Imp",
-      type: "imp",
+      type: "imp"
     },
     {
       name: "Thuggish Troll",
-      type: "troll",
+      type: "troll"
     },
     {
       name: "Warping Warlock",
-      type: "warlock",
-    },
+      type: "warlock"
+    }
   ],
   cards: [
     {
       name: "Move 1",
-      count: 3,
-      effects: [{ type: "move", amount: 1, rotation: "none" }],
+      count: 12,
+      effects: [{ type: "move", amount: 1, rotation: "none" }]
     },
     {
       name: "Move 2",
-      count: 7,
-      effects: [{ type: "move", amount: 2, rotation: "none" }],
+      count: 12,
+      effects: [{ type: "move", amount: 2, rotation: "none" }]
     },
     {
-      name: "Turn Clockwise & Move",
-      count: 7,
-      effects: [{ type: "move", amount: 1, rotation: "clockwise" }],
-    },
-    {
-      name: "Turn Anticlockwise & Move",
-      count: 7,
-      effects: [
-        {
-          type: "move",
-          amount: 1,
-          rotation: "anticlockwise",
-        },
-      ],
-    },
-    {
-      name: "Turn Around & Move",
-      count: 7,
-      effects: [
-        {
-          type: "move",
-          amount: 1,
-          rotation: "reverse",
-        },
-      ],
+      name: "Turn",
+      count: 4,
+      effects: [{ type: "move", amount: 0, rotation: "none" }]
     },
     {
       name: "Hellfire Breath of Chillies",
@@ -139,9 +117,9 @@ const values: DbValues = {
         {
           type: "attack",
           ranges: [{ type: "area", size: 3, position: "inFront" }],
-          damage: 2,
-        },
-      ],
+          damage: 2
+        }
+      ]
     },
     {
       name: "Chaos Storm of Endless Homework",
@@ -150,9 +128,9 @@ const values: DbValues = {
         {
           type: "attack",
           ranges: [{ type: "area", size: 5, position: "around" }],
-          damage: 2,
-        },
-      ],
+          damage: 2
+        }
+      ]
     },
     {
       name: "Magical Dart of Papercuts",
@@ -161,9 +139,9 @@ const values: DbValues = {
         {
           type: "attack",
           ranges: [{ type: "line", rotation: "none" }],
-          damage: 2,
-        },
-      ],
+          damage: 2
+        }
+      ]
     },
     {
       name: "Spartan Kick of Epic Abs",
@@ -172,10 +150,10 @@ const values: DbValues = {
         {
           type: "attack",
           damage: 3,
-          ranges: [{ type: "point", position: "inFront" }],
+          ranges: [{ type: "point", position: "inFront" }]
         },
-        { type: "knockback", amount: 2, ranges: [{ type: "point", position: "inFront" }] },
-      ],
+        { type: "knockback", amount: 2, ranges: [{ type: "point", position: "inFront" }] }
+      ]
     },
     {
       name: "Homing Missile of Bending the Rules",
@@ -184,9 +162,9 @@ const values: DbValues = {
         {
           type: "attack",
           ranges: [{ type: "area", size: 9, position: "around" }],
-          damage: 1,
-        },
-      ],
+          damage: 1
+        }
+      ]
     },
     {
       name: "Freezing Touch of Ice Cubes",
@@ -195,9 +173,9 @@ const values: DbValues = {
         {
           type: "preventActions",
           ranges: [{ type: "point", position: "inFront" }],
-          duration: new Duration("action", 2),
-        },
-      ],
+          duration: new Duration("action", 2)
+        }
+      ]
     },
     {
       name: "Yellow Snowballs of Going Too Far",
@@ -206,9 +184,9 @@ const values: DbValues = {
         {
           type: "preventActions",
           ranges: [{ type: "area", size: 5, position: "around" }],
-          duration: new Duration("action", 2),
-        },
-      ],
+          duration: new Duration("action", 2)
+        }
+      ]
     },
     {
       name: "Force Lightning of Evil Laughter",
@@ -219,18 +197,18 @@ const values: DbValues = {
           damage: 1,
           ranges: [
             { type: "line", rotation: "none" },
-            { type: "line", rotation: "reverse" },
-          ],
+            { type: "line", rotation: "reverse" }
+          ]
         },
         {
           type: "knockback",
           amount: 1,
           ranges: [
             { type: "line", rotation: "none" },
-            { type: "line", rotation: "reverse" },
-          ],
-        },
-      ],
+            { type: "line", rotation: "reverse" }
+          ]
+        }
+      ]
     },
     {
       name: "Spider Minions of Terror",
@@ -242,9 +220,9 @@ const values: DbValues = {
             { type: "line", rotation: "none" },
             { type: "line", rotation: "clockwise" },
             { type: "line", rotation: "reverse" },
-            { type: "line", rotation: "anticlockwise" },
+            { type: "line", rotation: "anticlockwise" }
           ],
-          damage: 1,
+          damage: 1
         },
         {
           type: "knockback",
@@ -252,11 +230,11 @@ const values: DbValues = {
             { type: "line", rotation: "none" },
             { type: "line", rotation: "clockwise" },
             { type: "line", rotation: "reverse" },
-            { type: "line", rotation: "anticlockwise" },
+            { type: "line", rotation: "anticlockwise" }
           ],
-          amount: 1,
-        },
-      ],
+          amount: 1
+        }
+      ]
     },
     {
       name: "Piercing Scream of Unfairness",
@@ -265,9 +243,9 @@ const values: DbValues = {
         {
           type: "attack",
           damage: 2,
-          ranges: [{ type: "area", size: 3, position: "around" }],
-        },
-      ],
+          ranges: [{ type: "area", size: 3, position: "around" }]
+        }
+      ]
     },
     {
       name: "Earthquake of Table Flipping",
@@ -276,9 +254,9 @@ const values: DbValues = {
         {
           type: "attack",
           ranges: [{ type: "wholeMap" }],
-          damage: 1,
-        },
-      ],
+          damage: 1
+        }
+      ]
     },
     {
       name: "Magical Shield of Hiding",
@@ -286,9 +264,9 @@ const values: DbValues = {
       effects: [
         {
           type: "shield",
-          duration: new Duration("action", 1),
-        },
-      ],
+          duration: new Duration("action", 1)
+        }
+      ]
     },
     {
       name: "Dimension of Ultimate Time Out",
@@ -296,9 +274,9 @@ const values: DbValues = {
       effects: [
         {
           type: "shield",
-          duration: new Duration("turn", 1),
-        },
-      ],
+          duration: new Duration("turn", 1)
+        }
+      ]
     },
     {
       name: "Mirror Shield of Mutual Blackmail",
@@ -306,9 +284,9 @@ const values: DbValues = {
       effects: [
         {
           type: "mirrorShield",
-          duration: new Duration("action", 1),
-        },
-      ],
+          duration: new Duration("action", 1)
+        }
+      ]
     },
     {
       name: "Parental Yell of Grounding",
@@ -317,9 +295,9 @@ const values: DbValues = {
         {
           type: "preventActions",
           ranges: [{ type: "wholeMap" }],
-          duration: new Duration("action", 1),
-        },
-      ],
+          duration: new Duration("action", 1)
+        }
+      ]
     },
     {
       name: "Healing Drink of Milkshake",
@@ -327,9 +305,9 @@ const values: DbValues = {
       effects: [
         {
           type: "heal",
-          amount: 1,
-        },
-      ],
+          amount: 1
+        }
+      ]
     },
     {
       name: "Healing Meal of Pizza",
@@ -337,9 +315,9 @@ const values: DbValues = {
       effects: [
         {
           type: "heal",
-          amount: 2,
-        },
-      ],
+          amount: 2
+        }
+      ]
     },
     {
       name: "Rage Potion of Early Bedtime",
@@ -348,11 +326,11 @@ const values: DbValues = {
         {
           type: "increaseDamage",
           amount: 1,
-          duration: new Duration("action", 2),
-        },
-      ],
-    },
-  ],
+          duration: new Duration("action", 2)
+        }
+      ]
+    }
+  ]
 }
 
 export default values

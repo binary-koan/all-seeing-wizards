@@ -14,6 +14,8 @@ import { useMapViewScale } from "../MapViewScaleContext"
 import PointEffectImage from "../results/PointEffectImage"
 import TileEffectIndicators from "../tiles/TileEffectIndicators"
 
+import undecidedPlayerImage from "../../../../assets/undecided-player.png"
+
 const NO_TINT = 0xffffff
 const DISCONNECTED_TINT = 0x444444
 const DAMAGE_TINT = 0xff0000
@@ -71,7 +73,9 @@ function playerConfig(player: Player, board: Board, showingResults?: List<Action
   } else if (player.character) {
     return {
       ...baseProps,
-      image: data.characters[player.character.name].images[player.position.facing],
+      image:
+        data.characters[player.character.name]?.images?.[player.position.facing] ||
+        undecidedPlayerImage,
       tint: playerTint(player, showingResults),
       isInWater: board.tileAt(player.position).type === "water",
       isInLava: board.tileAt(player.position).type === "lava",

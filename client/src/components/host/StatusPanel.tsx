@@ -52,7 +52,7 @@ const getState = createSelector(
 const StatusPanel: FunctionComponent = () => {
   const { title, description, actionText, actionEnabled } = useSelector(getState)
   const dispatch = useDispatch()
-  const doStartGame = useCallback(() => dispatch(startGame), [dispatch])
+  const doStartGame = useCallback(() => dispatch(startGame()), [dispatch])
 
   if (title) {
     return (

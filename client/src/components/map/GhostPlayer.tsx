@@ -8,6 +8,8 @@ import tweener from "../util/tweener"
 import { useMapViewScale } from "./MapViewScaleContext"
 import TileEffectIndicators from "./tiles/TileEffectIndicators"
 
+import undecidedPlayerImage from "../../../assets/undecided-player.png"
+
 const TweenedSprite = tweener(Sprite, {
   x: { duration: 500 },
   y: { duration: 500 }
@@ -17,7 +19,9 @@ const getPlayerState = createSelector(
   (state: ViewState) => state.playerAfterPlacedCards,
   player => ({
     position: player.position,
-    image: data.characters[player.character.name].images[player.position.facing],
+    image:
+      data.characters[player.character.name]?.images?.[player.position.facing] ||
+      undecidedPlayerImage,
     isKnockedOut: player.knockedOut
   })
 )

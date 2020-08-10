@@ -31,7 +31,7 @@ const MapWrapper = styled.div`
 `
 
 const Player: FunctionComponent = props => {
-  const hasCharacter = useSelector((state: ViewState) => Boolean(state.player.character))
+  const hasCharacter = useSelector((state: ViewState) => Boolean(state.player.character?.id))
 
   return (
     <ImagePreloader>

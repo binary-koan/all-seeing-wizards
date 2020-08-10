@@ -91,7 +91,7 @@ export class Player extends player implements IPlayer {
   }
 
   public setCharacter(character: Character) {
-    if (this.character) throw new Error("Character is already set for this player")
+    if (this.character?.id) throw new Error("Character is already set for this player")
 
     return this.set("character", character)
   }

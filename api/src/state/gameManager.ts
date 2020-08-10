@@ -23,9 +23,17 @@ export default class GameManager {
   public async fetchPacks() {
     const packs = await this.db
       .collection<PackDoc>("packs")
-      .find()
+      .aggregate()
+      .sort({ version: 1 })
+      .group<{ pack: PackDoc }>({
+        _id: "$name",
+        pack: { $last: "$$ROOT" }
+      })
       .toArray()
-    return packs.map(pack => ({ id: pack._id.toHexString(), name: pack.name }))
+    return packs.map(({ pack }) => ({
+      id: pack._id.toHexString(),
+      name: `${pack.name} v${pack.version}`
+    }))
   }
 
   public async create(packIds: string[], boards: number) {

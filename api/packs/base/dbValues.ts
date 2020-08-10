@@ -3,7 +3,7 @@ import { GameFeature } from "../../../common/src/state/game"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 14,
+  version: 15,
   name: "base",
   features: [GameFeature.PickMoveDirection],
   boards: [

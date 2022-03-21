@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import ActionButton from "../base/ActionButton"
 import styled from "../util/styled"
 
@@ -10,7 +10,7 @@ const OptionAction = styled(ActionButton)`
   }
 `
 
-const JoinHostOptions: React.SFC<{ onHost?: () => void; onJoin?: () => void }> = props => (
+const JoinHostOptions: FunctionComponent<{ onHost?: () => void; onJoin?: () => void }> = props => (
   <div>
     <OptionAction variant="primary" onClick={props.onHost}>
       Host Game

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useRef } from "react"
+import React, { FunctionComponent, MouseEvent, useRef } from "react"
 import styled from "./util/styled"
 
 interface VisibleProps {
@@ -55,7 +55,7 @@ const CloseButton = styled.span`
   color: rgba(0, 0, 0, 0.2);
 `
 
-const Modal: React.SFC<{ isVisible: boolean; close: () => void }> = ({
+const Modal: FunctionComponent<{ isVisible: boolean; close: () => void }> = ({
   isVisible,
   close,
   children

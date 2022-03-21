@@ -1,5 +1,5 @@
 import { between } from "polished"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import styled from "../util/styled"
 
 const TitleWrapper = styled.h1`
@@ -27,7 +27,7 @@ const TitleSmall = styled.span`
   color: ${props => props.theme.colorPrimary};
 `
 
-const GameTitle: React.SFC = _props => (
+const GameTitle: FunctionComponent = _props => (
   <TitleWrapper>
     <TitleSmall>All-Seeing</TitleSmall>
     Wizards

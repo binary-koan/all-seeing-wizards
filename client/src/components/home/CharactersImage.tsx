@@ -1,8 +1,8 @@
-import React from "react"
-import styled from "../util/styled"
-
+import React, { FunctionComponent } from "react"
 import desktopImage from "../../../assets/home/characters-desktop.png"
 import mobileImage from "../../../assets/home/characters-mobile.png"
+import styled from "../util/styled"
+
 
 const MobileCharacters = styled.img`
   width: 25rem;
@@ -26,7 +26,7 @@ const DesktopCharacters = styled.img`
   }
 `
 
-const CharactersImage: React.SFC = _props => (
+const CharactersImage: FunctionComponent = _props => (
   <>
     <MobileCharacters src={mobileImage} />
     <DesktopCharacters src={desktopImage} />

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import Countdown from "./host/Countdown"
 import StatusPanel from "./host/StatusPanel"
 import { ImagePreloader } from "./ImagePreloader"
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-const Host: React.SFC = _props => {
+const Host: FunctionComponent = _props => {
   return (
     <ImagePreloader>
       {() => (

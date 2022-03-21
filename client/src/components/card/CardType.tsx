@@ -1,5 +1,5 @@
 import { List } from "immutable"
-import React, { HTMLAttributes, ImgHTMLAttributes } from "react"
+import React, { FunctionComponent, HTMLAttributes, ImgHTMLAttributes } from "react"
 import { Card } from "../../../../common/src/state/card"
 import { cardIcons } from "../ImagePreloader"
 
@@ -22,7 +22,7 @@ interface CardProps {
   card: Card
 }
 
-export const CardTypeIcon: React.SFC<CardProps & ImgHTMLAttributes<HTMLImageElement>> = ({
+export const CardTypeIcon: FunctionComponent<CardProps & ImgHTMLAttributes<HTMLImageElement>> = ({
   card,
   ...otherProps
 }) => {
@@ -32,7 +32,7 @@ export const CardTypeIcon: React.SFC<CardProps & ImgHTMLAttributes<HTMLImageElem
   return <img src={mapping && mapping.icon} {...otherProps} />
 }
 
-export const CardTypeName: React.SFC<CardProps & HTMLAttributes<HTMLParagraphElement>> = ({
+export const CardTypeName: FunctionComponent<CardProps & HTMLAttributes<HTMLParagraphElement>> = ({
   card,
   ...otherProps
 }) => {

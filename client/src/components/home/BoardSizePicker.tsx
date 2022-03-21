@@ -1,5 +1,5 @@
 import { lighten } from "polished"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import styled from "../util/styled"
 
 const Wrapper = styled.div`
@@ -47,7 +47,7 @@ interface BoardSizePickerProps {
   onChange: (value: number) => void
 }
 
-const BoardSizePicker: React.SFC<BoardSizePickerProps> = props => {
+const BoardSizePicker: FunctionComponent<BoardSizePickerProps> = props => {
   const options = [2, 4, 6, 8]
 
   return (

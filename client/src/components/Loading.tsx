@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import styled, { keyframes } from "./util/styled"
 
 const loadingAnimation = keyframes`
@@ -61,7 +61,7 @@ const LoadingMessage = styled.div`
   color: rgba(255, 255, 255, 0.25);
 `
 
-const Loading: React.SFC = _props => {
+const Loading: FunctionComponent = _props => {
   return (
     <LoadingMessage>
       <Loader />

@@ -1,9 +1,9 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { effectImages } from "../../ImagePreloader"
 import PointEffectImage from "./PointEffectImage"
 import { OVERRIDE_OVERLAY, ResultViewProps } from "./ResultViewProps"
 
-const ResultPlanOverlay: React.SFC<ResultViewProps> = props => {
+const ResultPlanOverlay: FunctionComponent<ResultViewProps> = props => {
   if (
     props.overrides &&
     props.overrides[OVERRIDE_OVERLAY] &&

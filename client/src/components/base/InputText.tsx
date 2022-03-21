@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import styled from "../util/styled"
 
 const Label = styled.label`
@@ -36,7 +36,7 @@ interface InputTextProps {
   onChange?: (value: string) => void
 }
 
-const InputText: React.SFC<InputTextProps> = props => (
+const InputText: FunctionComponent<InputTextProps> = props => (
   <div>
     <Label>{props.label}</Label>
     <Input

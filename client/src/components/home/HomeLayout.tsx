@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import styled from "../util/styled"
 import CharactersImage from "./CharactersImage"
 
@@ -37,7 +37,7 @@ interface HomeLayoutProps {
   banner: JSX.Element
 }
 
-const HomeLayout: React.SFC<HomeLayoutProps> = props => (
+const HomeLayout: FunctionComponent<HomeLayoutProps> = props => (
   <BannerLayout>
     {props.banner}
     <LayoutWrapper>

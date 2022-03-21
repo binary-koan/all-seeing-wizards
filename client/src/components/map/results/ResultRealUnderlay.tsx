@@ -1,9 +1,9 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { effectImages } from "../../ImagePreloader"
 import { OVERRIDE_UNDERLAY, ResultViewProps } from "./ResultViewProps"
 import TiledEffectImage from "./TiledEffectImage"
 
-const ResultRealUnderlay: React.SFC<ResultViewProps> = props => {
+const ResultRealUnderlay: FunctionComponent<ResultViewProps> = props => {
   if (
     props.overrides &&
     props.overrides[OVERRIDE_UNDERLAY] &&

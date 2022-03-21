@@ -1,6 +1,6 @@
 import { Container } from "@inlet/react-pixi"
 import { List } from "immutable"
-import React, { FunctionComponent } from "react"
+import React, { ComponentType, FunctionComponent } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "reselect"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
@@ -21,7 +21,7 @@ const getResultComponents = createSelector(
 )
 
 interface PlannedActionResultsProps {
-  planView: React.SFC<ResultViewProps>
+  planView: ComponentType<ResultViewProps>
 }
 
 const PlannedActionResults: FunctionComponent<PlannedActionResultsProps> = props => {

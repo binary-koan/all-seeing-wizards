@@ -25,7 +25,7 @@ export default async function showPerformedActions(
   data: ActionsPerformedData
 ) {
   emit(turnResultsReceived())
-  emit(showResults(List()))
+  emit(showResults(List(), 0))
 
   emit(showCountdown(3))
   await sleep(1000)
@@ -42,22 +42,22 @@ export default async function showPerformedActions(
 
   const resultsByAction = data.results.map(deserializeResults)
 
-  for (const results of resultsByAction) {
+  for (const [index, results] of resultsByAction.entries()) {
     const priority = priorityResults(results)
     const move = moveResults(results)
     const attack = attackResults(results)
 
     if (priority.size > 0) {
-      await displayResults(emit, priority, PRIORITY_DURATION - MOVE_DURATION)
+      await displayResults(emit, priority, index, PRIORITY_DURATION - MOVE_DURATION)
     }
     if (priority.size > 0 || move.size > 0) {
-      await displayResults(emit, priority.concat(move).toList(), MOVE_DURATION)
+      await displayResults(emit, priority.concat(move).toList(), index, MOVE_DURATION)
     }
     if (attack.size > 0) {
-      await displayResults(emit, attack, ATTACK_DURATION)
+      await displayResults(emit, attack, index, ATTACK_DURATION)
     }
 
-    emit(prepareForNextResults())
+    emit(prepareForNextResults(index))
 
     await sleep(BETWEEN_ACTIONS_DELAY)
   }
@@ -71,10 +71,11 @@ export default async function showPerformedActions(
 async function displayResults(
   emit: (action: Action) => void,
   results: List<ActionResult>,
+  actionIndex: number,
   ms: number
 ) {
   emit(applyResults(results))
-  emit(showResults(results))
+  emit(showResults(results, actionIndex))
 
   await sleep(ms)
 }

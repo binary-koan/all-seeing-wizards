@@ -1,4 +1,3 @@
-import { List } from "immutable"
 import { CardRange } from "./cardRange"
 import { Rotation } from "./directionalPoint"
 import { Duration } from "./duration"
@@ -51,3 +50,5 @@ export type CardEffect = Readonly<
   | HealEffect
   | IncreaseDamageEffect
 >
+
+export type CardEffectType = CardEffect["type"]

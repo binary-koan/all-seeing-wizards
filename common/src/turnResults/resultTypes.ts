@@ -187,3 +187,5 @@ export type ActionResult =
   | PreventActionsResult
   | ShieldFromHarmResult
   | TakeDamageResult
+
+export type ActionResultType = ActionResult["type"]

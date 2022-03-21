@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react"
 import Countdown from "./host/Countdown"
 import StatusPanel from "./host/StatusPanel"
+import TurnIndicator from "./host/TurnIndicator"
 import { ImagePreloader } from "./ImagePreloader"
 import FullMapView from "./map/FullMapView"
 import styled from "./util/styled"
@@ -17,6 +18,7 @@ const Host: FunctionComponent = _props => {
         <Wrapper>
           <StatusPanel />
           <Countdown />
+          <TurnIndicator />
           <FullMapView />
         </Wrapper>
       )}

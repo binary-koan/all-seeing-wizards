@@ -53,13 +53,15 @@ export default function reducer(state: ViewState = new ViewState(), action: Acti
       return state.set("showingCountdown", action.number)
 
     case "showResults":
-      return state.set("showingResults", action.results)
+      return state
+        .set("showingResults", action.results)
+        .set("showingActionIndex", action.actionIndex)
 
     case "applyResults":
       return state.set("game", applyResults(action.results, state.game))
 
     case "prepareForNextResults":
-      return applyPrepareForNextResults(state)
+      return applyPrepareForNextResults(state, action.actionIndex)
 
     case "placeCard":
       return applyPlaceCard(state, action.card, action.index)
@@ -102,7 +104,10 @@ function applyTurnResultsReceived(state: ViewState) {
 }
 
 function applyPlaceCard(state: ViewState, configuredCard: Card, index: number) {
-  if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size >= ACTIONS_PER_TURN) {
+  if (
+    state.connectedAs.type !== "player" ||
+    state.connectedAs.placedCards.size >= ACTIONS_PER_TURN
+  ) {
     return state
   }
 
@@ -123,7 +128,7 @@ function applyUnplaceCard(state: ViewState, index: number) {
   })
 }
 
-function applyPrepareForNextResults(state: ViewState) {
+function applyPrepareForNextResults(state: ViewState, actionIndex: number) {
   return state
     .set(
       "game",
@@ -133,4 +138,5 @@ function applyPrepareForNextResults(state: ViewState) {
       )
     )
     .set("showingResults", List())
+    .set("showingActionIndex", actionIndex)
 }

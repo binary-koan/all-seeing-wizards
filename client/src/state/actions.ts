@@ -156,11 +156,12 @@ export function showCountdown(number: number): ShowCountdownAction {
 
 export interface ShowResultsAction {
   type: "showResults"
-  results: List<ActionResult>
+  results?: List<ActionResult>
+  actionIndex?: number
 }
 
-export function showResults(results: List<ActionResult>): ShowResultsAction {
-  return { type: "showResults", results }
+export function showResults(results: List<ActionResult>, actionIndex?: number): ShowResultsAction {
+  return { type: "showResults", results, actionIndex }
 }
 
 export interface ApplyResultsAction {
@@ -174,10 +175,11 @@ export function applyResults(results: List<ActionResult>): ApplyResultsAction {
 
 export interface PrepareForNextResultsAction {
   type: "prepareForNextResults"
+  actionIndex: number
 }
 
-export function prepareForNextResults(): PrepareForNextResultsAction {
-  return { type: "prepareForNextResults" }
+export function prepareForNextResults(actionIndex: number): PrepareForNextResultsAction {
+  return { type: "prepareForNextResults", actionIndex }
 }
 
 export interface PlaceCardAction {

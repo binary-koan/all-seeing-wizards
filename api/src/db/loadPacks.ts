@@ -2,10 +2,10 @@ import { List, Range } from "immutable"
 import { Db, ObjectID } from "mongodb"
 import { BoardObjectType } from "../../../common/src/state/boardObject"
 import { BoardTileType } from "../../../common/src/state/boardTile"
+import packDefinitions from "../../packs/dbValues"
 import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../packs/types"
 import { BoardDoc, BoardDocTile, BoardObjectDoc, CardDoc, CharacterDoc, PackDoc } from "./types"
 
-import packDefinitions from "../../packs/dbValues"
 
 const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardDocTile } = {
   ".": "ground",
@@ -38,7 +38,9 @@ export default async function loadPacks(db: Db) {
     .map(pack => (existingPacksByName.has(pack.name) ? null : pack))
     .filter(Boolean)
 
-  return Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
+  await Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
+
+  await db.collection("packs").deleteMany({ name: { $nin: packDefinitions.map(pack => pack.name) } })
 }
 
 async function loadPack(data: DbValues, db: Db) {

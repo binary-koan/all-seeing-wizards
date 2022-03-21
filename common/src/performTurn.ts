@@ -3,7 +3,7 @@ import { drawHands } from "./drawHands"
 import { Card } from "./state/card"
 import { Game } from "./state/game"
 import { Hand } from "./state/hand"
-import { MAX_PLAYER_HP, Player } from "./state/player"
+import { Player } from "./state/player"
 import { applyResults } from "./turnResults/applyResults"
 import { calculateAttackResults } from "./turnResults/attack"
 import { calculateEnvironmentResults } from "./turnResults/environment"
@@ -15,7 +15,7 @@ import { calculatePreventActionsResults } from "./turnResults/preventActions"
 import { ActionResult } from "./turnResults/resultTypes"
 import { calculateShieldResults } from "./turnResults/shield"
 
-const MAX_ACTIONS_PER_TURN = MAX_PLAYER_HP
+export const ACTIONS_PER_TURN = 4
 
 export interface PerformTurnOutcome {
   game: Game
@@ -28,7 +28,7 @@ export default function performTurn(
 ): PerformTurnOutcome {
   let outcome = { game: baseState, resultsPerAction: List() as List<List<ActionResult>> }
 
-  Range(0, MAX_ACTIONS_PER_TURN).forEach(index => {
+  Range(0, ACTIONS_PER_TURN).forEach(index => {
     outcome = addActionOutcome(
       cardActionOutcome(outcome.game, playedCards(index, outcome.game), preview),
       outcome

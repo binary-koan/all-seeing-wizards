@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSelector } from "reselect"
-import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
+import { ACTIONS_PER_TURN } from "../../../../common/src/performTurn"
 import { endGame, submitCards } from "../../state/actions"
 import ViewState from "../../state/viewState"
 import ActionButton from "../base/ActionButton"
@@ -27,8 +27,8 @@ const getState = createSelector(
       return { text: "Knocked out!" }
     } else if (player.hand.hasPickedCards) {
       return { text: "Locked in" }
-    } else if (placedCards && placedCards.size < MAX_PLAYER_HP) {
-      return { text: `Pick ${MAX_PLAYER_HP} cards` }
+    } else if (placedCards && placedCards.size < ACTIONS_PER_TURN) {
+      return { text: `Pick ${ACTIONS_PER_TURN} cards` }
     } else {
       return { text: "Lock in your actions", action: submitCards() }
     }

@@ -1,8 +1,7 @@
 import { List } from "immutable"
-import performTurn from "./performTurn"
+import performTurn, { ACTIONS_PER_TURN } from "./performTurn"
 import { Game } from "./state/game"
 import { PickedCard } from "./state/hand"
-import { MAX_PLAYER_HP } from "./state/player"
 
 export default function submitCards(game: Game, playerId: string, pickedCards: List<PickedCard>) {
   const player = game.activePlayers.get(playerId)
@@ -31,5 +30,5 @@ export default function submitCards(game: Game, playerId: string, pickedCards: L
 }
 
 function readyToAdvance(game: Game) {
-  return !game.activePlayers.find(player => player.hand.pickedCards.size < MAX_PLAYER_HP)
+  return game.activePlayers.every(player => player.hand.pickedCards.size === ACTIONS_PER_TURN)
 }

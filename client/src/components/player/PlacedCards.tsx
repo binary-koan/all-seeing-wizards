@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSelector } from "reselect"
+import { ACTIONS_PER_TURN } from "../../../../common/src/performTurn"
 import { Card } from "../../../../common/src/state/card"
-import { MAX_PLAYER_HP } from "../../../../common/src/state/player"
 import data from "../../../packs/base/viewConfig"
 import { unplaceCard } from "../../state/actions"
 import ViewState from "../../state/viewState"
@@ -10,7 +10,7 @@ import styled from "../util/styled"
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(${ACTIONS_PER_TURN}, 1fr);
   grid-row-gap: 0.5rem;
   grid-column-gap: 0.5rem;
   margin: 0.5rem 0.5rem 1rem 0.5rem;
@@ -70,7 +70,7 @@ const CardChooser: FunctionComponent = props => {
   if (isVisible) {
     return (
       <Wrapper>
-        {Array(MAX_PLAYER_HP)
+        {Array(ACTIONS_PER_TURN)
           .fill(0)
           .map((_, index) => (
             <PlacedCardWrapper key={index}>

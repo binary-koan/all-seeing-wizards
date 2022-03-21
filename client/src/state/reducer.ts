@@ -1,6 +1,6 @@
 import { List } from "immutable"
+import { ACTIONS_PER_TURN } from "../../../common/src/performTurn"
 import { Card } from "../../../common/src/state/card"
-import { MAX_PLAYER_HP } from "../../../common/src/state/player"
 import { applyResults } from "../../../common/src/turnResults/applyResults"
 import ViewState from "../state/viewState"
 import { Action } from "./actions"
@@ -102,7 +102,7 @@ function applyTurnResultsReceived(state: ViewState) {
 }
 
 function applyPlaceCard(state: ViewState, configuredCard: Card, index: number) {
-  if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size >= MAX_PLAYER_HP) {
+  if (state.connectedAs.type !== "player" || state.connectedAs.placedCards.size >= ACTIONS_PER_TURN) {
     return state
   }
 

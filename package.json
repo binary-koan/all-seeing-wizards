@@ -4,6 +4,7 @@
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dev": "concurrently -n api,client -c blue,magenta 'yarn workspace api dev' 'yarn workspace client dev'",
     "dokku": "node dokku/cli.js",
     "test": "npm run typecheck && npm run jest",
     "jest": "jest --env node",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.149",
+    "concurrently": "^7.6.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "tslint": "^5.20.1",

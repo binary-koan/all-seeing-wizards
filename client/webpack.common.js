@@ -8,17 +8,11 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: { loader: "ts-loader", options: { onlyCompileBundledFiles: true } },
-        exclude: /node_modules/
+        use: { loader: "esbuild-loader", options: { loader: "tsx", target: "es2015" } }
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: {
-          loader: "file-loader",
-          options: {
-            name: "[name]-[hash].[ext]"
-          }
-        }
+        type: "asset"
       }
     ]
   },
@@ -32,7 +26,7 @@ module.exports = {
     })
   ],
   output: {
-    filename: "bundle.[hash].js",
+    filename: "bundle.[contenthash].js",
     path: path.resolve(__dirname, "dist")
   }
 }

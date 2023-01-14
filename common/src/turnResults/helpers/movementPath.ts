@@ -34,7 +34,7 @@ export default function movementPath({
     amount = slowInWater(amount, position, game)
   }
 
-  return moves
+  return adjustForWraith(moves, player)
 }
 
 function canMoveTo(position: DirectionalPoint, game: Game) {
@@ -50,4 +50,12 @@ function slowInWater(movementAmount: number, position: DirectionalPoint, game: G
   }
 
   return movementAmount
+}
+
+function adjustForWraith(path: List<DirectionalPoint>, player: Player) {
+  if (player.hasModifier("wraith") && path.size > 1) {
+    return List.of(path.first<DirectionalPoint>(), path.last<DirectionalPoint>())
+  } else {
+    return path
+  }
 }

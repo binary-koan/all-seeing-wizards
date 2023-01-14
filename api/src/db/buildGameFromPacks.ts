@@ -6,7 +6,11 @@ import loadCards from "./loaders/cards"
 import loadGameState from "./loadGameState"
 import { BoardDoc, GameDoc } from "./types"
 
-const hashids = new (Hashids as any)("don't get salty", 4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+const hashids = new (Hashids as any)(
+  process.env.HASHIDS_SALT || "don't get salty",
+  4,
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+)
 
 export default async function buildGameFromPacks(packIds: ObjectID[], boards: number, db: Db) {
   const packs = await db

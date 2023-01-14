@@ -1,6 +1,8 @@
 import { CardRange } from "./cardRange"
 import { Rotation } from "./directionalPoint"
 import { Duration } from "./duration"
+import { ModifierType } from "./modifier"
+import { AbilityConfig } from "./player"
 
 export interface MovementEffect {
   type: "move"
@@ -39,6 +41,10 @@ export interface IncreaseDamageEffect {
   amount: number
   duration: Duration
 }
+export interface SetAbilityEffect {
+  type: "setAbility"
+  ability: AbilityConfig
+}
 
 export type CardEffect = Readonly<
   | MovementEffect
@@ -49,6 +55,7 @@ export type CardEffect = Readonly<
   | MirrorShieldEffect
   | HealEffect
   | IncreaseDamageEffect
+  | SetAbilityEffect
 >
 
 export type CardEffectType = CardEffect["type"]

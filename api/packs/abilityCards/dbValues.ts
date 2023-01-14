@@ -3,8 +3,8 @@ import { GameFeature } from "../../../common/src/state/game"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 16,
-  name: "base",
+  version: 1,
+  name: "abilityCards",
   features: [GameFeature.PickMoveDirection],
   boards: [
     boardConfig(`
@@ -327,6 +327,40 @@ const values: DbValues = {
           type: "increaseDamage",
           amount: 1,
           duration: new Duration("action", 2)
+        }
+      ]
+    },
+    {
+      name: "Ability: Wind Walker",
+      count: 1,
+      effects: [
+        {
+          type: "setAbility",
+          ability: { name: "Wind Walker", type: { name: "increaseSpeed", amount: 1 } }
+        }
+      ]
+    },
+    {
+      name: "Ability: Shadow Step",
+      count: 1,
+      effects: [
+        {
+          type: "setAbility",
+          ability: { name: "Shadow Step", type: { name: "wraith" } }
+        }
+      ]
+    },
+    {
+      name: "Ability: Divine Shield",
+      count: 1,
+      effects: [
+        {
+          type: "setAbility",
+          ability: {
+            name: "Divine Shield",
+            type: { name: "reduceDamage", amount: 1 },
+            oncePer: "action"
+          }
         }
       ]
     }

@@ -1,9 +1,9 @@
 import { List, Map } from "immutable"
 
-import { ActionResult, heal, increaseDamage } from "./resultTypes"
+import { ActionResult, heal, increaseDamage, setAbility } from "./resultTypes"
 
 import { Card } from "../state/card"
-import { CardEffect, HealEffect, IncreaseDamageEffect } from "../state/cardEffect"
+import { CardEffect, HealEffect, IncreaseDamageEffect, SetAbilityEffect } from "../state/cardEffect"
 import { Game } from "../state/game"
 import { Player } from "../state/player"
 import { calculateResults, resolveEffects } from "./helpers/effectsToResults"
@@ -14,7 +14,9 @@ const POTION_RESULTS: {
   increaseDamage: (caster: Player, castCard: Card, effect: IncreaseDamageEffect) =>
     increaseDamage(castCard, effect.amount, effect.duration, caster),
   heal: (caster: Player, castCard: Card, effect: HealEffect) =>
-    heal(castCard, effect.amount, caster)
+    heal(castCard, effect.amount, caster),
+  setAbility: (caster: Player, castCard: Card, effect: SetAbilityEffect) =>
+    setAbility(castCard, effect.ability, caster)
 }
 
 const POTION_TYPES = Object.keys(POTION_RESULTS)

@@ -29,6 +29,9 @@ export function deserializePlayer(playerData: any) {
       ).toList()
     }),
     connected: playerData.connected,
+    // TODO:
+    abilityName: undefined,
+    abilityModifier: undefined,
     modifiers: List(playerData.modifiers)
       .map((modifierData: any) => deserializeModifier(modifierData))
       .toList()

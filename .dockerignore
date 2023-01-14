@@ -1,5 +1,4 @@
-# RSpec
-/api/spec/examples.txt
+.git
 
 # Logs
 **/log/*.log
@@ -12,9 +11,6 @@
 
 # NPM stuff
 **/node_modules
-
-# Webpack stuff
-**/bundle.js
 
 # OS stuff
 **/.DS_Store

@@ -4,33 +4,54 @@ import Loading from "./Loading"
 
 import data from "../../packs/base/viewConfig"
 
+import cardAttack from "../../assets/card-types/attack.png"
+import cardHeal from "../../assets/card-types/heal.png"
+import cardMove from "../../assets/card-types/move.png"
+import cardPowerUp from "../../assets/card-types/power-up.png"
+import cardPreventActions from "../../assets/card-types/prevent-actions.png"
+import cardShield from "../../assets/card-types/shield.png"
+import attackBasic from "../../assets/effects/attack-basic.png"
+import disconnected from "../../assets/effects/disconnected.png"
+import healBasic from "../../assets/effects/heal-basic.png"
+import knockedOut from "../../assets/effects/knocked-out.png"
+import lavaFire from "../../assets/effects/lava-fire.png"
+import movementPath from "../../assets/effects/movement-path.png"
+import powerUpBasic from "../../assets/effects/power-up-basic.png"
+import preventActionsBasic from "../../assets/effects/prevent-actions-basic.png"
+import shieldBasic from "../../assets/effects/shield-basic.png"
+import waterSlow from "../../assets/effects/water-slow.png"
+import block from "../../assets/tiles/block.png"
+import ground from "../../assets/tiles/ground.png"
+import lava from "../../assets/tiles/lava.png"
+import water from "../../assets/tiles/water.png"
+
 export const tileImages = {
-  block: require("../../assets/tiles/block.png").default,
-  ground: require("../../assets/tiles/ground.png").default,
-  lava: require("../../assets/tiles/lava.png").default,
-  water: require("../../assets/tiles/water.png").default
+  block: block,
+  ground: ground,
+  lava: lava,
+  water: water
 }
 
 export const effectImages = {
-  attack: require("../../assets/effects/attack-basic.png").default,
-  heal: require("../../assets/effects/heal-basic.png").default,
-  powerUp: require("../../assets/effects/power-up-basic.png").default,
-  preventActions: require("../../assets/effects/prevent-actions-basic.png").default,
-  shield: require("../../assets/effects/shield-basic.png").default,
-  disconnected: require("../../assets/effects/disconnected.png").default,
-  knockedOut: require("../../assets/effects/knocked-out.png").default,
-  lavaFire: require("../../assets/effects/lava-fire.png").default,
-  waterSlow: require("../../assets/effects/water-slow.png").default,
-  move: require("../../assets/effects/movement-path.png").default
+  attack: attackBasic,
+  heal: healBasic,
+  powerUp: powerUpBasic,
+  preventActions: preventActionsBasic,
+  shield: shieldBasic,
+  disconnected: disconnected,
+  knockedOut: knockedOut,
+  lavaFire: lavaFire,
+  waterSlow: waterSlow,
+  move: movementPath
 }
 
 export const cardIcons = {
-  attack: require("../../assets/card-types/attack.png").default,
-  heal: require("../../assets/card-types/heal.png").default,
-  move: require("../../assets/card-types/move.png").default,
-  powerUp: require("../../assets/card-types/power-up.png").default,
-  preventActions: require("../../assets/card-types/prevent-actions.png").default,
-  shield: require("../../assets/card-types/shield.png").default
+  attack: cardAttack,
+  heal: cardHeal,
+  move: cardMove,
+  powerUp: cardPowerUp,
+  preventActions: cardPreventActions,
+  shield: cardShield
 }
 
 interface ImagePreloaderProps {

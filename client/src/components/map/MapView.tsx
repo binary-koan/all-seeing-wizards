@@ -1,6 +1,6 @@
 import { Stage } from "@inlet/react-pixi"
 import React, { FunctionComponent } from "react"
-import { useSelector, useStore } from "react-redux"
+import { Provider as StoreProvider, useSelector, useStore } from "react-redux"
 import ViewState from "../../state/viewState"
 import Camera from "./Camera"
 import BoardTiles from "./containers/BoardTiles"
@@ -15,7 +15,6 @@ import ResultPlanOverlay from "./results/ResultPlanOverlay"
 import ResultPlanUnderlay from "./results/ResultPlanUnderlay"
 import ResultRealOverlay from "./results/ResultRealOverlay"
 import ResultRealUnderlay from "./results/ResultRealUnderlay"
-import { Provider as StoreProvider } from "react-redux"
 
 const PADDING = 0.5
 

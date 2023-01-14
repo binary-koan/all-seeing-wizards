@@ -5,7 +5,8 @@ import styled from "../util/styled"
 import MapView from "./MapView"
 
 const FullWidthMapView = styled(MapView)`
-  width: 100%;
+  width: 100% !important;
+  height: auto !important;
   margin: 0 auto;
 `
 

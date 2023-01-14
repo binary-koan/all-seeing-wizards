@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useState } from "react"
+import React, { FunctionComponent, MouseEvent, useCallback, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { rehostGame, rejoinGame } from "../../state/actions"
 import { fetchSession } from "../../state/sessionStore"
@@ -20,7 +20,10 @@ const RejoinMessage: FunctionComponent = props => {
 
   const dispatch = useDispatch()
   const doRejoinGame = useCallback(
-    () => dispatch(playerId ? rejoinGame(gameCode, playerId) : rehostGame(gameCode)),
+    (e: MouseEvent) => {
+      e.preventDefault()
+      dispatch(playerId ? rejoinGame(gameCode, playerId) : rehostGame(gameCode))
+    },
     [dispatch, gameCode, playerId]
   )
 
@@ -30,7 +33,7 @@ const RejoinMessage: FunctionComponent = props => {
 
   if (gameCode) {
     return (
-      <RejoinLink href="javascript:" onClick={doRejoinGame}>
+      <RejoinLink href="#" onClick={doRejoinGame}>
         Looks like you left in the middle of a game! <strong>Rejoin ›</strong>
       </RejoinLink>
     )

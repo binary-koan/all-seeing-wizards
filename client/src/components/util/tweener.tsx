@@ -1,5 +1,6 @@
-import { withPixiApp } from "@inlet/react-pixi"
-import React from "react"
+import { useTick } from "@inlet/react-pixi"
+import { flatten } from "lodash"
+import React, { useEffect, useRef, useState } from "react"
 
 const TARGET_FPS = 60
 
@@ -18,60 +19,39 @@ export interface TweenedPropOptions {
 export default function tweener<BaseProps>(
   Component: React.ComponentType<BaseProps>,
   propsToTween: { [key: string]: TweenedPropOptions }
-) {
-  type WrapperProps = BaseProps & { app: PIXI.Application }
+): React.FC<BaseProps> {
+  return props => {
+    const tweens = useRef<{ [prop: string]: Tween }>({})
+    const [state, setState] = useState({ ...props })
 
-  const Wrapper = class extends React.Component<WrapperProps, WrapperProps> {
-    private tweens: { [prop: string]: Tween }
-
-    constructor(props: WrapperProps) {
-      super(props)
-
-      this.state = { ...props }
-      this.tweens = {}
-      this.tick = this.tick.bind(this)
-    }
-
-    public componentWillMount() {
-      this.props.app.ticker.add(this.tick)
-    }
-
-    public componentWillUnmount() {
-      this.props.app.ticker.remove(this.tick)
-    }
-
-    public componentWillReceiveProps(props: WrapperProps) {
-      for (const [name, value] of Object.entries(props)) {
-        if (Object.keys(propsToTween).includes(name) && typeof value === "number") {
-          this.tweens[name] = new Tween({
-            from: (this.state as any)[name],
-            to: value,
-            duration: propsToTween[name].duration,
-            interpolate: linearInterpolator,
-            update: newValue => this.setState({ [name]: newValue } as any)
-          })
-        } else {
-          this.setState({ [name]: value } as any)
-        }
-      }
-    }
-
-    public render() {
-      return <Component {...this.state} />
-    }
-
-    private tick(deltaTime: number) {
-      for (const [name, tween] of Object.entries(this.tweens)) {
+    useTick((deltaTime: number) => {
+      for (const [name, tween] of Object.entries(tweens.current)) {
         if (tween.finished) {
-          delete this.tweens[name]
+          delete tweens.current[name]
         } else {
           tween.tick(deltaTime)
         }
       }
-    }
-  }
+    })
 
-  return withPixiApp(Wrapper)
+    useEffect(() => {
+      for (const [name, value] of Object.entries(props)) {
+        if (Object.keys(propsToTween).includes(name) && typeof value === "number") {
+          tweens.current[name] = new Tween({
+            from: (state as any)[name],
+            to: value,
+            duration: propsToTween[name].duration,
+            interpolate: linearInterpolator,
+            update: newValue => setState({ [name]: newValue } as any)
+          })
+        } else {
+          setState({ [name]: value } as any)
+        }
+      }
+    }, flatten(Object.entries(props)))
+
+    return <Component {...state} />
+  }
 }
 
 interface TweenOptions {

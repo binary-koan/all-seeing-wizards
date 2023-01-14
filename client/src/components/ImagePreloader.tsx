@@ -1,5 +1,6 @@
+import { uniq } from "lodash"
 import { Loader } from "pixi.js"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Loading from "./Loading"
 
 import data from "../../packs/base/viewConfig"
@@ -58,21 +59,13 @@ interface ImagePreloaderProps {
   children: () => JSX.Element
 }
 
-interface ImagePreloaderState {
-  isLoaded: boolean
-}
-
 // Note: Pixi has a global texture cache. When images are loaded by any Pixi loader they are
 // put in the global cache and retrieved from it automatically whenever a Sprite is constructed.
 // This means we don't need to care about actually using the resources returned by the loader
-export class ImagePreloader extends React.Component<ImagePreloaderProps, ImagePreloaderState> {
-  constructor(props: ImagePreloaderProps) {
-    super(props)
+export const ImagePreloader: React.FC<ImagePreloaderProps> = ({ children }) => {
+  const [isLoaded, setLoaded] = useState(false)
 
-    this.state = { isLoaded: false }
-  }
-
-  public componentWillMount() {
+  useEffect(() => {
     const loader = new Loader()
     const imagesToLoad = Object.values(data.characters)
       .map(character => [character.heartImage].concat(Object.values(character.images)))
@@ -86,18 +79,14 @@ export class ImagePreloader extends React.Component<ImagePreloaderProps, ImagePr
       .concat(Object.values(cardIcons))
       .reduce((list, current) => list.concat(current), [])
 
-    imagesToLoad.forEach(image => loader.add(image))
+    uniq(imagesToLoad).forEach(image => loader.add(image))
 
-    loader.load(() => {
-      this.setState({ isLoaded: true })
-    })
-  }
+    loader.load(() => setLoaded(true))
+  }, [])
 
-  public render() {
-    if (this.state.isLoaded) {
-      return this.props.children()
-    } else {
-      return <Loading />
-    }
+  if (isLoaded) {
+    return children()
+  } else {
+    return <Loading />
   }
 }

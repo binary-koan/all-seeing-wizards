@@ -12,7 +12,7 @@
   "author": "Jono Mingard <reason.koan@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "hashids": "^1.1.4",
     "lodash": "^4.17.5",
     "mongodb": "~2.2.31",

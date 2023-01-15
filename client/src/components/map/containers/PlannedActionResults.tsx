@@ -4,6 +4,7 @@ import React, { ComponentType, FunctionComponent } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "reselect"
 import { ActionResult } from "../../../../../common/src/turnResults/resultTypes"
+import data from "../../../../packs/base/viewConfig"
 import ViewState from "../../../state/viewState"
 import { ResultViewProps } from "../results/ResultViewProps"
 
@@ -14,9 +15,7 @@ const getResultComponents = createSelector(
 
     return actionResults.map(result => ({
       result,
-      // TODO:
-      overrides: {}
-      // overrides: result.card && data.cards[result.card.name].planViewOverrides
+      overrides: result.card && data.cards[result.card.name].planViewOverrides
     }))
   }
 )

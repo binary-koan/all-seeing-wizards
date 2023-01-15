@@ -3,6 +3,7 @@ import { List } from "immutable"
 import React, { FunctionComponent } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "reselect"
+import data from "../../../../packs/base/viewConfig"
 import ViewState from "../../../state/viewState"
 import { ResultViewProps } from "../results/ResultViewProps"
 
@@ -11,9 +12,7 @@ const getResultComponents = createSelector(
   (actionResults = List()) =>
     actionResults.map(result => ({
       result,
-      // TODO:
-      overrides: {}
-      // overrides: result.card && data.cards[result.card.name].realViewOverrides
+      overrides: result.card && data.cards[result.card.name].realViewOverrides
     }))
 )
 

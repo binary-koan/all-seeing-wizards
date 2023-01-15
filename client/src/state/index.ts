@@ -7,7 +7,9 @@ import socketReceiver from "./socketReceiver"
 import socketSender from "./socketSender"
 
 const SOCKET_HOST =
-  process.env.NODE_ENV === "production" ? location.origin : `http://${location.hostname}:3000`
+  process.env.NODE_ENV === "production"
+    ? "https://asw-api.apps.mingard.io"
+    : `http://${location.hostname}:3000`
 
 const socket = io(SOCKET_HOST)
 

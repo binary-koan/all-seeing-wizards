@@ -1,4 +1,3 @@
-import { Modifier } from "../../state/modifier"
 import { Player } from "../../state/player"
 import {
   ActionResult,
@@ -24,7 +23,6 @@ const RESULT_MODIFIERS: { [K in ActionResult["type"]]: ResultModifier } = {
   grantShield: neverModified,
   heal: neverModified,
   increaseDamage: neverModified,
-  setAbility: neverModified,
 
   knockback(result: KnockbackResult) {
     if (result.player.hasModifier("shield") || result.player.hasModifier("mirrorShield")) {
@@ -65,10 +63,7 @@ const RESULT_MODIFIERS: { [K in ActionResult["type"]]: ResultModifier } = {
     } else if (result.player.hasModifier("shield")) {
       return shieldFromHarm(result.card, result.player)
     } else {
-      return {
-        ...result,
-        damage: result.player.modifiers.reduce(reduceDamage, result.damage)
-      }
+      return result
     }
   }
 }
@@ -86,12 +81,4 @@ function neverModified(result: ActionResult) {
 
 function shouldAvoidInfiniteMirrorShieldLoop(caster: Player, previousResult?: ActionResult) {
   return previousResult && caster.hasModifier("mirrorShield")
-}
-
-function reduceDamage(sum: number, modifier: Modifier) {
-  if (modifier.type.name === "reduceDamage") {
-    return sum - modifier.type.amount
-  } else {
-    return sum
-  }
 }

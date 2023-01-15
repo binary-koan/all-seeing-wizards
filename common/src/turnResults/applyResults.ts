@@ -10,7 +10,6 @@ import {
   KnockbackResult,
   MoveResult,
   PreventActionsResult,
-  SetAbilityResult,
   TakeDamageResult
 } from "./resultTypes"
 
@@ -86,10 +85,6 @@ const RESULT_APPLICATORS: {
 
   takeDamage(result: TakeDamageResult, state: Game) {
     return state.updatePlayer(result.player.updateHp(-result.damage))
-  },
-
-  setAbility(result: SetAbilityResult, state: Game) {
-    return state.updatePlayer(result.player.setAbility(result.ability))
   }
 }
 

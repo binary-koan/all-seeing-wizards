@@ -139,17 +139,14 @@ export function createTestHand({
 
 export function createTestModifier({
   type,
-  duration,
-  applied
+  duration
 }: {
   type?: ModifierType
   duration?: Duration
-  applied?: boolean
 } = {}) {
   return new Modifier({
     type: type || { name: "shield" },
-    duration: duration || new Duration("action", 1),
-    applied: applied || false
+    duration: duration || new Duration("action", 1)
   })
 }
 

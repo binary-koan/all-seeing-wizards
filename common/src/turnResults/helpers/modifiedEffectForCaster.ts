@@ -9,17 +9,8 @@ export default function modifiedEffectForCaster(effect: CardEffect, caster: Play
   }
 
   if (effect.type === "attack") {
-    return {
-      ...effect,
-      damage: caster.modifiers.reduce(increaseDamage, effect.damage)
-    }
-  }
-
-  if (effect.type === "move") {
-    return {
-      ...effect,
-      amount: caster.modifiers.reduce(increaseSpeed, effect.amount)
-    }
+    const damageIncreaseAmount = caster.modifiers.reduce(increaseDamage, 0)
+    return { type: "attack", damage: effect.damage + damageIncreaseAmount, ranges: effect.ranges }
   }
 
   return effect
@@ -27,14 +18,6 @@ export default function modifiedEffectForCaster(effect: CardEffect, caster: Play
 
 function increaseDamage(sum: number, modifier: Modifier) {
   if (modifier.type.name === "increaseDamage") {
-    return sum + modifier.type.amount
-  } else {
-    return sum
-  }
-}
-
-function increaseSpeed(sum: number, modifier: Modifier) {
-  if (modifier.type.name === "increaseSpeed") {
     return sum + modifier.type.amount
   } else {
     return sum

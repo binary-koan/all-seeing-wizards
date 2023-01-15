@@ -1,4 +1,3 @@
-import { darken, lighten } from "polished"
 import React, { FunctionComponent } from "react"
 import styled from "../util/styled"
 import CharactersImage from "./CharactersImage"
@@ -7,11 +6,6 @@ const BannerLayout = styled.main`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    ${({ theme }) => darken(0.1, theme.colorDarkest)},
-    ${({ theme }) => lighten(0.05, theme.colorDarkest)}
-  );
 `
 
 const LayoutWrapper = styled.div`

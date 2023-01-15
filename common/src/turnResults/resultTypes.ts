@@ -1,10 +1,9 @@
 import { List } from "immutable"
 import { BoardTile } from "../state/boardTile"
 import { Card } from "../state/card"
-import { SetAbilityEffect } from "../state/cardEffect"
 import { DirectionalPoint } from "../state/directionalPoint"
 import { Duration } from "../state/duration"
-import { AbilityConfig, Player } from "../state/player"
+import { Player } from "../state/player"
 
 interface CommonProperties {
   card: Card
@@ -174,18 +173,6 @@ export function takeDamage(card: Card, damage: number, player: Player): TakeDama
   return { type: "takeDamage", card, damage, player }
 }
 
-export type SetAbilityResult = Readonly<
-  CommonProperties & {
-    type: "setAbility"
-    ability: AbilityConfig
-    player: Player
-  }
->
-
-export function setAbility(card: Card, ability: AbilityConfig, player: Player): SetAbilityResult {
-  return { type: "setAbility", card, ability, player }
-}
-
 export type ActionResult =
   | AttackResult
   | AttemptPreventActionsResult
@@ -200,6 +187,5 @@ export type ActionResult =
   | PreventActionsResult
   | ShieldFromHarmResult
   | TakeDamageResult
-  | SetAbilityEffect
 
 export type ActionResultType = ActionResult["type"]

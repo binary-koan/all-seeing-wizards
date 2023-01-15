@@ -30,8 +30,7 @@ const resultTypeMapping: { [type in ActionResultType]: Phase } = {
   none: "priority",
   preventActions: "priority",
   shieldFromHarm: "attack",
-  takeDamage: "attack",
-  setAbility: "priority"
+  takeDamage: "attack"
 }
 
 const Wrapper = styled.div<{ isVisible: boolean }>`

@@ -22,7 +22,7 @@ export default function tweener<BaseProps>(
 ): React.FC<BaseProps> {
   return props => {
     const tweens = useRef<{ [prop: string]: Tween }>({})
-    const [state, setState] = useState({ ...props })
+    const [state, setState] = useState<{ [key: string]: any }>({ ...props })
 
     useTick((deltaTime: number) => {
       for (const [name, tween] of Object.entries(tweens.current)) {
@@ -35,22 +35,30 @@ export default function tweener<BaseProps>(
     })
 
     useEffect(() => {
+      const newState: { [key: string]: any } = state
+
       for (const [name, value] of Object.entries(props)) {
-        if (Object.keys(propsToTween).includes(name) && typeof value === "number") {
+        if (
+          Object.keys(propsToTween).includes(name) &&
+          state[name] != null &&
+          typeof value === "number"
+        ) {
           tweens.current[name] = new Tween({
-            from: (state as any)[name],
+            from: state[name],
             to: value,
             duration: propsToTween[name].duration,
             interpolate: linearInterpolator,
-            update: newValue => setState({ [name]: newValue } as any)
+            update: newValue => setState(current => ({ ...current, [name]: newValue } as any))
           })
         } else {
-          setState({ [name]: value } as any)
+          newState[name] = value
         }
       }
+
+      setState(newState)
     }, flatten(Object.entries(props)))
 
-    return <Component {...state} />
+    return <Component {...(state as any)} />
   }
 }
 

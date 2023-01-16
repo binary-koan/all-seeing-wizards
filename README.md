@@ -21,7 +21,7 @@ but tends to take longer and be less interesting.
 Once you start hosting, you will get a code for players to join. It works best if
 everyone joins on their phones.
 
-![Host/join game](https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/host-join.png)
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/host-join.png" width="600" />
 
 ### Playing cards
 
@@ -31,14 +31,14 @@ be attacks, movement cards, potions, shields, etc.
 
 As you play cards, a preview of what will happen is shown on your player screen.
 
-![Playing cards](https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/cards.png)
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/cards.png" width="300" />
 
 When everyone has picked their cards, the turn will be played out on the host screen.
 Each player's first picked card will activate first, and the effects of those cards will
 happen simultaneously (the first "action"). Then each player's second card will
 activate, and so on until all cards have activated.
 
-![Watching on the host screen](https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/host-playback.png)
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/how-to-play/host-playback.png" width="300" />
 
 ### Action order
 
@@ -80,16 +80,16 @@ ends their turn in a haunted area, they lose 1 HP.
 On the game board there are a different types of terrain which affect players in
 different ways.
 
-<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/rocks-0.png" />
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/rocks-0.png" width="64" />
 
 **Rocks** cannot be moved through, but attacks will go through them.
 
-<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/water-0.png" />
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/water-0.png" width="64" />
 
 **Water** reduces a player's movement speed by 1 - "Move 1" cards will only
 turn the player and they must use a "Move 2" card to get out.
 
-<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/lava-0.png" />
+<img src="https://raw.githubusercontent.com/binary-koan/all-seeing-wizards/master/client/assets/tiles/lava-0.png" width="64" />
 
 **Lava** damages a player for 1 HP if they end their turn in it.
 

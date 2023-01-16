@@ -27,4 +27,8 @@ export default createGlobalStyle`
   body > div {
     height: 100%;
   }
+
+  a {
+    color: ${({ theme }) => theme.colorPrimary};
+  }
 `

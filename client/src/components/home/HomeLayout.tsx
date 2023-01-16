@@ -9,6 +9,7 @@ const BannerLayout = styled.main`
 `
 
 const LayoutWrapper = styled.div`
+  position: relative;
   flex: 1;
   display: flex;
   flex-flow: column-reverse;

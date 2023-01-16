@@ -21,16 +21,22 @@ import powerUpBasic from "../../assets/effects/power-up-basic.png"
 import preventActionsBasic from "../../assets/effects/prevent-actions-basic.png"
 import shieldBasic from "../../assets/effects/shield-basic.png"
 import waterSlow from "../../assets/effects/water-slow.png"
-import block from "../../assets/tiles/block.png"
-import ground from "../../assets/tiles/ground.png"
-import lava from "../../assets/tiles/lava.png"
-import water from "../../assets/tiles/water.png"
+import ground0 from "../../assets/tiles/ground-0.png"
+import ground1 from "../../assets/tiles/ground-1.png"
+import ground2 from "../../assets/tiles/ground-2.png"
+import ground3 from "../../assets/tiles/ground-3.png"
+import lava0 from "../../assets/tiles/lava-0.png"
+import lava1 from "../../assets/tiles/lava-1.png"
+import rocks0 from "../../assets/tiles/rocks-0.png"
+import rocks1 from "../../assets/tiles/rocks-1.png"
+import water0 from "../../assets/tiles/water-0.png"
+import water1 from "../../assets/tiles/water-1.png"
 
 export const tileImages = {
-  block: block,
-  ground: ground,
-  lava: lava,
-  water: water
+  block: [rocks0, rocks1],
+  ground: [ground0, ground1, ground2, ground3],
+  lava: [lava0, lava1],
+  water: [water0, water1]
 }
 
 export const effectImages = {

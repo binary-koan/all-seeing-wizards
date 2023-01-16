@@ -18,23 +18,20 @@ const Overlay = styled.div<VisibleProps>`
   transition: all 0.2s;
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ maxWidth: string; maxHeight: string }>`
   position: fixed;
   top: 50%;
   left: 50%;
   width: 100%;
   height: 100%;
-  max-width: 22rem;
-  max-height: 35rem;
+  max-width: ${({ maxWidth }) => maxWidth};
+  max-height: ${({ maxHeight }) => maxHeight};
   transform: translateX(-50%) translateY(-50%);
   padding: 1rem;
 `
 
-const Content = styled.div<VisibleProps>`
+const ScrollingContent = styled.div<VisibleProps>`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
   height: 100%;
   padding: 3rem 1rem;
@@ -45,9 +42,20 @@ const Content = styled.div<VisibleProps>`
   color: ${props => props.theme.colorDark};
   transform: ${props => (props.isVisible ? "none" : "scale(0.7)")};
   transition: all 0.2s;
+  overflow: auto;
 `
 
-const CloseButton = styled.span`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   position: absolute;
   top: 0.5rem;
   right: 1rem;
@@ -55,11 +63,12 @@ const CloseButton = styled.span`
   color: rgba(0, 0, 0, 0.2);
 `
 
-const Modal: FunctionComponent<{ isVisible: boolean; close: () => void }> = ({
-  isVisible,
-  close,
-  children
-}) => {
+const Modal: FunctionComponent<{
+  isVisible: boolean
+  close: () => void
+  maxWidth?: string
+  maxHeight?: string
+}> = ({ isVisible, close, children, maxWidth = "22rem", maxHeight = "35rem" }) => {
   const wrapperRef = useRef<HTMLDivElement>()
 
   const maybeClose = (e: MouseEvent) => {
@@ -72,15 +81,19 @@ const Modal: FunctionComponent<{ isVisible: boolean; close: () => void }> = ({
 
   return (
     <Overlay isVisible={isVisible} onClick={maybeClose}>
-      <Wrapper ref={wrapperRef}>
-        <Content isVisible={isVisible}>
-          {children ? (
-            <div>
-              <CloseButton onClick={close}>&times;</CloseButton>
-              {children}
-            </div>
-          ) : null}
-        </Content>
+      <Wrapper maxWidth={maxWidth} maxHeight={maxHeight} ref={wrapperRef}>
+        <ScrollingContent isVisible={isVisible}>
+          <Content>
+            {children ? (
+              <div>
+                <CloseButton type="button" onClick={close}>
+                  &times;
+                </CloseButton>
+                {children}
+              </div>
+            ) : null}
+          </Content>
+        </ScrollingContent>
       </Wrapper>
     </Overlay>
   )

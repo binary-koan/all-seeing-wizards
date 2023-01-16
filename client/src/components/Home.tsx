@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useState } from "react"
+import HelpButtons from "./HelpButtons"
 import BackButton from "./home/BackButton"
 import GameTitle from "./home/GameTitle"
 import HomeLayout from "./home/HomeLayout"
@@ -7,65 +8,28 @@ import JoinForm from "./home/JoinForm"
 import JoinHostOptions from "./home/JoinHostOptions"
 import RejoinMessage from "./home/RejoinMessage"
 
+// Very rudimentary check if this is a small screen
 const IS_MOBILE = Math.min(window.innerWidth, window.innerHeight) < 600
 
-export default class extends React.Component<{}, { showingForm: "host" | "join" }> {
-  constructor(props: {}) {
-    super(props)
+export default function Home() {
+  const [showingForm, setShowingForm] = useState<"host" | "join">()
 
-    this.state = {
-      showingForm: undefined
-    }
-  }
+  return (
+    <HomeLayout banner={<RejoinMessage />}>
+      {(IS_MOBILE || !showingForm) && <GameTitle />}
 
-  public render() {
-    return (
-      <HomeLayout banner={<RejoinMessage />}>
-        {this.gameTitle()}
-        {this.backButton()}
-        {this.joinHostOptions()}
-        {this.hostForm()}
-        {this.joinForm()}
-      </HomeLayout>
-    )
-  }
-
-  private gameTitle() {
-    if (IS_MOBILE || !this.state.showingForm) {
-      return <GameTitle />
-    }
-  }
-
-  private backButton() {
-    if (this.state.showingForm) {
-      return <BackButton onClick={() => this.showForm(undefined)}>Back</BackButton>
-    }
-  }
-
-  private joinHostOptions() {
-    if (!this.state.showingForm && !IS_MOBILE) {
-      return (
+      {showingForm && <BackButton onClick={() => setShowingForm(undefined)}>Back</BackButton>}
+      {!showingForm && !IS_MOBILE && (
         <JoinHostOptions
-          onHost={() => this.showForm("host")}
-          onJoin={() => this.showForm("join")}
+          onHost={() => setShowingForm("host")}
+          onJoin={() => setShowingForm("join")}
         />
-      )
-    }
-  }
+      )}
 
-  private hostForm() {
-    if (this.state.showingForm === "host") {
-      return <HostForm />
-    }
-  }
+      {showingForm === "host" && <HostForm />}
+      {(IS_MOBILE || showingForm === "join") && <JoinForm />}
 
-  private joinForm() {
-    if (IS_MOBILE || this.state.showingForm === "join") {
-      return <JoinForm />
-    }
-  }
-
-  private showForm(form: "host" | "join") {
-    this.setState({ showingForm: form })
-  }
+      <HelpButtons />
+    </HomeLayout>
+  )
 }

@@ -3,11 +3,10 @@ import desktopImage from "../../../assets/home/characters-desktop.png"
 import mobileImage from "../../../assets/home/characters-mobile.png"
 import styled from "../util/styled"
 
-
 const MobileCharacters = styled.img`
   width: 25rem;
   max-width: 80%;
-  margin-bottom: 2rem;
+  margin-bottom: 3.75rem;
   margin-left: auto;
   margin-right: auto;
 

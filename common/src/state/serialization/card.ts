@@ -1,12 +1,11 @@
-import { List } from "immutable";
-import { Card } from "../card";
-import { Duration } from "../duration";
+import { List } from "immutable"
+import { Card } from "../card"
+import { Duration } from "../duration"
 
 export function deserializeCard(cardData: any) {
   return new Card({
     id: cardData.id,
     name: cardData.name,
-    tagline: cardData.tagline,
     effects: List(cardData.effects)
       .map(deserializeEffect)
       .toList()

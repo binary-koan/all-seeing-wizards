@@ -51,7 +51,6 @@ export interface CardDoc {
   _id?: ObjectID
   packId?: ObjectID
   name: string
-  tagline: string
   effects: CardEffect[]
 }
 

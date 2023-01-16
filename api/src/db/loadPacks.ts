@@ -6,7 +6,6 @@ import packDefinitions from "../../packs/dbValues"
 import { BoardConfig, CardConfig, CharacterConfig, DbValues } from "../../packs/types"
 import { BoardDoc, BoardDocTile, BoardObjectDoc, CardDoc, CharacterDoc, PackDoc } from "./types"
 
-
 const BOARD_TILE_TYPE_MAPPING: { [key: string]: BoardDocTile } = {
   ".": "ground",
   b: "block",
@@ -40,7 +39,9 @@ export default async function loadPacks(db: Db) {
 
   await Promise.all(packsToLoad.map(pack => loadPack(pack, db)))
 
-  await db.collection("packs").deleteMany({ name: { $nin: packDefinitions.map(pack => pack.name) } })
+  await db
+    .collection("packs")
+    .deleteMany({ name: { $nin: packDefinitions.map(pack => pack.name) } })
 }
 
 async function loadPack(data: DbValues, db: Db) {
@@ -89,9 +90,7 @@ function buildCharacter({ name, type }: CharacterConfig, packId: ObjectID): Char
 }
 
 function buildCards({ name, count, effects }: CardConfig, packId: ObjectID): CardDoc[] {
-  const [actualName, tagline] = name.split(" of ")
-
   return Range(0, count)
-    .map(() => ({ packId, name: actualName, tagline, effects }))
+    .map(() => ({ packId, name, effects }))
     .toArray()
 }

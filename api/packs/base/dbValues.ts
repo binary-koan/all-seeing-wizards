@@ -3,7 +3,7 @@ import { GameFeature } from "../../../common/src/state/game"
 import { boardConfig, DbValues } from "../types"
 
 const values: DbValues = {
-  version: 15,
+  version: 16,
   name: "base",
   features: [GameFeature.PickMoveDirection],
   boards: [
@@ -111,7 +111,7 @@ const values: DbValues = {
       effects: [{ type: "move", amount: 0, rotation: "none" }]
     },
     {
-      name: "Hellfire Breath of Chillies",
+      name: "Hellfire Breath",
       count: 2,
       effects: [
         {
@@ -122,7 +122,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Chaos Storm of Endless Homework",
+      name: "Chaos Storm",
       count: 1,
       effects: [
         {
@@ -133,7 +133,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Magical Dart of Papercuts",
+      name: "Magical Dart",
       count: 3,
       effects: [
         {
@@ -144,7 +144,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Spartan Kick of Epic Abs",
+      name: "Spartan Kick",
       count: 2,
       effects: [
         {
@@ -156,7 +156,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Homing Missile of Bending the Rules",
+      name: "Homing Missile",
       count: 2,
       effects: [
         {
@@ -167,7 +167,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Freezing Touch of Ice Cubes",
+      name: "Freezing Touch",
       count: 2,
       effects: [
         {
@@ -178,7 +178,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Yellow Snowballs of Going Too Far",
+      name: "Yellow Snowballs",
       count: 1,
       effects: [
         {
@@ -189,7 +189,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Force Lightning of Evil Laughter",
+      name: "Lightning Hands",
       count: 2,
       effects: [
         {
@@ -211,7 +211,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Spider Minions of Terror",
+      name: "Spider Minions",
       count: 1,
       effects: [
         {
@@ -237,7 +237,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Piercing Scream of Unfairness",
+      name: "Sonic Pulse",
       count: 2,
       effects: [
         {
@@ -248,7 +248,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Earthquake of Table Flipping",
+      name: "Earthquake",
       count: 1,
       effects: [
         {
@@ -259,7 +259,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Magical Shield of Hiding",
+      name: "Magical Shield",
       count: 2,
       effects: [
         {
@@ -269,7 +269,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Dimension of Ultimate Time Out",
+      name: "Dimensional Leap",
       count: 1,
       effects: [
         {
@@ -279,7 +279,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Mirror Shield of Mutual Blackmail",
+      name: "Mirror Shield",
       count: 1,
       effects: [
         {
@@ -289,7 +289,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Parental Yell of Grounding",
+      name: "Interrupting Yell",
       count: 2,
       effects: [
         {
@@ -300,7 +300,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Healing Drink of Milkshake",
+      name: "Healing Drink",
       count: 3,
       effects: [
         {
@@ -310,7 +310,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Healing Meal of Pizza",
+      name: "Healing Meal",
       count: 3,
       effects: [
         {
@@ -320,7 +320,7 @@ const values: DbValues = {
       ]
     },
     {
-      name: "Rage Potion of Early Bedtime",
+      name: "Rage Potion",
       count: 2,
       effects: [
         {

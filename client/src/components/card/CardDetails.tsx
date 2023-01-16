@@ -12,10 +12,6 @@ const Title = styled.h2`
   margin-bottom: 0.5rem;
 `
 
-const Subtitle = styled.p`
-  margin: 0;
-`
-
 const CardImage = styled.img`
   width: 6rem;
   margin: 0 auto;
@@ -52,7 +48,6 @@ const CardDetails: FunctionComponent = () => {
         <>
           <CardImage src={data.cards[card.name] && data.cards[card.name].image} />
           <Title>{card.name}</Title>
-          {card.tagline ? <Subtitle>of {card.tagline}</Subtitle> : null}
           <CardTypeContainer>
             <StyledCardTypeIcon card={card} />
             <CardTypeName card={card} />

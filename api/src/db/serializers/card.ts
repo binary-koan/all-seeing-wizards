@@ -6,7 +6,6 @@ export default function serializeCard(card: Card): CardDoc {
   return {
     _id: new ObjectId(card.id),
     name: card.name,
-    tagline: card.tagline,
     effects: card.effects.toArray()
   }
 }

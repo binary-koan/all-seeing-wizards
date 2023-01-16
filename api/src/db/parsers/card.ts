@@ -7,7 +7,6 @@ export default function parseCard(doc: CardDoc) {
   return new Card({
     id: doc._id && doc._id.toHexString(),
     name: doc.name,
-    tagline: doc.tagline,
     effects: List(doc.effects)
       .map(buildEffect)
       .toList()

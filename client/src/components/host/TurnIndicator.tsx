@@ -42,6 +42,8 @@ const Wrapper = styled.div<{ isVisible: boolean }>`
   display: flex;
   justify-content: center;
   visibility: ${props => (props.isVisible ? "visible" : "hidden")};
+  opacity: ${props => (props.isVisible ? 1 : 0)};
+  transition: opacity 0.3s;
 `
 
 const ActionWrapper = styled.div<{ isActive: boolean }>`
@@ -80,7 +82,7 @@ const TurnIndicator: FunctionComponent = () => {
   const actionIndex = useSelector((state: ViewState) => state.showingActionIndex)
 
   return (
-    <Wrapper isVisible={showingResults && Boolean(showingResults.size)}>
+    <Wrapper isVisible={actionIndex != null}>
       {Array(ACTIONS_PER_TURN)
         .fill(0)
         .map((_, index) => (

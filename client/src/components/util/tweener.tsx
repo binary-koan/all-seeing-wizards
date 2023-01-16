@@ -35,7 +35,8 @@ export default function tweener<BaseProps>(
     })
 
     useEffect(() => {
-      const newState: { [key: string]: any } = state
+      // TODO: This is not a nice way to do state handling ...
+      const newState: { [key: string]: any } = { ...state }
 
       for (const [name, value] of Object.entries(props)) {
         if (

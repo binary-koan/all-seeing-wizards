@@ -4,11 +4,12 @@ All-Seeing Wizards is a digital board game where you and your friends play cards
 
 ## Local development
 
-Requires [MongoDB](https://www.mongodb.com) to be running.
+1. Make sure you have [Node.js](https://nodejs.org/) (tests are run with 18.x), [Yarn v1](https://classic.yarnpkg.com/lang/en/) and [MongoDB](https://www.mongodb.com) installed
+2. Make sure MongoDB is started and listening on the default port (27017). Alternatively, create a `.env` file in the `api` directory and add the content `MONGO_URL=<your mongodb cluster URL>`
+3. Run `yarn install` at the top level
+4. Run `yarn dev` to start the development server
 
-`yarn install` at the top level, then `yarn dev`
-
-Go to `http://localhost:8080` to see the view. To try creating a game and connecting as multiple players, you can open multiple browser tabs or windows.
+Open `http://localhost:8080` to see the game. To try creating a game and connecting as multiple players, you can open multiple browser tabs or windows.
 
 ## How to play
 

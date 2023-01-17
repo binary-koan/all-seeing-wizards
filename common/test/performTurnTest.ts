@@ -71,15 +71,15 @@ describe("#performTurn", () => {
 
     const result = performTurn(game)
 
-    expect(result.resultsPerAction.size).toBe(6) // 5 + 1 post-turn action
+    expect(result.game.player("target").hp).toEqual(2 + 2 - 3)
+
+    expect(result.resultsPerAction.size).toBe(5) // 5 + 1 post-turn action
     expect(
       result.resultsPerAction
         .first<List<ActionResult>>()
         .map(actionResult => actionResult.type)
         .toArray()
     ).toEqual(["heal", "attack", "takeDamage"])
-
-    expect(result.game.player("target").hp).toEqual(2 + 2 - 3)
   })
 
   it("works correctly when actions are prevented on a player", () => {

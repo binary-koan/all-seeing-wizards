@@ -31,10 +31,13 @@ describe("#drawHands", () => {
 
     const resultingState = drawHands(game)
 
-    expect(resultingState.players.map(player => player.hand.cards.size).toArray()).toEqual([
-      MAX_CARDS_IN_HAND,
-      MAX_CARDS_IN_HAND
-    ])
+    expect(
+      resultingState.players
+        .valueSeq()
+        .map(player => player.hand.cards.size)
+        .toArray()
+    ).toEqual([MAX_CARDS_IN_HAND, MAX_CARDS_IN_HAND])
+
     expect(resultingState.deck.availableCards.size).toBe(5 - 3 - 1)
   })
 })

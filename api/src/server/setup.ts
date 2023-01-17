@@ -1,9 +1,11 @@
 import * as express from "express"
-import { serializeGame } from "../../../common/src/state/serialization/game"
-import GameManager from "../state/gameManager"
 
-export default function setup(manager: GameManager) {
+export default function setup() {
   const app = express()
+
+  if (process.env.STATIC_PATH) {
+    app.use(express.static(process.env.STATIC_PATH))
+  }
 
   return app
 }

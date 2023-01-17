@@ -12,7 +12,7 @@ async function run() {
 
   const gameManager = new GameManager(db)
 
-  const app = setupServer(gameManager)
+  const app = setupServer()
   const server = new http.Server(app)
 
   setupSocket(server, gameManager)

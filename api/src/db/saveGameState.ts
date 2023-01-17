@@ -62,5 +62,5 @@ function updatePlayer(player: Player, db: Db) {
 
   return db
     .collection("players")
-    .updateOne({ _id: ObjectID.createFromHexString(player.id) }, doc, { upsert: true })
+    .updateOne({ _id: ObjectID.createFromHexString(player.id) }, { $set: doc }, { upsert: true })
 }

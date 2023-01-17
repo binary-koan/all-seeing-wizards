@@ -4,7 +4,8 @@
     "target": "es2017",
     "module": "es2015",
     "outDir": "../build",
-    "jsx": "react"
+    "jsx": "react",
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "../common/src/**/*"],
   "exclude": ["node_modules"]

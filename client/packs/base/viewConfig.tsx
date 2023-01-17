@@ -81,6 +81,8 @@ import warlockNorth from "./players/warlock-north.png"
 import warlockSouth from "./players/warlock-south.png"
 import warlockWest from "./players/warlock-west.png"
 
+// TODO: This definitely shouldn't use the readable names of the cards - it's way too sensitive to changes in dbValues.ts
+// Should be refactored to all be on the server or to use some shared IDs
 const viewConfig: ViewConfig = {
   cards: {
     "Move 1": {
@@ -259,7 +261,7 @@ const viewConfig: ViewConfig = {
       preloadImages: [attackSnowballs]
     },
 
-    "Force Lightning": {
+    "Lightning Hands": {
       image: forceLightning,
       description: (
         <>
@@ -313,12 +315,11 @@ const viewConfig: ViewConfig = {
       preloadImages: [attackSpider]
     },
 
-    "Piercing Scream": {
+    "Sonic Pulse": {
       image: piercingScream,
       description: (
         <>
-          Deal <strong>1 damage</strong> to all players in a <strong>3x3 square</strong> around you,
-          and knock them back 2 spaces.
+          Deal <strong>2 damage</strong> to all players in a <strong>3x3 square</strong> around you.
         </>
       ),
       planViewOverrides: {
@@ -375,7 +376,7 @@ const viewConfig: ViewConfig = {
       )
     },
 
-    Dimension: {
+    "Dimensional Leap": {
       image: dimension,
       description: (
         <>
@@ -394,7 +395,7 @@ const viewConfig: ViewConfig = {
       )
     },
 
-    "Parental Yell": {
+    "Interrupting Yell": {
       image: parentalYell,
       description: (
         <>

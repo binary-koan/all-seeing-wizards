@@ -9,7 +9,7 @@
 # SQLite databases
 **/db/*.sqlite
 
-# NPM stuff
+# Dependencies
 **/node_modules
 
 # OS stuff

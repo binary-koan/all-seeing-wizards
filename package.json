@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "concurrently -n api,client -c blue,magenta 'yarn workspace api dev' 'yarn workspace client dev'",
     "dokku": "node dokku/cli.js",
-    "test": "npm run typecheck && npm run jest",
-    "jest": "jest --env node",
-    "typecheck": "npm run typecheck:common && npm run typecheck:api && npm run typecheck:client",
+    "test": "jest --env node",
+    "typecheck": "yarn typecheck:common && yarn typecheck:api && yarn typecheck:client",
     "typecheck:common": "cd common && tsc --noEmit -p tsconfig.check.json",
     "typecheck:api": "cd api && tsc --noEmit -p tsconfig.check.json",
     "typecheck:client": "cd client && tsc --noEmit -p tsconfig.check.json"

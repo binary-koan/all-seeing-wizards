@@ -1,5 +1,7 @@
 ![All-Seeing Wizards](https://user-images.githubusercontent.com/1077405/212424854-229b01d2-e52f-4475-9acd-f7b24aa2536b.png)
 
+[![CI](https://github.com/binary-koan/all-seeing-wizards/actions/workflows/ci.yml/badge.svg)](https://github.com/binary-koan/all-seeing-wizards/actions/workflows/ci.yml)
+
 All-Seeing Wizards is a digital board game where you and your friends play cards to move around the board and fire spells at each other. It takes strategy, skill, and a little bit of luck to come out on top.
 
 ## Local development

@@ -1,0 +1,46 @@
+name: CI
+
+on: [push]
+
+jobs:
+  unit:
+    name: Unit tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn jest
+
+  typecheck:
+    name: Type check
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: yarn/action-setup@v2
+        with:
+          version: 7.x.x
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run type checks
+        run: yarn typecheck

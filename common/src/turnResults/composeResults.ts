@@ -101,6 +101,6 @@ export function composeResults(
   }, initialState)
 }
 
-function applyResults(results: List<ActionResult>, baseState: Game): Game {
+export function applyResults(results: List<ActionResult>, baseState: Game): Game {
   return results.reduce((game, result) => RESULT_APPLICATORS[result.type](result, game), baseState)
 }

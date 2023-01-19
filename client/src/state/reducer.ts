@@ -1,7 +1,7 @@
 import { List } from "immutable"
 import { ACTIONS_PER_TURN } from "../../../common/src/performTurn"
 import { Card } from "../../../common/src/state/card"
-import { applyResults } from "../../../common/src/turnResults/applyResults"
+import { applyResults } from "../../../common/src/turnResults/composeResults"
 import ViewState from "../state/viewState"
 import { Action } from "./actions"
 

@@ -88,6 +88,19 @@ const RESULT_APPLICATORS: {
   }
 }
 
-export function applyResults(results: List<ActionResult>, baseState: Game): Game {
+export function composeResults(
+  resultGetters: Array<(game: Game) => List<ActionResult>>,
+  game: Game
+): { game: Game; results: List<ActionResult> } {
+  const initialState = { game, results: List() as List<ActionResult> }
+
+  return resultGetters.reduce(({ game, results }, getResults) => {
+    const newResults = getResults(game)
+
+    return { game: applyResults(newResults, game), results: results.concat(newResults).toList() }
+  }, initialState)
+}
+
+function applyResults(results: List<ActionResult>, baseState: Game): Game {
   return results.reduce((game, result) => RESULT_APPLICATORS[result.type](result, game), baseState)
 }

@@ -3,7 +3,6 @@ import { Board } from "../state/board"
 import { BoardZone } from "../state/boardZone"
 import { DirectionalPoint } from "../state/directionalPoint"
 import { Game } from "../state/game"
-import { applyResults } from "./applyResults"
 import modifiedResultForTarget from "./helpers/modifiedResultForTarget"
 import { takeDamage } from "./resultTypes"
 
@@ -16,15 +15,10 @@ export function calculateHauntingResults(game: Game) {
     .map(player => modifiedResultForTarget(takeDamage(undefined, 1, player)))
     .toList()
 
-  const gameAfterResults = applyResults(hauntResults, game)
-
-  return {
-    game: advanceHaunting(gameAfterResults),
-    results: hauntResults
-  }
+  return hauntResults
 }
 
-function advanceHaunting(game: Game) {
+export function advanceHaunting(game: Game) {
   const newHauntedZones = game.board.hauntedZones.concat(game.board.hauntingZones).toList()
 
   const newHauntingZones = findHauntingZones(game)

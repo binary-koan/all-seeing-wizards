@@ -70,6 +70,13 @@ export class Game extends game implements IGame {
     return this.activePlayers.size <= 1
   }
 
+  public playedCards(actionIndex: number) {
+    return this.activePlayers
+      .mapKeys((_, player) => player)
+      .map(player => player.hand.pickedCards.get(actionIndex)?.configuredCard)
+      .filter(card => !!card)
+  }
+
   public player(id: string) {
     return this.players.get(id)
   }

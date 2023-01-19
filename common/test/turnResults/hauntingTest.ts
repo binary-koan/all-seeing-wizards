@@ -1,9 +1,32 @@
 import { List, Map } from "immutable"
 import { Player } from "../../src/state/player"
-import { calculateHauntingResults } from "../../src/turnResults/haunting"
+import { advanceHaunting, calculateHauntingResults } from "../../src/turnResults/haunting"
 import { createTestBoard, createTestGameState, createTestPlayer } from "../state/support/testData"
 
 describe("#calculateHauntingResults", () => {
+  it("damages players in haunted zones", () => {
+    const player = createTestPlayer()
+
+    const board = createTestBoard()
+
+    const game = createTestGameState({
+      players: (Map() as Map<string, Player>).set(player.id, player),
+      board: board.setHauntedZones(List.of(board.zones.first()))
+    })
+
+    const results = calculateHauntingResults(game)
+
+    expect(results.size).toBe(1)
+    expect(results.get(0)).toEqual({
+      type: "takeDamage",
+      card: undefined,
+      damage: 1,
+      player
+    })
+  })
+})
+
+describe("#advanceHaunting", () => {
   it("haunts a zone with a knocked out player in it", () => {
     const knockedOut = createTestPlayer({ hp: 0 })
 
@@ -11,11 +34,10 @@ describe("#calculateHauntingResults", () => {
       players: (Map() as Map<string, Player>).set(knockedOut.id, knockedOut)
     })
 
-    const outcome = calculateHauntingResults(game)
+    const gameAfter = advanceHaunting(game)
 
-    expect(outcome.results.size).toBe(0)
-    expect(outcome.game.board.hauntedZoneIndexes.size).toBe(0)
-    expect(outcome.game.board.hauntingZoneIndexes.size).toBe(1)
+    expect(gameAfter.board.hauntedZoneIndexes.size).toBe(0)
+    expect(gameAfter.board.hauntingZoneIndexes.size).toBe(1)
   })
 
   it("changes haunting zones to haunted", () => {
@@ -28,32 +50,10 @@ describe("#calculateHauntingResults", () => {
       board: board.setHauntingZones(List.of(board.zones.first()))
     })
 
-    const outcome = calculateHauntingResults(game)
+    const gameAfter = advanceHaunting(game)
 
-    expect(outcome.results.size).toBe(0)
-    expect(outcome.game.board.hauntedZoneIndexes.size).toBe(1)
-    expect(outcome.game.board.hauntingZoneIndexes.size).toBe(0)
-  })
-
-  it("damages players in haunted zones", () => {
-    const player = createTestPlayer()
-
-    const board = createTestBoard()
-
-    const game = createTestGameState({
-      players: (Map() as Map<string, Player>).set(player.id, player),
-      board: board.setHauntedZones(List.of(board.zones.first()))
-    })
-
-    const outcome = calculateHauntingResults(game)
-
-    expect(outcome.results.size).toBe(1)
-    expect(outcome.results.get(0)).toEqual({
-      type: "takeDamage",
-      card: undefined,
-      damage: 1,
-      player
-    })
+    expect(gameAfter.board.hauntedZoneIndexes.size).toBe(1)
+    expect(gameAfter.board.hauntingZoneIndexes.size).toBe(0)
   })
 
   it("finds haunting zones in an anticlockwise pattern", () => {
@@ -71,10 +71,9 @@ describe("#calculateHauntingResults", () => {
       board
     })
 
-    const outcome = calculateHauntingResults(game)
+    const gameAfter = advanceHaunting(game)
 
-    expect(outcome.results.size).toBe(0)
-    expect(outcome.game.board.hauntedZoneIndexes.size).toBe(0)
-    expect(outcome.game.board.hauntingZoneIndexes.toArray()).toEqual([0, 1, 3])
+    expect(gameAfter.board.hauntedZoneIndexes.size).toBe(0)
+    expect(gameAfter.board.hauntingZoneIndexes.toArray()).toEqual([0, 1, 3])
   })
 })
